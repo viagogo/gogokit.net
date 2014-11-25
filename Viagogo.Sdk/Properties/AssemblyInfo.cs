@@ -12,3 +12,13 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("0.0.1")]
 [assembly: AssemblyFileVersion("0.0.1")]
+
+// ReSharper disable once CheckNamespace
+namespace Viagogo
+{
+    internal static class AssemblyInfo
+    {
+        public const string Name = "Viagogo";
+        public const string Version = "0.0.1";
+    }
+}

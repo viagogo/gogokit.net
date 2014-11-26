@@ -18,11 +18,18 @@ namespace Viagogo.Sdk.Http
 
         private readonly ICredentialsProvider _credentialsProvider;
         private readonly IHttpClientWrapper _httpClient;
+        private readonly IErrorHandler _errorHandler;
+        private readonly IApiResponseFactory _responseFactory;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
 
         public Connection(ProductHeaderValue productHeader, ICredentialsProvider credentialsProvider)
-            : this(productHeader, credentialsProvider, new HttpClientWrapper(), new NewtonsoftJsonSerializer())
+            : this(productHeader,
+                   credentialsProvider,
+                   new HttpClientWrapper(),
+                   new NewtonsoftJsonSerializer(),
+                   new ApiResponseFactory(new NewtonsoftJsonSerializer()),
+                   new ErrorHandler(new ApiResponseFactory(new NewtonsoftJsonSerializer())))
         {
         }
 
@@ -30,16 +37,22 @@ namespace Viagogo.Sdk.Http
             ProductHeaderValue productHeader,
             ICredentialsProvider credentialsProvider,
             IHttpClientWrapper httpClient,
-            IJsonSerializer jsonSerializer)
+            IJsonSerializer jsonSerializer,
+            IApiResponseFactory responseFactory,
+            IErrorHandler errorHandler)
         {
             Requires.ArgumentNotNull(productHeader, "productHeader");
             Requires.ArgumentNotNull(credentialsProvider, "credentialsStore");
             Requires.ArgumentNotNull(httpClient, "httpClient");
+            Requires.ArgumentNotNull(errorHandler, "errorHandler");
+            Requires.ArgumentNotNull(responseFactory, "responseFactory");
             Requires.ArgumentNotNull(jsonSerializer, "jsonSerializer");
 
             _userAgentHeaderValues = GetUserAgentHeaderValues(productHeader).ToList();
             _credentialsProvider = credentialsProvider;
             _httpClient = httpClient;
+            _errorHandler = errorHandler;
+            _responseFactory = responseFactory;
             _jsonSerializer = jsonSerializer;
         }
 
@@ -82,7 +95,9 @@ namespace Viagogo.Sdk.Http
                 request.Content = await GetRequestContentAsync(method, body, contentType);
 
                 var responseMessage = await _httpClient.SendAsync(request, CancellationToken.None);
-                return await BuildApiResponseAsync<T>(responseMessage);
+
+                await _errorHandler.ProcessResponseAsync(responseMessage);
+                return await _responseFactory.CreateApiResponseAsync<T>(responseMessage);
             }
         }
 
@@ -118,52 +133,6 @@ namespace Viagogo.Sdk.Http
             // Anything else gets serialized to JSON
             var bodyJson = await _jsonSerializer.SerializeAsync(body);
             return new StringContent(bodyJson, Encoding.UTF8, contentType);
-        }
-
-        private async Task<IApiResponse<T>> BuildApiResponseAsync<T>(HttpResponseMessage response)
-        {
-            string body = null;
-            object bodyAsObject = null;
-            using (var content = response.Content)
-            {
-                if (content != null)
-                {
-                    if (typeof(T) != typeof(byte[]))
-                    {
-                        body = await response.Content.ReadAsStringAsync();
-                        if (body != null &&
-                            response.Content.Headers.ContentType != null &&
-                            (response.Content.Headers.ContentType.MediaType == HalJsonContentType ||
-                             response.Content.Headers.ContentType.MediaType == "application/json"))
-                        {
-                            bodyAsObject = await _jsonSerializer.DeserializeAsync<T>(body);
-                        }
-                    }
-                    else
-                    {
-                        bodyAsObject = await response.Content.ReadAsByteArrayAsync();
-                    }
-                }
-            }
-
-            var apiResponse = new ApiResponse<T>
-            {
-                StatusCode = response.StatusCode,
-                Body = body,
-                BodyAsObject = (T) bodyAsObject,
-            };
-
-            foreach (var header in response.Headers)
-            {
-                apiResponse.Headers.Add(header.Key, header.Value.FirstOrDefault());
-            }
-
-            foreach (var header in response.Content.Headers)
-            {
-                apiResponse.Headers.Add(header.Key, header.Value.FirstOrDefault());
-            }
-
-            return apiResponse;
         }
     }
 }

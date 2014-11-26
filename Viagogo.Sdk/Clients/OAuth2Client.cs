@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Viagogo.Sdk.Http;
@@ -28,16 +29,16 @@ namespace Viagogo.Sdk.Clients
             _tokenUrl = new Uri(viagogoDotComUrl, "/secure/oauth2/token");
         }
 
-        public async Task<OAuth2Token> GetAccessTokenAsync(
-            string grantType,
-            string scope,
-            IDictionary<string, string> parameters)
+        public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
         {
             Requires.ArgumentNotNullOrEmpty(grantType, "grantType");
 
             parameters = parameters ?? new Dictionary<string, string>();
             parameters.Add("grant_type", grantType);
-            parameters.Add("scope", scope);
+            if (scopes != null && scopes.Any())
+            {
+                parameters.Add("scope", string.Join(",", scopes));
+            }
 
             var response = await _connection.PostAsync<OAuth2Token>(_tokenUrl, new FormUrlEncodedContent(parameters));
             return response.BodyAsObject;

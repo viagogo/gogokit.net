@@ -19,17 +19,25 @@ namespace Viagogo.Sdk.Tests.Http
             ProductHeaderValue productHeader = null,
             ICredentialsProvider credsPrv = null,
             IHttpClientWrapper http = null,
+            IErrorHandler errHandler = null,
+            IApiResponseFactory respFact = null,
             IJsonSerializer json = null)
         {
             var mockCredsPrv = new Mock<ICredentialsProvider>(MockBehavior.Loose);
             mockCredsPrv.Setup(c => c.GetCredentialsAsync())
                         .Returns(Task.FromResult<ICredentials>(new FakeCredentials()));
 
+            var mockErrorHandler = new Mock<IErrorHandler>(MockBehavior.Loose);
+            mockErrorHandler.Setup(e => e.ProcessResponseAsync(It.IsAny<HttpResponseMessage>()))
+                            .Returns(Task.FromResult<object>(null));
+
             return new Connection(
                 productHeader ?? new ProductHeaderValue("Viagogo.Tests", "1.0"),
                 credsPrv ?? mockCredsPrv.Object,
                 http ?? new Mock<IHttpClientWrapper>(MockBehavior.Loose).Object,
-                json ?? new Mock<IJsonSerializer>(MockBehavior.Loose).Object);
+                json ?? new Mock<IJsonSerializer>(MockBehavior.Loose).Object,
+                respFact ?? new FakeApiResponseFactory(),
+                errHandler ?? mockErrorHandler.Object);
         }
 
         [Test]
@@ -82,7 +90,5 @@ namespace Viagogo.Sdk.Tests.Http
 
             mockHttp.Verify();
         }
-
-
     }
 }

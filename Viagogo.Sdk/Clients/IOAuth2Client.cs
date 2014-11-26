@@ -6,6 +6,6 @@ namespace Viagogo.Sdk.Clients
 {
     public interface IOAuth2Client
     {
-        Task<OAuth2Token> GetAccessTokenAsync(string grantType, string scope, IDictionary<string, string> parameters);
+        Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters);
     }
 }

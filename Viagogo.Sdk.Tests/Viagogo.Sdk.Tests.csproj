@@ -57,8 +57,12 @@
     <Compile Include="Authentication\BearerTokenCredentialsTest.cs" />
     <Compile Include="Authentication\InMemoryCredentialsProviderTests.cs" />
     <Compile Include="Clients\OAuth2ClientTests.cs" />
+    <Compile Include="Extensions\IOAuth2ClientExtensionsTests.cs" />
+    <Compile Include="Fakes\FakeApiResponseFactory.cs" />
     <Compile Include="Fakes\FakeCredentials.cs" />
+    <Compile Include="Http\ApiResponseFactoryTests.cs" />
     <Compile Include="Http\ConnectionTests.cs" />
+    <Compile Include="Http\ErrorHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

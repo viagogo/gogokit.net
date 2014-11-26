@@ -40,8 +40,19 @@ namespace Viagogo.Sdk.Tests.Http
                 errHandler ?? mockErrorHandler.Object);
         }
 
+        private static HttpMethod[] HttpMethods =
+        {
+            HttpMethod.Trace,
+            HttpMethod.Put,
+            HttpMethod.Post,
+            HttpMethod.Options,
+            HttpMethod.Head,
+            HttpMethod.Get,
+            HttpMethod.Delete
+        };
+
         [Test]
-        public async void PostAsync_ShouldSendAnHttpRequestMessageWithRequestUriSetToTheGivenUri()
+        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithRequestUriSetToTheGivenUri()
         {
             var expectedUri = new Uri("https://foo.io");
             var mockHttp = new Mock<IHttpClientWrapper>(MockBehavior.Loose);
@@ -51,13 +62,29 @@ namespace Viagogo.Sdk.Tests.Http
                     .Verifiable();
             var conn = CreateConnection(http: mockHttp.Object);
 
-            await conn.PostAsync<string>(expectedUri, null);
+            await conn.SendRequestAsync<string>(expectedUri, HttpMethod.Trace, "*/*", null, null);
+
+            mockHttp.Verify();
+        }
+
+        [Test, TestCaseSource("HttpMethods")]
+        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithTheGivenHttpMethod(
+            HttpMethod expectedMethod)
+        {
+            var mockHttp = new Mock<IHttpClientWrapper>(MockBehavior.Loose);
+            mockHttp.Setup(h => h.SendAsync(It.Is<HttpRequestMessage>(r => r.Method == expectedMethod),
+                                            It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(new HttpResponseMessage()))
+                    .Verifiable();
+            var conn = CreateConnection(http: mockHttp.Object);
+
+            await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), expectedMethod, "*/*", null, null);
 
             mockHttp.Verify();
         }
 
         [Test]
-        public async void PostAsync_ShouldSendAnHttpRequestMessageWithTheCurrentCredentialsAuthHeader()
+        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithTheCurrentCredentialsAuthHeader()
         {
             var expectedAuthHeader = "Expected header";
             var mockCredsPrv = new Mock<ICredentialsProvider>(MockBehavior.Loose);
@@ -70,13 +97,13 @@ namespace Viagogo.Sdk.Tests.Http
                     .Verifiable();
             var conn = CreateConnection(http: mockHttp.Object, credsPrv: mockCredsPrv.Object);
 
-            await conn.PostAsync<string>(new Uri("https://api.vgg.io"), null);
+            await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), HttpMethod.Trace, "*/*", null, null);
 
             mockHttp.Verify();
         }
 
         [Test]
-        public async void PostAsync_ShouldSendAnHttpRequestMessageWithUserAgentContainingTheGivenProductHeaderValue()
+        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithUserAgentContainingTheGivenProductHeaderValue()
         {
             var expectedUserAgentProduct = ProductHeaderValue.Parse("MyTestApp/0.9.9");
             var mockHttp = new Mock<IHttpClientWrapper>(MockBehavior.Loose);
@@ -86,7 +113,7 @@ namespace Viagogo.Sdk.Tests.Http
                     .Verifiable();
             var conn = CreateConnection(http: mockHttp.Object, productHeader: expectedUserAgentProduct);
 
-            await conn.PostAsync<string>(new Uri("https://api.vgg.io"), null);
+            await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), HttpMethod.Trace, "*/*", null, null);
 
             mockHttp.Verify();
         }

@@ -46,10 +46,12 @@
     <Compile Include="Exceptions\ApiAuthorizationException.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Extensions\IOAuth2ClientExtensions.cs" />
+    <Compile Include="Http\ApiConnection.cs" />
     <Compile Include="Http\ApiResponseFactory.cs" />
     <Compile Include="Http\Connection.cs" />
     <Compile Include="Http\ErrorHandler.cs" />
     <Compile Include="Http\HttpClientWrapper.cs" />
+    <Compile Include="Http\IApiConnection.cs" />
     <Compile Include="Http\IApiResponseFactory.cs" />
     <Compile Include="Http\IConnection.cs" />
     <Compile Include="Http\IErrorHandler.cs" />

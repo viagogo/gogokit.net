@@ -12,15 +12,15 @@ namespace Viagogo.Sdk.Clients
     {
         public static readonly Uri ViagogoDotComUrl = new Uri("https://viagogo.com");
 
-        private readonly IConnection _connection;
+        private readonly IApiConnection _connection;
         private readonly Uri _tokenUrl;
 
-        public OAuth2Client(IConnection connection)
+        public OAuth2Client(IApiConnection connection)
             : this(connection, ViagogoDotComUrl)
         {
         }
 
-        public OAuth2Client(IConnection connection, Uri viagogoDotComUrl)
+        public OAuth2Client(IApiConnection connection, Uri viagogoDotComUrl)
         {
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(viagogoDotComUrl, "viagogoDotComUrl");
@@ -29,7 +29,7 @@ namespace Viagogo.Sdk.Clients
             _tokenUrl = new Uri(viagogoDotComUrl, "/secure/oauth2/token");
         }
 
-        public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
+        public Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
         {
             Requires.ArgumentNotNullOrEmpty(grantType, "grantType");
 
@@ -40,8 +40,7 @@ namespace Viagogo.Sdk.Clients
                 parameters.Add("scope", string.Join(",", scopes));
             }
 
-            var response = await _connection.PostAsync<OAuth2Token>(_tokenUrl, new FormUrlEncodedContent(parameters));
-            return response.BodyAsObject;
+            return _connection.PostAsync<OAuth2Token>(_tokenUrl, new FormUrlEncodedContent(parameters));
         }
     }
 }

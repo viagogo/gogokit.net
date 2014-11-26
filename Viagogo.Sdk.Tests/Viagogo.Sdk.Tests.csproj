@@ -60,6 +60,7 @@
     <Compile Include="Extensions\IOAuth2ClientExtensionsTests.cs" />
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
     <Compile Include="Fakes\FakeCredentials.cs" />
+    <Compile Include="Http\ApiConnectionTests.cs" />
     <Compile Include="Http\ApiResponseFactoryTests.cs" />
     <Compile Include="Http\ConnectionTests.cs" />
     <Compile Include="Http\ErrorHandlerTests.cs" />

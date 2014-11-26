@@ -14,8 +14,6 @@ namespace Viagogo.Sdk.Http
 {
     public class Connection : IConnection
     {
-        private const string HalJsonContentType = "application/hal+json";
-
         private readonly ICredentialsProvider _credentialsProvider;
         private readonly IHttpClientWrapper _httpClient;
         private readonly IErrorHandler _errorHandler;
@@ -68,19 +66,12 @@ namespace Viagogo.Sdk.Http
             };
         }
 
-        public Task<IApiResponse<T>> PostAsync<T>(Uri uri, object body)
-        {
-            Requires.ArgumentNotNull(uri, "uri");
-
-            return SendRequestAsync<T>(uri, HttpMethod.Post, body, HalJsonContentType, HalJsonContentType);
-        }
-
-        private async Task<IApiResponse<T>> SendRequestAsync<T>(
+        public async Task<IApiResponse<T>> SendRequestAsync<T>(
             Uri uri,
             HttpMethod method,
+            string accept,
             object body,
-            string contentType,
-            string accept)
+            string contentType)
         {
             using (var request = new HttpRequestMessage { RequestUri = uri, Method = method })
             {

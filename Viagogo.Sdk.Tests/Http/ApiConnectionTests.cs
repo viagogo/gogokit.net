@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Viagogo.Sdk.Helpers;
 using Viagogo.Sdk.Http;
 using Viagogo.Sdk.Models;
+using Viagogo.Sdk.Resources;
 using Viagogo.Sdk.Tests.Fakes;
 
 namespace Viagogo.Sdk.Tests.Http
@@ -29,7 +30,7 @@ namespace Viagogo.Sdk.Tests.Http
             return new ApiResponse<T> {BodyAsObject = body ?? new T()};
         }
 
-        private class Foo
+        private class Foo : Resource
         {
         }
 

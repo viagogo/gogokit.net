@@ -28,5 +28,17 @@ namespace Viagogo.Sdk.Clients
                     {"page_size", pageSize.ToString()}
                 });
         }
+
+        public async Task<IReadOnlyList<SearchResult>> GetAllSearchResultsAsync(string query)
+        {
+            var root = await _rootClient.GetAsync();
+            return await _connection.GetAllPagesAsync<SearchResult>(
+                            root.Links["viagogo:search"],
+                            new Dictionary<string, string>
+                            {
+                                {"query", query},
+                                {"page_size", "2"}
+                            });
+        }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Viagogo.Sdk.Helpers;
 using Viagogo.Sdk.Models;
+using Viagogo.Sdk.Resources;
 
 namespace Viagogo.Sdk.Http
 {
@@ -35,6 +35,32 @@ namespace Viagogo.Sdk.Http
         public Task<T> GetAsync<T>(Link link, IDictionary<string, string> parameters)
         {
             return SendRequestAsync<T>(HttpMethod.Get, link, parameters);
+        }
+
+        public async Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
+            Link link,
+            IDictionary<string, string> parameters) where T : Resource
+        {
+            var currentLink = link;
+            var currentParameters = parameters;
+            var items = new List<T>();
+            var hasAnotherPage = true;
+            while (hasAnotherPage)
+            {
+                var currentPage = await SendRequestAsync<PagedResource<T>>(
+                                            HttpMethod.Get,
+                                            currentLink,
+                                            currentParameters);
+
+                items.AddRange(currentPage.Items);
+
+                // Stop passing parameters on subsequent calls since the "next" links
+                // will already be assembled with all the parameters needed
+                currentParameters = null;
+                hasAnotherPage = currentPage.Links.TryGetLink("next", out currentLink);
+            }
+
+            return items;
         }
 
         private async Task<T> SendRequestAsync<T>(

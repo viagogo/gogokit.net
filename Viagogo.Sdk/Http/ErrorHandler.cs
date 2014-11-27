@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,6 +18,22 @@ namespace Viagogo.Sdk.Http
 
         private static readonly Regex AuthorizationErrorDescriptionRegex
             = new Regex(",error_description=\"(?<value>.+)\"", RegexOptions.None);
+
+        private static readonly IDictionary<string, Func<IApiResponse<ApiError>, ApiErrorException>> ExceptionFactoryMap =
+            new Dictionary<string, Func<IApiResponse<ApiError>, ApiErrorException>>
+            {
+                {"insufficient_scope", r => new InsufficientScopeException(r)},
+                {"user_agent_required", r => new UserAgentRequiredException(r)},
+                {"invalid_request_body", r => new InvalidRequestBodyException(r)},
+                {"validation_failed", r => new ValidationFailedException(r)},
+                {"invalid_password", r => new InvalidPasswordException(r)},
+                {"email_already_exists", r => new EmailAlreadyExistsException(r)},
+                {"invalid_purchase_action", r => new InvalidPurchaseActionException(r)},
+                {"purchase_not_allowed", r => new PurchaseNotAllowedException(r)},
+                {"listing_conflict", r => new ListingConflictException(r)},
+                {"purchase_still_processing", r => new PurchaseStillProcessingException(r)},
+                {"invalid_delete", r => new InvalidDeleteException(r)},
+            };
 
         private readonly IApiResponseFactory _responseFactory;
 
@@ -35,8 +53,29 @@ namespace Viagogo.Sdk.Http
                 return;
             }
 
-            var apiException = await GetApiAuthorizationException(response);
+            var apiException = response.StatusCode != HttpStatusCode.Unauthorized
+                                ? await GetApiErrorException(response)
+                                : await GetApiAuthorizationException(response);
             throw apiException;
+        }
+
+        private async Task<ApiException> GetApiErrorException(HttpResponseMessage response)
+        {
+            var errorResponse = await _responseFactory.CreateApiResponseAsync<ApiError>(response);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new ResourceNotFoundException(errorResponse);
+            }
+
+            Func<IApiResponse<ApiError>, ApiErrorException> exceptionFactoryFunc;
+            if (errorResponse.BodyAsObject != null &&
+                errorResponse.BodyAsObject.Code != null &&
+                ExceptionFactoryMap.TryGetValue(errorResponse.BodyAsObject.Code, out exceptionFactoryFunc))
+            {
+                return exceptionFactoryFunc(errorResponse);
+            }
+
+            return new ApiErrorException(errorResponse);
         }
 
         private async Task<ApiAuthorizationException> GetApiAuthorizationException(HttpResponseMessage response)

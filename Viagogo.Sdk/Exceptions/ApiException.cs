@@ -21,7 +21,8 @@ namespace Viagogo.Sdk.Exceptions
             {
                 string message = null;
                 var authorizationErrorResponse = _response as IApiResponse<AuthorizationError>;
-                if (authorizationErrorResponse != null)
+                if (authorizationErrorResponse != null &&
+                    authorizationErrorResponse.BodyAsObject != null)
                 {
                     message = authorizationErrorResponse.BodyAsObject.ErrorDescription;
                 }

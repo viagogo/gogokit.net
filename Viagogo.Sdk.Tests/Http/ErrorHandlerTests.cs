@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -28,6 +30,27 @@ namespace Viagogo.Sdk.Tests.Http
             HttpStatusCode.Accepted,
             HttpStatusCode.NoContent,
             HttpStatusCode.NotModified
+        };
+
+        private static readonly HttpStatusCode[] NonAuthorizationErrorCodes =
+            Enum.GetValues(typeof(HttpStatusCode))
+                .Cast<HttpStatusCode>()
+                .Where(s => s != HttpStatusCode.Unauthorized && s > (HttpStatusCode)400)
+                .ToArray();
+
+        private static readonly object[] ApiErrorCodesAndExceptionTypes =
+        {
+            new object[] {"insufficient_scope", typeof(InsufficientScopeException)},
+            new object[] {"user_agent_required", typeof(UserAgentRequiredException)},
+            new object[] {"invalid_request_body", typeof(InvalidRequestBodyException)},
+            new object[] {"validation_failed", typeof(ValidationFailedException)},
+            new object[] {"invalid_password", typeof(InvalidPasswordException)},
+            new object[] {"email_already_exists", typeof(EmailAlreadyExistsException)},
+            new object[] {"invalid_purchase_action", typeof(InvalidPurchaseActionException)},
+            new object[] {"purchase_not_allowed", typeof(PurchaseNotAllowedException)},
+            new object[] {"listing_conflict", typeof(ListingConflictException)},
+            new object[] {"purchase_still_processing", typeof(PurchaseStillProcessingException)},
+            new object[] {"invalid_delete", typeof(InvalidDeleteException)},
         };
 
         [Test, TestCaseSource("ApiSuccessCodes")]
@@ -125,6 +148,108 @@ namespace Viagogo.Sdk.Tests.Http
 
             Assert.AreEqual(expectedError, actualError);
             Assert.AreEqual(expectedErrorDescription, actualErrorDescription);
+        }
+
+        [Test, TestCaseSource("NonAuthorizationErrorCodes")]
+        public async void ProcessResponseAsync_ShouldProcessTheResponseAsAnApiError_WhenResponseStatusCodeIs(
+            HttpStatusCode statusCode)
+        {
+            var expectedResponse = new HttpResponseMessage { StatusCode = statusCode };
+            var mockResponseFact = new Mock<IApiResponseFactory>(MockBehavior.Loose);
+            mockResponseFact.Setup(r => r.CreateApiResponseAsync<ApiError>(expectedResponse))
+                            .Returns(Task.FromResult<IApiResponse<ApiError>>(new ApiResponse<ApiError>()))
+                            .Verifiable();
+            var handler = CreateErrorHandler(respFact: mockResponseFact.Object);
+
+            try
+            {
+                await handler.ProcessResponseAsync(expectedResponse);
+            }
+            catch (ApiException)
+            {
+            }
+
+            mockResponseFact.Verify();
+        }
+
+        [Test, TestCaseSource("NonAuthorizationErrorCodes")]
+        public async void ProcessResponseAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
+            HttpStatusCode statusCode)
+        {
+            var expectedResponse = new ApiResponse<ApiError>();
+            IApiResponse actualResponse = null;
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: expectedResponse));
+
+            try
+            {
+                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = statusCode });
+            }
+            catch (ApiException ex)
+            {
+                actualResponse = ex.Response;
+            }
+
+            Assert.AreSame(expectedResponse, actualResponse);
+        }
+
+        [Test, TestCaseSource("NonAuthorizationErrorCodes")]
+        public async void ProcessResponseAsync_ShouldThrowApiErrorExceptionWithErrorSetToTheResponseBodyReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
+            HttpStatusCode statusCode)
+        {
+            var expectedError = new ApiError();
+            ApiError actualError = null;
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: new ApiResponse<ApiError> {BodyAsObject = expectedError}));
+
+            try
+            {
+                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = statusCode });
+            }
+            catch (ApiErrorException ex)
+            {
+                actualError = ex.Error;
+            }
+
+            Assert.AreSame(expectedError, actualError);
+        }
+
+        [Test]
+        public async void ProcessResponseAsync_ShouldThrowResourceNotFoundException_WhenResponseStatusCodeIs404()
+        {
+            Exception actualException = null;
+            var handler = CreateErrorHandler();
+            
+            try
+            {
+                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound });
+            }
+            catch (Exception ex)
+            {
+                actualException = ex;
+            }
+
+            Assert.IsInstanceOf<ResourceNotFoundException>(actualException);
+        }
+
+        [Test, TestCaseSource("ApiErrorCodesAndExceptionTypes")]
+        public async void ProcessResponseAsync_ShouldThrowExceptionAssociatedWithTheApiErrorCode_WhenResponseStatusCodeIsError(
+            string errorCode,
+            Type expectedExceptionType)
+        {
+            Exception actualException = null;
+            var handler = CreateErrorHandler(
+                            respFact: new FakeApiResponseFactory(
+                                resp: new ApiResponse<ApiError> {BodyAsObject = new ApiError {Code = errorCode}}));
+
+            try
+            {
+                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.ServiceUnavailable });
+            }
+            catch (Exception ex)
+            {
+                actualException = ex;
+            }
+
+            Assert.IsInstanceOf(expectedExceptionType, actualException);
         }
     }
 }

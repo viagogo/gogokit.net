@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Viagogo.Sdk.Json;
 
 namespace Viagogo.Sdk.Http
 {

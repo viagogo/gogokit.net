@@ -8,6 +8,7 @@ using Moq;
 using NUnit.Framework;
 using Viagogo.Sdk.Authentication;
 using Viagogo.Sdk.Http;
+using Viagogo.Sdk.Json;
 using Viagogo.Sdk.Tests.Fakes;
 
 namespace Viagogo.Sdk.Tests.Http

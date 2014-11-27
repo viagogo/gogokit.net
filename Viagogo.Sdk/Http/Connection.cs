@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Viagogo.Sdk.Authentication;
+using Viagogo.Sdk.Json;
 
 namespace Viagogo.Sdk.Http
 {

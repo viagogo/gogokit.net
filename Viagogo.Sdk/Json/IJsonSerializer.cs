@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Viagogo.Sdk
+namespace Viagogo.Sdk.Json
 {
     public interface IJsonSerializer
     {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Viagogo.Sdk.Http;
+using Viagogo.Sdk.Json;
 
 namespace Viagogo.Sdk.Tests.Http
 {

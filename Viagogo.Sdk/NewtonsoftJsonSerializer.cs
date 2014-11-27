@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Viagogo.Sdk.Json;
 
 namespace Viagogo.Sdk
 {
@@ -19,7 +20,8 @@ namespace Viagogo.Sdk
 
         public Task<T> DeserializeAsync<T>(string json)
         {
-            return Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(json));
+            return Task.Factory.StartNew(
+                () => JsonConvert.DeserializeObject<T>(json, new ResourceConverter()));
         }
     }
 }

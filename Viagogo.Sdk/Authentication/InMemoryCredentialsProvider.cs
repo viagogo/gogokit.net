@@ -8,6 +8,8 @@ namespace Viagogo.Sdk.Authentication
 
         public InMemoryCredentialsProvider(ICredentials credentials)
         {
+            Requires.ArgumentNotNull(credentials, "credentials");
+
             _credentials = credentials;
         }
 

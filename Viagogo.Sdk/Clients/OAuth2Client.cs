@@ -10,13 +10,11 @@ namespace Viagogo.Sdk.Clients
 {
     public class OAuth2Client : IOAuth2Client
     {
-        public static readonly Uri ViagogoDotComUrl = new Uri("https://viagogo.com");
-
         private readonly IApiConnection _connection;
         private readonly Uri _tokenUrl;
 
         public OAuth2Client(IApiConnection connection)
-            : this(connection, ViagogoDotComUrl)
+            : this(connection, ViagogoClient.ViagogoDotComUrl)
         {
         }
 

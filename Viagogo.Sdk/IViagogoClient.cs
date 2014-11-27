@@ -6,5 +6,6 @@ namespace Viagogo.Sdk
     {
         IOAuth2Client OAuth2 { get; }
         IApiRootClient Root { get; }
+        IUserClient User { get; }
     }
 }

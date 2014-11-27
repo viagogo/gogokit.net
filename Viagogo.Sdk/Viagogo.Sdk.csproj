@@ -49,7 +49,9 @@
     <Compile Include="Clients\ApiRootClient.cs" />
     <Compile Include="Clients\IOAuth2Client.cs" />
     <Compile Include="Clients\IApiRootClient.cs" />
+    <Compile Include="Clients\IUserClient.cs" />
     <Compile Include="Clients\OAuth2Client.cs" />
+    <Compile Include="Clients\UserClient.cs" />
     <Compile Include="Exceptions\ApiAuthorizationException.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Extensions\IOAuth2ClientExtensions.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Http\ApiResponse.cs" />
     <Compile Include="Requires.cs" />
+    <Compile Include="Resources\User.cs" />
     <Compile Include="ViagogoClient.cs" />
   </ItemGroup>
   <ItemGroup>

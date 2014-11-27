@@ -1,20 +1,26 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Viagogo.Sdk.Helpers;
 using Viagogo.Sdk.Http;
 using Viagogo.Sdk.Models;
+using Viagogo.Sdk.Tests.Fakes;
 
 namespace Viagogo.Sdk.Tests.Http
 {
     [TestFixture]
     public class ApiConnectionTests
     {
-        private static  ApiConnection CreateConnection(IConnection conn = null)
+        private static  ApiConnection CreateConnection(
+            IConnection conn = null,
+            ILinkResolver resolver = null)
         {
             return new ApiConnection(
-                conn ?? new Mock<IConnection>(MockBehavior.Loose).Object);
+                conn ?? new FakeConnection(),
+                resolver ?? new Mock<ILinkResolver>(MockBehavior.Loose).Object);
         }
 
         private static IApiResponse<T> CreateResponse<T>(T body = null)
@@ -39,127 +45,42 @@ namespace Viagogo.Sdk.Tests.Http
         }
 
         [Test]
-        public async void PostAsync_ShouldPassTheGivenUriToTheConnection()
+        public async void GetAsync_ShouldPassTheGivenLinkToTheLinkResolver()
         {
-            var expectedUri = new Uri("https://api.vgg.io");
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<Foo>(
-                                    expectedUri,
-                                    It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<object>(),
-                                    It.IsAny<string>()))
-                    .Returns(Task.FromResult(CreateResponse<Foo>()))
-                    .Verifiable();
-            var apiConnection = CreateConnection(conn: mockConn.Object);
+            var expectedLink = new Link();
+            var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
+            mockResolver.Setup(r => r.ResolveLink(expectedLink, It.IsAny<IDictionary<string, string>>()))
+                .Returns(new Uri("http://api.com/endpoint"))
+                .Verifiable();
+            var apiConnection = CreateConnection(resolver: mockResolver.Object);
 
-            await apiConnection.PostAsync<Foo>(expectedUri, null);
+            await apiConnection.GetAsync<Foo>(expectedLink, null);
 
-            mockConn.Verify();
+            mockResolver.Verify();
         }
 
         [Test]
-        public async void PostAsync_ShouldPassPostHttpMethodToTheConnection()
+        public async void GetAsync_ShouldPassTheGivenParametersToTheLinkResolver()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<Foo>(
-                                    It.IsAny<Uri>(),
-                                    HttpMethod.Post,
-                                    It.IsAny<string>(),
-                                    It.IsAny<object>(),
-                                    It.IsAny<string>()))
-                    .Returns(Task.FromResult(CreateResponse<Foo>()))
-                    .Verifiable();
-            var apiConnection = CreateConnection(conn: mockConn.Object);
+            var expectedParameters = new Dictionary<string, string> {{"foo", "bar"}};
+            var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
+            mockResolver.Setup(r => r.ResolveLink(It.IsAny<Link>(), expectedParameters))
+                .Returns(new Uri("http://api.com/endpoint"))
+                .Verifiable();
+            var apiConnection = CreateConnection(resolver: mockResolver.Object);
 
-            await apiConnection.PostAsync<Foo>(new Uri("https://vgg.com/endpoint"), null);
+            await apiConnection.GetAsync<Foo>(new Link(), expectedParameters);
 
-            mockConn.Verify();
+            mockResolver.Verify();
         }
 
         [Test]
-        public async void PostAsync_ShouldPassTheGivenDataToTheConnection()
-        {
-            var expectedBody = new {foo = "bar"};
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<Foo>(
-                                    It.IsAny<Uri>(),
-                                    It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
-                                    expectedBody,
-                                    It.IsAny<string>()))
-                    .Returns(Task.FromResult(CreateResponse<Foo>()))
-                    .Verifiable();
-            var apiConnection = CreateConnection(conn: mockConn.Object);
-
-            await apiConnection.PostAsync<Foo>(new Uri("https://vgg.com/endpoint"), expectedBody);
-
-            mockConn.Verify();
-        }
-
-        [Test]
-        public async void PostAsync_ShouldPassHalJsonContentTypeToTheConnection()
-        {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<Foo>(
-                                    It.IsAny<Uri>(),
-                                    It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<object>(),
-                                    "application/hal+json"))
-                    .Returns(Task.FromResult(CreateResponse<Foo>()))
-                    .Verifiable();
-            var apiConnection = CreateConnection(conn: mockConn.Object);
-
-            await apiConnection.PostAsync<Foo>(new Uri("https://vgg.com/endpoint"), null);
-
-            mockConn.Verify();
-        }
-
-        [Test]
-        public async void PostAsync_ShouldPassHalJsonAcceptHeaderToTheConnection()
-        {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<Foo>(
-                                    It.IsAny<Uri>(),
-                                    It.IsAny<HttpMethod>(),
-                                    "application/hal+json",
-                                    It.IsAny<object>(),
-                                    It.IsAny<string>()))
-                    .Returns(Task.FromResult(CreateResponse<Foo>()))
-                    .Verifiable();
-            var apiConnection = CreateConnection(conn: mockConn.Object);
-
-            await apiConnection.PostAsync<Foo>(new Uri("https://vgg.com/endpoint"), null);
-
-            mockConn.Verify();
-        }
-
-        [Test]
-        public async void PostAsync_ShouldReturnTheBodyOfTheResponseReturnedByTheConnection()
-        {
-            var expectedResult = new Foo();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<Foo>(
-                                    It.IsAny<Uri>(),
-                                    It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<object>(),
-                                    It.IsAny<string>()))
-                                    .Returns(Task.FromResult(CreateResponse(body: expectedResult)))
-                    .Verifiable();
-            var apiConnection = CreateConnection(conn: mockConn.Object);
-
-            var actualResult = await apiConnection.PostAsync<Foo>(new Uri("https://vgg.com/endpoint"), null);
-
-            Assert.AreSame(expectedResult, actualResult);
-        }
-
-        [Test]
-        public async void GetAsync_ShouldPassTheGivenLinkHRefToTheConnection()
+        public async void GetAsync_ShouldPassTheGivenUriReturnedByTheLinkResolverToTheConnection()
         {
             var expectedUri = new Uri("https://api.vgg.io/endpoint");
             var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
+            mockResolver.Setup(r => r.ResolveLink(It.IsAny<Link>(), It.IsAny<IDictionary<string, string>>())).Returns(expectedUri);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     expectedUri,
                                     It.IsAny<HttpMethod>(),
@@ -168,7 +89,7 @@ namespace Viagogo.Sdk.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
-            var apiConnection = CreateConnection(conn: mockConn.Object);
+            var apiConnection = CreateConnection(conn: mockConn.Object, resolver: mockResolver.Object);
 
             await apiConnection.GetAsync<Foo>(new Link {HRef = expectedUri.OriginalString}, null);
 

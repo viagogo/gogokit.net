@@ -11,10 +11,11 @@ namespace Viagogo.Sdk
         public static readonly Uri ViagogoApiUrl = new Uri("https://api.viagogo.net");
         public static readonly Uri ViagogoDotComUrl = new Uri("https://www.viagogo.com");
 
-        private readonly IConnection _connection;
+        private readonly IApiConnection _connection;
         private readonly IOAuth2Client _oauth2Client;
         private readonly IApiRootClient _rootClient;
         private readonly IUserClient _userClient;
+        private readonly ISearchClient _searchClient;
 
         public ViagogoClient(
             string clientId,
@@ -66,15 +67,15 @@ namespace Viagogo.Sdk
             Requires.ArgumentNotNull(viagogoApiUrl, "viagogoApiUrl");
             Requires.ArgumentNotNull(viagogoDotComUrl, "viagogoDotComUrl");
 
-            _connection = connection;
             _oauth2Client = new OAuth2Client(oauthConnection, viagogoDotComUrl);
             _rootClient = new ApiRootClient(viagogoApiUrl, connection);
 
-            var apiConnection = new ApiConnection(_connection);
-            _userClient = new UserClient(_rootClient, apiConnection);
+            _connection = new ApiConnection(connection);
+            _userClient = new UserClient(_rootClient, _connection);
+            _searchClient = new SearchClient(_rootClient, _connection);
         }
 
-        public IConnection Connection
+        public IApiConnection Connection
         {
             get { return _connection; }
         }
@@ -92,6 +93,11 @@ namespace Viagogo.Sdk
         public IUserClient User
         {
             get { return _userClient; }
+        }
+
+        public ISearchClient Search
+        {
+            get { return _searchClient; }
         }
 
         private static IConnection CreateOAuthConnection(

@@ -15,7 +15,6 @@ namespace Viagogo.Sdk.Http
 {
     public class Connection : IConnection
     {
-        private readonly ICredentialsProvider _credentialsProvider;
         private readonly IHttpClientWrapper _httpClient;
         private readonly IErrorHandler _errorHandler;
         private readonly IApiResponseFactory _responseFactory;
@@ -41,14 +40,14 @@ namespace Viagogo.Sdk.Http
             IErrorHandler errorHandler)
         {
             Requires.ArgumentNotNull(productHeader, "productHeader");
-            Requires.ArgumentNotNull(credentialsProvider, "credentialsStore");
+            Requires.ArgumentNotNull(credentialsProvider, "credentialsProvider");
             Requires.ArgumentNotNull(httpClient, "httpClient");
             Requires.ArgumentNotNull(errorHandler, "errorHandler");
             Requires.ArgumentNotNull(responseFactory, "responseFactory");
             Requires.ArgumentNotNull(jsonSerializer, "jsonSerializer");
 
             _userAgentHeaderValues = GetUserAgentHeaderValues(productHeader).ToList();
-            _credentialsProvider = credentialsProvider;
+            CredentialsProvider = credentialsProvider;
             _httpClient = httpClient;
             _errorHandler = errorHandler;
             _responseFactory = responseFactory;
@@ -76,7 +75,7 @@ namespace Viagogo.Sdk.Http
         {
             using (var request = new HttpRequestMessage { RequestUri = uri, Method = method })
             {
-                var credentials = await _credentialsProvider.GetCredentialsAsync();
+                var credentials = await CredentialsProvider.GetCredentialsAsync();
                 request.Headers.Authorization = AuthenticationHeaderValue.Parse(credentials.AuthorizationHeader);
                 foreach (var product in _userAgentHeaderValues)
                 {
@@ -92,6 +91,8 @@ namespace Viagogo.Sdk.Http
                 return await _responseFactory.CreateApiResponseAsync<T>(responseMessage);
             }
         }
+
+        public ICredentialsProvider CredentialsProvider { get; set; }
 
         private async Task<HttpContent> GetRequestContentAsync(
             HttpMethod method,

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace Viagogo.Sdk.Models
@@ -20,6 +21,9 @@ namespace Viagogo.Sdk.Models
 
         [DataMember(Name = "scope")]
         public string Scope { get; set; }
+
+        [IgnoreDataMember]
+        public DateTimeOffset IssueDate { get; set; }
 
         public override string ToString()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Viagogo.Sdk.Authentication;
 
 namespace Viagogo.Sdk.Http
 {
@@ -12,5 +13,7 @@ namespace Viagogo.Sdk.Http
             string accept,
             object body,
             string contentType);
+
+        ICredentialsProvider CredentialsProvider { get; set; }
     }
 }

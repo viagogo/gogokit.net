@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Viagogo.Sdk.Clients;
 
 namespace Viagogo.Sdk.Authentication
@@ -25,10 +27,24 @@ namespace Viagogo.Sdk.Authentication
         public async Task<ICredentials> GetCredentialsAsync()
         {
             var token = await _tokenStore.GetTokenAsync();
-            if (token == null)
+            if (token == null ||
+                token.IssueDate.AddSeconds(token.ExpiresIn) <= DateTime.UtcNow)
             {
-                // TODO: refresh an expired token
-                token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null);
+                if (token == null || token.RefreshToken == null)
+                {
+                    token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null);
+                }
+                else
+                {
+                    token = await _oauthClient.GetAccessTokenAsync(
+                                    "refresh",
+                                    (token.Scope ?? "").Split(' '),
+                                    new Dictionary<string, string>
+                                {
+                                    {"refresh_token", token.RefreshToken}
+                                });
+                }
+
                 await _tokenStore.SetTokenAsync(token);
             }
 

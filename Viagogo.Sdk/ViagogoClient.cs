@@ -11,6 +11,7 @@ namespace Viagogo.Sdk
         public static readonly Uri ViagogoApiUrl = new Uri("https://api.viagogo.net");
         public static readonly Uri ViagogoDotComUrl = new Uri("https://www.viagogo.com");
 
+        private readonly IConnection _connection;
         private readonly IOAuth2Client _oauth2Client;
         private readonly IApiRootClient _rootClient;
 
@@ -24,7 +25,7 @@ namespace Viagogo.Sdk
 
         public ViagogoClient(ProductHeaderValue product, IConnection oauthConnection)
             : this(oauthConnection,
-                new Connection(product, new AutoRefreshingTokenCredentialsProvider(new OAuth2Client(new ApiConnection(oauthConnection)))))
+                new Connection(product, new AutoRefreshingTokenCredentialsProvider(new OAuth2Client(oauthConnection))))
         {
         }
 
@@ -33,8 +34,14 @@ namespace Viagogo.Sdk
             Requires.ArgumentNotNull(oauthConnection, "oauthConnection");
             Requires.ArgumentNotNull(connection, "connection");
 
-            _oauth2Client = new OAuth2Client(new ApiConnection(oauthConnection));
+            _connection = connection;
+            _oauth2Client = new OAuth2Client(oauthConnection);
             _rootClient = new ApiRootClient(ViagogoApiUrl, connection);
+        }
+
+        public IConnection Connection
+        {
+            get { return _connection; }
         }
 
         public IOAuth2Client OAuth2

@@ -10,15 +10,15 @@ namespace Viagogo.Sdk.Clients
 {
     public class OAuth2Client : IOAuth2Client
     {
-        private readonly IApiConnection _connection;
+        private readonly IConnection _connection;
         private readonly Uri _tokenUrl;
 
-        public OAuth2Client(IApiConnection connection)
+        public OAuth2Client(IConnection connection)
             : this(connection, ViagogoClient.ViagogoDotComUrl)
         {
         }
 
-        public OAuth2Client(IApiConnection connection, Uri viagogoDotComUrl)
+        public OAuth2Client(IConnection connection, Uri viagogoDotComUrl)
         {
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(viagogoDotComUrl, "viagogoDotComUrl");
@@ -27,7 +27,7 @@ namespace Viagogo.Sdk.Clients
             _tokenUrl = new Uri(viagogoDotComUrl, "/secure/oauth2/token");
         }
 
-        public Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
+        public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
         {
             Requires.ArgumentNotNullOrEmpty(grantType, "grantType");
 
@@ -38,7 +38,19 @@ namespace Viagogo.Sdk.Clients
                 parameters.Add("scope", string.Join(",", scopes));
             }
 
-            return _connection.PostAsync<OAuth2Token>(_tokenUrl, new FormUrlEncodedContent(parameters));
+            var response = await _connection.SendRequestAsync<OAuth2Token>(
+                                    _tokenUrl,
+                                    HttpMethod.Post,
+                                    "application/json",
+                                    new FormUrlEncodedContent(parameters),
+                                    null);
+            var token = response.BodyAsObject;
+
+            token.IssueDate = response.Headers.ContainsKey("Date")
+                                ? DateTimeOffset.Parse(response.Headers["Date"])
+                                : DateTime.UtcNow;
+
+            return token;
         }
     }
 }

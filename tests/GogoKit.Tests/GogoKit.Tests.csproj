@@ -7,8 +7,8 @@
     <ProjectGuid>{967052B3-DDCD-403E-ABB1-38165B605615}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Viagogo.Sdk.Tests</RootNamespace>
-    <AssemblyName>Viagogo.Sdk.Tests</AssemblyName>
+    <RootNamespace>GogoKit.Tests</RootNamespace>
+    <AssemblyName>GogoKit.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -76,7 +76,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\GogoKit\GogoKit.csproj">
       <Project>{983D1D4A-1919-47BA-9A56-2393CB1D3662}</Project>
-      <Name>Viagogo.Sdk</Name>
+      <Name>GogoKit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

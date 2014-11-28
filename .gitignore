@@ -162,6 +162,7 @@ node_modules/
 bower_components/
 *.userprefs
 *.sublime-workspace
+*.exe.old
 
 # RIA/Silverlight projects
 Generated_Code/

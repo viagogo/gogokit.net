@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{983D1D4A-1919-47BA-9A56-2393CB1D3662}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GogoKit</RootNamespace>
+    <AssemblyName>GogoKit</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Authentication\AutoRefreshingTokenCredentialsProvider.cs" />
+    <Compile Include="Authentication\BasicCredentials.cs" />
+    <Compile Include="Authentication\BearerTokenCredentials.cs" />
+    <Compile Include="Authentication\ICredentials.cs" />
+    <Compile Include="Authentication\ICredentialsProvider.cs" />
+    <Compile Include="Authentication\IOAuth2TokenStore.cs" />
+    <Compile Include="Authentication\InMemoryCredentialsProvider.cs" />
+    <Compile Include="Authentication\InMemoryOAuth2TokenStore.cs" />
+    <Compile Include="Clients\ApiRootClient.cs" />
+    <Compile Include="Clients\IOAuth2Client.cs" />
+    <Compile Include="Clients\IApiRootClient.cs" />
+    <Compile Include="Clients\ISearchClient.cs" />
+    <Compile Include="Clients\IUserClient.cs" />
+    <Compile Include="Clients\OAuth2Client.cs" />
+    <Compile Include="Clients\SearchClient.cs" />
+    <Compile Include="Clients\UserClient.cs" />
+    <Compile Include="Exceptions\ApiAuthorizationException.cs" />
+    <Compile Include="Exceptions\ApiErrorException.cs" />
+    <Compile Include="Exceptions\ApiException.cs" />
+    <Compile Include="Exceptions\EmailAlreadyExistsException.cs" />
+    <Compile Include="Exceptions\InsufficientScopeException.cs" />
+    <Compile Include="Exceptions\InvalidDeleteException.cs" />
+    <Compile Include="Exceptions\InvalidPasswordException.cs" />
+    <Compile Include="Exceptions\InvalidPaymentMethodException.cs" />
+    <Compile Include="Exceptions\InvalidPurchaseActionException.cs" />
+    <Compile Include="Exceptions\InvalidRequestBodyException.cs" />
+    <Compile Include="Exceptions\ListingConflictException.cs" />
+    <Compile Include="Exceptions\PurchaseNotAllowedException.cs" />
+    <Compile Include="Exceptions\PurchaseStillProcessingException.cs" />
+    <Compile Include="Exceptions\ResourceNotFoundException.cs" />
+    <Compile Include="Exceptions\UserAgentRequiredException.cs" />
+    <Compile Include="Exceptions\ValidationFailedException.cs" />
+    <Compile Include="Extensions\IOAuth2ClientExtensions.cs" />
+    <Compile Include="Helpers\ILinkResolver.cs" />
+    <Compile Include="Helpers\LinkResolver.cs" />
+    <Compile Include="Http\ApiConnection.cs" />
+    <Compile Include="Http\ApiResponseFactory.cs" />
+    <Compile Include="Http\Connection.cs" />
+    <Compile Include="Http\ErrorHandler.cs" />
+    <Compile Include="Http\HttpClientWrapper.cs" />
+    <Compile Include="Http\IApiConnection.cs" />
+    <Compile Include="Http\IApiResponseFactory.cs" />
+    <Compile Include="Http\IConnection.cs" />
+    <Compile Include="Http\IErrorHandler.cs" />
+    <Compile Include="Http\IHttpClientWrapper.cs" />
+    <Compile Include="Http\IApiResponse.cs" />
+    <Compile Include="Json\EmbeddedAttribute.cs" />
+    <Compile Include="Json\IJsonSerializer.cs" />
+    <Compile Include="IViagogoClient.cs" />
+    <Compile Include="Json\ResourceConverter.cs" />
+    <Compile Include="Models\ApiError.cs" />
+    <Compile Include="Models\Link.cs" />
+    <Compile Include="Resources\ApiRoot.cs" />
+    <Compile Include="Models\LinkCollection.cs" />
+    <Compile Include="Resources\PagedResource.cs" />
+    <Compile Include="Resources\Resource.cs" />
+    <Compile Include="Models\AuthorizationError.cs" />
+    <Compile Include="Models\OAuth2Token.cs" />
+    <Compile Include="Json\NewtonsoftJsonSerializer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Http\ApiResponse.cs" />
+    <Compile Include="Requires.cs" />
+    <Compile Include="Resources\SearchResult.cs" />
+    <Compile Include="Resources\User.cs" />
+    <Compile Include="ViagogoClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

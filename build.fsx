@@ -4,19 +4,37 @@ open System
 open Fake
 open Fake.AssemblyInfoFile
 
+// Project information used to generate AssemblyInfo and .nuspec
+let projectName = "GogoKit"
+let projectDescription = "A lightweight async viagogo API client library for .NET"
+let authors = ["viagogo"]
+let copyright = @"Copyright © viagogo 2014"
 
 // Directories
 let buildDir = @"./build/"
 let packagingDir = buildDir @@ "nupkgs"
 let testResultsDir = @"./testresults/"
 
-// TODO: Grab the VersionNumber from the latest release notes
-let version = "0.0.1"
+// Read Release Notes and version from ReleaseNotes.md
+let releaseNotes = 
+    ReadFile "ReleaseNotes.md"
+    |> ReleaseNotesHelper.parseReleaseNotes
 
 
 // Targets
 Target "Clean" (fun _ ->
     CleanDirs [buildDir; testResultsDir; packagingDir]
+)
+
+Target "AssemblyInfo" (fun _ ->
+    CreateCSharpAssemblyInfo "./SolutionInfo.cs"
+      [ Attribute.Product projectName
+        Attribute.Company authors.[0]
+        Attribute.Copyright copyright
+        Attribute.Version releaseNotes.AssemblyVersion
+        Attribute.FileVersion releaseNotes.AssemblyVersion
+        Attribute.InformationalVersion releaseNotes.NugetVersion
+        Attribute.ComVisible false ]
 )
 
 Target "BuildApp" (fun _ ->
@@ -38,11 +56,9 @@ Target "UnitTests" (fun _ ->
 )
 
 Target "CreateGogoKitPackage" (fun _ ->
-    CopyFiles buildDir ["LICENSE.txt"; "README.md"]
+    CopyFiles buildDir ["LICENSE.txt"; "README.md"; "ReleaseNotes.md"]
 
-    let authors = ["viagogo"]
-    let projectName = "GogoKit"
-    let projectDescription = "A lightweight async viagogo API client library for .NET"
+    let tags = "GogoKit viagogo API"
     let dependencies = [
         ("Microsoft.Net.Http", GetPackageVersion "./packages/" "Microsoft.Net.Http")
         ("Newtonsoft.Json", GetPackageVersion "./packages/" "Newtonsoft.Json")
@@ -53,24 +69,33 @@ Target "CreateGogoKitPackage" (fun _ ->
         ("GogoKit.pdb", Some libPortableDir, None)
         ("LICENSE.txt", None, None)
         ("README.md", None, None)
+        ("ReleaseNotes.md", None, None)
     ]
 
     NuGet (fun p -> 
         {p with
-            Authors = authors
             Project = projectName
             Description = projectDescription
+            Copyright = copyright
+            Authors = authors
             OutputPath = packagingDir
             WorkingDir = buildDir
             SymbolPackage = NugetSymbolPackage.Nuspec
-            Version = version
+            Version = releaseNotes.NugetVersion
+            ReleaseNotes = toLines releaseNotes.Notes
             Dependencies = dependencies
             Files = files}) "GogoKit.nuspec"
 )
 
+Target "CreatePackages" DoNothing
+
 "Clean"
+    ==> "AssemblyInfo"
     ==> "BuildApp"
     ==> "UnitTests"
     ==> "CreateGogoKitPackage"
+
+"CreateGogoKitPackage"
+    ==> "CreatePackages"
 
 RunTargetOrDefault "UnitTests"

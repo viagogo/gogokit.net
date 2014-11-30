@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
 using GogoKit.Json;
-using Viagogo;
 
 namespace GogoKit.Http
 {
@@ -62,8 +61,8 @@ namespace GogoKit.Http
                 new ProductInfoHeaderValue(product),
                 new ProductInfoHeaderValue(string.Format("({0}; {1} {2})",
                                                          CultureInfo.CurrentCulture.Name,
-                                                         AssemblyInfo.Name,
-                                                         AssemblyInfo.Version))
+                                                         "GogoKit",
+                                                         AssemblyVersionInformation.Version))
             };
         }
 

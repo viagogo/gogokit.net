@@ -8,8 +8,8 @@
     <summary>@summary@</summary>
     <description>@description@</description>
     <releaseNotes>@releaseNotes@</releaseNotes>
-    <copyright>Copyright viagogo 2014</copyright>
-    <tags>viagogo API GogoKit</tags>
+    <copyright>@copyright@</copyright>
+    <tags>@tags@</tags>
     @dependencies@
   </metadata>
   @files@

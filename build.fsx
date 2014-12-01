@@ -72,7 +72,7 @@ Target "CreateGogoKitPackage" (fun _ ->
         ("ReleaseNotes.md", None, None)
     ]
 
-    NuGet (fun p -> 
+    NuGet (fun p ->
         {p with
             Project = projectName
             Description = projectDescription

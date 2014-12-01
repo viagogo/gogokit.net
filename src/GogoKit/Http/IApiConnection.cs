@@ -13,5 +13,13 @@ namespace GogoKit.Http
 
         Task<IReadOnlyList<T>> GetAllPagesAsync<T>(Link link, IDictionary<string, string> parameters)
             where T : Resource;
+
+        Task<T> PostAsync<T>(Link link, IDictionary<string, string> parameters, object body);
+
+        Task<T> PatchAsync<T>(Link link, IDictionary<string, string> parameters, object body);
+
+        Task<T> PutAsync<T>(Link link, IDictionary<string, string> parameters, object body);
+
+        Task<IApiResponse> DeleteAsync(Link link, IDictionary<string, string> parameters);
     }
 }

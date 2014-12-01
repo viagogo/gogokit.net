@@ -32,11 +32,6 @@ namespace GogoKit.Http
             get { return _connection; }
         }
 
-        public Task<T> GetAsync<T>(Link link, IDictionary<string, string> parameters)
-        {
-            return SendRequestAsync<T>(HttpMethod.Get, link, parameters);
-        }
-
         public async Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
             Link link,
             IDictionary<string, string> parameters) where T : Resource
@@ -47,7 +42,7 @@ namespace GogoKit.Http
             var hasAnotherPage = true;
             while (hasAnotherPage)
             {
-                var currentPage = await SendRequestAsync<PagedResource<T>>(
+                var currentPage = await SendRequestAsyncAndGetBody<PagedResource<T>>(
                                             HttpMethod.Get,
                                             currentLink,
                                             currentParameters);
@@ -63,7 +58,44 @@ namespace GogoKit.Http
             return items;
         }
 
-        private async Task<T> SendRequestAsync<T>(
+        public Task<T> GetAsync<T>(Link link, IDictionary<string, string> parameters)
+        {
+            return SendRequestAsyncAndGetBody<T>(HttpMethod.Get, link, parameters);
+        }
+
+        public Task<T> PostAsync<T>(Link link, IDictionary<string, string> parameters, object body)
+        {
+            return SendRequestAsyncAndGetBody<T>(HttpMethod.Post, link, parameters, data: body, contentType: HalJsonMediaType);
+        }
+
+        public Task<T> PatchAsync<T>(Link link, IDictionary<string, string> parameters, object body)
+        {
+            return SendRequestAsyncAndGetBody<T>(new HttpMethod("Patch"), link, parameters, data: body, contentType: HalJsonMediaType);
+        }
+
+        public Task<T> PutAsync<T>(Link link, IDictionary<string, string> parameters, object body)
+        {
+            return SendRequestAsyncAndGetBody<T>(HttpMethod.Put, link, parameters, data: body, contentType: HalJsonMediaType);
+        }
+
+        public async Task<IApiResponse> DeleteAsync(Link link, IDictionary<string, string> parameters)
+        {
+            return await SendRequestAsync<object>(HttpMethod.Delete, link, parameters);
+        }
+
+        private async Task<T> SendRequestAsyncAndGetBody<T>(
+            HttpMethod method,
+            Link link,
+            IDictionary<string, string> parameters,
+            string accept = HalJsonMediaType,
+            object data = null,
+            string contentType = null)
+        {
+            var response = await SendRequestAsync<T>(method, link, parameters, accept, data, contentType);
+            return response.BodyAsObject;
+        }
+
+        private async Task<IApiResponse<T>> SendRequestAsync<T>(
             HttpMethod method,
             Link link,
             IDictionary<string, string> parameters,
@@ -80,7 +112,7 @@ namespace GogoKit.Http
                                     accept,
                                     data,
                                     contentType);
-            return response.BodyAsObject;
+            return response;
         }
     }
 }

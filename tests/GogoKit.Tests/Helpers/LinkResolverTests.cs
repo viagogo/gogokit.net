@@ -62,5 +62,22 @@ namespace GogoKit.Tests.Helpers
 
             Assert.AreEqual(expectedUri, actualUri);
         }
+
+        [Test]
+        public void ResolveLink_ShouldReturnUriWithParametersSubstitutedIntoPath_WhenLinkIsTemplated()
+        {
+            var expectedUri = new Uri("https://url.com/path/fooval/barval?baz=bazval");
+            var resolver = CreateResolver();
+
+            var actualUri = resolver.ResolveLink(
+                                new Link {HRef = "https://url.com/path/{foo}/{bar}?baz=bazval", Templated = true},
+                                new Dictionary<string, string>
+                                {
+                                    {"foo", "fooval"},
+                                    {"bar", "barval"}
+                                });
+
+            Assert.AreEqual(expectedUri, actualUri);
+        }
     }
 }

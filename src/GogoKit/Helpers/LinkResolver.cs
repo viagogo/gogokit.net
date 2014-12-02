@@ -15,9 +15,28 @@ namespace GogoKit.Helpers
             {
                 return new Uri(link.HRef);
             }
-
+            
             var uriBuilder = new UriBuilder(link.HRef);
-            var parametersQueryString = string.Join("&", parameters.Select(kv => kv.Key + "=" + kv.Value));
+
+            var unresolvedParameters = new Dictionary<string, string>(parameters);
+            if (link.Templated)
+            {
+                foreach (var parameter in parameters)
+                {
+                    var parameterTemplate = Uri.EscapeDataString("{" + parameter.Key + "}");
+                    if (!uriBuilder.Path.Contains(parameterTemplate))
+                    {
+                        continue;
+                    }
+
+                    // Substitute the parameter value into the template
+                    uriBuilder.Path = uriBuilder.Path.Replace(parameterTemplate, parameter.Value);
+                    unresolvedParameters.Remove(parameter.Key);
+                }
+            }
+
+            // Any remaining parameters are query string parameters
+            var parametersQueryString = string.Join("&", unresolvedParameters.Select(kv => kv.Key + "=" + kv.Value));
             uriBuilder.Query = uriBuilder.Query.Replace("?", "") + parametersQueryString;
 
             return uriBuilder.Uri;

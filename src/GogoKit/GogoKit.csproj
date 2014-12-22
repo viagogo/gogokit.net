@@ -96,6 +96,7 @@
     <Compile Include="Json\ResourceConverter.cs" />
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="Models\Link.cs" />
+    <Compile Include="RequestModels\UserRequest.cs" />
     <Compile Include="Resources\ApiRoot.cs" />
     <Compile Include="Models\LinkCollection.cs" />
     <Compile Include="Resources\PagedResource.cs" />

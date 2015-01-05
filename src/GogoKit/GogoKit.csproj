@@ -102,7 +102,7 @@
     <Compile Include="Json\ResourceConverter.cs" />
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="Models\Link.cs" />
-    <Compile Include="RequestModels\UserRequest.cs" />
+    <Compile Include="RequestModels\UserUpdate.cs" />
     <Compile Include="Resources\Address.cs" />
     <Compile Include="Resources\ApiRoot.cs" />
     <Compile Include="Models\LinkCollection.cs" />

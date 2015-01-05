@@ -7,6 +7,6 @@ namespace GogoKit.Clients
     public interface IUserClient
     {
         Task<User> GetAsync();
-        Task<User> PatchAsync(UserRequest userRequest);
+        Task<User> UpdateAsync(UserUpdate userUpdate);
     }
 }

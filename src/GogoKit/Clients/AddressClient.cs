@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GogoKit.Http;
 using GogoKit.Resources;
 
@@ -15,10 +16,10 @@ namespace GogoKit.Clients
             _connection = connection;
         }
 
-        public async Task<PagedResource<Address>> GetAddressesAsync()
+        public async Task<IReadOnlyList<Address>> GetAllAddressesAsync()
         {
             var user = await _userClient.GetAsync();
-            return await _connection.GetAsync<PagedResource<Address>>(user.Links["user:addresses"], null);
+            return await _connection.GetAllPagesAsync<Address>(user.Links["user:addresses"], null);
         }
     }
 }

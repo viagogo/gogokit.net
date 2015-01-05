@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 namespace GogoKit.RequestModels
 {
     [DataContract]
-    public class UserRequest
+    public class UserUpdate
     {
         [DataMember(Name = "full_name")]
         public string FullName { get; set; }

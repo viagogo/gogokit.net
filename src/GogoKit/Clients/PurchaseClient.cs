@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GogoKit.Http;
 using GogoKit.Resources;
 
@@ -15,10 +16,10 @@ namespace GogoKit.Clients
             _connection = connection;
         }
 
-        public async Task<PagedResource<Purchase>> GetPurchasesAsync()
+        public async Task<IReadOnlyList<Purchase>> GetAllPurchasesAsync()
         {
             var user = await _userClient.GetAsync();
-            return await _connection.GetAsync<PagedResource<Purchase>>(user.Links["user:purchases"], null);
+            return await _connection.GetAllPagesAsync<Purchase>(user.Links["user:purchases"], null);
         }
     }
 }

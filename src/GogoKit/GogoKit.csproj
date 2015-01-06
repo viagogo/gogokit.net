@@ -39,7 +39,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Clients\AddressClient.cs" />
+    <Compile Include="Clients\CountryClient.cs" />
+    <Compile Include="Clients\CurrencyClient.cs" />
     <Compile Include="Clients\IAddressClient.cs" />
+    <Compile Include="Clients\ICountryClient.cs" />
+    <Compile Include="Clients\ICurrencyClient.cs" />
     <Compile Include="Clients\IPaymentMethodClient.cs" />
     <Compile Include="Clients\IPurchaseClient.cs" />
     <Compile Include="Clients\PaymentMethodClient.cs" />
@@ -106,6 +110,8 @@
     <Compile Include="Resources\Address.cs" />
     <Compile Include="Resources\ApiRoot.cs" />
     <Compile Include="Models\LinkCollection.cs" />
+    <Compile Include="Resources\Country.cs" />
+    <Compile Include="Resources\Currency.cs" />
     <Compile Include="Resources\PagedResource.cs" />
     <Compile Include="Resources\PaymentMethod.cs" />
     <Compile Include="Resources\Purchase.cs" />

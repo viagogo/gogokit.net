@@ -36,8 +36,7 @@ namespace GogoKit.Clients
                             root.Links["viagogo:search"],
                             new Dictionary<string, string>
                             {
-                                {"query", query},
-                                {"page_size", "2"}
+                                {"query", query}
                             });
         }
     }

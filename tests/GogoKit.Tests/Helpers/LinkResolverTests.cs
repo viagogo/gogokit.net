@@ -47,13 +47,30 @@ namespace GogoKit.Tests.Helpers
         }
 
         [Test]
-        public void ResolveLink_ShouldReturnUriWithParametersCombinedWithExistingParameters_WhenLinkHRefHasQueryString_AndLinkIsNotTemplated()
+        public void ResolveLink_ShouldReturnUriWithParametersCombinedWithExistingParameters_WhenLinkHRefHasQueryString_AndQueryStringEndsWithAnAmpersand_AndLinkIsNotTemplated()
         {
             var expectedUri = new Uri("https://url.com?hasQueryString=true&foo=fooval&bar=barval");
             var resolver = CreateResolver();
 
             var actualUri = resolver.ResolveLink(
                                 new Link { HRef = "https://url.com?hasQueryString=true&", Templated = false },
+                                new Dictionary<string, string>
+                                {
+                                    {"foo", "fooval"},
+                                    {"bar", "barval"}
+                                });
+
+            Assert.AreEqual(expectedUri, actualUri);
+        }
+
+        [Test]
+        public void ResolveLink_ShouldReturnUriWithParametersCombinedWithExistingParameters_WhenLinkHRefHasQueryString_AndQueryStringDoesntEndWithAnAmpersand_AndLinkIsNotTemplated()
+        {
+            var expectedUri = new Uri("https://url.com?hasQueryString=true&foo=fooval&bar=barval");
+            var resolver = CreateResolver();
+
+            var actualUri = resolver.ResolveLink(
+                                new Link { HRef = "https://url.com?hasQueryString=true", Templated = false },
                                 new Dictionary<string, string>
                                 {
                                     {"foo", "fooval"},

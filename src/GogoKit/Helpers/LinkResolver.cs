@@ -37,7 +37,13 @@ namespace GogoKit.Helpers
 
             // Any remaining parameters are query string parameters
             var parametersQueryString = string.Join("&", unresolvedParameters.Select(kv => kv.Key + "=" + kv.Value));
-            uriBuilder.Query = uriBuilder.Query.Replace("?", "") + parametersQueryString;
+
+            var resolvedParameters = uriBuilder.Query.Replace("?", "");
+            if (!string.IsNullOrEmpty(resolvedParameters) && !resolvedParameters.EndsWith("&") && unresolvedParameters.Any())
+            {
+                resolvedParameters += "&";
+            }
+            uriBuilder.Query = resolvedParameters + parametersQueryString;
 
             return uriBuilder.Uri;
         }

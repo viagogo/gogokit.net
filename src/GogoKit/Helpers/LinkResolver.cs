@@ -37,15 +37,34 @@ namespace GogoKit.Helpers
 
             // Any remaining parameters are query string parameters
             var parametersQueryString = string.Join("&", unresolvedParameters.Select(kv => kv.Key + "=" + kv.Value));
-
             var resolvedParameters = uriBuilder.Query.Replace("?", "");
-            if (!string.IsNullOrEmpty(resolvedParameters) && !resolvedParameters.EndsWith("&") && unresolvedParameters.Any())
+            if (NeedsAmpersandBetweenResolvedAndUnresolvedParameters(resolvedParameters, unresolvedParameters))
             {
                 resolvedParameters += "&";
             }
             uriBuilder.Query = resolvedParameters + parametersQueryString;
 
             return uriBuilder.Uri;
+        }
+
+        private static bool NeedsAmpersandBetweenResolvedAndUnresolvedParameters(string resolvedParameters, Dictionary<string, string> unresolvedParameters)
+        {
+            return HasResolvedParameters(resolvedParameters) && !ResolvedParametersAlreadyHaveTrailingAmpersand(resolvedParameters) && HasUnresolvedParameters(unresolvedParameters);
+        }
+
+        private static bool HasUnresolvedParameters(Dictionary<string, string> unresolvedParameters)
+        {
+            return unresolvedParameters.Any();
+        }
+
+        private static bool ResolvedParametersAlreadyHaveTrailingAmpersand(string resolvedParameters)
+        {
+            return resolvedParameters.EndsWith("&");
+        }
+
+        private static bool HasResolvedParameters(string resolvedParameters)
+        {
+            return !string.IsNullOrEmpty(resolvedParameters);
         }
     }
 }

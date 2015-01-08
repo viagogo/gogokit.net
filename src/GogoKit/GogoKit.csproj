@@ -50,6 +50,7 @@
     <Compile Include="Clients\IPurchaseClient.cs" />
     <Compile Include="Clients\PaymentMethodClient.cs" />
     <Compile Include="Clients\PurchaseClient.cs" />
+    <Compile Include="Models\AddressCreate.cs" />
     <Compile Include="Models\Money.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">

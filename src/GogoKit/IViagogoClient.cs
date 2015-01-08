@@ -10,5 +10,11 @@ namespace GogoKit
         IApiRootClient Root { get; }
         IUserClient User { get; }
         ISearchClient Search { get; }
+        IAddressClient Address { get; }
+        IPurchaseClient Purchase { get; }
+        ICountryClient Country { get; }
+        ICurrencyClient Currency { get; }
+        IPaymentMethodClient PaymentMethod { get; }
+        ICategoryClient Category { get; }
     }
 }

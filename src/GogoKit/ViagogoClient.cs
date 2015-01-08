@@ -16,6 +16,12 @@ namespace GogoKit
         private readonly IApiRootClient _rootClient;
         private readonly IUserClient _userClient;
         private readonly ISearchClient _searchClient;
+        private readonly IAddressClient _addressClient;
+        private readonly IPurchaseClient _purchaseClient;
+        private readonly ICountryClient _countryClient;
+        private readonly ICurrencyClient _currencyClient;
+        private readonly IPaymentMethodClient _paymentMethodClient;
+        private readonly ICategoryClient _categoryClient;
 
         public ViagogoClient(
             string clientId,
@@ -73,6 +79,12 @@ namespace GogoKit
             _connection = new ApiConnection(connection);
             _userClient = new UserClient(_rootClient, _connection);
             _searchClient = new SearchClient(_rootClient, _connection);
+            _addressClient = new AddressClient(_userClient, _connection);
+            _purchaseClient = new PurchaseClient(_userClient, _connection);
+            _paymentMethodClient = new PaymentMethodClient(_userClient, _connection);
+            _countryClient = new CountryClient(_rootClient, _connection);
+            _currencyClient = new CurrencyClient(_rootClient, _connection);
+            _categoryClient = new CategoryClient(_rootClient, _connection);
         }
 
         public IApiConnection Connection
@@ -98,6 +110,36 @@ namespace GogoKit
         public ISearchClient Search
         {
             get { return _searchClient; }
+        }
+
+        public IAddressClient Address
+        {
+            get { return _addressClient; }
+        }
+
+        public IPurchaseClient Purchase
+        {
+            get { return _purchaseClient; }
+        }
+
+        public ICountryClient Country
+        {
+            get { return _countryClient; }
+        }
+
+        public ICurrencyClient Currency
+        {
+            get { return _currencyClient; }
+        }
+
+        public IPaymentMethodClient PaymentMethod
+        {
+            get { return _paymentMethodClient; }
+        }
+
+        public ICategoryClient Category
+        {
+            get { return _categoryClient; }
         }
 
         private static IConnection CreateOAuthConnection(

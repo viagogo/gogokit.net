@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Http;
 using GogoKit.Models;
 using GogoKit.Resources;
 
@@ -11,5 +12,6 @@ namespace GogoKit.Clients
         Task<PagedResource<Address>> GetAddresses(int page, int pageSize);
         Task<Address> CreateAddress(AddressCreate addressCreate);
         Task<Address> UpdateAddress(int addressId, AddressUpdate addressUpdate);
+        Task<IApiResponse> DeleteAddress(int addressId);
     }
 }

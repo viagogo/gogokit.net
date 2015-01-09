@@ -48,5 +48,11 @@ namespace GogoKit.Clients
             var updateAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(ApiUrls.UpdateAddress(addressId));
             return await _apiConnection.PatchAsync<Address>(updateAddressLink, null, addressUpdate);
         }
+
+        public async Task<IApiResponse> DeleteAddress(int addressId)
+        {
+            var deleteAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(ApiUrls.DeleteAddress(addressId));
+            return await _apiConnection.DeleteAsync(deleteAddressLink, null);
+        }
     }
 }

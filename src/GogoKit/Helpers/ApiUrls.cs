@@ -10,6 +10,11 @@ namespace GogoKit.Helpers
             return "addresses/{0}".FormatUri(addressId);
         }
 
+        public static Uri DeleteAddress(int addressId)
+        {
+            return "addresses/{0}".FormatUri(addressId);
+        }
+
         public static Uri GetPaymentMethod(int paymentMethodId)
         {
             return "paymentMethods/{0}".FormatUri(paymentMethodId);

@@ -10,5 +10,6 @@ namespace GogoKit.Clients
         Task<IReadOnlyList<Address>> GetAllAddressesAsync();
         Task<PagedResource<Address>> GetAddresses(int page, int pageSize);
         Task<Address> CreateAddress(AddressCreate addressCreate);
+        Task<Address> UpdateAddress(int addressId, AddressUpdate addressUpdate);
     }
 }

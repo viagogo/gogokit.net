@@ -7,6 +7,9 @@ namespace GogoKit.Resources
     [DataContract]
     public class Category : Resource
     {
+        [DataMember(Name = "id", Order = 100)]
+        public int Id { get; set; }
+
         [DataMember(Name = "description_html", Order = 100)]
         public string Description { get; set; }
 

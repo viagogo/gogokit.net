@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Helpers;
 using GogoKit.Http;
 using GogoKit.Models;
 using GogoKit.Resources;
@@ -10,11 +11,13 @@ namespace GogoKit.Clients
     {
         private readonly IApiRootClient _rootClient;
         private readonly IApiConnection _apiConnection;
+        private readonly IResourceLinkComposer _resourceLinkComposer;
 
-        public CategoryClient(IApiRootClient rootClient, IApiConnection apiConnection)
+        public CategoryClient(IApiRootClient rootClient, IApiConnection apiConnection, IResourceLinkComposer resourceLinkComposer)
         {
             _rootClient = rootClient;
             _apiConnection = apiConnection;
+            _resourceLinkComposer = resourceLinkComposer;
         }
 
         public async Task<IReadOnlyList<Category>> GetAllGenresAsync()
@@ -23,12 +26,14 @@ namespace GogoKit.Clients
             return await _apiConnection.GetAllPagesAsync<Category>(root.Links["viagogo:genres"], null);
         }
 
-        public async Task<PagedResource<Category>> GetPerformersUnderGenreAsync(Link categoryLink, int page, int pageSize)
+        public async Task<PagedResource<Category>> GetTopPerformersUnderGenreAsync(int categoryId, int page, int pageSize)
         {
-            return await _apiConnection.GetAsync<PagedResource<Category>>(categoryLink, new Dictionary<string, string>()
+            var getCategoryLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(ApiUrls.GetCategoryChildren(categoryId));
+            return await _apiConnection.GetAsync<PagedResource<Category>>(getCategoryLink, new Dictionary<string, string>()
                                                                             {
                                                                                 {"page", page.ToString()},
-                                                                                {"page_size", pageSize.ToString()}
+                                                                                {"page_size", pageSize.ToString()},
+                                                                                {"embed", "top_performers"}
                                                                             });
         }
     }

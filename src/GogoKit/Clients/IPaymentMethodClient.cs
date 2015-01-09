@@ -8,6 +8,6 @@ namespace GogoKit.Clients
     public interface IPaymentMethodClient
     {
         Task<IReadOnlyList<PaymentMethod>> GetAllPaymentMethodsAsync();
-        Task<PaymentMethod> GetPaymentMethodAsync(Link paymentMethodLink);
+        Task<PaymentMethod> GetPaymentMethodAsync(int paymentMethodId);
     }
 }

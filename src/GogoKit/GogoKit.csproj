@@ -52,6 +52,8 @@
     <Compile Include="Clients\PurchaseClient.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\ApiUrls.cs" />
+    <Compile Include="Helpers\IResourceLinkComposer.cs" />
+    <Compile Include="Helpers\ResourceLinkComposer.cs" />
     <Compile Include="Models\AddressCreate.cs" />
     <Compile Include="Models\AddressUpdate.cs" />
     <Compile Include="Models\Money.cs" />

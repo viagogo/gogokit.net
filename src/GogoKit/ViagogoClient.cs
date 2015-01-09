@@ -2,6 +2,7 @@ using System;
 using System.Net.Http.Headers;
 using GogoKit.Authentication;
 using GogoKit.Clients;
+using GogoKit.Helpers;
 using GogoKit.Http;
 
 namespace GogoKit
@@ -73,18 +74,20 @@ namespace GogoKit
             Requires.ArgumentNotNull(viagogoApiUrl, "viagogoApiUrl");
             Requires.ArgumentNotNull(viagogoDotComUrl, "viagogoDotComUrl");
 
+
             _oauth2Client = new OAuth2Client(oauthConnection, viagogoDotComUrl);
             _rootClient = new ApiRootClient(viagogoApiUrl, connection);
+            var resourceUrlComposer = new ResourceLinkComposer(_rootClient);
 
             _connection = new ApiConnection(connection);
             _userClient = new UserClient(_rootClient, _connection);
             _searchClient = new SearchClient(_rootClient, _connection);
-            _addressClient = new AddressClient(_userClient, _connection);
+            _addressClient = new AddressClient(_userClient, _connection, resourceUrlComposer);
             _purchaseClient = new PurchaseClient(_userClient, _connection);
-            _paymentMethodClient = new PaymentMethodClient(_userClient, _connection);
+            _paymentMethodClient = new PaymentMethodClient(_userClient, _connection, resourceUrlComposer);
             _countryClient = new CountryClient(_rootClient, _connection);
             _currencyClient = new CurrencyClient(_rootClient, _connection);
-            _categoryClient = new CategoryClient(_rootClient, _connection);
+            _categoryClient = new CategoryClient(_rootClient, _connection, resourceUrlComposer);
         }
 
         public IApiConnection Connection

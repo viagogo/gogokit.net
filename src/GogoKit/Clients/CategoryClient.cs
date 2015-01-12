@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Helpers;
 using GogoKit.Http;
@@ -12,6 +13,11 @@ namespace GogoKit.Clients
         private readonly IApiRootClient _rootClient;
         private readonly IApiConnection _apiConnection;
         private readonly IResourceLinkComposer _resourceLinkComposer;
+
+        private static Uri GetCategoryChildren(int categoryId)
+        {
+            return "categories/{0}/children".FormatUri(categoryId);
+        }
 
         public CategoryClient(IApiRootClient rootClient, IApiConnection apiConnection, IResourceLinkComposer resourceLinkComposer)
         {
@@ -28,7 +34,7 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<Category>> GetTopPerformersUnderGenreAsync(int categoryId, int page, int pageSize)
         {
-            var getCategoryLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(ApiUrls.GetCategoryChildren(categoryId));
+            var getCategoryLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(GetCategoryChildren(categoryId));
             return await _apiConnection.GetAsync<PagedResource<Category>>(getCategoryLink, new Dictionary<string, string>()
                                                                             {
                                                                                 {"page", page.ToString()},

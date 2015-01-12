@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Helpers;
 using GogoKit.Http;
@@ -12,6 +13,11 @@ namespace GogoKit.Clients
         private readonly IUserClient _userClient;
         private readonly IApiConnection _connection;
         private readonly IResourceLinkComposer _resourceLinkComposer;
+
+        private static Uri GetPaymentMethodUri(int paymentMethodId)
+        {
+            return "paymentMethods/{0}".FormatUri(paymentMethodId);
+        }
 
         public PaymentMethodClient(IUserClient userClient, IApiConnection connection, IResourceLinkComposer resourceLinkComposer)
         {
@@ -28,8 +34,14 @@ namespace GogoKit.Clients
 
         public async Task<PaymentMethod> GetPaymentMethodAsync(int paymentMethodId)
         {
-            var updatePaymentMethodUrl = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(ApiUrls.GetPaymentMethod(paymentMethodId));
+            var updatePaymentMethodUrl = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(GetPaymentMethodUri(paymentMethodId));
             return await _connection.GetAsync<PaymentMethod>(updatePaymentMethodUrl, null);
+        }
+
+        public async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, int paymentMethodType)
+        {
+            var user = await _userClient.GetAsync();
+            return await _connection.PostAsync<PaymentMethod>(user.Links["user:paymentmethods"], null, paymentMethod);
         }
     }
 }

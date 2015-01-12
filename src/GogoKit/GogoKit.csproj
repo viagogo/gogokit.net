@@ -51,12 +51,12 @@
     <Compile Include="Clients\PaymentMethodClient.cs" />
     <Compile Include="Clients\PurchaseClient.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Helpers\ApiUrls.cs" />
     <Compile Include="Helpers\IResourceLinkComposer.cs" />
     <Compile Include="Helpers\ResourceLinkComposer.cs" />
     <Compile Include="Models\AddressCreate.cs" />
     <Compile Include="Models\AddressUpdate.cs" />
     <Compile Include="Models\Money.cs" />
+    <Compile Include="Models\PaymentMethodCreate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>

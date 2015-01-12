@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Helpers;
 using GogoKit.Http;
@@ -12,6 +13,16 @@ namespace GogoKit.Clients
         private readonly IUserClient _userClient;
         private readonly IApiConnection _apiConnection;
         private readonly IResourceLinkComposer _resourceLinkComposer;
+
+        private static Uri UpdateAddressUri(int addressId)
+        {
+            return "addresses/{0}".FormatUri(addressId);
+        }
+
+        private static Uri DeleteAddressUri(int addressId)
+        {
+            return "addresses/{0}".FormatUri(addressId);
+        }
 
         public AddressClient(IUserClient userClient, IApiConnection apiConnection, IResourceLinkComposer resourceLinkComposer)
         {
@@ -45,13 +56,13 @@ namespace GogoKit.Clients
 
         public async Task<Address> UpdateAddress(int addressId, AddressUpdate addressUpdate)
         {
-            var updateAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(ApiUrls.UpdateAddress(addressId));
+            var updateAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdateAddressUri(addressId));
             return await _apiConnection.PatchAsync<Address>(updateAddressLink, null, addressUpdate);
         }
 
         public async Task<IApiResponse> DeleteAddress(int addressId)
         {
-            var deleteAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(ApiUrls.DeleteAddress(addressId));
+            var deleteAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeleteAddressUri(addressId));
             return await _apiConnection.DeleteAsync(deleteAddressLink, null);
         }
     }

@@ -38,10 +38,10 @@ namespace GogoKit.Clients
             return await _connection.GetAsync<PaymentMethod>(updatePaymentMethodUrl, null);
         }
 
-        public async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, int paymentMethodType)
+        public async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, string paymentMethodType)
         {
             var user = await _userClient.GetAsync();
-            return await _connection.PostAsync<PaymentMethod>(user.Links["user:paymentmethods"], null, paymentMethod);
+            return await _connection.PostAsync<PaymentMethod>(user.Links["user:paymentmethods"], new Dictionary<string, string>{{"paymentMethodType", paymentMethodType}}, paymentMethod);
         }
     }
 }

@@ -1,2 +1,2 @@
-### New in 0.1.0-alpha3 (Released 2013/10/30)
+### New in 0.1.0-alpha4 (Released 2014/01/12)
 * Initial release

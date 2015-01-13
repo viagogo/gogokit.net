@@ -3,7 +3,7 @@
 namespace GogoKit.Models
 {
     [DataContract]
-    public class PaymentMethodCreate
+    public class PaymentMethodCreate : PaymentMethodUpdate
     {
         // Shared fields
         [DataMember(Name = "full_name")]

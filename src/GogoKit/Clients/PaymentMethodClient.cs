@@ -19,6 +19,11 @@ namespace GogoKit.Clients
             return "paymentMethods/{0}".FormatUri(paymentMethodId);
         }
 
+        private static Uri UpdatePaymentMethodUri(int paymentMethodId)
+        {
+            return "paymentMethods/{0}".FormatUri(paymentMethodId);
+        }
+
         public PaymentMethodClient(IUserClient userClient, IApiConnection connection, IResourceLinkComposer resourceLinkComposer)
         {
             _userClient = userClient;
@@ -38,10 +43,36 @@ namespace GogoKit.Clients
             return await _connection.GetAsync<PaymentMethod>(updatePaymentMethodUrl, null);
         }
 
-        public async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, string paymentMethodType)
+        public async Task<PaymentMethod> CreatePaypalPaymentMethod(PaymentMethodCreate paymentMethod)
+        {
+            return await CreatePaymentMethod(paymentMethod, "PayPal");
+        }
+
+        private async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, string paymentMethodType)
         {
             var user = await _userClient.GetAsync();
-            return await _connection.PostAsync<PaymentMethod>(user.Links["user:paymentmethods"], new Dictionary<string, string>{{"paymentMethodType", paymentMethodType}}, paymentMethod);
+            return await _connection.PostAsync<PaymentMethod>(user.Links["user:paymentmethods"], new Dictionary<string, string> {{"paymentMethodType", paymentMethodType}}, paymentMethod);
+        }
+
+        public async Task<PaymentMethod> CreateCreditCardPaymentMethod(PaymentMethodCreate paymentMethod)
+        {
+            return await CreatePaymentMethod(paymentMethod, "CreditCard");
+        }
+
+        public async Task<PaymentMethod> UpdatePaypalPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate)
+        {
+            return await UpdatePaymentMethod(paymentMethodId, paymentMethodUpdate, "PayPal");
+        }
+
+        public async Task<PaymentMethod> UpdateCreditCardPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate)
+        {
+            return await UpdatePaymentMethod(paymentMethodId, paymentMethodUpdate, "CreditCard");
+        }
+
+        private async Task<PaymentMethod> UpdatePaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate, string paymentMethodType)
+        {
+            var updatePaymentMethodUri = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdatePaymentMethodUri(paymentMethodId));
+            return await _connection.PatchAsync<PaymentMethod>(updatePaymentMethodUri, new Dictionary<string, string> { { "paymentMethodType", paymentMethodType } }, paymentMethodUpdate);
         }
     }
 }

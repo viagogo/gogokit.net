@@ -9,6 +9,9 @@ namespace GogoKit.Clients
     {
         Task<IReadOnlyList<PaymentMethod>> GetAllPaymentMethodsAsync();
         Task<PaymentMethod> GetPaymentMethodAsync(int paymentMethodId);
-        Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, string paymentMethodType);
+        Task<PaymentMethod> CreateCreditCardPaymentMethod(PaymentMethodCreate paymentMethod);
+        Task<PaymentMethod> CreatePaypalPaymentMethod(PaymentMethodCreate paymentMethod);
+        Task<PaymentMethod> UpdatePaypalPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
+        Task<PaymentMethod> UpdateCreditCardPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
     }
 }

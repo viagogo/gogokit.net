@@ -24,6 +24,11 @@ namespace GogoKit.Clients
             return "paymentMethods/{0}".FormatUri(paymentMethodId);
         }
 
+        private static Uri DeletePaymentMethodUri(int paymentMethodId)
+        {
+            return "paymentMethods/{0}".FormatUri(paymentMethodId);
+        }
+
         public PaymentMethodClient(IUserClient userClient, IApiConnection connection, IResourceLinkComposer resourceLinkComposer)
         {
             _userClient = userClient;
@@ -73,6 +78,12 @@ namespace GogoKit.Clients
         {
             var updatePaymentMethodUri = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdatePaymentMethodUri(paymentMethodId));
             return await _connection.PatchAsync<PaymentMethod>(updatePaymentMethodUri, new Dictionary<string, string> { { "paymentMethodType", paymentMethodType } }, paymentMethodUpdate);
+        }
+
+        public async Task<IApiResponse> DeletePaymentMethod(int paymentMethodId)
+        {
+            var deletePaymentMethodLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeletePaymentMethodUri(paymentMethodId));
+            return await _connection.DeleteAsync(deletePaymentMethodLink, null);
         }
     }
 }

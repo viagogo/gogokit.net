@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Http;
 using GogoKit.Models;
 using GogoKit.Resources;
 
@@ -13,5 +14,6 @@ namespace GogoKit.Clients
         Task<PaymentMethod> CreatePaypalPaymentMethod(PaymentMethodCreate paymentMethod);
         Task<PaymentMethod> UpdatePaypalPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
         Task<PaymentMethod> UpdateCreditCardPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
+        Task<IApiResponse> DeletePaymentMethod(int paymentMethodId);
     }
 }

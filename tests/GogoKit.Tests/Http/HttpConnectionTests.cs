@@ -14,9 +14,9 @@ using NUnit.Framework;
 namespace GogoKit.Tests.Http
 {
     [TestFixture]
-    public class ConnectionTests
+    public class HttpConnectionTests
     {
-        private static Connection CreateConnection(
+        private static HttpConnection CreateConnection(
             ProductHeaderValue productHeader = null,
             ICredentialsProvider credsPrv = null,
             IHttpClientWrapper http = null,
@@ -32,7 +32,7 @@ namespace GogoKit.Tests.Http
             mockErrorHandler.Setup(e => e.ProcessResponseAsync(It.IsAny<HttpResponseMessage>()))
                             .Returns(Task.FromResult<object>(null));
 
-            return new Connection(
+            return new HttpConnection(
                 productHeader ?? new ProductHeaderValue("Viagogo.Tests", "1.0"),
                 credsPrv ?? mockCredsPrv.Object,
                 http ?? new Mock<IHttpClientWrapper>(MockBehavior.Loose).Object,

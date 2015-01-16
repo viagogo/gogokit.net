@@ -8,9 +8,9 @@ namespace GogoKit.Clients
     public class PurchaseClient : IPurchaseClient
     {
         private readonly IUserClient _userClient;
-        private readonly IApiConnection _connection;
+        private readonly IHypermediaConnection _connection;
 
-        public PurchaseClient(IUserClient userClient, IApiConnection connection)
+        public PurchaseClient(IUserClient userClient, IHypermediaConnection connection)
         {
             _userClient = userClient;
             _connection = connection;

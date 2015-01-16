@@ -14,18 +14,18 @@ namespace GogoKit.Tests.Clients
     {
         private static ApiRootClient CreateClient(
             Uri apiUrl = null,
-            IConnection conn = null)
+            IHttpConnection conn = null)
         {
             return new ApiRootClient(
                 apiUrl ?? new Uri("https://vgg.api.io"),
-                conn ?? new Mock<IConnection>(MockBehavior.Loose).Object);
+                conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object);
         }
 
         [Test]
         public async void GetAsync_ShouldPassV2RootEndpointToConnection()
         {
             var expectedUri = new Uri("https://api.vgg.com/v2");
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<ApiRoot>(expectedUri,
                                                             It.IsAny<HttpMethod>(),
                                                             It.IsAny<string>(),
@@ -43,7 +43,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAsync_ShouldPassGetMethodToConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<ApiRoot>(It.IsAny<Uri>(),
                                                             HttpMethod.Get,
                                                             It.IsAny<string>(),
@@ -61,7 +61,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAsync_ShouldPassHalJsonAcceptHeaderToConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<ApiRoot>(It.IsAny<Uri>(),
                                                             It.IsAny<HttpMethod>(),
                                                             "application/hal+json",
@@ -79,7 +79,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAsync_ShouldPassNullBodyToConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<ApiRoot>(It.IsAny<Uri>(),
                                                             It.IsAny<HttpMethod>(),
                                                             It.IsAny<string>(),
@@ -97,7 +97,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAsync_ShouldPassNullContentTypeToConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<ApiRoot>(It.IsAny<Uri>(),
                                                             It.IsAny<HttpMethod>(),
                                                             It.IsAny<string>(),
@@ -116,7 +116,7 @@ namespace GogoKit.Tests.Clients
         public async void GetAsync_ShouldReturnResponseBodyReturnedByClient()
         {
             var expectedRoot = new ApiRoot();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<ApiRoot>(It.IsAny<Uri>(),
                                                             It.IsAny<HttpMethod>(),
                                                             It.IsAny<string>(),

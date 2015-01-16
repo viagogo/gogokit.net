@@ -7,19 +7,19 @@ using GogoKit.Resources;
 
 namespace GogoKit.Http
 {
-    public class ApiConnection : IApiConnection
+    public class HypermediaConnection : IHypermediaConnection
     {
         private const string HalJsonMediaType = "application/hal+json";
 
-        private readonly IConnection _connection;
+        private readonly IHttpConnection _connection;
         private readonly ILinkResolver _linkResolver;
 
-        public ApiConnection(IConnection connection)
+        public HypermediaConnection(IHttpConnection connection)
             : this(connection, new LinkResolver())
         {
         }
 
-        public ApiConnection(IConnection connection, ILinkResolver linkResolver)
+        public HypermediaConnection(IHttpConnection connection, ILinkResolver linkResolver)
         {
             Requires.ArgumentNotNull(connection, "connection");
 
@@ -27,7 +27,7 @@ namespace GogoKit.Http
             _linkResolver = linkResolver;
         }
 
-        public IConnection Connection
+        public IHttpConnection HttpConnection
         {
             get { return _connection; }
         }

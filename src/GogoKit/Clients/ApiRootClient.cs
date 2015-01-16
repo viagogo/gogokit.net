@@ -9,9 +9,9 @@ namespace GogoKit.Clients
     public class ApiRootClient : IApiRootClient
     {
         private readonly Uri _apiRootUrl;
-        private readonly IConnection _connection;
+        private readonly IHttpConnection _connection;
 
-        public ApiRootClient(Uri viagogoApiUrl, IConnection connection)
+        public ApiRootClient(Uri viagogoApiUrl, IHttpConnection connection)
         {
             Requires.ArgumentNotNull(viagogoApiUrl, "viagogoApiUrl");
             Requires.ArgumentNotNull(connection, "connection");

@@ -12,11 +12,11 @@ namespace GogoKit.Tests.Clients
     public class OAuth2ClientTests
     {
         private static OAuth2Client CreateClient(
-            IConnection conn = null,
+            IHttpConnection conn = null,
             Uri vggUrl = null)
         {
             return new OAuth2Client(
-                conn ?? new Mock<IConnection>(MockBehavior.Loose).Object,
+                conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
                 vggUrl ?? new Uri("https://vgg.com/"));
         }
 
@@ -34,7 +34,7 @@ namespace GogoKit.Tests.Clients
         public async void GetAccessTokenAsync_ShouldPassViagogoUrlWithPathToTokenToTheConnection()
         {
             var expectedUri = new Uri("https://vggBase.io/secure/oauth2/token", UriKind.Absolute);
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     expectedUri,
                                     It.IsAny<HttpMethod>(),
@@ -53,7 +53,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAccessTokenAsync_ShouldPassPostMethodToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     HttpMethod.Post,
@@ -72,7 +72,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAccessTokenAsync_ShouldPassApplicationJsonAcceptHeaderToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -91,7 +91,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAccessTokenAsync_ShouldPassFormUrlEncodedContentToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -110,7 +110,7 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAccessTokenAsync_ShouldPassNullContentTypeToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -130,7 +130,7 @@ namespace GogoKit.Tests.Clients
         public async void GetAccessTokenAsync_ShouldReturnTheBodyOfTheResponseReturnedByTheConnection()
         {
             var expectedToken = new OAuth2Token();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -149,7 +149,7 @@ namespace GogoKit.Tests.Clients
         public async void GetAccessTokenAsync_ShouldReturnTokenWithIssueDateSetToTheDateHeaderOfTheResponse()
         {
             var expectedIssueDate = new DateTimeOffset(2014, 11, 27, 0, 27, 16, TimeSpan.FromHours(0));
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),

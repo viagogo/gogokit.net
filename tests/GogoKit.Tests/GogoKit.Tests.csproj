@@ -64,13 +64,13 @@
     <Compile Include="Clients\OAuth2ClientTests.cs" />
     <Compile Include="Extensions\IOAuth2ClientExtensionsTests.cs" />
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
-    <Compile Include="Fakes\FakeConnection.cs" />
+    <Compile Include="Fakes\FakeHttpConnection.cs" />
     <Compile Include="Fakes\FakeCredentials.cs" />
     <Compile Include="Helpers\LinkResolverTests.cs" />
     <Compile Include="Helpers\ResourceUrlComposerTests.cs" />
-    <Compile Include="Http\ApiConnectionTests.cs" />
+    <Compile Include="Http\HypermediaConnectionTests.cs" />
     <Compile Include="Http\ApiResponseFactoryTests.cs" />
-    <Compile Include="Http\ConnectionTests.cs" />
+    <Compile Include="Http\HttpConnectionTests.cs" />
     <Compile Include="Http\ErrorHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -10,15 +10,15 @@ namespace GogoKit.Clients
 {
     public class OAuth2Client : IOAuth2Client
     {
-        private readonly IConnection _connection;
+        private readonly IHttpConnection _connection;
         private readonly Uri _tokenUrl;
 
-        public OAuth2Client(IConnection connection)
+        public OAuth2Client(IHttpConnection connection)
             : this(connection, ViagogoClient.ViagogoDotComUrl)
         {
         }
 
-        public OAuth2Client(IConnection connection, Uri viagogoDotComUrl)
+        public OAuth2Client(IHttpConnection connection, Uri viagogoDotComUrl)
         {
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(viagogoDotComUrl, "viagogoDotComUrl");

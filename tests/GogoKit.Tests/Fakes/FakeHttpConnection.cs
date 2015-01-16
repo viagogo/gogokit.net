@@ -6,11 +6,11 @@ using GogoKit.Http;
 
 namespace GogoKit.Tests.Fakes
 {
-    public class FakeConnection : IConnection
+    public class FakeHttpConnection : IHttpConnection
     {
         private readonly IApiResponse _response;
 
-        public FakeConnection(IApiResponse response = null)
+        public FakeHttpConnection(IApiResponse response = null)
         {
             _response = response;
         }

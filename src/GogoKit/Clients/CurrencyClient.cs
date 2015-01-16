@@ -8,9 +8,9 @@ namespace GogoKit.Clients
     public class CurrencyClient : ICurrencyClient
     {
         private readonly IApiRootClient _rootClient;
-        private readonly IApiConnection _apiConnection;
+        private readonly IHypermediaConnection _apiConnection;
 
-        public CurrencyClient(IApiRootClient rootClient, IApiConnection apiConnection)
+        public CurrencyClient(IApiRootClient rootClient, IHypermediaConnection apiConnection)
         {
             _rootClient = rootClient;
             _apiConnection = apiConnection;

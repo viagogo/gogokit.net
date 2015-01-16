@@ -8,9 +8,9 @@ namespace GogoKit.Clients
     public class UserClient : IUserClient
     {
         private readonly IApiRootClient _rootClient;
-        private readonly IApiConnection _connection;
+        private readonly IHypermediaConnection _connection;
 
-        public UserClient(IApiRootClient rootClient, IApiConnection connection)
+        public UserClient(IApiRootClient rootClient, IHypermediaConnection connection)
         {
             Requires.ArgumentNotNull(rootClient, "rootClient");
             Requires.ArgumentNotNull(connection, "connection");

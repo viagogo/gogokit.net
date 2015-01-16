@@ -10,7 +10,7 @@ namespace GogoKit.Clients
     public class CategoryClient : ICategoryClient
     {
         private readonly IApiRootClient _rootClient;
-        private readonly IApiConnection _apiConnection;
+        private readonly IHypermediaConnection _apiConnection;
         private readonly IResourceLinkComposer _resourceLinkComposer;
 
         private static Uri GetCategoryChildren(int categoryId)
@@ -18,7 +18,7 @@ namespace GogoKit.Clients
             return "categories/{0}/children".FormatUri(categoryId);
         }
 
-        public CategoryClient(IApiRootClient rootClient, IApiConnection apiConnection, IResourceLinkComposer resourceLinkComposer)
+        public CategoryClient(IApiRootClient rootClient, IHypermediaConnection apiConnection, IResourceLinkComposer resourceLinkComposer)
         {
             _rootClient = rootClient;
             _apiConnection = apiConnection;

@@ -11,7 +11,7 @@ namespace GogoKit.Clients
     public class AddressClient : IAddressClient
     {
         private readonly IUserClient _userClient;
-        private readonly IApiConnection _apiConnection;
+        private readonly IHypermediaConnection _apiConnection;
         private readonly IResourceLinkComposer _resourceLinkComposer;
 
         private static Uri UpdateAddressUri(int addressId)
@@ -24,7 +24,7 @@ namespace GogoKit.Clients
             return "addresses/{0}".FormatUri(addressId);
         }
 
-        public AddressClient(IUserClient userClient, IApiConnection apiConnection, IResourceLinkComposer resourceLinkComposer)
+        public AddressClient(IUserClient userClient, IHypermediaConnection apiConnection, IResourceLinkComposer resourceLinkComposer)
         {
             _userClient = userClient;
             _apiConnection = apiConnection;

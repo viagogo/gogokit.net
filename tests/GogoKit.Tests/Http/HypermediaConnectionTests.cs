@@ -13,14 +13,14 @@ using NUnit.Framework;
 namespace GogoKit.Tests.Http
 {
     [TestFixture]
-    public class ApiConnectionTests
+    public class HypermediaConnectionTests
     {
-        private static  ApiConnection CreateConnection(
-            IConnection conn = null,
+        private static  HypermediaConnection CreateConnection(
+            IHttpConnection conn = null,
             ILinkResolver resolver = null)
         {
-            return new ApiConnection(
-                conn ?? new FakeConnection(),
+            return new HypermediaConnection(
+                conn ?? new FakeHttpConnection(),
                 resolver ?? new Mock<ILinkResolver>(MockBehavior.Loose).Object);
         }
 
@@ -35,12 +35,12 @@ namespace GogoKit.Tests.Http
         }
 
         [Test]
-        public void Connection_ShouldReturnTheConnectionPassedToTheCtor()
+        public void HttpConnection_ShouldReturnTheConnectionPassedToTheCtor()
         {
-            var expectedConnection = new Mock<IConnection>(MockBehavior.Loose).Object;
+            var expectedConnection = new Mock<IHttpConnection>(MockBehavior.Loose).Object;
             var apiConnection = CreateConnection(conn: expectedConnection);
 
-            var actualConnection = apiConnection.Connection;
+            var actualConnection = apiConnection.HttpConnection;
 
             Assert.AreSame(expectedConnection, actualConnection);
         }
@@ -79,7 +79,7 @@ namespace GogoKit.Tests.Http
         public async void GetAsync_ShouldPassTheGivenUriReturnedByTheLinkResolverToTheConnection()
         {
             var expectedUri = new Uri("https://api.vgg.io/endpoint");
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
             mockResolver.Setup(r => r.ResolveLink(It.IsAny<Link>(), It.IsAny<IDictionary<string, string>>())).Returns(expectedUri);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
@@ -100,7 +100,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void GetAsync_ShouldPassGetHttpMethodToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     HttpMethod.Get,
@@ -119,7 +119,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void GetAsync_ShouldPassNullBodyToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -138,7 +138,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void GetAsync_ShouldPassNullContentTypeToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -157,7 +157,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void GetAsync_ShouldPassHalJsonAcceptHeaderToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -177,7 +177,7 @@ namespace GogoKit.Tests.Http
         public async void GetAsync_ShouldReturnTheBodyOfTheResponseReturnedByTheConnection()
         {
             var expectedResult = new Foo();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -227,7 +227,7 @@ namespace GogoKit.Tests.Http
         public async void PostAsync_ShouldPassTheGivenUriReturnedByTheLinkResolverToTheConnection()
         {
             var expectedUri = new Uri("https://api.vgg.io/endpoint");
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
             mockResolver.Setup(r => r.ResolveLink(It.IsAny<Link>(), It.IsAny<IDictionary<string, string>>())).Returns(expectedUri);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
@@ -248,7 +248,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PostAsync_ShouldPassPostHttpMethodToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     HttpMethod.Post,
@@ -268,7 +268,7 @@ namespace GogoKit.Tests.Http
         public async void PostAsync_ShouldPassTheGivenBodyToTheConnection()
         {
             var expectedBody = new {foo = "bar"};
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -287,7 +287,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PostAsync_ShouldPassHalJsonContentTypeToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -306,7 +306,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PostAsync_ShouldPassHalJsonAcceptHeaderToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -326,7 +326,7 @@ namespace GogoKit.Tests.Http
         public async void PostAsync_ShouldReturnTheBodyOfTheResponseReturnedByTheConnection()
         {
             var expectedResult = new Foo();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -377,7 +377,7 @@ namespace GogoKit.Tests.Http
         public async void PatchAsync_ShouldPassTheGivenUriReturnedByTheLinkResolverToTheConnection()
         {
             var expectedUri = new Uri("https://api.vgg.io/endpoint");
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
             mockResolver.Setup(r => r.ResolveLink(It.IsAny<Link>(), It.IsAny<IDictionary<string, string>>())).Returns(expectedUri);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
@@ -398,7 +398,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PatchAsync_ShouldPassPatchHttpMethodToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.Is<HttpMethod>(m => m.Method == "Patch"),
@@ -418,7 +418,7 @@ namespace GogoKit.Tests.Http
         public async void PatchAsync_ShouldPassTheGivenBodyToTheConnection()
         {
             var expectedBody = new { foo = "bar" };
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -437,7 +437,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PatchAsync_ShouldPassHalJsonContentTypeToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -456,7 +456,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PatchAsync_ShouldPassHalJsonAcceptHeaderToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -476,7 +476,7 @@ namespace GogoKit.Tests.Http
         public async void PatchAsync_ShouldReturnTheBodyOfTheResponseReturnedByTheConnection()
         {
             var expectedResult = new Foo();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -526,7 +526,7 @@ namespace GogoKit.Tests.Http
         public async void PutAsync_ShouldPassTheGivenUriReturnedByTheLinkResolverToTheConnection()
         {
             var expectedUri = new Uri("https://api.vgg.io/endpoint");
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
             mockResolver.Setup(r => r.ResolveLink(It.IsAny<Link>(), It.IsAny<IDictionary<string, string>>())).Returns(expectedUri);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
@@ -547,7 +547,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PutAsync_ShouldPassPutHttpMethodToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     HttpMethod.Put,
@@ -567,7 +567,7 @@ namespace GogoKit.Tests.Http
         public async void PutAsync_ShouldPassTheGivenBodyToTheConnection()
         {
             var expectedBody = new { foo = "bar" };
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -586,7 +586,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PutAsync_ShouldPassHalJsonContentTypeToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -605,7 +605,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void PutAsync_ShouldPassHalJsonAcceptHeaderToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -625,7 +625,7 @@ namespace GogoKit.Tests.Http
         public async void PutAsync_ShouldReturnTheBodyOfTheResponseReturnedByTheConnection()
         {
             var expectedResult = new Foo();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<Foo>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -675,7 +675,7 @@ namespace GogoKit.Tests.Http
         public async void DeleteAsync_ShouldPassTheGivenUriReturnedByTheLinkResolverToTheConnection()
         {
             var expectedUri = new Uri("https://api.vgg.io/endpoint");
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             var mockResolver = new Mock<ILinkResolver>(MockBehavior.Loose);
             mockResolver.Setup(r => r.ResolveLink(It.IsAny<Link>(), It.IsAny<IDictionary<string, string>>())).Returns(expectedUri);
             mockConn.Setup(c => c.SendRequestAsync<object>(
@@ -696,7 +696,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void DeleteAsync_ShouldPassDeleteHttpMethodToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<object>(
                                     It.IsAny<Uri>(),
                                     HttpMethod.Delete,
@@ -715,7 +715,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void DeleteAsync_ShouldPassNullBodyToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<object>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -734,7 +734,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void DeleteAsync_ShouldPassNullContentTypeToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<object>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -753,7 +753,7 @@ namespace GogoKit.Tests.Http
         [Test]
         public async void DeleteAsync_ShouldPassHalJsonAcceptHeaderToTheConnection()
         {
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<object>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
@@ -773,7 +773,7 @@ namespace GogoKit.Tests.Http
         public async void DeleteAsync_ShouldReturnTheResponseReturnedByTheConnection()
         {
             var expectedResponse = new ApiResponse<object>();
-            var mockConn = new Mock<IConnection>(MockBehavior.Loose);
+            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<object>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),

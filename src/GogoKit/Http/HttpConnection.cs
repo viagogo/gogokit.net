@@ -13,7 +13,7 @@ using GogoKit.Json;
 
 namespace GogoKit.Http
 {
-    public class Connection : IConnection
+    public class HttpConnection : IHttpConnection
     {
         private readonly IHttpClientWrapper _httpClient;
         private readonly IErrorHandler _errorHandler;
@@ -21,7 +21,7 @@ namespace GogoKit.Http
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
 
-        public Connection(ProductHeaderValue productHeader, ICredentialsProvider credentialsProvider)
+        public HttpConnection(ProductHeaderValue productHeader, ICredentialsProvider credentialsProvider)
             : this(productHeader,
                    credentialsProvider,
                    new HttpClientWrapper(),
@@ -31,7 +31,7 @@ namespace GogoKit.Http
         {
         }
 
-        public Connection(
+        public HttpConnection(
             ProductHeaderValue productHeader,
             ICredentialsProvider credentialsProvider,
             IHttpClientWrapper httpClient,

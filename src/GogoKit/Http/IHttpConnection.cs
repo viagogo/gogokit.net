@@ -5,7 +5,7 @@ using GogoKit.Authentication;
 
 namespace GogoKit.Http
 {
-    public interface IConnection
+    public interface IHttpConnection
     {
         Task<IApiResponse<T>> SendRequestAsync<T>(
             Uri uri,

@@ -5,9 +5,9 @@ using GogoKit.Resources;
 
 namespace GogoKit.Http
 {
-    public interface IApiConnection
+    public interface IHypermediaConnection
     {
-        IConnection Connection { get; }
+        IHttpConnection HttpConnection { get; }
 
         Task<T> GetAsync<T>(Link link, IDictionary<string, string> parameters);
 

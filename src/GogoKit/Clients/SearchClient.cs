@@ -8,9 +8,9 @@ namespace GogoKit.Clients
     public class SearchClient : ISearchClient
     {
         private readonly IApiRootClient _rootClient;
-        private readonly IApiConnection _connection;
+        private readonly IHypermediaConnection _connection;
 
-        public SearchClient(IApiRootClient rootClient, IApiConnection connection)
+        public SearchClient(IApiRootClient rootClient, IHypermediaConnection connection)
         {
             _rootClient = rootClient;
             _connection = connection;

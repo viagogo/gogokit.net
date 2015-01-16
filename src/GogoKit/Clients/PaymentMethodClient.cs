@@ -11,7 +11,7 @@ namespace GogoKit.Clients
     public class PaymentMethodClient : IPaymentMethodClient
     {
         private readonly IUserClient _userClient;
-        private readonly IApiConnection _connection;
+        private readonly IHypermediaConnection _connection;
         private readonly IResourceLinkComposer _resourceLinkComposer;
 
         private static Uri GetPaymentMethodUri(int paymentMethodId)
@@ -29,7 +29,7 @@ namespace GogoKit.Clients
             return "paymentMethods/{0}".FormatUri(paymentMethodId);
         }
 
-        public PaymentMethodClient(IUserClient userClient, IApiConnection connection, IResourceLinkComposer resourceLinkComposer)
+        public PaymentMethodClient(IUserClient userClient, IHypermediaConnection connection, IResourceLinkComposer resourceLinkComposer)
         {
             _userClient = userClient;
             _connection = connection;

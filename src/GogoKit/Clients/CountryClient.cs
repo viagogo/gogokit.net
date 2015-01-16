@@ -11,9 +11,9 @@ namespace GogoKit.Clients
     public class CountryClient : ICountryClient
     {
         private readonly IApiRootClient _rootClient;
-        private readonly IApiConnection _apiConnection;
+        private readonly IHypermediaConnection _apiConnection;
 
-        public CountryClient(IApiRootClient rootClient, IApiConnection apiConnection)
+        public CountryClient(IApiRootClient rootClient, IHypermediaConnection apiConnection)
         {
             _rootClient = rootClient;
             _apiConnection = apiConnection;

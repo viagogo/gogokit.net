@@ -12,7 +12,7 @@ namespace GogoKit
         public static readonly Uri ViagogoApiUrl = new Uri("https://api.viagogo.net");
         public static readonly Uri ViagogoDotComUrl = new Uri("https://www.viagogo.com");
 
-        private readonly IApiConnection _connection;
+        private readonly IHypermediaConnection _connection;
         private readonly IOAuth2Client _oauth2Client;
         private readonly IApiRootClient _rootClient;
         private readonly IUserClient _userClient;
@@ -52,20 +52,20 @@ namespace GogoKit
             ICredentialsProvider credentialsProvider,
             Uri viagogoApiUrl,
             Uri viagogoDotComUrl)
-            : this(new Connection(product, credentialsProvider),
+            : this(new HttpConnection(product, credentialsProvider),
                    CreateOAuthConnection(clientId, clientSecret, product),
                    viagogoApiUrl,
                    viagogoDotComUrl)
         {
         }
 
-        public ViagogoClient(IConnection connection, IConnection oauthConnection)
+        public ViagogoClient(IHttpConnection connection, IHttpConnection oauthConnection)
             : this(connection, oauthConnection, ViagogoApiUrl, ViagogoDotComUrl)
         {
         }
 
-        public ViagogoClient(IConnection connection,
-                             IConnection oauthConnection,
+        public ViagogoClient(IHttpConnection connection,
+                             IHttpConnection oauthConnection,
                              Uri viagogoApiUrl,
                              Uri viagogoDotComUrl)
         {
@@ -79,7 +79,7 @@ namespace GogoKit
             _rootClient = new ApiRootClient(viagogoApiUrl, connection);
             var resourceUrlComposer = new ResourceLinkComposer(_rootClient);
 
-            _connection = new ApiConnection(connection);
+            _connection = new HypermediaConnection(connection);
             _userClient = new UserClient(_rootClient, _connection);
             _searchClient = new SearchClient(_rootClient, _connection);
             _addressClient = new AddressClient(_userClient, _connection, resourceUrlComposer);
@@ -90,7 +90,7 @@ namespace GogoKit
             _categoryClient = new CategoryClient(_rootClient, _connection, resourceUrlComposer);
         }
 
-        public IApiConnection Connection
+        public IHypermediaConnection Connection
         {
             get { return _connection; }
         }
@@ -145,12 +145,12 @@ namespace GogoKit
             get { return _categoryClient; }
         }
 
-        private static IConnection CreateOAuthConnection(
+        private static IHttpConnection CreateOAuthConnection(
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
         {
-            return new Connection(
+            return new HttpConnection(
                 product,
                 new InMemoryCredentialsProvider(new BasicCredentials(clientId, clientSecret)));
         }

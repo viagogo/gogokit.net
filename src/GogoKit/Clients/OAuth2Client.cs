@@ -43,7 +43,7 @@ namespace GogoKit.Clients
                                     HttpMethod.Post,
                                     "application/json",
                                     new FormUrlEncodedContent(parameters),
-                                    null);
+                                    null).ConfigureAwait(false);
             var token = response.BodyAsObject;
 
             token.IssueDate = response.Headers.ContainsKey("Date")

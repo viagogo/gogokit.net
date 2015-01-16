@@ -21,15 +21,15 @@ namespace GogoKit.Clients
 
         public async Task<User> GetAsync()
         {
-            var root = await _rootClient.GetAsync();
-            return await _connection.GetAsync<User>(root.Links["viagogo:user"], null);
+            var root = await _rootClient.GetAsync().ConfigureAwait(false);
+            return await _connection.GetAsync<User>(root.Links["viagogo:user"], null).ConfigureAwait(false);
         }
 
         public async Task<User> UpdateAsync(UserUpdate userUpdate)
         {
-            var root = await _rootClient.GetAsync();
-            var user = await _connection.GetAsync<User>(root.Links["viagogo:user"], null);
-            return await _connection.PatchAsync<User>(user.Links["user:update"], null, userUpdate);
+            var root = await _rootClient.GetAsync().ConfigureAwait(false);
+            var user = await _connection.GetAsync<User>(root.Links["viagogo:user"], null).ConfigureAwait(false);
+            return await _connection.PatchAsync<User>(user.Links["user:update"], null, userUpdate).ConfigureAwait(false);
         }
     }
 }

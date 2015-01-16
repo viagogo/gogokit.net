@@ -54,14 +54,14 @@ namespace GogoKit.Http
             }
 
             var apiException = response.StatusCode != HttpStatusCode.Unauthorized
-                                ? await GetApiErrorException(response)
-                                : await GetApiAuthorizationException(response);
+                                ? await GetApiErrorException(response).ConfigureAwait(false)
+                                : await GetApiAuthorizationException(response).ConfigureAwait(false);
             throw apiException;
         }
 
         private async Task<ApiException> GetApiErrorException(HttpResponseMessage response)
         {
-            var errorResponse = await _responseFactory.CreateApiResponseAsync<ApiError>(response);
+            var errorResponse = await _responseFactory.CreateApiResponseAsync<ApiError>(response).ConfigureAwait(false);
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 return new ResourceNotFoundException(errorResponse);
@@ -80,7 +80,7 @@ namespace GogoKit.Http
 
         private async Task<ApiAuthorizationException> GetApiAuthorizationException(HttpResponseMessage response)
         {
-            var errorResponse = await _responseFactory.CreateApiResponseAsync<AuthorizationError>(response);
+            var errorResponse = await _responseFactory.CreateApiResponseAsync<AuthorizationError>(response).ConfigureAwait(false);
             if (errorResponse is ApiResponse<AuthorizationError> &&
                 errorResponse.BodyAsObject == null)
             {

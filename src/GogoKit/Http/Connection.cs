@@ -75,7 +75,7 @@ namespace GogoKit.Http
         {
             using (var request = new HttpRequestMessage { RequestUri = uri, Method = method })
             {
-                var credentials = await CredentialsProvider.GetCredentialsAsync();
+                var credentials = await CredentialsProvider.GetCredentialsAsync().ConfigureAwait(false);
                 request.Headers.Authorization = AuthenticationHeaderValue.Parse(credentials.AuthorizationHeader);
                 foreach (var product in _userAgentHeaderValues)
                 {
@@ -83,12 +83,12 @@ namespace GogoKit.Http
                 }
 
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
-                request.Content = await GetRequestContentAsync(method, body, contentType);
+                request.Content = await GetRequestContentAsync(method, body, contentType).ConfigureAwait(false);
 
-                var responseMessage = await _httpClient.SendAsync(request, CancellationToken.None);
+                var responseMessage = await _httpClient.SendAsync(request, CancellationToken.None).ConfigureAwait(false);
 
-                await _errorHandler.ProcessResponseAsync(responseMessage);
-                return await _responseFactory.CreateApiResponseAsync<T>(responseMessage);
+                await _errorHandler.ProcessResponseAsync(responseMessage).ConfigureAwait(false);
+                return await _responseFactory.CreateApiResponseAsync<T>(responseMessage).ConfigureAwait(false);
             }
         }
 
@@ -124,7 +124,7 @@ namespace GogoKit.Http
             }
 
             // Anything else gets serialized to JSON
-            var bodyJson = await _jsonSerializer.SerializeAsync(body);
+            var bodyJson = await _jsonSerializer.SerializeAsync(body).ConfigureAwait(false);
             return new StringContent(bodyJson, Encoding.UTF8, contentType);
         }
     }

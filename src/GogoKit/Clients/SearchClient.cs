@@ -18,7 +18,7 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<SearchResult>> GetSearchResultsAsync(string query, int page, int pageSize)
         {
-            var root = await _rootClient.GetAsync();
+            var root = await _rootClient.GetAsync().ConfigureAwait(false);
             return await _connection.GetAsync<PagedResource<SearchResult>>(
                 root.Links["viagogo:search"],
                 new Dictionary<string, string>
@@ -26,18 +26,18 @@ namespace GogoKit.Clients
                     {"query", query},
                     {"page", page.ToString()},
                     {"page_size", pageSize.ToString()}
-                });
+                }).ConfigureAwait(false);
         }
 
         public async Task<IReadOnlyList<SearchResult>> GetAllSearchResultsAsync(string query)
         {
-            var root = await _rootClient.GetAsync();
+            var root = await _rootClient.GetAsync().ConfigureAwait(false);
             return await _connection.GetAllPagesAsync<SearchResult>(
                             root.Links["viagogo:search"],
                             new Dictionary<string, string>
                             {
                                 {"query", query}
-                            });
+                            }).ConfigureAwait(false);
         }
     }
 }

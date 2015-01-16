@@ -26,13 +26,13 @@ namespace GogoKit.Authentication
 
         public async Task<ICredentials> GetCredentialsAsync()
         {
-            var token = await _tokenStore.GetTokenAsync();
+            var token = await _tokenStore.GetTokenAsync().ConfigureAwait(false);
             if (token == null ||
                 token.IssueDate.AddSeconds(token.ExpiresIn) <= DateTime.UtcNow)
             {
                 if (token == null || token.RefreshToken == null)
                 {
-                    token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null);
+                    token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null).ConfigureAwait(false);
                 }
                 else
                 {
@@ -42,10 +42,10 @@ namespace GogoKit.Authentication
                                     new Dictionary<string, string>
                                 {
                                     {"refresh_token", token.RefreshToken}
-                                });
+                                }).ConfigureAwait(false);
                 }
 
-                await _tokenStore.SetTokenAsync(token);
+                await _tokenStore.SetTokenAsync(token).ConfigureAwait(false);
             }
 
             return new BearerTokenCredentials(token.AccessToken);

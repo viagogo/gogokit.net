@@ -21,12 +21,14 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<Country>> GetCountriesAsync(int page, int pageSize)
         {
-            var root = await _rootClient.GetAsync();
-            return await _apiConnection.GetAsync<PagedResource<Country>>(root.Links["viagogo:countries"], new Dictionary<string, string>
-                                                                                                    {
-                                                                                                        {"page", page.ToString()},
-                                                                                                        {"page_size", pageSize.ToString()}
-                                                                                                    });
+            var root = await _rootClient.GetAsync().ConfigureAwait(false);
+            return await _apiConnection.GetAsync<PagedResource<Country>>(
+                root.Links["viagogo:countries"],
+                new Dictionary<string, string>
+                {
+                    {"page", page.ToString()},
+                    {"page_size", pageSize.ToString()}
+                }).ConfigureAwait(false);
         }
     }
 }

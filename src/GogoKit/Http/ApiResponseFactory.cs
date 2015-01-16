@@ -24,15 +24,15 @@ namespace GogoKit.Http
                 {
                     if (typeof(T) != typeof(byte[]))
                     {
-                        body = await response.Content.ReadAsStringAsync();
+                        body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                         if (body != null && IsJsonContent(response.Content))
                         {
-                            bodyAsObject = await _jsonSerializer.DeserializeAsync<T>(body);
+                            bodyAsObject = await _jsonSerializer.DeserializeAsync<T>(body).ConfigureAwait(false);
                         }
                     }
                     else
                     {
-                        bodyAsObject = await response.Content.ReadAsByteArrayAsync();
+                        bodyAsObject = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                     }
                 }
             }

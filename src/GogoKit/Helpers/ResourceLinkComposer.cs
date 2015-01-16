@@ -18,7 +18,7 @@ namespace GogoKit.Helpers
         {
             Requires.ArgumentNotNull(relativeUri, "relativeUri");
 
-            var root = await _rootClient.GetAsync();
+            var root = await _rootClient.GetAsync().ConfigureAwait(false);
             var baseUrl = new Uri(root.Links["self"].HRef);
 
             var absoluteResourcePathLink = CreateLink(baseUrl, relativeUri);

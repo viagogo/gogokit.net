@@ -45,7 +45,7 @@ namespace GogoKit.Http
                 var currentPage = await SendRequestAsyncAndGetBody<PagedResource<T>>(
                                             HttpMethod.Get,
                                             currentLink,
-                                            currentParameters);
+                                            currentParameters).ConfigureAwait(false);
 
                 items.AddRange(currentPage.Items);
 
@@ -91,7 +91,7 @@ namespace GogoKit.Http
             object data = null,
             string contentType = null)
         {
-            var response = await SendRequestAsync<T>(method, link, parameters, accept, data, contentType);
+            var response = await SendRequestAsync<T>(method, link, parameters, accept, data, contentType).ConfigureAwait(false);
             return response.BodyAsObject;
         }
 
@@ -111,7 +111,7 @@ namespace GogoKit.Http
                                     method,
                                     accept,
                                     data,
-                                    contentType);
+                                    contentType).ConfigureAwait(false);
             return response;
         }
     }

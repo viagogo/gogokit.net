@@ -33,37 +33,39 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Address>> GetAllAddressesAsync()
         {
-            var user = await _userClient.GetAsync();
-            return await _apiConnection.GetAllPagesAsync<Address>(user.Links["user:addresses"], null);
+            var user = await _userClient.GetAsync().ConfigureAwait(false);
+            return await _apiConnection.GetAllPagesAsync<Address>(user.Links["user:addresses"], null).ConfigureAwait(false);
         }
 
         public async Task<PagedResource<Address>> GetAddresses(int page, int pageSize)
         {
-            var user = await _userClient.GetAsync();
-            return await _apiConnection.GetAsync<PagedResource<Address>>(user.Links["user:addresses"], new Dictionary<string, string>()
-                                                                        {
-                                                                            {"page", page.ToString()},
-                                                                            {"page_size", pageSize.ToString()}
-                                                                        });
+            var user = await _userClient.GetAsync().ConfigureAwait(false);
+            return await _apiConnection.GetAsync<PagedResource<Address>>(
+                user.Links["user:addresses"],
+                new Dictionary<string, string>()
+                {
+                    {"page", page.ToString()},
+                    {"page_size", pageSize.ToString()}
+                }).ConfigureAwait(false);
         }
 
         public async Task<Address> CreateAddress(AddressCreate addressCreate)
         {
-            var addresses = await GetAddresses(1, 1);
+            var addresses = await GetAddresses(1, 1).ConfigureAwait(false);
             var createAddressLink = addresses.Links["address:create"];
-            return await _apiConnection.PostAsync<Address>(createAddressLink, null, addressCreate);
+            return await _apiConnection.PostAsync<Address>(createAddressLink, null, addressCreate).ConfigureAwait(false);
         }
 
         public async Task<Address> UpdateAddress(int addressId, AddressUpdate addressUpdate)
         {
-            var updateAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdateAddressUri(addressId));
-            return await _apiConnection.PatchAsync<Address>(updateAddressLink, null, addressUpdate);
+            var updateAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdateAddressUri(addressId)).ConfigureAwait(false);
+            return await _apiConnection.PatchAsync<Address>(updateAddressLink, null, addressUpdate).ConfigureAwait(false);
         }
 
         public async Task<IApiResponse> DeleteAddress(int addressId)
         {
-            var deleteAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeleteAddressUri(addressId));
-            return await _apiConnection.DeleteAsync(deleteAddressLink, null);
+            var deleteAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeleteAddressUri(addressId)).ConfigureAwait(false);
+            return await _apiConnection.DeleteAsync(deleteAddressLink, null).ConfigureAwait(false);
         }
     }
 }

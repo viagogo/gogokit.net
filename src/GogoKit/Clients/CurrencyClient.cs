@@ -18,8 +18,8 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Currency>> GetAllCurrenciesAsync()
         {
-            var root = await _rootClient.GetAsync();
-            return await _apiConnection.GetAllPagesAsync<Currency>(root.Links["viagogo:currencies"], null);
+            var root = await _rootClient.GetAsync().ConfigureAwait(false);
+            return await _apiConnection.GetAllPagesAsync<Currency>(root.Links["viagogo:currencies"], null).ConfigureAwait(false);
         }
     }
 }

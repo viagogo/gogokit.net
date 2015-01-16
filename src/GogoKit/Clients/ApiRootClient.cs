@@ -27,7 +27,7 @@ namespace GogoKit.Clients
                                     HttpMethod.Get,
                                     "application/hal+json",
                                     null,
-                                    null);
+                                    null).ConfigureAwait(false);
             return response.BodyAsObject;
         }
     }

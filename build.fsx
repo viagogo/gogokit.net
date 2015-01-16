@@ -11,8 +11,8 @@ let authors = ["viagogo"]
 let copyright = @"Copyright © viagogo 2014"
 
 // Directories
-let buildDir = @"./build/"
-let packagingDir = buildDir @@ "nupkgs"
+let buildDir = @"./artifacts/"
+let packagingDir = buildDir @@ "packages"
 let testResultsDir = @"./testresults/"
 
 // Read Release Notes and version from ReleaseNotes.md

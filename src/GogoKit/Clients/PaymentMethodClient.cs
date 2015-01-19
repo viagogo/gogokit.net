@@ -29,7 +29,9 @@ namespace GogoKit.Clients
             return "paymentMethods/{0}".FormatUri(paymentMethodId);
         }
 
-        public PaymentMethodClient(IUserClient userClient, IHypermediaConnection connection, IResourceLinkComposer resourceLinkComposer)
+        public PaymentMethodClient(IUserClient userClient,
+                                   IHypermediaConnection connection,
+                                   IResourceLinkComposer resourceLinkComposer)
         {
             _userClient = userClient;
             _connection = connection;
@@ -38,14 +40,15 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<PaymentMethod>> GetAllPaymentMethodsAsync()
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(false);
-            return await _connection.GetAllPagesAsync<PaymentMethod>(user.Links["user:paymentmethods"], null).ConfigureAwait(false);
+            var user = await _userClient.GetAsync().ConfigureAwait(_connection);
+            return await _connection.GetAllPagesAsync<PaymentMethod>(user.Links["user:paymentmethods"], null).ConfigureAwait(_connection);
         }
 
         public async Task<PaymentMethod> GetPaymentMethodAsync(int paymentMethodId)
         {
-            var updatePaymentMethodUrl = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(GetPaymentMethodUri(paymentMethodId)).ConfigureAwait(false);
-            return await _connection.GetAsync<PaymentMethod>(updatePaymentMethodUrl, null).ConfigureAwait(false);
+            var updatePaymentMethodUrl = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(GetPaymentMethodUri(paymentMethodId))
+                                                                    .ConfigureAwait(_connection);
+            return await _connection.GetAsync<PaymentMethod>(updatePaymentMethodUrl, null).ConfigureAwait(_connection);
         }
 
         public Task<PaymentMethod> CreatePaypalPaymentMethod(PaymentMethodCreate paymentMethod)
@@ -55,11 +58,11 @@ namespace GogoKit.Clients
 
         private async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, string paymentMethodType)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(false);
+            var user = await _userClient.GetAsync().ConfigureAwait(_connection);
             return await _connection.PostAsync<PaymentMethod>(
                 user.Links["user:paymentmethods"],
                 new Dictionary<string, string> {{"paymentMethodType", paymentMethodType}},
-                paymentMethod).ConfigureAwait(false);
+                paymentMethod).ConfigureAwait(_connection);
         }
 
         public Task<PaymentMethod> CreateCreditCardPaymentMethod(PaymentMethodCreate paymentMethod)
@@ -77,19 +80,24 @@ namespace GogoKit.Clients
             return UpdatePaymentMethod(paymentMethodId, paymentMethodUpdate, "CreditCard");
         }
 
-        private async Task<PaymentMethod> UpdatePaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate, string paymentMethodType)
+        private async Task<PaymentMethod> UpdatePaymentMethod(
+            int paymentMethodId,
+            PaymentMethodUpdate paymentMethodUpdate,
+            string paymentMethodType)
         {
-            var updatePaymentMethodUri = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdatePaymentMethodUri(paymentMethodId)).ConfigureAwait(false);
+            var updatePaymentMethodUri = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdatePaymentMethodUri(paymentMethodId))
+                                                                    .ConfigureAwait(_connection);
             return await _connection.PatchAsync<PaymentMethod>(
                 updatePaymentMethodUri,
                 new Dictionary<string, string> { { "paymentMethodType", paymentMethodType } },
-                paymentMethodUpdate).ConfigureAwait(false);
+                paymentMethodUpdate).ConfigureAwait(_connection);
         }
 
         public async Task<IApiResponse> DeletePaymentMethod(int paymentMethodId)
         {
-            var deletePaymentMethodLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeletePaymentMethodUri(paymentMethodId)).ConfigureAwait(false);
-            return await _connection.DeleteAsync(deletePaymentMethodLink, null).ConfigureAwait(false);
+            var deletePaymentMethodLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeletePaymentMethodUri(paymentMethodId))
+                                                                     .ConfigureAwait(_connection);
+            return await _connection.DeleteAsync(deletePaymentMethodLink, null).ConfigureAwait(_connection);
         }
     }
 }

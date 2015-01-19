@@ -1,7 +1,7 @@
-using System;
 using System.Net.Http.Headers;
 using GogoKit.Authentication;
 using GogoKit.Clients;
+using GogoKit.Configuration;
 using GogoKit.Helpers;
 using GogoKit.Http;
 
@@ -9,9 +9,7 @@ namespace GogoKit
 {
     public class ViagogoClient : IViagogoClient
     {
-        public static readonly Uri ViagogoApiUrl = new Uri("https://api.viagogo.net");
-        public static readonly Uri ViagogoDotComUrl = new Uri("https://www.viagogo.com");
-
+        private readonly IConfiguration _configuration;
         private readonly IHypermediaConnection _connection;
         private readonly IOAuth2Client _oauth2Client;
         private readonly IApiRootClient _rootClient;
@@ -41,7 +39,7 @@ namespace GogoKit
             string clientSecret,
             ProductHeaderValue product,
             ICredentialsProvider credentialsProvider)
-            : this(clientId, clientSecret, product, credentialsProvider, ViagogoApiUrl, ViagogoDotComUrl)
+            : this(clientId, clientSecret, product, credentialsProvider, GogoKit.Configuration.Configuration.Default)
         {
         }
 
@@ -50,34 +48,30 @@ namespace GogoKit
             string clientSecret,
             ProductHeaderValue product,
             ICredentialsProvider credentialsProvider,
-            Uri viagogoApiUrl,
-            Uri viagogoDotComUrl)
-            : this(new HttpConnection(product, credentialsProvider),
-                   CreateOAuthConnection(clientId, clientSecret, product),
-                   viagogoApiUrl,
-                   viagogoDotComUrl)
+            IConfiguration configuration)
+            : this(new HttpConnection(product, credentialsProvider, configuration),
+                   CreateOAuthConnection(clientId, clientSecret, product, configuration),
+                   configuration)
         {
         }
 
         public ViagogoClient(IHttpConnection connection, IHttpConnection oauthConnection)
-            : this(connection, oauthConnection, ViagogoApiUrl, ViagogoDotComUrl)
+            : this(connection, oauthConnection, GogoKit.Configuration.Configuration.Default)
         {
         }
 
         public ViagogoClient(IHttpConnection connection,
                              IHttpConnection oauthConnection,
-                             Uri viagogoApiUrl,
-                             Uri viagogoDotComUrl)
+                             IConfiguration configuration)
         {
+            _configuration = configuration;
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(oauthConnection, "oauthConnection");
-            Requires.ArgumentNotNull(viagogoApiUrl, "viagogoApiUrl");
-            Requires.ArgumentNotNull(viagogoDotComUrl, "viagogoDotComUrl");
+            Requires.ArgumentNotNull(configuration, "configuration");
 
-
-            _oauth2Client = new OAuth2Client(oauthConnection, viagogoDotComUrl);
-            _rootClient = new ApiRootClient(viagogoApiUrl, connection);
-            var resourceUrlComposer = new ResourceLinkComposer(_rootClient);
+            _oauth2Client = new OAuth2Client(oauthConnection);
+            _rootClient = new ApiRootClient(connection);
+            var resourceUrlComposer = new ResourceLinkComposer(_rootClient, configuration);
 
             _connection = new HypermediaConnection(connection);
             _userClient = new UserClient(_rootClient, _connection);
@@ -88,6 +82,11 @@ namespace GogoKit
             _countryClient = new CountryClient(_rootClient, _connection);
             _currencyClient = new CurrencyClient(_rootClient, _connection);
             _categoryClient = new CategoryClient(_rootClient, _connection, resourceUrlComposer);
+        }
+
+        public IConfiguration Configuration
+        {
+            get { return _configuration; }
         }
 
         public IHypermediaConnection Connection
@@ -148,11 +147,13 @@ namespace GogoKit
         private static IHttpConnection CreateOAuthConnection(
             string clientId,
             string clientSecret,
-            ProductHeaderValue product)
+            ProductHeaderValue product,
+            IConfiguration configuration = null)
         {
             return new HttpConnection(
                 product,
-                new InMemoryCredentialsProvider(new BasicCredentials(clientId, clientSecret)));
+                new InMemoryCredentialsProvider(new BasicCredentials(clientId, clientSecret)),
+                configuration ?? GogoKit.Configuration.Configuration.Default);
         }
     }
 }

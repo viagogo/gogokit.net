@@ -11,12 +11,11 @@ namespace GogoKit.Clients
         private readonly Uri _apiRootUrl;
         private readonly IHttpConnection _connection;
 
-        public ApiRootClient(Uri viagogoApiUrl, IHttpConnection connection)
+        public ApiRootClient(IHttpConnection connection)
         {
-            Requires.ArgumentNotNull(viagogoApiUrl, "viagogoApiUrl");
             Requires.ArgumentNotNull(connection, "connection");
 
-            _apiRootUrl = new Uri(viagogoApiUrl, "/v2");
+            _apiRootUrl = new Uri(connection.Configuration.ViagogoApiUrl, "/v2");
             _connection = connection;
         }
 
@@ -27,7 +26,7 @@ namespace GogoKit.Clients
                                     HttpMethod.Get,
                                     "application/hal+json",
                                     null,
-                                    null).ConfigureAwait(false);
+                                    null).ConfigureAwait(_connection.Configuration);
             return response.BodyAsObject;
         }
     }

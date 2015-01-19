@@ -13,16 +13,14 @@ namespace GogoKit.Tests.Clients
     public class ApiRootClientTests
     {
         private static ApiRootClient CreateClient(
-            Uri apiUrl = null,
             IHttpConnection conn = null)
         {
             return new ApiRootClient(
-                apiUrl ?? new Uri("https://vgg.api.io"),
                 conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object);
         }
 
         [Test]
-        public async void GetAsync_ShouldPassV2RootEndpointToConnection()
+        public async void GetAsync_ShouldPassConfigurationV2RootEndpointToConnection()
         {
             var expectedUri = new Uri("https://api.vgg.com/v2");
             var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
@@ -33,7 +31,8 @@ namespace GogoKit.Tests.Clients
                                                             It.IsAny<string>()))
                     .Returns(Task.FromResult<IApiResponse<ApiRoot>>(new ApiResponse<ApiRoot>()))
                     .Verifiable();
-            var client = CreateClient(apiUrl: new Uri("https://api.vgg.com"), conn: mockConn.Object);
+            mockConn.Setup(c => c.Configuration).Returns(new Configuration.Configuration {ViagogoApiUrl = new Uri("https://api.vgg.com")});
+            var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAsync();
 
@@ -51,7 +50,8 @@ namespace GogoKit.Tests.Clients
                                                             It.IsAny<string>()))
                     .Returns(Task.FromResult<IApiResponse<ApiRoot>>(new ApiResponse<ApiRoot>()))
                     .Verifiable();
-            var client = CreateClient(apiUrl: new Uri("https://api.vgg.com"), conn: mockConn.Object);
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
+            var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAsync();
 
@@ -69,6 +69,7 @@ namespace GogoKit.Tests.Clients
                                                             It.IsAny<string>()))
                     .Returns(Task.FromResult<IApiResponse<ApiRoot>>(new ApiResponse<ApiRoot>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAsync();
@@ -87,6 +88,7 @@ namespace GogoKit.Tests.Clients
                                                             It.IsAny<string>()))
                     .Returns(Task.FromResult<IApiResponse<ApiRoot>>(new ApiResponse<ApiRoot>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAsync();
@@ -105,6 +107,7 @@ namespace GogoKit.Tests.Clients
                                                             null))
                     .Returns(Task.FromResult<IApiResponse<ApiRoot>>(new ApiResponse<ApiRoot>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAsync();
@@ -123,6 +126,7 @@ namespace GogoKit.Tests.Clients
                                                             It.IsAny<object>(),
                                                             null))
                     .Returns(Task.FromResult<IApiResponse<ApiRoot>>(new ApiResponse<ApiRoot> { BodyAsObject = expectedRoot }));
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             var actualRoot = await client.GetAsync();

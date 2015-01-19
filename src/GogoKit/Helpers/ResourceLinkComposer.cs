@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using GogoKit.Clients;
+using GogoKit.Configuration;
 using GogoKit.Models;
 
 namespace GogoKit.Helpers
@@ -8,17 +9,19 @@ namespace GogoKit.Helpers
     public class ResourceLinkComposer : IResourceLinkComposer
     {
         private readonly IApiRootClient _rootClient;
+        private readonly IConfiguration _configuration;
 
-        public ResourceLinkComposer(IApiRootClient rootClient)
+        public ResourceLinkComposer(IApiRootClient rootClient, IConfiguration configuration)
         {
             _rootClient = rootClient;
+            _configuration = configuration;
         }
 
         public async Task<Link> ComposeLinkWithAbsolutePathForResource(Uri relativeUri)
         {
             Requires.ArgumentNotNull(relativeUri, "relativeUri");
 
-            var root = await _rootClient.GetAsync().ConfigureAwait(false);
+            var root = await _rootClient.GetAsync().ConfigureAwait(_configuration);
             var baseUrl = new Uri(root.Links["self"].HRef);
 
             var absoluteResourcePathLink = CreateLink(baseUrl, relativeUri);

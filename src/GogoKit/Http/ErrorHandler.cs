@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Models;
 
@@ -36,12 +37,15 @@ namespace GogoKit.Http
             };
 
         private readonly IApiResponseFactory _responseFactory;
+        private readonly IConfiguration _configuration;
 
-        public ErrorHandler(IApiResponseFactory responseFactory)
+        public ErrorHandler(IApiResponseFactory responseFactory, IConfiguration configuration)
         {
             Requires.ArgumentNotNull(responseFactory, "responseFactory");
+            Requires.ArgumentNotNull(configuration, "configuration");
 
             _responseFactory = responseFactory;
+            _configuration = configuration;
         }
 
         public async Task ProcessResponseAsync(HttpResponseMessage response)
@@ -54,14 +58,14 @@ namespace GogoKit.Http
             }
 
             var apiException = response.StatusCode != HttpStatusCode.Unauthorized
-                                ? await GetApiErrorException(response).ConfigureAwait(false)
-                                : await GetApiAuthorizationException(response).ConfigureAwait(false);
+                                ? await GetApiErrorException(response).ConfigureAwait(_configuration)
+                                : await GetApiAuthorizationException(response).ConfigureAwait(_configuration);
             throw apiException;
         }
 
         private async Task<ApiException> GetApiErrorException(HttpResponseMessage response)
         {
-            var errorResponse = await _responseFactory.CreateApiResponseAsync<ApiError>(response).ConfigureAwait(false);
+            var errorResponse = await _responseFactory.CreateApiResponseAsync<ApiError>(response).ConfigureAwait(_configuration);
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 return new ResourceNotFoundException(errorResponse);
@@ -80,7 +84,7 @@ namespace GogoKit.Http
 
         private async Task<ApiAuthorizationException> GetApiAuthorizationException(HttpResponseMessage response)
         {
-            var errorResponse = await _responseFactory.CreateApiResponseAsync<AuthorizationError>(response).ConfigureAwait(false);
+            var errorResponse = await _responseFactory.CreateApiResponseAsync<AuthorizationError>(response).ConfigureAwait(_configuration);
             if (errorResponse is ApiResponse<AuthorizationError> &&
                 errorResponse.BodyAsObject == null)
             {

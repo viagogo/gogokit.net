@@ -50,7 +50,10 @@
     <Compile Include="Clients\IPurchaseClient.cs" />
     <Compile Include="Clients\PaymentMethodClient.cs" />
     <Compile Include="Clients\PurchaseClient.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Helpers\IResourceLinkComposer.cs" />
     <Compile Include="Helpers\ResourceLinkComposer.cs" />
     <Compile Include="Models\AddressCreate.cs" />

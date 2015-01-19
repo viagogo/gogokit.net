@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Http;
 using GogoKit.Models;
@@ -17,10 +18,12 @@ namespace GogoKit.Tests.Http
     public class ErrorHandlerTests
     {
         private static ErrorHandler CreateErrorHandler(
-            IApiResponseFactory respFact = null)
+            IApiResponseFactory respFact = null,
+            IConfiguration config = null)
         {
             return new ErrorHandler(
-                respFact ?? new FakeApiResponseFactory());
+                respFact ?? new FakeApiResponseFactory(),
+                config ?? Configuration.Configuration.Default);
         }
 
         private static readonly HttpStatusCode[] ApiSuccessCodes =

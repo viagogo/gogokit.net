@@ -90,6 +90,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object, resolver: mockResolver.Object);
 
             await apiConnection.GetAsync<Foo>(new Link {HRef = expectedUri.OriginalString}, null);
@@ -109,6 +110,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.GetAsync<Foo>(new Link {HRef = "https://vgg.com/endpoint"}, null);
@@ -128,6 +130,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.GetAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -147,6 +150,7 @@ namespace GogoKit.Tests.Http
                                     null))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.GetAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -166,6 +170,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.GetAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -186,6 +191,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                                     .Returns(Task.FromResult(CreateResponse(body: expectedResult)))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             var actualResult = await apiConnection.GetAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -238,6 +244,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object, resolver: mockResolver.Object);
 
             await apiConnection.PostAsync<Foo>(new Link { HRef = expectedUri.OriginalString }, null, null);
@@ -257,6 +264,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PostAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -277,6 +285,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PostAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, expectedBody);
@@ -296,6 +305,7 @@ namespace GogoKit.Tests.Http
                                     "application/hal+json"))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PostAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -315,6 +325,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PostAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -335,6 +346,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                                     .Returns(Task.FromResult(CreateResponse(body: expectedResult)))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             var actualResult = await apiConnection.PostAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -388,6 +400,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object, resolver: mockResolver.Object);
 
             await apiConnection.PatchAsync<Foo>(new Link { HRef = expectedUri.OriginalString }, null, null);
@@ -407,6 +420,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PatchAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -427,6 +441,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PatchAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, expectedBody);
@@ -446,6 +461,7 @@ namespace GogoKit.Tests.Http
                                     "application/hal+json"))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PatchAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -465,6 +481,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PatchAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -485,6 +502,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                                     .Returns(Task.FromResult(CreateResponse(body: expectedResult)))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             var actualResult = await apiConnection.PatchAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -537,6 +555,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object, resolver: mockResolver.Object);
 
             await apiConnection.PutAsync<Foo>(new Link { HRef = expectedUri.OriginalString }, null, null);
@@ -556,6 +575,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PutAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -576,6 +596,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PutAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, expectedBody);
@@ -595,6 +616,7 @@ namespace GogoKit.Tests.Http
                                     "application/hal+json"))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PutAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -614,6 +636,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<Foo>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.PutAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -634,6 +657,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                                     .Returns(Task.FromResult(CreateResponse(body: expectedResult)))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             var actualResult = await apiConnection.PutAsync<Foo>(new Link { HRef = "https://vgg.com/endpoint" }, null, null);
@@ -686,6 +710,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<object>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object, resolver: mockResolver.Object);
 
             await apiConnection.DeleteAsync(new Link { HRef = expectedUri.OriginalString }, null);
@@ -705,6 +730,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<object>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.DeleteAsync(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -724,6 +750,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<object>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.DeleteAsync(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -743,6 +770,7 @@ namespace GogoKit.Tests.Http
                                     null))
                     .Returns(Task.FromResult(CreateResponse<object>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.DeleteAsync(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -762,6 +790,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse<object>()))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             await apiConnection.DeleteAsync(new Link { HRef = "https://vgg.com/endpoint" }, null);
@@ -782,6 +811,7 @@ namespace GogoKit.Tests.Http
                                     It.IsAny<string>()))
                                     .Returns(Task.FromResult<IApiResponse<object>>(expectedResponse))
                     .Verifiable();
+            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var apiConnection = CreateConnection(conn: mockConn.Object);
 
             var actualResponse = await apiConnection.DeleteAsync(new Link { HRef = "https://vgg.com/endpoint" }, null);

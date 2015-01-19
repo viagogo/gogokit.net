@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GogoKit.Configuration;
 using GogoKit.Helpers;
 using GogoKit.Models;
 using GogoKit.Resources;
@@ -22,9 +23,15 @@ namespace GogoKit.Http
         public HypermediaConnection(IHttpConnection connection, ILinkResolver linkResolver)
         {
             Requires.ArgumentNotNull(connection, "connection");
+            Requires.ArgumentNotNull(linkResolver, "linkResolver");
 
             _connection = connection;
             _linkResolver = linkResolver;
+        }
+
+        public IConfiguration Configuration
+        {
+            get { return _connection.Configuration; }
         }
 
         public IHttpConnection HttpConnection
@@ -45,7 +52,7 @@ namespace GogoKit.Http
                 var currentPage = await SendRequestAsyncAndGetBody<PagedResource<T>>(
                                             HttpMethod.Get,
                                             currentLink,
-                                            currentParameters).ConfigureAwait(false);
+                                            currentParameters).ConfigureAwait(_connection.Configuration);
 
                 items.AddRange(currentPage.Items);
 
@@ -91,7 +98,7 @@ namespace GogoKit.Http
             object data = null,
             string contentType = null)
         {
-            var response = await SendRequestAsync<T>(method, link, parameters, accept, data, contentType).ConfigureAwait(false);
+            var response = await SendRequestAsync<T>(method, link, parameters, accept, data, contentType).ConfigureAwait(_connection.Configuration);
             return response.BodyAsObject;
         }
 
@@ -111,7 +118,7 @@ namespace GogoKit.Http
                                     method,
                                     accept,
                                     data,
-                                    contentType).ConfigureAwait(false);
+                                    contentType).ConfigureAwait(_connection.Configuration);
             return response;
         }
     }

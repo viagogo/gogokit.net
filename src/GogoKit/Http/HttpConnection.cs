@@ -9,31 +9,39 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
+using GogoKit.Configuration;
 using GogoKit.Json;
 
 namespace GogoKit.Http
 {
     public class HttpConnection : IHttpConnection
     {
+        private readonly ICredentialsProvider _credentialsProvider;
+        private readonly IConfiguration _configuration;
         private readonly IHttpClientWrapper _httpClient;
         private readonly IErrorHandler _errorHandler;
         private readonly IApiResponseFactory _responseFactory;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
 
-        public HttpConnection(ProductHeaderValue productHeader, ICredentialsProvider credentialsProvider)
+        public HttpConnection(ProductHeaderValue productHeader,
+                              ICredentialsProvider credentialsProvider,
+                              IConfiguration configuration)
             : this(productHeader,
                    credentialsProvider,
+                   configuration,
                    new HttpClientWrapper(),
                    new NewtonsoftJsonSerializer(),
-                   new ApiResponseFactory(new NewtonsoftJsonSerializer()),
-                   new ErrorHandler(new ApiResponseFactory(new NewtonsoftJsonSerializer())))
+                   new ApiResponseFactory(new NewtonsoftJsonSerializer(), configuration),
+                   new ErrorHandler(new ApiResponseFactory(new NewtonsoftJsonSerializer(), configuration),
+                                    configuration))
         {
         }
 
         public HttpConnection(
             ProductHeaderValue productHeader,
             ICredentialsProvider credentialsProvider,
+            IConfiguration configuration,
             IHttpClientWrapper httpClient,
             IJsonSerializer jsonSerializer,
             IApiResponseFactory responseFactory,
@@ -41,13 +49,15 @@ namespace GogoKit.Http
         {
             Requires.ArgumentNotNull(productHeader, "productHeader");
             Requires.ArgumentNotNull(credentialsProvider, "credentialsProvider");
+            Requires.ArgumentNotNull(configuration, "configuration");
             Requires.ArgumentNotNull(httpClient, "httpClient");
             Requires.ArgumentNotNull(errorHandler, "errorHandler");
             Requires.ArgumentNotNull(responseFactory, "responseFactory");
             Requires.ArgumentNotNull(jsonSerializer, "jsonSerializer");
 
             _userAgentHeaderValues = GetUserAgentHeaderValues(productHeader).ToList();
-            CredentialsProvider = credentialsProvider;
+            _credentialsProvider = credentialsProvider;
+            _configuration = configuration;
             _httpClient = httpClient;
             _errorHandler = errorHandler;
             _responseFactory = responseFactory;
@@ -75,7 +85,7 @@ namespace GogoKit.Http
         {
             using (var request = new HttpRequestMessage { RequestUri = uri, Method = method })
             {
-                var credentials = await CredentialsProvider.GetCredentialsAsync().ConfigureAwait(false);
+                var credentials = await CredentialsProvider.GetCredentialsAsync().ConfigureAwait(_configuration);
                 request.Headers.Authorization = AuthenticationHeaderValue.Parse(credentials.AuthorizationHeader);
                 foreach (var product in _userAgentHeaderValues)
                 {
@@ -83,16 +93,24 @@ namespace GogoKit.Http
                 }
 
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
-                request.Content = await GetRequestContentAsync(method, body, contentType).ConfigureAwait(false);
+                request.Content = await GetRequestContentAsync(method, body, contentType).ConfigureAwait(_configuration);
 
-                var responseMessage = await _httpClient.SendAsync(request, CancellationToken.None).ConfigureAwait(false);
+                var responseMessage = await _httpClient.SendAsync(request, CancellationToken.None).ConfigureAwait(_configuration);
 
-                await _errorHandler.ProcessResponseAsync(responseMessage).ConfigureAwait(false);
-                return await _responseFactory.CreateApiResponseAsync<T>(responseMessage).ConfigureAwait(false);
+                await _errorHandler.ProcessResponseAsync(responseMessage).ConfigureAwait(_configuration);
+                return await _responseFactory.CreateApiResponseAsync<T>(responseMessage).ConfigureAwait(_configuration);
             }
         }
 
-        public ICredentialsProvider CredentialsProvider { get; set; }
+        public ICredentialsProvider CredentialsProvider
+        {
+            get { return _credentialsProvider; }
+        }
+
+        public IConfiguration Configuration
+        {
+            get { return _configuration; }
+        }
 
         private async Task<HttpContent> GetRequestContentAsync(
             HttpMethod method,
@@ -124,7 +142,7 @@ namespace GogoKit.Http
             }
 
             // Anything else gets serialized to JSON
-            var bodyJson = await _jsonSerializer.SerializeAsync(body).ConfigureAwait(false);
+            var bodyJson = await _jsonSerializer.SerializeAsync(body).ConfigureAwait(_configuration);
             return new StringContent(bodyJson, Encoding.UTF8, contentType);
         }
     }

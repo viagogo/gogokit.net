@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using GogoKit.Configuration;
 using GogoKit.Http;
 using GogoKit.Json;
 using Moq;
@@ -13,10 +14,12 @@ namespace GogoKit.Tests.Http
     public class ApiResponseFactoryTests
     {
         private static ApiResponseFactory CreateFactory(
-            IJsonSerializer serializer = null)
+            IJsonSerializer serializer = null,
+            IConfiguration config = null)
         {
             return new ApiResponseFactory(
-                serializer ?? new Mock<IJsonSerializer>(MockBehavior.Loose).Object);
+                serializer ?? new Mock<IJsonSerializer>(MockBehavior.Loose).Object,
+                config ?? Configuration.Configuration.Default);
         }
 
         private class Foo

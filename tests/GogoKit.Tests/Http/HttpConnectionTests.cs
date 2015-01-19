@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
+using GogoKit.Configuration;
 using GogoKit.Http;
 using GogoKit.Json;
 using GogoKit.Tests.Fakes;
@@ -19,6 +20,7 @@ namespace GogoKit.Tests.Http
         private static HttpConnection CreateConnection(
             ProductHeaderValue productHeader = null,
             ICredentialsProvider credsPrv = null,
+            IConfiguration config = null,
             IHttpClientWrapper http = null,
             IErrorHandler errHandler = null,
             IApiResponseFactory respFact = null,
@@ -35,6 +37,7 @@ namespace GogoKit.Tests.Http
             return new HttpConnection(
                 productHeader ?? new ProductHeaderValue("Viagogo.Tests", "1.0"),
                 credsPrv ?? mockCredsPrv.Object,
+                config ?? Configuration.Configuration.Default,
                 http ?? new Mock<IHttpClientWrapper>(MockBehavior.Loose).Object,
                 json ?? new Mock<IJsonSerializer>(MockBehavior.Loose).Object,
                 respFact ?? new FakeApiResponseFactory(),

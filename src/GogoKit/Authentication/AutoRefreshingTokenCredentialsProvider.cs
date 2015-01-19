@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Clients;
+using GogoKit.Configuration;
 
 namespace GogoKit.Authentication
 {
@@ -9,30 +10,35 @@ namespace GogoKit.Authentication
     {
         private readonly IOAuth2TokenStore _tokenStore;
         private readonly IOAuth2Client _oauthClient;
+        private readonly IConfiguration _configuration;
 
         public AutoRefreshingTokenCredentialsProvider(IOAuth2Client oauthClient)
-            : this(oauthClient, new InMemoryOAuth2TokenStore())
+            : this(oauthClient, Configuration.Configuration.Default, new InMemoryOAuth2TokenStore())
         {
         }
 
-        public AutoRefreshingTokenCredentialsProvider(IOAuth2Client oauthClient, IOAuth2TokenStore tokenStore)
+        public AutoRefreshingTokenCredentialsProvider(
+            IOAuth2Client oauthClient,
+            IConfiguration configuration,
+            IOAuth2TokenStore tokenStore)
         {
             Requires.ArgumentNotNull(oauthClient, "oauthClient");
             Requires.ArgumentNotNull(tokenStore, "tokenStore");
 
             _oauthClient = oauthClient;
+            _configuration = configuration;
             _tokenStore = tokenStore;
         }
 
         public async Task<ICredentials> GetCredentialsAsync()
         {
-            var token = await _tokenStore.GetTokenAsync().ConfigureAwait(false);
+            var token = await _tokenStore.GetTokenAsync().ConfigureAwait(_configuration);
             if (token == null ||
                 token.IssueDate.AddSeconds(token.ExpiresIn) <= DateTime.UtcNow)
             {
                 if (token == null || token.RefreshToken == null)
                 {
-                    token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null).ConfigureAwait(false);
+                    token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null).ConfigureAwait(_configuration);
                 }
                 else
                 {
@@ -42,10 +48,10 @@ namespace GogoKit.Authentication
                                     new Dictionary<string, string>
                                 {
                                     {"refresh_token", token.RefreshToken}
-                                }).ConfigureAwait(false);
+                                }).ConfigureAwait(_configuration);
                 }
 
-                await _tokenStore.SetTokenAsync(token).ConfigureAwait(false);
+                await _tokenStore.SetTokenAsync(token).ConfigureAwait(_configuration);
             }
 
             return new BearerTokenCredentials(token.AccessToken);

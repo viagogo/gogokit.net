@@ -17,7 +17,7 @@ namespace GogoKit.Tests.Helpers
         {
             const string baseUrl = "http://base.url";
             var apiRootClient = CreateMockApiRootClient(baseUrl);
-            var composer = new ResourceLinkComposer(apiRootClient.Object);
+            var composer = new ResourceLinkComposer(apiRootClient.Object, Configuration.Configuration.Default);
 
             var fullUrlLink = await composer.ComposeLinkWithAbsolutePathForResource(new Uri("relative/url", UriKind.Relative));
 
@@ -29,7 +29,7 @@ namespace GogoKit.Tests.Helpers
         {
             const string baseUrl = "http://base.url";
             var apiRootClient = CreateMockApiRootClient(baseUrl);
-            var composer = new ResourceLinkComposer(apiRootClient.Object);
+            var composer = new ResourceLinkComposer(apiRootClient.Object, Configuration.Configuration.Default);
 
             Assert.Throws<ArgumentNullException>(async () => await composer.ComposeLinkWithAbsolutePathForResource(null));
         }

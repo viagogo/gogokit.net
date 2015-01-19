@@ -14,17 +14,11 @@ namespace GogoKit.Clients
         private readonly Uri _tokenUrl;
 
         public OAuth2Client(IHttpConnection connection)
-            : this(connection, ViagogoClient.ViagogoDotComUrl)
-        {
-        }
-
-        public OAuth2Client(IHttpConnection connection, Uri viagogoDotComUrl)
         {
             Requires.ArgumentNotNull(connection, "connection");
-            Requires.ArgumentNotNull(viagogoDotComUrl, "viagogoDotComUrl");
 
             _connection = connection;
-            _tokenUrl = new Uri(viagogoDotComUrl, "/secure/oauth2/token");
+            _tokenUrl = new Uri(connection.Configuration.ViagogoDotComUrl, "/secure/oauth2/token");
         }
 
         public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
@@ -43,7 +37,7 @@ namespace GogoKit.Clients
                                     HttpMethod.Post,
                                     "application/json",
                                     new FormUrlEncodedContent(parameters),
-                                    null).ConfigureAwait(false);
+                                    null).ConfigureAwait(_connection.Configuration);
             var token = response.BodyAsObject;
 
             token.IssueDate = response.Headers.ContainsKey("Date")

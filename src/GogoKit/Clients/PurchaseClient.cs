@@ -18,8 +18,8 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Purchase>> GetAllPurchasesAsync()
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(false);
-            return await _connection.GetAllPagesAsync<Purchase>(user.Links["user:purchases"], null).ConfigureAwait(false);
+            var user = await _userClient.GetAsync().ConfigureAwait(_connection);
+            return await _connection.GetAllPagesAsync<Purchase>(user.Links["user:purchases"], null).ConfigureAwait(_connection);
         }
     }
 }

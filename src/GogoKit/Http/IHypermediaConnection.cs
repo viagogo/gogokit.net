@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Configuration;
 using GogoKit.Models;
 using GogoKit.Resources;
 
@@ -7,6 +8,8 @@ namespace GogoKit.Http
 {
     public interface IHypermediaConnection
     {
+        IConfiguration Configuration { get; }
+
         IHttpConnection HttpConnection { get; }
 
         Task<T> GetAsync<T>(Link link, IDictionary<string, string> parameters);

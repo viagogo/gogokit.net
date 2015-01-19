@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GogoKit.Configuration;
 using GogoKit.Json;
 
 namespace GogoKit.Http
@@ -8,10 +9,12 @@ namespace GogoKit.Http
     public class ApiResponseFactory : IApiResponseFactory
     {
         private readonly IJsonSerializer _jsonSerializer;
+        private readonly IConfiguration _configuration;
 
-        public ApiResponseFactory(IJsonSerializer jsonSerializer)
+        public ApiResponseFactory(IJsonSerializer jsonSerializer, IConfiguration configuration)
         {
             _jsonSerializer = jsonSerializer;
+            _configuration = configuration;
         }
 
         public async Task<IApiResponse<T>> CreateApiResponseAsync<T>(HttpResponseMessage response)
@@ -24,15 +27,15 @@ namespace GogoKit.Http
                 {
                     if (typeof(T) != typeof(byte[]))
                     {
-                        body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        body = await response.Content.ReadAsStringAsync().ConfigureAwait(_configuration);
                         if (body != null && IsJsonContent(response.Content))
                         {
-                            bodyAsObject = await _jsonSerializer.DeserializeAsync<T>(body).ConfigureAwait(false);
+                            bodyAsObject = await _jsonSerializer.DeserializeAsync<T>(body).ConfigureAwait(_configuration);
                         }
                     }
                     else
                     {
-                        bodyAsObject = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                        bodyAsObject = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(_configuration);
                     }
                 }
             }

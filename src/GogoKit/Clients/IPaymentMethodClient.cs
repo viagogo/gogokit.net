@@ -10,10 +10,10 @@ namespace GogoKit.Clients
     {
         Task<IReadOnlyList<PaymentMethod>> GetAllPaymentMethodsAsync();
         Task<PaymentMethod> GetPaymentMethodAsync(int paymentMethodId);
-        Task<PaymentMethod> CreateCreditCardPaymentMethod(PaymentMethodCreate paymentMethod);
-        Task<PaymentMethod> CreatePaypalPaymentMethod(PaymentMethodCreate paymentMethod);
-        Task<PaymentMethod> UpdatePaypalPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
-        Task<PaymentMethod> UpdateCreditCardPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
-        Task<IApiResponse> DeletePaymentMethod(int paymentMethodId);
+        Task<PaymentMethod> CreateCreditCardPaymentMethodAsync(PaymentMethodCreate paymentMethod);
+        Task<PaymentMethod> CreatePaypalPaymentMethodAsync(PaymentMethodCreate paymentMethod);
+        Task<PaymentMethod> UpdatePaypalPaymentMethodAsync(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
+        Task<PaymentMethod> UpdateCreditCardPaymentMethodAsync(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate);
+        Task<IApiResponse> DeletePaymentMethodAsync(int paymentMethodId);
     }
 }

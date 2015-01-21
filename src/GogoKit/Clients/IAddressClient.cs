@@ -9,9 +9,9 @@ namespace GogoKit.Clients
     public interface IAddressClient
     {
         Task<IReadOnlyList<Address>> GetAllAddressesAsync();
-        Task<PagedResource<Address>> GetAddresses(int page, int pageSize);
-        Task<Address> CreateAddress(AddressCreate addressCreate);
-        Task<Address> UpdateAddress(int addressId, AddressUpdate addressUpdate);
-        Task<IApiResponse> DeleteAddress(int addressId);
+        Task<PagedResource<Address>> GetAddressesAsync(int page, int pageSize);
+        Task<Address> CreateAddressAsync(AddressCreate addressCreate);
+        Task<Address> UpdateAddressAsync(int addressId, AddressUpdate addressUpdate);
+        Task<IApiResponse> DeleteAddressAsync(int addressId);
     }
 }

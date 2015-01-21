@@ -51,7 +51,7 @@ namespace GogoKit.Clients
             return await _connection.GetAsync<PaymentMethod>(updatePaymentMethodUrl, null).ConfigureAwait(_connection);
         }
 
-        public Task<PaymentMethod> CreatePaypalPaymentMethod(PaymentMethodCreate paymentMethod)
+        public Task<PaymentMethod> CreatePaypalPaymentMethodAsync(PaymentMethodCreate paymentMethod)
         {
             return CreatePaymentMethod(paymentMethod, "PayPal");
         }
@@ -65,17 +65,17 @@ namespace GogoKit.Clients
                 paymentMethod).ConfigureAwait(_connection);
         }
 
-        public Task<PaymentMethod> CreateCreditCardPaymentMethod(PaymentMethodCreate paymentMethod)
+        public Task<PaymentMethod> CreateCreditCardPaymentMethodAsync(PaymentMethodCreate paymentMethod)
         {
             return CreatePaymentMethod(paymentMethod, "CreditCard");
         }
 
-        public Task<PaymentMethod> UpdatePaypalPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate)
+        public Task<PaymentMethod> UpdatePaypalPaymentMethodAsync(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate)
         {
             return UpdatePaymentMethod(paymentMethodId, paymentMethodUpdate, "PayPal");
         }
 
-        public Task<PaymentMethod> UpdateCreditCardPaymentMethod(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate)
+        public Task<PaymentMethod> UpdateCreditCardPaymentMethodAsync(int paymentMethodId, PaymentMethodUpdate paymentMethodUpdate)
         {
             return UpdatePaymentMethod(paymentMethodId, paymentMethodUpdate, "CreditCard");
         }
@@ -93,7 +93,7 @@ namespace GogoKit.Clients
                 paymentMethodUpdate).ConfigureAwait(_connection);
         }
 
-        public async Task<IApiResponse> DeletePaymentMethod(int paymentMethodId)
+        public async Task<IApiResponse> DeletePaymentMethodAsync(int paymentMethodId)
         {
             var deletePaymentMethodLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeletePaymentMethodUri(paymentMethodId))
                                                                      .ConfigureAwait(_connection);

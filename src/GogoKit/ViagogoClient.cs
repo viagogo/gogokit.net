@@ -21,7 +21,10 @@ namespace GogoKit
         private readonly ICurrencyClient _currencyClient;
         private readonly IPaymentMethodClient _paymentMethodClient;
         private readonly ICategoryClient _categoryClient;
-
+        private readonly IEventClient _eventClient;
+        private readonly IListingClient _listingClient;
+        private readonly IVenueClient _venueClient;
+        
         public ViagogoClient(
             string clientId,
             string clientSecret,
@@ -82,6 +85,9 @@ namespace GogoKit
             _countryClient = new CountryClient(_rootClient, _connection);
             _currencyClient = new CurrencyClient(_rootClient, _connection);
             _categoryClient = new CategoryClient(_rootClient, _connection, resourceUrlComposer);
+            _eventClient = new EventClient(_rootClient, _connection);
+            _listingClient = new ListingClient(_rootClient, _connection);
+            _venueClient = new VenueClient(_rootClient, _connection);
         }
 
         public IConfiguration Configuration
@@ -142,6 +148,21 @@ namespace GogoKit
         public ICategoryClient Category
         {
             get { return _categoryClient; }
+        }
+
+        public IEventClient Event
+        {
+            get { return _eventClient;  }
+        }
+
+        public IListingClient Listing
+        {
+            get { return _listingClient; }
+        }
+
+        public IVenueClient Venue
+        {
+            get { return _venueClient; }
         }
 
         private static IHttpConnection CreateOAuthConnection(

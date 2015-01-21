@@ -39,7 +39,7 @@ namespace GogoKit.Clients
             return await _connection.GetAllPagesAsync<Address>(user.Links["user:addresses"], null).ConfigureAwait(_connection);
         }
 
-        public async Task<PagedResource<Address>> GetAddresses(int page, int pageSize)
+        public async Task<PagedResource<Address>> GetAddressesAsync(int page, int pageSize)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_connection);
             return await _connection.GetAsync<PagedResource<Address>>(
@@ -51,20 +51,20 @@ namespace GogoKit.Clients
                 }).ConfigureAwait(_connection);
         }
 
-        public async Task<Address> CreateAddress(AddressCreate addressCreate)
+        public async Task<Address> CreateAddressAsync(AddressCreate addressCreate)
         {
-            var addresses = await GetAddresses(1, 1).ConfigureAwait(_connection);
+            var addresses = await GetAddressesAsync(1, 1).ConfigureAwait(_connection);
             var createAddressLink = addresses.Links["address:create"];
             return await _connection.PostAsync<Address>(createAddressLink, null, addressCreate).ConfigureAwait(_connection);
         }
 
-        public async Task<Address> UpdateAddress(int addressId, AddressUpdate addressUpdate)
+        public async Task<Address> UpdateAddressAsync(int addressId, AddressUpdate addressUpdate)
         {
             var updateAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(UpdateAddressUri(addressId)).ConfigureAwait(_connection);
             return await _connection.PatchAsync<Address>(updateAddressLink, null, addressUpdate).ConfigureAwait(_connection);
         }
 
-        public async Task<IApiResponse> DeleteAddress(int addressId)
+        public async Task<IApiResponse> DeleteAddressAsync(int addressId)
         {
             var deleteAddressLink = await _resourceLinkComposer.ComposeLinkWithAbsolutePathForResource(DeleteAddressUri(addressId)).ConfigureAwait(_connection);
             return await _connection.DeleteAsync(deleteAddressLink, null).ConfigureAwait(_connection);

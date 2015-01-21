@@ -18,5 +18,8 @@ namespace GogoKit
         ICurrencyClient Currency { get; }
         IPaymentMethodClient PaymentMethod { get; }
         ICategoryClient Category { get; }
+        IEventClient Event { get; }
+        IListingClient Listing { get; }
+        IVenueClient Venue { get; }
     }
 }

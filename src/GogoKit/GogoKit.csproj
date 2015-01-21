@@ -42,14 +42,20 @@
     <Compile Include="Clients\CategoryClient.cs" />
     <Compile Include="Clients\CountryClient.cs" />
     <Compile Include="Clients\CurrencyClient.cs" />
+    <Compile Include="Clients\EventClient.cs" />
     <Compile Include="Clients\IAddressClient.cs" />
     <Compile Include="Clients\ICategoryClient.cs" />
     <Compile Include="Clients\ICountryClient.cs" />
     <Compile Include="Clients\ICurrencyClient.cs" />
+    <Compile Include="Clients\IEventClient.cs" />
+    <Compile Include="Clients\IListingClient.cs" />
     <Compile Include="Clients\IPaymentMethodClient.cs" />
     <Compile Include="Clients\IPurchaseClient.cs" />
+    <Compile Include="Clients\IVenueClient.cs" />
+    <Compile Include="Clients\ListingClient.cs" />
     <Compile Include="Clients\PaymentMethodClient.cs" />
     <Compile Include="Clients\PurchaseClient.cs" />
+    <Compile Include="Clients\VenueClient.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -61,6 +67,7 @@
     <Compile Include="Models\Money.cs" />
     <Compile Include="Models\PaymentMethodCreate.cs" />
     <Compile Include="Models\PaymentMethodUpdate.cs" />
+    <Compile Include="Models\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
@@ -126,6 +133,8 @@
     <Compile Include="Resources\Category.cs" />
     <Compile Include="Resources\Country.cs" />
     <Compile Include="Resources\Currency.cs" />
+    <Compile Include="Resources\Event.cs" />
+    <Compile Include="Resources\Listing.cs" />
     <Compile Include="Resources\PagedResource.cs" />
     <Compile Include="Resources\PaymentMethod.cs" />
     <Compile Include="Resources\Purchase.cs" />
@@ -136,7 +145,9 @@
     <Compile Include="Http\ApiResponse.cs" />
     <Compile Include="Requires.cs" />
     <Compile Include="Resources\SearchResult.cs" />
+    <Compile Include="Models\Seating.cs" />
     <Compile Include="Resources\User.cs" />
+    <Compile Include="Resources\Venue.cs" />
     <Compile Include="ViagogoClient.cs" />
   </ItemGroup>
   <ItemGroup>

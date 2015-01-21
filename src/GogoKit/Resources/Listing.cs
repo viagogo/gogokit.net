@@ -12,7 +12,7 @@ namespace GogoKit.Resources
     public class Listing : Resource
     {
         [DataMember(Name = "id", Order = 1)]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [DataMember(Name = "number_of_tickets", Order = 2)]
         public int? NumberOfTickets { get; set; }

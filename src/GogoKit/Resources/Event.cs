@@ -8,7 +8,7 @@ namespace GogoKit.Resources
     public class Event : Resource
     {
         [DataMember(Name = "id", Order = 0)]
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [DataMember(Name = "name", Order = 1)]
         public string Name { get; set; }

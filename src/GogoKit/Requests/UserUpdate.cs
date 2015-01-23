@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace GogoKit.RequestModels
+namespace GogoKit.Requests
 {
     [DataContract]
     public class UserUpdate

@@ -62,11 +62,11 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Helpers\IResourceLinkComposer.cs" />
     <Compile Include="Helpers\ResourceLinkComposer.cs" />
-    <Compile Include="Models\AddressCreate.cs" />
-    <Compile Include="Models\AddressUpdate.cs" />
+    <Compile Include="Requests\NewAddress.cs" />
+    <Compile Include="Requests\AddressUpdate.cs" />
     <Compile Include="Models\Money.cs" />
-    <Compile Include="Models\PaymentMethodCreate.cs" />
-    <Compile Include="Models\PaymentMethodUpdate.cs" />
+    <Compile Include="Requests\NewPaymentMethod.cs" />
+    <Compile Include="Requests\PaymentMethodUpdate.cs" />
     <Compile Include="Models\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">
@@ -126,7 +126,7 @@
     <Compile Include="Json\ResourceConverter.cs" />
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="Models\Link.cs" />
-    <Compile Include="RequestModels\UserUpdate.cs" />
+    <Compile Include="Requests\UserUpdate.cs" />
     <Compile Include="Resources\Address.cs" />
     <Compile Include="Resources\ApiRoot.cs" />
     <Compile Include="Models\LinkCollection.cs" />

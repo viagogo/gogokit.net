@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace GogoKit.Models
+namespace GogoKit.Requests
 {
     [DataContract]
-    public class PaymentMethodCreate : PaymentMethodUpdate
+    public class NewPaymentMethod : PaymentMethodUpdate
     {
         // Shared fields
         [DataMember(Name = "full_name")]

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using GogoKit.RequestModels;
+using GogoKit.Requests;
 using GogoKit.Resources;
 
 namespace GogoKit.Clients

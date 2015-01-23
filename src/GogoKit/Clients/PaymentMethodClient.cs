@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GogoKit.Helpers;
 using GogoKit.Http;
 using GogoKit.Models;
+using GogoKit.Requests;
 using GogoKit.Resources;
 
 namespace GogoKit.Clients
@@ -51,12 +52,12 @@ namespace GogoKit.Clients
             return await _connection.GetAsync<PaymentMethod>(updatePaymentMethodUrl, null).ConfigureAwait(_connection);
         }
 
-        public Task<PaymentMethod> CreatePaypalPaymentMethodAsync(PaymentMethodCreate paymentMethod)
+        public Task<PaymentMethod> CreatePaypalPaymentMethodAsync(NewPaymentMethod paymentMethod)
         {
             return CreatePaymentMethod(paymentMethod, "PayPal");
         }
 
-        private async Task<PaymentMethod> CreatePaymentMethod(PaymentMethodCreate paymentMethod, string paymentMethodType)
+        private async Task<PaymentMethod> CreatePaymentMethod(NewPaymentMethod paymentMethod, string paymentMethodType)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_connection);
             return await _connection.PostAsync<PaymentMethod>(
@@ -65,7 +66,7 @@ namespace GogoKit.Clients
                 paymentMethod).ConfigureAwait(_connection);
         }
 
-        public Task<PaymentMethod> CreateCreditCardPaymentMethodAsync(PaymentMethodCreate paymentMethod)
+        public Task<PaymentMethod> CreateCreditCardPaymentMethodAsync(NewPaymentMethod paymentMethod)
         {
             return CreatePaymentMethod(paymentMethod, "CreditCard");
         }

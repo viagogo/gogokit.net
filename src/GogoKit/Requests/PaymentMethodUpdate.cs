@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace GogoKit.Models
+namespace GogoKit.Requests
 {
     [DataContract]
     public class PaymentMethodUpdate

@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace GogoKit.Models
+namespace GogoKit.Resources
 {
     [DataContract]
-    public class TicketType
+    public class TicketType : Resource
     {
         [DataMember(Name = "type")]
         public string Type { get; set; }

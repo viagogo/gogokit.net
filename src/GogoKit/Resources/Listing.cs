@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 using GogoKit.Json;
 using GogoKit.Models;
 
@@ -11,40 +6,40 @@ namespace GogoKit.Resources
 {
     public class Listing : Resource
     {
-        [DataMember(Name = "id", Order = 1)]
+        [DataMember(Name = "id")]
         public int Id { get; set; }
 
-        [DataMember(Name = "number_of_tickets", Order = 2)]
+        [DataMember(Name = "number_of_tickets")]
         public int? NumberOfTickets { get; set; }
 
-        [DataMember(Name = "seating", Order = 3)]
+        [DataMember(Name = "seating")]
         public Seating Seating { get; set; }
 
-        [DataMember(Name = "pickup_available", Order = 4)]
+        [DataMember(Name = "pickup_available")]
         public bool? IsPickupAvailable { get; set; }
 
-        [DataMember(Name = "download_available", Order = 5)]
+        [DataMember(Name = "download_available")]
         public bool? IsDownloadAvailable { get; set; }
 
-        [DataMember(Name = "ticket_price", Order = 6)]
+        [DataMember(Name = "ticket_price")]
         public Money TicketPrice { get; set; }
 
-        [DataMember(Name = "estimated_ticket_price", Order = 7)]
+        [DataMember(Name = "estimated_ticket_price")]
         public Money EstimatedTicketPrice { get; set; }
 
-        [DataMember(Name = "estimated_total_ticket_price", Order = 8)]
+        [DataMember(Name = "estimated_total_ticket_price")]
         public Money EstimatedTotalTicketPrice { get; set; }
 
-        [DataMember(Name = "estimated_booking_fee", Order = 9)]
+        [DataMember(Name = "estimated_booking_fee")]
         public Money EstimatedBookingFee { get; set; }
 
-        [DataMember(Name = "estimated_shipping", Order = 10)]
+        [DataMember(Name = "estimated_shipping")]
         public Money EstimatedShipping { get; set; }
 
-        [DataMember(Name = "estimated_vat", Order = 11)]
+        [DataMember(Name = "estimated_vat")]
         public Money EstimatedVat { get; set; }
 
-        [DataMember(Name = "estimated_total_charge", Order = 12)]
+        [DataMember(Name = "estimated_total_charge")]
         public Money EstimatedTotalCharge { get; set; }
 
         [Embedded("ticket_type")]

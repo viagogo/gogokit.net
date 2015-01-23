@@ -67,7 +67,7 @@
     <Compile Include="Models\Money.cs" />
     <Compile Include="Requests\NewPaymentMethod.cs" />
     <Compile Include="Requests\PaymentMethodUpdate.cs" />
-    <Compile Include="Models\TicketType.cs" />
+    <Compile Include="Resources\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>

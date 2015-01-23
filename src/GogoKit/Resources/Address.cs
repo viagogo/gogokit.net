@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using GogoKit.Json;
 
 namespace GogoKit.Resources
 {
@@ -31,5 +32,8 @@ namespace GogoKit.Resources
 
         [DataMember(Name = "postal_code")]
         public string PostalCode { get; set; }
+
+        [Embedded("country")]
+        public Country Country { get; set; }
     }
 }

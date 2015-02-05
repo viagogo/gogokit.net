@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Helpers;
 using GogoKit.Http;
-using GogoKit.Models;
 using GogoKit.Requests;
 using GogoKit.Resources;
 
@@ -52,11 +51,11 @@ namespace GogoKit.Clients
                 }).ConfigureAwait(_connection);
         }
 
-        public async Task<Address> CreateAddressAsync(NewAddress addressCreate)
+        public async Task<Address> CreateAddressAsync(NewAddress address)
         {
             var addresses = await GetAddressesAsync(1, 1).ConfigureAwait(_connection);
             var createAddressLink = addresses.Links["address:create"];
-            return await _connection.PostAsync<Address>(createAddressLink, null, addressCreate).ConfigureAwait(_connection);
+            return await _connection.PostAsync<Address>(createAddressLink, null, address).ConfigureAwait(_connection);
         }
 
         public async Task<Address> UpdateAddressAsync(int addressId, AddressUpdate addressUpdate)

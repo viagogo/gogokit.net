@@ -20,9 +20,9 @@ namespace GogoKit.Tests.Clients
         }
 
         [Test]
-        public async void GetAsync_ShouldPassConfigurationV2RootEndpointToConnection()
+        public async void GetAsync_ShouldPassConfigurationV2RootEndpointWithEmbedUserParam_ToConnection()
         {
-            var expectedUri = new Uri("https://api.vgg.com/v2");
+            var expectedUri = new Uri("https://api.vgg.com/v2?embed=user");
             var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<ApiRoot>(expectedUri,
                                                             It.IsAny<HttpMethod>(),

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Http;
-using GogoKit.Models;
 using GogoKit.Requests;
 using GogoKit.Resources;
 
@@ -11,7 +10,7 @@ namespace GogoKit.Clients
     {
         Task<IReadOnlyList<Address>> GetAllAddressesAsync();
         Task<PagedResource<Address>> GetAddressesAsync(int page, int pageSize);
-        Task<Address> CreateAddressAsync(NewAddress addressCreate);
+        Task<Address> CreateAddressAsync(NewAddress address);
         Task<Address> UpdateAddressAsync(int addressId, AddressUpdate addressUpdate);
         Task<IApiResponse> DeleteAddressAsync(int addressId);
     }

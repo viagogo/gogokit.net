@@ -15,7 +15,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(connection, "connection");
 
-            _apiRootUrl = new Uri(connection.Configuration.ViagogoApiUrl, "/v2");
+            _apiRootUrl = new Uri(connection.Configuration.ViagogoApiUrl, "/v2?embed=user");
             _connection = connection;
         }
 

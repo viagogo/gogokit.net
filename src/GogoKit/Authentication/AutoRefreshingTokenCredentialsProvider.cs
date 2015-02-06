@@ -43,7 +43,7 @@ namespace GogoKit.Authentication
                 else
                 {
                     token = await _oauthClient.GetAccessTokenAsync(
-                                    "refresh",
+                                    "refresh_token",
                                     (token.Scope ?? "").Split(' '),
                                     new Dictionary<string, string>
                                 {

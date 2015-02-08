@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using GogoKit.Json;
 
 namespace GogoKit.Resources
 {
@@ -28,5 +29,8 @@ namespace GogoKit.Resources
 
         [DataMember(Name = "default_seller_method")]
         public bool? IsDefaultSellMethod { get; set; }
+
+        [Embedded("billing_address")]
+        public Address BillingAddress { get; set; }
     }
 }

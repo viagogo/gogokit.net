@@ -38,22 +38,22 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Clients\AddressClient.cs" />
+    <Compile Include="Clients\AddressesClient.cs" />
     <Compile Include="Clients\CategoryClient.cs" />
     <Compile Include="Clients\CountryClient.cs" />
     <Compile Include="Clients\CurrencyClient.cs" />
     <Compile Include="Clients\EventClient.cs" />
-    <Compile Include="Clients\IAddressClient.cs" />
+    <Compile Include="Clients\IAddressesClient.cs" />
     <Compile Include="Clients\ICategoryClient.cs" />
     <Compile Include="Clients\ICountryClient.cs" />
     <Compile Include="Clients\ICurrencyClient.cs" />
     <Compile Include="Clients\IEventClient.cs" />
     <Compile Include="Clients\IListingClient.cs" />
-    <Compile Include="Clients\IPaymentMethodClient.cs" />
+    <Compile Include="Clients\IPaymentMethodsClient.cs" />
     <Compile Include="Clients\IPurchaseClient.cs" />
     <Compile Include="Clients\IVenueClient.cs" />
     <Compile Include="Clients\ListingClient.cs" />
-    <Compile Include="Clients\PaymentMethodClient.cs" />
+    <Compile Include="Clients\PaymentMethodsClient.cs" />
     <Compile Include="Clients\PurchaseClient.cs" />
     <Compile Include="Clients\VenueClient.cs" />
     <Compile Include="Configuration\Configuration.cs" />
@@ -65,7 +65,9 @@
     <Compile Include="Requests\NewAddress.cs" />
     <Compile Include="Requests\AddressUpdate.cs" />
     <Compile Include="Models\Money.cs" />
+    <Compile Include="Requests\NewCreditCard.cs" />
     <Compile Include="Requests\NewPaymentMethod.cs" />
+    <Compile Include="Requests\NewPayPal.cs" />
     <Compile Include="Requests\PaymentMethodUpdate.cs" />
     <Compile Include="Resources\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

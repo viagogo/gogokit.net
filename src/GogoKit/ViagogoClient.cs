@@ -15,11 +15,11 @@ namespace GogoKit
         private readonly IApiRootClient _rootClient;
         private readonly IUserClient _userClient;
         private readonly ISearchClient _searchClient;
-        private readonly IAddressClient _addressClient;
+        private readonly IAddressesClient _addressesClient;
         private readonly IPurchaseClient _purchaseClient;
         private readonly ICountryClient _countryClient;
         private readonly ICurrencyClient _currencyClient;
-        private readonly IPaymentMethodClient _paymentMethodClient;
+        private readonly IPaymentMethodsClient _paymentMethodsClients;
         private readonly ICategoryClient _categoryClient;
         private readonly IEventClient _eventClient;
         private readonly IListingClient _listingClient;
@@ -79,9 +79,9 @@ namespace GogoKit
             _connection = new HypermediaConnection(connection);
             _userClient = new UserClient(_rootClient, _connection);
             _searchClient = new SearchClient(_rootClient, _connection);
-            _addressClient = new AddressClient(_userClient, _connection, resourceUrlComposer);
+            _addressesClient = new AddressesClient(_userClient, _connection, resourceUrlComposer);
             _purchaseClient = new PurchaseClient(_userClient, _connection);
-            _paymentMethodClient = new PaymentMethodClient(_userClient, _connection, resourceUrlComposer);
+            _paymentMethodsClients = new PaymentMethodsClient(_userClient, _connection, resourceUrlComposer);
             _countryClient = new CountryClient(_rootClient, _connection);
             _currencyClient = new CurrencyClient(_rootClient, _connection);
             _categoryClient = new CategoryClient(_rootClient, _connection, resourceUrlComposer);
@@ -120,9 +120,9 @@ namespace GogoKit
             get { return _searchClient; }
         }
 
-        public IAddressClient Address
+        public IAddressesClient Addresses
         {
-            get { return _addressClient; }
+            get { return _addressesClient; }
         }
 
         public IPurchaseClient Purchase
@@ -140,9 +140,9 @@ namespace GogoKit
             get { return _currencyClient; }
         }
 
-        public IPaymentMethodClient PaymentMethod
+        public IPaymentMethodsClient PaymentMethods
         {
-            get { return _paymentMethodClient; }
+            get { return _paymentMethodsClients; }
         }
 
         public ICategoryClient Category

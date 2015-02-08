@@ -1,2 +1,2 @@
-### New in 0.1.0-beta7 (Released 2014/01/21)
+### New in 0.1.0-beta8 (Released 2015/02/08)
 * Initial release

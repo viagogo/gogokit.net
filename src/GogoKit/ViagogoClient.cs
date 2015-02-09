@@ -16,8 +16,8 @@ namespace GogoKit
         private readonly IUserClient _userClient;
         private readonly ISearchClient _searchClient;
         private readonly IAddressesClient _addressesClient;
-        private readonly IPurchaseClient _purchaseClient;
-        private readonly ICountryClient _countryClient;
+        private readonly IPurchasesClient _purchaseClient;
+        private readonly ICountriesClient _countriesClient;
         private readonly ICurrencyClient _currencyClient;
         private readonly IPaymentMethodsClient _paymentMethodsClients;
         private readonly ICategoryClient _categoryClient;
@@ -80,9 +80,9 @@ namespace GogoKit
             _userClient = new UserClient(_rootClient, _connection);
             _searchClient = new SearchClient(_rootClient, _connection);
             _addressesClient = new AddressesClient(_userClient, _connection, resourceUrlComposer);
-            _purchaseClient = new PurchaseClient(_userClient, _connection);
+            _purchaseClient = new PurchasesClient(_userClient, _connection, resourceUrlComposer);
             _paymentMethodsClients = new PaymentMethodsClient(_userClient, _connection, resourceUrlComposer);
-            _countryClient = new CountryClient(_rootClient, _connection);
+            _countriesClient = new CountriesClient(_rootClient, _connection, resourceUrlComposer);
             _currencyClient = new CurrencyClient(_rootClient, _connection);
             _categoryClient = new CategoryClient(_rootClient, _connection, resourceUrlComposer);
             _eventClient = new EventClient(_rootClient, _connection);
@@ -125,14 +125,14 @@ namespace GogoKit
             get { return _addressesClient; }
         }
 
-        public IPurchaseClient Purchase
+        public IPurchasesClient Purchases
         {
             get { return _purchaseClient; }
         }
 
-        public ICountryClient Country
+        public ICountriesClient Countries
         {
-            get { return _countryClient; }
+            get { return _countriesClient; }
         }
 
         public ICurrencyClient Currency

@@ -13,8 +13,8 @@ namespace GogoKit
         IUserClient User { get; }
         ISearchClient Search { get; }
         IAddressesClient Addresses { get; }
-        IPurchaseClient Purchase { get; }
-        ICountryClient Country { get; }
+        IPurchasesClient Purchases { get; }
+        ICountriesClient Countries { get; }
         ICurrencyClient Currency { get; }
         IPaymentMethodsClient PaymentMethods { get; }
         ICategoryClient Category { get; }

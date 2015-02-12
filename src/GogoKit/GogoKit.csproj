@@ -58,10 +58,11 @@
     <Compile Include="Clients\VenuesClient.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Exceptions\InternalServerErrorException.cs" />
+    <Compile Include="Exceptions\SslConnectionRequiredException.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
-    <Compile Include="Helpers\IResourceLinkComposer.cs" />
-    <Compile Include="Helpers\ResourceLinkComposer.cs" />
+    <Compile Include="Helpers\ILinkFactory.cs" />
+    <Compile Include="Helpers\LinkFactory.cs" />
     <Compile Include="Models\AddressSnapshot.cs" />
     <Compile Include="Requests\NewAddress.cs" />
     <Compile Include="Requests\AddressUpdate.cs" />

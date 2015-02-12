@@ -10,21 +10,20 @@ namespace GogoKit.Clients
     {
         private readonly IApiRootClient _rootClient;
         private readonly IHypermediaConnection _connection;
-        private readonly IResourceLinkComposer _linkHelper;
+        private readonly ILinkFactory _linkFactory;
 
         public CurrenciesClient(IApiRootClient rootClient,
                                 IHypermediaConnection connection,
-                                IResourceLinkComposer linkHelper)
+                                ILinkFactory linkFactory)
         {
             _rootClient = rootClient;
             _connection = connection;
-            _linkHelper = linkHelper;
+            _linkFactory = linkFactory;
         }
 
         public async Task<Currency> GetAsync(string code)
         {
-            var currencyLink = await _linkHelper.ComposeLinkWithAbsolutePathForResource(
-                                    "currencies/{0}".FormatUri(code)).ConfigureAwait(_connection);
+            var currencyLink = await _linkFactory.CreateLinkAsync("currencies/{0}", code).ConfigureAwait(_connection);
             return await _connection.GetAsync<Currency>(currencyLink, null).ConfigureAwait(_connection);
         }
 

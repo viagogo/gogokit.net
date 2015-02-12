@@ -11,15 +11,15 @@ namespace GogoKit.Clients
     {
         private readonly IUserClient _userClient;
         private readonly IHypermediaConnection _connection;
-        private readonly IResourceLinkComposer _linkHelper;
+        private readonly ILinkFactory _linkFactory;
 
         public AddressesClient(IUserClient userClient,
                                IHypermediaConnection connection,
-                               IResourceLinkComposer linkHelper)
+                               ILinkFactory linkFactory)
         {
             _userClient = userClient;
             _connection = connection;
-            _linkHelper = linkHelper;
+            _linkFactory = linkFactory;
         }
 
         public async Task<IReadOnlyList<Address>> GetAllAsync()
@@ -43,8 +43,7 @@ namespace GogoKit.Clients
 
         public async Task<Address> GetAsync(int addressId)
         {
-            var addressLink = await _linkHelper.ComposeLinkWithAbsolutePathForResource(
-                                    "addresses/{0}".FormatUri(addressId)).ConfigureAwait(_connection);
+            var addressLink = await _linkFactory.CreateLinkAsync("addresses/{0}", addressId).ConfigureAwait(_connection);
             return await _connection.GetAsync<Address>(addressLink, null).ConfigureAwait(_connection);
         }
 

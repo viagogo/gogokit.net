@@ -54,6 +54,8 @@ namespace GogoKit.Tests.Http
             new object[] {"listing_conflict", typeof(ListingConflictException)},
             new object[] {"purchase_still_processing", typeof(PurchaseStillProcessingException)},
             new object[] {"invalid_delete", typeof(InvalidDeleteException)},
+            new object[] {"https_required", typeof(SslConnectionRequiredException)},
+            new object[] {"internal_server_error", typeof(InternalServerErrorException)},
         };
 
         [Test, TestCaseSource("ApiSuccessCodes")]

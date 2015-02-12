@@ -67,7 +67,7 @@
     <Compile Include="Fakes\FakeHttpConnection.cs" />
     <Compile Include="Fakes\FakeCredentials.cs" />
     <Compile Include="Helpers\LinkResolverTests.cs" />
-    <Compile Include="Helpers\ResourceUrlComposerTests.cs" />
+    <Compile Include="Helpers\LinkFactoryTests.cs" />
     <Compile Include="Http\HypermediaConnectionTests.cs" />
     <Compile Include="Http\ApiResponseFactoryTests.cs" />
     <Compile Include="Http\HttpConnectionTests.cs" />

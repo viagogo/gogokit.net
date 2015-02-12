@@ -74,17 +74,17 @@ namespace GogoKit
 
             _oauth2Client = new OAuth2Client(oauthConnection);
             _rootClient = new ApiRootClient(connection);
-            var resourceUrlComposer = new ResourceLinkComposer(_rootClient, configuration);
+            var linkFactory = new LinkFactory(_rootClient, configuration);
 
             _connection = new HypermediaConnection(connection);
             _userClient = new UserClient(_rootClient, _connection);
             _searchClient = new SearchClient(_rootClient, _connection);
-            _addressesClient = new AddressesClient(_userClient, _connection, resourceUrlComposer);
-            _purchaseClient = new PurchasesClient(_userClient, _connection, resourceUrlComposer);
-            _paymentMethodsClients = new PaymentMethodsClient(_userClient, _connection, resourceUrlComposer);
-            _countriesClient = new CountriesClient(_rootClient, _connection, resourceUrlComposer);
-            _currencyClient = new CurrenciesClient(_rootClient, _connection, resourceUrlComposer);
-            _categoryClient = new CategoriesClient(_rootClient, _connection, resourceUrlComposer);
+            _addressesClient = new AddressesClient(_userClient, _connection, linkFactory);
+            _purchaseClient = new PurchasesClient(_userClient, _connection, linkFactory);
+            _paymentMethodsClients = new PaymentMethodsClient(_userClient, _connection, linkFactory);
+            _countriesClient = new CountriesClient(_rootClient, _connection, linkFactory);
+            _currencyClient = new CurrenciesClient(_rootClient, _connection, linkFactory);
+            _categoryClient = new CategoriesClient(_rootClient, _connection, linkFactory);
             _eventClient = new EventsClient(_rootClient, _connection);
             _listingClient = new ListingsClient(_rootClient, _connection);
             _venueClient = new VenuesClient(_rootClient, _connection);

@@ -10,21 +10,20 @@ namespace GogoKit.Clients
     {
         private readonly IApiRootClient _rootClient;
         private readonly IHypermediaConnection _connection;
-        private readonly IResourceLinkComposer _linkHelper;
+        private readonly ILinkFactory _linkFactory;
 
         public CountriesClient(IApiRootClient rootClient,
                                IHypermediaConnection connection,
-                               IResourceLinkComposer linkHelper)
+                               ILinkFactory linkFactory)
         {
             _rootClient = rootClient;
             _connection = connection;
-            _linkHelper = linkHelper;
+            _linkFactory = linkFactory;
         }
 
         public async Task<Country> GetAsync(string code)
         {
-            var countryLink = await _linkHelper.ComposeLinkWithAbsolutePathForResource(
-                                    "countries/{0}".FormatUri(code)).ConfigureAwait(_connection);
+            var countryLink = await _linkFactory.CreateLinkAsync("countries/{0}", code).ConfigureAwait(_connection);
             return await _connection.GetAsync<Country>(countryLink, null).ConfigureAwait(_connection);
         }
 

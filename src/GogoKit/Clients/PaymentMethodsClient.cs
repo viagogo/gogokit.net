@@ -13,15 +13,15 @@ namespace GogoKit.Clients
     {
         private readonly IUserClient _userClient;
         private readonly IHypermediaConnection _connection;
-        private readonly IResourceLinkComposer _linkHelper;
+        private readonly ILinkFactory _linkFactory;
 
         public PaymentMethodsClient(IUserClient userClient,
                                     IHypermediaConnection connection,
-                                    IResourceLinkComposer linkHelper)
+                                    ILinkFactory linkFactory)
         {
             _userClient = userClient;
             _connection = connection;
-            _linkHelper = linkHelper;
+            _linkFactory = linkFactory;
         }
 
         public async Task<PagedResource<PaymentMethod>> GetAsync(int page, int pageSize)
@@ -42,8 +42,7 @@ namespace GogoKit.Clients
 
         public async Task<PaymentMethod> GetAsync(int paymentMethodId)
         {
-            var paymentMethodLink = await _linkHelper.ComposeLinkWithAbsolutePathForResource(
-                                        "paymentMethods/{0}".FormatUri(paymentMethodId)).ConfigureAwait(_connection);
+            var paymentMethodLink = await _linkFactory.CreateLinkAsync("paymentMethods/{0}", paymentMethodId).ConfigureAwait(_connection);
             return await _connection.GetAsync<PaymentMethod>(paymentMethodLink, null).ConfigureAwait(_connection);
         }
 

@@ -23,6 +23,7 @@ namespace GogoKit.Http
         private static readonly IDictionary<string, Func<IApiResponse<ApiError>, ApiErrorException>> ExceptionFactoryMap =
             new Dictionary<string, Func<IApiResponse<ApiError>, ApiErrorException>>
             {
+                {"https_required", r => new SslConnectionRequiredException(r)},
                 {"insufficient_scope", r => new InsufficientScopeException(r)},
                 {"user_agent_required", r => new UserAgentRequiredException(r)},
                 {"invalid_request_body", r => new InvalidRequestBodyException(r)},
@@ -34,6 +35,7 @@ namespace GogoKit.Http
                 {"listing_conflict", r => new ListingConflictException(r)},
                 {"purchase_still_processing", r => new PurchaseStillProcessingException(r)},
                 {"invalid_delete", r => new InvalidDeleteException(r)},
+                {"internal_server_error", r => new InternalServerErrorException(r)},
             };
 
         private readonly IApiResponseFactory _responseFactory;

@@ -10,21 +10,20 @@ namespace GogoKit.Clients
     {
         private readonly IUserClient _userClient;
         private readonly IHypermediaConnection _connection;
-        private readonly IResourceLinkComposer _linkHelper;
+        private readonly ILinkFactory _linkFactory;
 
         public PurchasesClient(IUserClient userClient,
                                IHypermediaConnection connection,
-                               IResourceLinkComposer linkHelper)
+                               ILinkFactory linkFactory)
         {
             _userClient = userClient;
             _connection = connection;
-            _linkHelper = linkHelper;
+            _linkFactory = linkFactory;
         }
 
         public async Task<Purchase> GetAsync(int purchaseId)
         {
-            var purchaseLink = await _linkHelper.ComposeLinkWithAbsolutePathForResource(
-                                        "purchases/{0}".FormatUri(purchaseId)).ConfigureAwait(_connection);
+            var purchaseLink = await _linkFactory.CreateLinkAsync("purchases/{0}", purchaseId).ConfigureAwait(_connection);
             return await _connection.GetAsync<Purchase>(purchaseLink, null).ConfigureAwait(_connection);
         }
 

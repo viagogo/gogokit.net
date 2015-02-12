@@ -4,9 +4,9 @@ using GogoKit.Resources;
 
 namespace GogoKit.Clients
 {
-    public interface ICategoryClient
+    public interface ICategoriesClient
     {
+        Task<Category> GetAsync(int categoryId);
         Task<IReadOnlyList<Category>> GetAllGenresAsync();
-        Task<PagedResource<Category>> GetTopPerformersUnderGenreAsync(int categoryId, int page, int pageSize);
     }
 }

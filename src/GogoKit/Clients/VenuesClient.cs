@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Http;
 using GogoKit.Models;
@@ -7,18 +6,18 @@ using GogoKit.Resources;
 
 namespace GogoKit.Clients
 {
-    public class VenueClient : IVenueClient
+    public class VenuesClient : IVenuesClient
     {
         private readonly IHypermediaConnection _connection;
         private readonly IApiRootClient _rootClient;
 
-        public VenueClient(IApiRootClient rootClient, IHypermediaConnection connection)
+        public VenuesClient(IApiRootClient rootClient, IHypermediaConnection connection)
         {
             _rootClient = rootClient;
             _connection = connection;
         }
 
-        public async Task<PagedResource<Venue>> GetVenuesAsync(int page, int pageSize)
+        public async Task<PagedResource<Venue>> GetAsync(int page, int pageSize)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
             return await _connection.GetAsync<PagedResource<Venue>>(root.Links["viagogo:venues"], new Dictionary<string, string>()
@@ -28,14 +27,14 @@ namespace GogoKit.Clients
                                                                         }).ConfigureAwait(_connection);
         }
 
-        public async Task<IReadOnlyList<Venue>> GetAllVenuesAsync()
+        public async Task<IReadOnlyList<Venue>> GetAllAsync()
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
             return await _connection.GetAllPagesAsync<Venue>(root.Links["viagogo:venues"], null).ConfigureAwait(_connection);
         }
 
 
-        public async Task<Venue> GetVenueAsync(int venueId)
+        public async Task<Venue> GetAsync(int venueId)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
             var venueLink = new Link

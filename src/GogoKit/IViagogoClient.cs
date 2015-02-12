@@ -15,11 +15,11 @@ namespace GogoKit
         IAddressesClient Addresses { get; }
         IPurchasesClient Purchases { get; }
         ICountriesClient Countries { get; }
-        ICurrencyClient Currency { get; }
+        ICurrenciesClient Currencies { get; }
         IPaymentMethodsClient PaymentMethods { get; }
-        ICategoryClient Category { get; }
-        IEventClient Event { get; }
-        IListingClient Listing { get; }
-        IVenueClient Venue { get; }
+        ICategoriesClient Categories { get; }
+        IEventsClient Events { get; }
+        IListingsClient Listings { get; }
+        IVenuesClient Venues { get; }
     }
 }

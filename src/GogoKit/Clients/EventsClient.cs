@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Http;
 using GogoKit.Models;
@@ -7,18 +6,18 @@ using GogoKit.Resources;
 
 namespace GogoKit.Clients
 {
-    public class EventClient : IEventClient
+    public class EventsClient : IEventsClient
     {
         private readonly IHypermediaConnection _connection;
         private readonly IApiRootClient _rootClient;
 
-        public EventClient(IApiRootClient rootClient, IHypermediaConnection connection)
+        public EventsClient(IApiRootClient rootClient, IHypermediaConnection connection)
         {
             _rootClient = rootClient;
             _connection = connection;
         }
 
-        public async Task<PagedResource<Event>> GetCategoryEventsAsync(int categoryId, int page, int pageSize)
+        public async Task<PagedResource<Event>> GetByCategoryAsync(int categoryId, int page, int pageSize)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
             var eventsLink = new Link
@@ -34,7 +33,7 @@ namespace GogoKit.Clients
                                                                         }).ConfigureAwait(_connection.Configuration);
         }
 
-        public async Task<IReadOnlyList<Event>> GetAllCategoryEventsAsync(int categoryId)
+        public async Task<IReadOnlyList<Event>> GetAllByCategoryAsync(int categoryId)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
             var eventsLink = new Link
@@ -46,7 +45,7 @@ namespace GogoKit.Clients
             return await _connection.GetAllPagesAsync<Event>(eventsLink, null).ConfigureAwait(_connection.Configuration);
         }
 
-        public async Task<Event> GetEventAsync(int eventId)
+        public async Task<Event> GetAsync(int eventId)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
             var eventsLink = new Link
@@ -56,8 +55,5 @@ namespace GogoKit.Clients
 
             return await _connection.GetAsync<Event>(eventsLink, null).ConfigureAwait(_connection.Configuration);
         }
-
-
-
     }
 }

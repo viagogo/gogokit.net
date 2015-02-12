@@ -18,12 +18,12 @@ namespace GogoKit
         private readonly IAddressesClient _addressesClient;
         private readonly IPurchasesClient _purchaseClient;
         private readonly ICountriesClient _countriesClient;
-        private readonly ICurrencyClient _currencyClient;
+        private readonly ICurrenciesClient _currencyClient;
         private readonly IPaymentMethodsClient _paymentMethodsClients;
-        private readonly ICategoryClient _categoryClient;
-        private readonly IEventClient _eventClient;
-        private readonly IListingClient _listingClient;
-        private readonly IVenueClient _venueClient;
+        private readonly ICategoriesClient _categoryClient;
+        private readonly IEventsClient _eventClient;
+        private readonly IListingsClient _listingClient;
+        private readonly IVenuesClient _venueClient;
         
         public ViagogoClient(
             string clientId,
@@ -83,11 +83,11 @@ namespace GogoKit
             _purchaseClient = new PurchasesClient(_userClient, _connection, resourceUrlComposer);
             _paymentMethodsClients = new PaymentMethodsClient(_userClient, _connection, resourceUrlComposer);
             _countriesClient = new CountriesClient(_rootClient, _connection, resourceUrlComposer);
-            _currencyClient = new CurrencyClient(_rootClient, _connection);
-            _categoryClient = new CategoryClient(_rootClient, _connection, resourceUrlComposer);
-            _eventClient = new EventClient(_rootClient, _connection);
-            _listingClient = new ListingClient(_rootClient, _connection);
-            _venueClient = new VenueClient(_rootClient, _connection);
+            _currencyClient = new CurrenciesClient(_rootClient, _connection, resourceUrlComposer);
+            _categoryClient = new CategoriesClient(_rootClient, _connection, resourceUrlComposer);
+            _eventClient = new EventsClient(_rootClient, _connection);
+            _listingClient = new ListingsClient(_rootClient, _connection);
+            _venueClient = new VenuesClient(_rootClient, _connection);
         }
 
         public IConfiguration Configuration
@@ -135,7 +135,7 @@ namespace GogoKit
             get { return _countriesClient; }
         }
 
-        public ICurrencyClient Currency
+        public ICurrenciesClient Currencies
         {
             get { return _currencyClient; }
         }
@@ -145,22 +145,22 @@ namespace GogoKit
             get { return _paymentMethodsClients; }
         }
 
-        public ICategoryClient Category
+        public ICategoriesClient Categories
         {
             get { return _categoryClient; }
         }
 
-        public IEventClient Event
+        public IEventsClient Events
         {
             get { return _eventClient;  }
         }
 
-        public IListingClient Listing
+        public IListingsClient Listings
         {
             get { return _listingClient; }
         }
 
-        public IVenueClient Venue
+        public IVenuesClient Venues
         {
             get { return _venueClient; }
         }

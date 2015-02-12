@@ -39,23 +39,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Clients\AddressesClient.cs" />
-    <Compile Include="Clients\CategoryClient.cs" />
+    <Compile Include="Clients\CategoriesClient.cs" />
     <Compile Include="Clients\CountriesClient.cs" />
-    <Compile Include="Clients\CurrencyClient.cs" />
-    <Compile Include="Clients\EventClient.cs" />
+    <Compile Include="Clients\CurrenciesClient.cs" />
+    <Compile Include="Clients\EventsClient.cs" />
     <Compile Include="Clients\IAddressesClient.cs" />
-    <Compile Include="Clients\ICategoryClient.cs" />
+    <Compile Include="Clients\ICategoriesClient.cs" />
     <Compile Include="Clients\ICountriesClient.cs" />
-    <Compile Include="Clients\ICurrencyClient.cs" />
-    <Compile Include="Clients\IEventClient.cs" />
-    <Compile Include="Clients\IListingClient.cs" />
+    <Compile Include="Clients\ICurrenciesClient.cs" />
+    <Compile Include="Clients\IEventsClient.cs" />
+    <Compile Include="Clients\IListingsClient.cs" />
     <Compile Include="Clients\IPaymentMethodsClient.cs" />
     <Compile Include="Clients\IPurchasesClient.cs" />
-    <Compile Include="Clients\IVenueClient.cs" />
-    <Compile Include="Clients\ListingClient.cs" />
+    <Compile Include="Clients\IVenuesClient.cs" />
+    <Compile Include="Clients\ListingsClient.cs" />
     <Compile Include="Clients\PaymentMethodsClient.cs" />
     <Compile Include="Clients\PurchasesClient.cs" />
-    <Compile Include="Clients\VenueClient.cs" />
+    <Compile Include="Clients\VenuesClient.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

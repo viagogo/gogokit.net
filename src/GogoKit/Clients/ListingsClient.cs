@@ -7,18 +7,18 @@ using GogoKit.Resources;
 
 namespace GogoKit.Clients
 {
-    public class ListingClient : IListingClient
+    public class ListingsClient : IListingsClient
     {
         private readonly IHypermediaConnection _connection;
         private readonly IApiRootClient _rootClient;
 
-        public ListingClient(IApiRootClient rootClient, IHypermediaConnection connection)
+        public ListingsClient(IApiRootClient rootClient, IHypermediaConnection connection)
         {
             _rootClient = rootClient;
             _connection = connection;
         }
 
-        public async Task<PagedResource<Listing>> GetEventListingsAsync(int eventId, int page, int pageSize)
+        public async Task<PagedResource<Listing>> GetAsync(int eventId, int page, int pageSize)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
             var listingsLink = new Link
@@ -34,7 +34,7 @@ namespace GogoKit.Clients
                                                                         }).ConfigureAwait(_connection.Configuration);
         }
 
-        public async Task<IReadOnlyList<Listing>> GetAllEventListingsAsync(int eventId)
+        public async Task<IReadOnlyList<Listing>> GetAllAsync(int eventId)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
             var listingsLink = new Link
@@ -46,7 +46,7 @@ namespace GogoKit.Clients
             return await _connection.GetAllPagesAsync<Listing>(listingsLink, null).ConfigureAwait(_connection.Configuration);
         }
 
-        public async Task<Listing> GetListingAsync(int listingId)
+        public async Task<Listing> GetAsync(int listingId)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
             var listingLink = new Link

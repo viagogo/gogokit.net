@@ -16,7 +16,7 @@ namespace GogoKit.Clients
             _connection = connection;
         }
 
-        public async Task<PagedResource<SearchResult>> GetSearchResultsAsync(string query, int page, int pageSize)
+        public async Task<PagedResource<SearchResult>> GetAsync(string query, int page, int pageSize)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
             return await _connection.GetAsync<PagedResource<SearchResult>>(
@@ -29,7 +29,7 @@ namespace GogoKit.Clients
                 }).ConfigureAwait(_connection);
         }
 
-        public async Task<IReadOnlyList<SearchResult>> GetAllSearchResultsAsync(string query)
+        public async Task<IReadOnlyList<SearchResult>> GetAllAsync(string query)
         {
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
             return await _connection.GetAllPagesAsync<SearchResult>(

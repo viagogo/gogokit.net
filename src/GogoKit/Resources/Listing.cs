@@ -44,5 +44,10 @@ namespace GogoKit.Resources
 
         [Embedded("ticket_type")]
         public TicketType TicketType { get; set; }
+
+        public Link PurchasePreviewLink
+        {
+            get { return Links["listing:purchasepreview"]; }
+        }
     }
 }

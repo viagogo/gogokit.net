@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GogoKit.Helpers;
 using GogoKit.Http;
+using GogoKit.Requests;
 using GogoKit.Resources;
 
 namespace GogoKit.Clients
@@ -41,6 +42,22 @@ namespace GogoKit.Clients
             return await _connection.GetAllPagesAsync<Purchase>(
                 user.Links["user:purchases"],
                 null).ConfigureAwait(_connection);
+        }
+
+        public Task<PurchasePreview> CreatePurchasePreviewAsync(Listing listing, NewPurchasePreview preview)
+        {
+            return _connection.PostAsync<PurchasePreview>(
+                listing.PurchasePreviewLink,
+                null,
+                preview);
+        }
+
+        public Task<Purchase> CreatePurchaseAsync(PurchasePreview preview, NewPurchase purchase)
+        {
+            return _connection.PostAsync<Purchase>(
+                preview.CreatePurchaseLink,
+                null,
+                purchase);
         }
     }
 }

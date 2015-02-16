@@ -70,7 +70,10 @@
     <Compile Include="Requests\NewCreditCard.cs" />
     <Compile Include="Requests\NewPaymentMethod.cs" />
     <Compile Include="Requests\NewPayPal.cs" />
+    <Compile Include="Requests\NewPurchase.cs" />
+    <Compile Include="Requests\NewPurchasePreview.cs" />
     <Compile Include="Requests\PaymentMethodUpdate.cs" />
+    <Compile Include="Resources\PurchasePreview.cs" />
     <Compile Include="Resources\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">

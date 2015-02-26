@@ -57,21 +57,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\BasicCredentialsTests.cs" />
-    <Compile Include="Authentication\BearerTokenCredentialsTest.cs" />
     <Compile Include="Authentication\InMemoryCredentialsProviderTests.cs" />
     <Compile Include="Clients\ApiRootClientTests.cs" />
     <Compile Include="Clients\OAuth2ClientTests.cs" />
     <Compile Include="Extensions\IOAuth2ClientExtensionsTests.cs" />
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
+    <Compile Include="Fakes\FakeDelegatingHandler.cs" />
+    <Compile Include="Fakes\FakeHttpClientFactory.cs" />
     <Compile Include="Fakes\FakeHttpConnection.cs" />
     <Compile Include="Fakes\FakeCredentials.cs" />
     <Compile Include="Helpers\LinkResolverTests.cs" />
     <Compile Include="Helpers\LinkFactoryTests.cs" />
+    <Compile Include="Http\Handlers\BasicAuthenticationHandlerTests.cs" />
+    <Compile Include="Http\Handlers\BearerTokenAuthenticationHandlerTests.cs" />
+    <Compile Include="Http\Handlers\ErrorHandlerTests.cs" />
+    <Compile Include="Http\HttpClientFactoryTests.cs" />
     <Compile Include="Http\HypermediaConnectionTests.cs" />
     <Compile Include="Http\ApiResponseFactoryTests.cs" />
     <Compile Include="Http\HttpConnectionTests.cs" />
-    <Compile Include="Http\ErrorHandlerTests.cs" />
+    <Compile Include="Http\Handlers\UserAgentHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

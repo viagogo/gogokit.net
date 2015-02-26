@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GogoKit.Authentication;
 using GogoKit.Configuration;
 
 namespace GogoKit.Http
@@ -15,7 +15,7 @@ namespace GogoKit.Http
             object body,
             string contentType);
 
-        ICredentialsProvider CredentialsProvider { get; }
+        IReadOnlyList<DelegatingHandler> Handlers { get; }
 
         IConfiguration Configuration { get; }
     }

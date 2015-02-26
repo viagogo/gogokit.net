@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using GogoKit.Authentication;
 using GogoKit.Configuration;
 using GogoKit.Http;
 using GogoKit.Json;
@@ -18,30 +16,18 @@ namespace GogoKit.Tests.Http
     public class HttpConnectionTests
     {
         private static HttpConnection CreateConnection(
-            ProductHeaderValue productHeader = null,
-            ICredentialsProvider credsPrv = null,
             IConfiguration config = null,
-            IHttpClientWrapper http = null,
-            IErrorHandler errHandler = null,
+            IHttpClientFactory httpFact = null,
             IApiResponseFactory respFact = null,
-            IJsonSerializer json = null)
+            IJsonSerializer json = null,
+            IEnumerable<DelegatingHandler> middleware = null)
         {
-            var mockCredsPrv = new Mock<ICredentialsProvider>(MockBehavior.Loose);
-            mockCredsPrv.Setup(c => c.GetCredentialsAsync())
-                        .Returns(Task.FromResult<ICredentials>(new FakeCredentials()));
-
-            var mockErrorHandler = new Mock<IErrorHandler>(MockBehavior.Loose);
-            mockErrorHandler.Setup(e => e.ProcessResponseAsync(It.IsAny<HttpResponseMessage>()))
-                            .Returns(Task.FromResult<object>(null));
-
             return new HttpConnection(
-                productHeader ?? new ProductHeaderValue("Viagogo.Tests", "1.0"),
-                credsPrv ?? mockCredsPrv.Object,
+                middleware ?? new DelegatingHandler[] {},
                 config ?? Configuration.Configuration.Default,
-                http ?? new Mock<IHttpClientWrapper>(MockBehavior.Loose).Object,
+                httpFact ?? new FakeHttpClientFactory(),
                 json ?? new Mock<IJsonSerializer>(MockBehavior.Loose).Object,
-                respFact ?? new FakeApiResponseFactory(),
-                errHandler ?? mockErrorHandler.Object);
+                respFact ?? new FakeApiResponseFactory());
         }
 
         private static HttpMethod[] HttpMethods =
@@ -56,15 +42,27 @@ namespace GogoKit.Tests.Http
         };
 
         [Test]
+        public async void Ctor_ShouldPassTheGivenMiddlewareToTheHttpClientFactory()
+        {
+            var expectedMiddleware = new[] {new FakeDelegatingHandler(), new FakeDelegatingHandler()};
+            var mockFact = new Mock<IHttpClientFactory>(MockBehavior.Loose);
+            mockFact.Setup(f => f.CreateClient(expectedMiddleware)).Returns(new HttpClient()).Verifiable();
+
+            CreateConnection(httpFact: mockFact.Object, middleware: expectedMiddleware);
+
+            mockFact.Verify();
+        }
+
+        [Test]
         public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithRequestUriSetToTheGivenUri()
         {
             var expectedUri = new Uri("https://foo.io");
-            var mockHttp = new Mock<IHttpClientWrapper>(MockBehavior.Loose);
+            var mockHttp = new Mock<HttpClient>(MockBehavior.Loose);
             mockHttp.Setup(h => h.SendAsync(It.Is<HttpRequestMessage>(r => r.RequestUri == expectedUri),
                                             It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(new HttpResponseMessage()))
                     .Verifiable();
-            var conn = CreateConnection(http: mockHttp.Object);
+            var conn = CreateConnection(httpFact: new FakeHttpClientFactory(http: mockHttp.Object));
 
             await conn.SendRequestAsync<string>(expectedUri, HttpMethod.Trace, "*/*", null, null);
 
@@ -75,12 +73,12 @@ namespace GogoKit.Tests.Http
         public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithTheGivenHttpMethod(
             HttpMethod expectedMethod)
         {
-            var mockHttp = new Mock<IHttpClientWrapper>(MockBehavior.Loose);
+            var mockHttp = new Mock<HttpClient>(MockBehavior.Loose);
             mockHttp.Setup(h => h.SendAsync(It.Is<HttpRequestMessage>(r => r.Method == expectedMethod),
                                             It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(new HttpResponseMessage()))
                     .Verifiable();
-            var conn = CreateConnection(http: mockHttp.Object);
+            var conn = CreateConnection(httpFact: new FakeHttpClientFactory(http: mockHttp.Object));
 
             await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), expectedMethod, "*/*", null, null);
 
@@ -88,38 +86,91 @@ namespace GogoKit.Tests.Http
         }
 
         [Test]
-        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithTheCurrentCredentialsAuthHeader()
+        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithTheGivenAcceptHeader()
         {
-            var expectedAuthHeader = "Expected header";
-            var mockCredsPrv = new Mock<ICredentialsProvider>(MockBehavior.Loose);
-            mockCredsPrv.Setup(c => c.GetCredentialsAsync())
-                .Returns(Task.FromResult<ICredentials>(new FakeCredentials(authHeader: expectedAuthHeader)));
-            var mockHttp = new Mock<IHttpClientWrapper>(MockBehavior.Loose);
-            mockHttp.Setup(h => h.SendAsync(It.Is<HttpRequestMessage>(r => r.Headers.Authorization.ToString() == expectedAuthHeader),
-                                            It.IsAny<CancellationToken>()))
+            var expectedAcceptHeader = "foo/bar";
+            var mockHttp = new Mock<HttpClient>(MockBehavior.Loose);
+            mockHttp.Setup(h => h.SendAsync(
+                It.Is<HttpRequestMessage>(r => r.Headers.Accept.ToString() == expectedAcceptHeader),
+                It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(new HttpResponseMessage()))
                     .Verifiable();
-            var conn = CreateConnection(http: mockHttp.Object, credsPrv: mockCredsPrv.Object);
+            var conn = CreateConnection(httpFact: new FakeHttpClientFactory(http: mockHttp.Object));
 
-            await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), HttpMethod.Trace, "*/*", null, null);
+            await conn.SendRequestAsync<string>(
+                new Uri("https://api.vgg.io"),
+                HttpMethod.Options,
+                expectedAcceptHeader,
+                null,
+                null);
 
             mockHttp.Verify();
         }
 
         [Test]
-        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithUserAgentContainingTheGivenProductHeaderValue()
+        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithNullContent_WhenHttpMethodIsGet()
         {
-            var expectedUserAgentProduct = ProductHeaderValue.Parse("MyTestApp/0.9.9");
-            var mockHttp = new Mock<IHttpClientWrapper>(MockBehavior.Loose);
-            mockHttp.Setup(h => h.SendAsync(It.Is<HttpRequestMessage>(r => r.Headers.UserAgent.First().Product.Equals(expectedUserAgentProduct)),
+            var mockHttp = new Mock<HttpClient>(MockBehavior.Loose);
+            mockHttp.Setup(h => h.SendAsync(It.Is<HttpRequestMessage>(r => r.Content == null),
                                             It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(new HttpResponseMessage()))
                     .Verifiable();
-            var conn = CreateConnection(http: mockHttp.Object, productHeader: expectedUserAgentProduct);
+            var conn = CreateConnection(httpFact: new FakeHttpClientFactory(http: mockHttp.Object));
 
-            await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), HttpMethod.Trace, "*/*", null, null);
+            await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), HttpMethod.Get, "*/*", "body", null);
 
             mockHttp.Verify();
+        }
+
+        [Test]
+        public async void SendRequestAsync_ShouldSendAnHttpRequestMessageWithTheGivenHttpContent_WhenBodyIsHttpContent()
+        {
+            var expectedContent = new ByteArrayContent(new byte[] {});
+            var mockHttp = new Mock<HttpClient>(MockBehavior.Loose);
+            mockHttp.Setup(h => h.SendAsync(It.Is<HttpRequestMessage>(r => r.Content == expectedContent),
+                                            It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(new HttpResponseMessage()))
+                    .Verifiable();
+            var conn = CreateConnection(httpFact: new FakeHttpClientFactory(http: mockHttp.Object));
+
+            await conn.SendRequestAsync<string>(new Uri("https://api.vgg.io"), HttpMethod.Put, "*/*", expectedContent, null);
+
+            mockHttp.Verify();
+        }
+
+        [Test]
+        public async void SendRequestAsync_ShouldPassTheHttpResponseMessageToTheApiResponseFactory()
+        {
+            var expectedResponse = new HttpResponseMessage();
+            var mockHttp = new Mock<HttpClient>(MockBehavior.Loose);
+            mockHttp.Setup(h => h.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
+                    .Returns(Task.FromResult(expectedResponse));
+            var mockRespFact = new Mock<IApiResponseFactory>(MockBehavior.Loose);
+            mockRespFact.Setup(r => r.CreateApiResponseAsync<object>(expectedResponse))
+                        .Returns(Task.FromResult<IApiResponse<object>>(new ApiResponse<object>()))
+                        .Verifiable();
+            var conn = CreateConnection(httpFact: new FakeHttpClientFactory(http: mockHttp.Object),
+                                        respFact: mockRespFact.Object);
+
+            await conn.SendRequestAsync<object>(new Uri("https://api.vgg.io"), HttpMethod.Get, "*/*", null, null);
+
+            mockHttp.Verify();
+        }
+
+        [Test]
+        public async void SendRequestAsync_ShouldReturnTheApiResponseReturnedByTheResponseFactory()
+        {
+            var expectedApiResponse = new ApiResponse<object>();
+            var conn = CreateConnection(respFact: new FakeApiResponseFactory(resp: expectedApiResponse));
+
+            var actualApiResponse = await conn.SendRequestAsync<object>(
+                                        new Uri("https://api.vgg.io"),
+                                        HttpMethod.Get,
+                                        "*/*",
+                                        null,
+                                        null);
+
+            Assert.AreSame(expectedApiResponse, actualApiResponse);
         }
     }
 }

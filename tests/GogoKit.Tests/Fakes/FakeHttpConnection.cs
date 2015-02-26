@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GogoKit.Authentication;
 using GogoKit.Configuration;
 using GogoKit.Http;
 
@@ -23,7 +23,8 @@ namespace GogoKit.Tests.Fakes
             return Task.FromResult(response ?? new ApiResponse<T>());
         }
 
-        public ICredentialsProvider CredentialsProvider { get; set; }
+        public IReadOnlyList<DelegatingHandler> Handlers { get; set; }
+
         public IConfiguration Configuration { get; set; }
     }
 }

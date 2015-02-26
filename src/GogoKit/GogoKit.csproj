@@ -63,6 +63,12 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Helpers\ILinkFactory.cs" />
     <Compile Include="Helpers\LinkFactory.cs" />
+    <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
+    <Compile Include="Http\Handlers\BearerTokenAuthenticationHandler.cs" />
+    <Compile Include="Http\Handlers\ErrorHandler.cs" />
+    <Compile Include="Http\Handlers\UserAgentHandler.cs" />
+    <Compile Include="Http\HttpClientFactory.cs" />
+    <Compile Include="Http\IHttpClientFactory.cs" />
     <Compile Include="Models\AddressSnapshot.cs" />
     <Compile Include="Requests\NewAddress.cs" />
     <Compile Include="Requests\AddressUpdate.cs" />
@@ -81,8 +87,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\AutoRefreshingTokenCredentialsProvider.cs" />
-    <Compile Include="Authentication\BasicCredentials.cs" />
     <Compile Include="Authentication\BearerTokenCredentials.cs" />
     <Compile Include="Authentication\ICredentials.cs" />
     <Compile Include="Authentication\ICredentialsProvider.cs" />
@@ -119,13 +123,9 @@
     <Compile Include="Http\HypermediaConnection.cs" />
     <Compile Include="Http\ApiResponseFactory.cs" />
     <Compile Include="Http\HttpConnection.cs" />
-    <Compile Include="Http\ErrorHandler.cs" />
-    <Compile Include="Http\HttpClientWrapper.cs" />
     <Compile Include="Http\IHypermediaConnection.cs" />
     <Compile Include="Http\IApiResponseFactory.cs" />
     <Compile Include="Http\IHttpConnection.cs" />
-    <Compile Include="Http\IErrorHandler.cs" />
-    <Compile Include="Http\IHttpClientWrapper.cs" />
     <Compile Include="Http\IApiResponse.cs" />
     <Compile Include="Json\EmbeddedAttribute.cs" />
     <Compile Include="Json\IJsonSerializer.cs" />

@@ -5,14 +5,15 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Models;
 
-namespace GogoKit.Http
+namespace GogoKit.Http.Handlers
 {
-    public class ErrorHandler : IErrorHandler
+    public class ErrorHandler : DelegatingHandler
     {
         private static readonly Regex AuthorizationErrorErrorRegex
             = new Regex(",error=\"(?<value>.+)\",", RegexOptions.None);
@@ -50,13 +51,15 @@ namespace GogoKit.Http
             _configuration = configuration;
         }
 
-        public async Task ProcessResponseAsync(HttpResponseMessage response)
+        protected async override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
         {
-            Requires.ArgumentNotNull(response, "response");
+            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(_configuration);
 
             if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotModified)
             {
-                return;
+                return response;
             }
 
             var apiException = response.StatusCode != HttpStatusCode.Unauthorized
@@ -91,7 +94,7 @@ namespace GogoKit.Http
                 errorResponse.BodyAsObject == null)
             {
                 var authenticateHeader = response.Headers.WwwAuthenticate.FirstOrDefault();
-                ((ApiResponse<AuthorizationError>) errorResponse).BodyAsObject
+                ((ApiResponse<AuthorizationError>)errorResponse).BodyAsObject
                     = new AuthorizationError
                     {
                         Error = ParseValueFromAuthenticatedHeader(authenticateHeader, AuthorizationErrorErrorRegex),

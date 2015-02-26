@@ -3,27 +3,33 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Http;
+using GogoKit.Http.Handlers;
 using GogoKit.Models;
 using GogoKit.Tests.Fakes;
 using Moq;
 using NUnit.Framework;
 
-namespace GogoKit.Tests.Http
+namespace GogoKit.Tests.Http.Handlers
 {
     [TestFixture]
     public class ErrorHandlerTests
     {
         private static ErrorHandler CreateErrorHandler(
             IApiResponseFactory respFact = null,
-            IConfiguration config = null)
+            IConfiguration config = null,
+            HttpResponseMessage resp = null)
         {
             return new ErrorHandler(
                 respFact ?? new FakeApiResponseFactory(),
-                config ?? Configuration.Configuration.Default);
+                config ?? Configuration.Configuration.Default)
+            {
+                InnerHandler = new FakeDelegatingHandler(resp: resp)
+            };
         }
 
         private static readonly HttpStatusCode[] ApiSuccessCodes =
@@ -59,28 +65,32 @@ namespace GogoKit.Tests.Http
         };
 
         [Test, TestCaseSource("ApiSuccessCodes")]
-        public void ProcessResponseAsync_ShouldNotThrowAnException_WhenResponseStatusCodeIsSuccessCodeOrNotModified(
+        public async void SendAsync_ShouldReturnTheResponseReturnedByTheInnerHandler_WhenResponseStatusCodeIsSuccessCodeOrNotModified(
             HttpStatusCode statusCode)
         {
-            var handler = CreateErrorHandler();
+            var expectedResponse = new HttpResponseMessage { StatusCode = statusCode };
+            var handler = CreateErrorHandler(resp: expectedResponse);
 
-            Assert.DoesNotThrow(
-                () => handler.ProcessResponseAsync(new HttpResponseMessage {StatusCode = statusCode}).Wait());
+            var actualResponse = await new HttpMessageInvoker(handler).SendAsync(
+                                    new HttpRequestMessage(),
+                                    CancellationToken.None);
+
+            Assert.AreSame(expectedResponse, actualResponse);
         }
 
         [Test]
-        public async void ProcessResponseAsync_ShouldProcessTheResponseAsAnAuthorizationError_WhenResponseStatusCodeIsUnauthorized()
+        public async void SendAsync_ShouldProcessTheResponseAsAnAuthorizationError_WhenResponseStatusCodeIsUnauthorized()
         {
-            var expectedResponse = new HttpResponseMessage {StatusCode = HttpStatusCode.Unauthorized};
+            var expectedResponse = new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized };
             var mockResponseFact = new Mock<IApiResponseFactory>(MockBehavior.Loose);
             mockResponseFact.Setup(r => r.CreateApiResponseAsync<AuthorizationError>(expectedResponse))
                             .Returns(Task.FromResult<IApiResponse<AuthorizationError>>(new ApiResponse<AuthorizationError>()))
                             .Verifiable();
-            var handler = CreateErrorHandler(respFact: mockResponseFact.Object);
+            var handler = CreateErrorHandler(respFact: mockResponseFact.Object, resp: expectedResponse);
 
             try
             {
-                await handler.ProcessResponseAsync(expectedResponse);
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (ApiAuthorizationException)
             {
@@ -90,15 +100,16 @@ namespace GogoKit.Tests.Http
         }
 
         [Test]
-        public async void ProcessResponseAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIsUnauthorized()
+        public async void SendAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIsUnauthorized()
         {
             var expectedResponse = new ApiResponse<AuthorizationError>();
             IApiResponse actualResponse = null;
-            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: expectedResponse));
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: expectedResponse),
+                                             resp: new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized });
 
             try
             {
-                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized });
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (ApiException ex)
             {
@@ -109,15 +120,16 @@ namespace GogoKit.Tests.Http
         }
 
         [Test]
-        public async void ProcessResponseAsync_ShouldThrowExceptionWithAuthorizationErrorReturnedByTheResponseFactory_WhenResponseStatusCodeIsUnauthorized_AndResponseHasAuthozationErrorBody()
+        public async void SendAsync_ShouldThrowExceptionWithAuthorizationErrorReturnedByTheResponseFactory_WhenResponseStatusCodeIsUnauthorized_AndResponseHasAuthozationErrorBody()
         {
             var expectedAuthError = new AuthorizationError();
             AuthorizationError actualAuthError = null;
-            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(new ApiResponse<AuthorizationError> {BodyAsObject = expectedAuthError}));
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(new ApiResponse<AuthorizationError> { BodyAsObject = expectedAuthError }),
+                                             resp: new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized });
 
             try
             {
-                await handler.ProcessResponseAsync(new HttpResponseMessage {StatusCode = HttpStatusCode.Unauthorized});
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (ApiAuthorizationException ex)
             {
@@ -128,7 +140,7 @@ namespace GogoKit.Tests.Http
         }
 
         [Test]
-        public async void ProcessResponseAsync_ShouldThrowExceptionWithAuthorizationErrorCreatedFromAuthenticateHeader_WhenResponseStatusCodeIsUnauthorized_AndResponseHasNoAuthozationErrorBody()
+        public async void SendAsync_ShouldThrowExceptionWithAuthorizationErrorCreatedFromAuthenticateHeader_WhenResponseStatusCodeIsUnauthorized_AndResponseHasNoAuthozationErrorBody()
         {
             var expectedError = "some error";
             var expectedErrorDescription = "some description";
@@ -137,13 +149,14 @@ namespace GogoKit.Tests.Http
                                                      expectedErrorDescription);
             string actualError = null;
             string actualErrorDescription = null;
-            var response = new HttpResponseMessage {StatusCode = HttpStatusCode.Unauthorized};
+            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized };
             response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue("Bearer", authenticationHeader));
-            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: new ApiResponse<AuthorizationError> { BodyAsObject = null }));
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: new ApiResponse<AuthorizationError> { BodyAsObject = null }),
+                                             resp: response);
 
             try
             {
-                await handler.ProcessResponseAsync(response);
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (ApiAuthorizationException ex)
             {
@@ -156,7 +169,7 @@ namespace GogoKit.Tests.Http
         }
 
         [Test, TestCaseSource("NonAuthorizationErrorCodes")]
-        public async void ProcessResponseAsync_ShouldProcessTheResponseAsAnApiError_WhenResponseStatusCodeIs(
+        public async void SendAsync_ShouldProcessTheResponseAsAnApiError_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
             var expectedResponse = new HttpResponseMessage { StatusCode = statusCode };
@@ -164,11 +177,11 @@ namespace GogoKit.Tests.Http
             mockResponseFact.Setup(r => r.CreateApiResponseAsync<ApiError>(expectedResponse))
                             .Returns(Task.FromResult<IApiResponse<ApiError>>(new ApiResponse<ApiError>()))
                             .Verifiable();
-            var handler = CreateErrorHandler(respFact: mockResponseFact.Object);
+            var handler = CreateErrorHandler(respFact: mockResponseFact.Object, resp: expectedResponse);
 
             try
             {
-                await handler.ProcessResponseAsync(expectedResponse);
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (ApiException)
             {
@@ -178,16 +191,17 @@ namespace GogoKit.Tests.Http
         }
 
         [Test, TestCaseSource("NonAuthorizationErrorCodes")]
-        public async void ProcessResponseAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
+        public async void SendAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
             var expectedResponse = new ApiResponse<ApiError>();
             IApiResponse actualResponse = null;
-            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: expectedResponse));
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: expectedResponse),
+                                             resp: new HttpResponseMessage { StatusCode = statusCode });
 
             try
             {
-                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = statusCode });
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (ApiException ex)
             {
@@ -198,16 +212,17 @@ namespace GogoKit.Tests.Http
         }
 
         [Test, TestCaseSource("NonAuthorizationErrorCodes")]
-        public async void ProcessResponseAsync_ShouldThrowApiErrorExceptionWithErrorSetToTheResponseBodyReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
+        public async void SendAsync_ShouldThrowApiErrorExceptionWithErrorSetToTheResponseBodyReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
             var expectedError = new ApiError();
             ApiError actualError = null;
-            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: new ApiResponse<ApiError> {BodyAsObject = expectedError}));
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: new ApiResponse<ApiError> { BodyAsObject = expectedError }),
+                                             resp: new HttpResponseMessage { StatusCode = statusCode });
 
             try
             {
-                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = statusCode });
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (ApiErrorException ex)
             {
@@ -218,14 +233,14 @@ namespace GogoKit.Tests.Http
         }
 
         [Test]
-        public async void ProcessResponseAsync_ShouldThrowResourceNotFoundException_WhenResponseStatusCodeIs404()
+        public async void SendAsync_ShouldThrowResourceNotFoundException_WhenResponseStatusCodeIs404()
         {
             Exception actualException = null;
-            var handler = CreateErrorHandler();
-            
+            var handler = CreateErrorHandler(resp: new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound });
+
             try
             {
-                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound });
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (Exception ex)
             {
@@ -236,18 +251,19 @@ namespace GogoKit.Tests.Http
         }
 
         [Test, TestCaseSource("ApiErrorCodesAndExceptionTypes")]
-        public async void ProcessResponseAsync_ShouldThrowExceptionAssociatedWithTheApiErrorCode_WhenResponseStatusCodeIsError(
+        public async void SendAsync_ShouldThrowExceptionAssociatedWithTheApiErrorCode_WhenResponseStatusCodeIsError(
             string errorCode,
             Type expectedExceptionType)
         {
             Exception actualException = null;
             var handler = CreateErrorHandler(
                             respFact: new FakeApiResponseFactory(
-                                resp: new ApiResponse<ApiError> {BodyAsObject = new ApiError {Code = errorCode}}));
+                                resp: new ApiResponse<ApiError> { BodyAsObject = new ApiError { Code = errorCode } }),
+                            resp: new HttpResponseMessage { StatusCode = HttpStatusCode.ServiceUnavailable });
 
             try
             {
-                await handler.ProcessResponseAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.ServiceUnavailable });
+                await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);
             }
             catch (Exception ex)
             {

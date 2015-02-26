@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -9,71 +8,101 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
+using GogoKit.Clients;
 using GogoKit.Configuration;
+using GogoKit.Http.Handlers;
 using GogoKit.Json;
 
 namespace GogoKit.Http
 {
     public class HttpConnection : IHttpConnection
     {
-        private readonly ICredentialsProvider _credentialsProvider;
+        private readonly IReadOnlyList<DelegatingHandler> _handlers;
         private readonly IConfiguration _configuration;
-        private readonly IHttpClientWrapper _httpClient;
-        private readonly IErrorHandler _errorHandler;
+        private readonly HttpClient _httpClient;
         private readonly IApiResponseFactory _responseFactory;
         private readonly IJsonSerializer _jsonSerializer;
-        private readonly IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
 
-        public HttpConnection(ProductHeaderValue productHeader,
-                              ICredentialsProvider credentialsProvider,
-                              IConfiguration configuration)
-            : this(productHeader,
-                   credentialsProvider,
-                   configuration,
-                   new HttpClientWrapper(),
-                   new NewtonsoftJsonSerializer(),
-                   new ApiResponseFactory(new NewtonsoftJsonSerializer(), configuration),
-                   new ErrorHandler(new ApiResponseFactory(new NewtonsoftJsonSerializer(), configuration),
-                                    configuration))
-        {
-        }
-
-        public HttpConnection(
-            ProductHeaderValue productHeader,
-            ICredentialsProvider credentialsProvider,
+        public static HttpConnection CreateOAuthConnection(
+            string clientId,
+            string clientSecret,
+            ProductHeaderValue product,
             IConfiguration configuration,
-            IHttpClientWrapper httpClient,
-            IJsonSerializer jsonSerializer,
-            IApiResponseFactory responseFactory,
-            IErrorHandler errorHandler)
+            params DelegatingHandler[] customHandlers)
         {
-            Requires.ArgumentNotNull(productHeader, "productHeader");
-            Requires.ArgumentNotNull(credentialsProvider, "credentialsProvider");
-            Requires.ArgumentNotNull(configuration, "configuration");
-            Requires.ArgumentNotNull(httpClient, "httpClient");
-            Requires.ArgumentNotNull(errorHandler, "errorHandler");
-            Requires.ArgumentNotNull(responseFactory, "responseFactory");
-            Requires.ArgumentNotNull(jsonSerializer, "jsonSerializer");
-
-            _userAgentHeaderValues = GetUserAgentHeaderValues(productHeader).ToList();
-            _credentialsProvider = credentialsProvider;
-            _configuration = configuration;
-            _httpClient = httpClient;
-            _errorHandler = errorHandler;
-            _responseFactory = responseFactory;
-            _jsonSerializer = jsonSerializer;
+            return CreateConnection(
+                product,
+                configuration,
+                new BasicAuthenticationHandler(clientId, clientSecret),
+                customHandlers);
         }
 
-        private IReadOnlyList<ProductInfoHeaderValue> GetUserAgentHeaderValues(ProductHeaderValue product)
+        public static HttpConnection CreateApiConnection(
+            string clientId,
+            string clientSecret,
+            ProductHeaderValue product,
+            IConfiguration configuration,
+            IOAuth2TokenStore tokenStore,
+            params DelegatingHandler[] customHandlers)
         {
-            return new List<ProductInfoHeaderValue>
-            {
-                new ProductInfoHeaderValue(product),
-                new ProductInfoHeaderValue(string.Format("({0}; {1} {2})",
-                                                         CultureInfo.CurrentCulture.Name,
-                                                         "GogoKit",
-                                                         AssemblyVersionInformation.Version))
-            };
+            var oauthConnection = CreateOAuthConnection(clientId, clientSecret, product, configuration, customHandlers);
+            return CreateConnection(
+                product,
+                configuration,
+                new BearerTokenAuthenticationHandler(new OAuth2Client(oauthConnection), tokenStore, configuration),
+                customHandlers);
+        }
+
+        private static HttpConnection CreateConnection(
+            ProductHeaderValue product,
+            IConfiguration configuration,
+            DelegatingHandler authenticationHandler,
+            params DelegatingHandler[] customHandlers)
+        {
+            var serializer = new NewtonsoftJsonSerializer();
+            var responseFactory = new ApiResponseFactory(serializer, configuration);
+            var handlers = new List<DelegatingHandler>
+                           {
+                               new ErrorHandler(responseFactory, configuration),
+                               new UserAgentHandler(product),
+                               authenticationHandler
+                           };
+            handlers.AddRange(customHandlers);
+
+            return new HttpConnection(
+                handlers,
+                configuration,
+                new HttpClientFactory(),
+                serializer,
+                responseFactory);
+        }
+
+        public HttpConnection(IEnumerable<DelegatingHandler> handlers, IConfiguration configuration)
+            : this(handlers,
+                   configuration,
+                   new HttpClientFactory(),
+                   new NewtonsoftJsonSerializer(),
+                   new ApiResponseFactory(new NewtonsoftJsonSerializer(), configuration))
+        {
+        }
+
+        public HttpConnection(IEnumerable<DelegatingHandler> handlers,
+                              IConfiguration configuration,
+                              IHttpClientFactory httpClientFactory,
+                              IJsonSerializer jsonSerializer,
+                              IApiResponseFactory responseFactory)
+        {
+            Requires.ArgumentNotNull(handlers, "handlers");
+            Requires.ArgumentNotNull(configuration, "configuration");
+            Requires.ArgumentNotNull(httpClientFactory, "httpClientFactory");
+            Requires.ArgumentNotNull(jsonSerializer, "jsonSerializer");
+            Requires.ArgumentNotNull(responseFactory, "responseFactory");
+
+            _handlers = handlers.ToList();
+            _configuration = configuration;
+            _httpClient = httpClientFactory.CreateClient(_handlers);
+            _jsonSerializer = jsonSerializer;
+            _responseFactory = responseFactory;
         }
 
         public async Task<IApiResponse<T>> SendRequestAsync<T>(
@@ -83,28 +112,27 @@ namespace GogoKit.Http
             object body,
             string contentType)
         {
+            Requires.ArgumentNotNull(uri, "uri");
+            Requires.ArgumentNotNull(method, "method");
+            Requires.ArgumentNotNull(accept, "accept");
+
             using (var request = new HttpRequestMessage { RequestUri = uri, Method = method })
             {
-                var credentials = await CredentialsProvider.GetCredentialsAsync().ConfigureAwait(_configuration);
-                request.Headers.Authorization = AuthenticationHeaderValue.Parse(credentials.AuthorizationHeader);
-                foreach (var product in _userAgentHeaderValues)
-                {
-                    request.Headers.UserAgent.Add(product);
-                }
+                //var credentials = await CredentialsProvider.GetCredentialsAsync().ConfigureAwait(_configuration);
+                //request.Headers.Authorization = AuthenticationHeaderValue.Parse(credentials.AuthorizationHeader);
 
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
                 request.Content = await GetRequestContentAsync(method, body, contentType).ConfigureAwait(_configuration);
 
                 var responseMessage = await _httpClient.SendAsync(request, CancellationToken.None).ConfigureAwait(_configuration);
 
-                await _errorHandler.ProcessResponseAsync(responseMessage).ConfigureAwait(_configuration);
                 return await _responseFactory.CreateApiResponseAsync<T>(responseMessage).ConfigureAwait(_configuration);
             }
         }
 
-        public ICredentialsProvider CredentialsProvider
+        public IReadOnlyList<DelegatingHandler> Handlers
         {
-            get { return _credentialsProvider; }
+            get { return _handlers; }
         }
 
         public IConfiguration Configuration

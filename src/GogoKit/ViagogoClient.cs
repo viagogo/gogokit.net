@@ -32,11 +32,7 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
-            : this(clientId,
-                   clientSecret,
-                   product,
-                   new AutoRefreshingTokenCredentialsProvider(
-                       new OAuth2Client(CreateOAuthConnection(clientId, clientSecret, product))))
+            : this(clientId, clientSecret, product, new InMemoryOAuth2TokenStore())
         {
         }
 
@@ -44,8 +40,8 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product,
-            ICredentialsProvider credentialsProvider)
-            : this(clientId, clientSecret, product, credentialsProvider, GogoKit.Configuration.Configuration.Default)
+            IOAuth2TokenStore tokenStore)
+            : this(clientId, clientSecret, product, tokenStore, GogoKit.Configuration.Configuration.Default)
         {
         }
 
@@ -53,10 +49,10 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product,
-            ICredentialsProvider credentialsProvider,
+            IOAuth2TokenStore tokenStore,
             IConfiguration configuration)
-            : this(new HttpConnection(product, credentialsProvider, configuration),
-                   CreateOAuthConnection(clientId, clientSecret, product, configuration),
+            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, tokenStore),
+                   HttpConnection.CreateOAuthConnection(clientId, clientSecret, product, configuration),
                    configuration)
         {
         }
@@ -70,11 +66,11 @@ namespace GogoKit
                              IHttpConnection oauthConnection,
                              IConfiguration configuration)
         {
-            _configuration = configuration;
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(oauthConnection, "oauthConnection");
             Requires.ArgumentNotNull(configuration, "configuration");
 
+            _configuration = configuration;
             _oauth2Client = new OAuth2Client(oauthConnection);
             _rootClient = new ApiRootClient(connection);
             var linkFactory = new LinkFactory(_rootClient, configuration);
@@ -166,18 +162,6 @@ namespace GogoKit
         public IVenuesClient Venues
         {
             get { return _venueClient; }
-        }
-
-        private static IHttpConnection CreateOAuthConnection(
-            string clientId,
-            string clientSecret,
-            ProductHeaderValue product,
-            IConfiguration configuration = null)
-        {
-            return new HttpConnection(
-                product,
-                new InMemoryCredentialsProvider(new BasicCredentials(clientId, clientSecret)),
-                configuration ?? GogoKit.Configuration.Configuration.Default);
         }
     }
 }

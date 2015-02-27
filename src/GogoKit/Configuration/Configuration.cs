@@ -7,13 +7,13 @@ namespace GogoKit.Configuration
         public static readonly IConfiguration Default
             = new Configuration
             {
-                ViagogoApiUrl = new Uri("https://api.viagogo.net"),
-                ViagogoDotComUrl = new Uri("https://www.viagogo.com"),
+                ViagogoApiUrl = new Uri(ViagogoClient.ViagogoApiUrl),
+                ViagogoOAuthTokenUrl = new Uri(ViagogoClient.ViagogoOAuthTokenUrl),
                 CaptureSynchronizationContext = false
             };
 
         public Uri ViagogoApiUrl { get; set; }
-        public Uri ViagogoDotComUrl { get; set; }
+        public Uri ViagogoOAuthTokenUrl { get; set; }
         public bool CaptureSynchronizationContext { get; set; }
     }
 }

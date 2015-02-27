@@ -18,7 +18,7 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(connection, "connection");
 
             _connection = connection;
-            _tokenUrl = new Uri(connection.Configuration.ViagogoDotComUrl, "/secure/oauth2/token");
+            _tokenUrl = connection.Configuration.ViagogoOAuthTokenUrl;
         }
 
         public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)

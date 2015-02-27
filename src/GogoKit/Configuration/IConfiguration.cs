@@ -6,7 +6,7 @@ namespace GogoKit.Configuration
     public interface IConfiguration
     {
         Uri ViagogoApiUrl { get; }
-        Uri ViagogoDotComUrl { get; }
+        Uri ViagogoOAuthTokenUrl { get; }
 
         /// <summary>
         /// Determines whether asynchronous operations should capture the current

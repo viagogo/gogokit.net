@@ -33,7 +33,7 @@ namespace GogoKit.Tests.Clients
         }
 
         [Test]
-        public async void GetAccessTokenAsync_ShouldPassConfigurationViagogoUrlWithPathToTokenToTheConnection()
+        public async void GetAccessTokenAsync_ShouldPassConfigurationTokenUrlToTheConnection()
         {
             var expectedUri = new Uri("https://vggBase.io/secure/oauth2/token", UriKind.Absolute);
             var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
@@ -45,7 +45,7 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<string>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
-            mockConn.Setup(c => c.Configuration).Returns(new Configuration.Configuration {ViagogoDotComUrl = new Uri("https://vggBase.io/")});
+            mockConn.Setup(c => c.Configuration).Returns(new Configuration.Configuration {ViagogoOAuthTokenUrl = expectedUri});
             var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAccessTokenAsync("grantType", null, null);

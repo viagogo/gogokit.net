@@ -9,6 +9,9 @@ namespace GogoKit
 {
     public class ViagogoClient : IViagogoClient
     {
+        public const string ViagogoApiUrl = "https://api.viagogo.net";
+        public const string ViagogoOAuthTokenUrl = "https://www.viagogo.com/secure/oauth2/token";
+
         private readonly IConfiguration _configuration;
         private readonly IHypermediaConnection _connection;
         private readonly IOAuth2Client _oauth2Client;

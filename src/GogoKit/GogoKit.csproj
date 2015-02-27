@@ -87,11 +87,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\BearerTokenCredentials.cs" />
-    <Compile Include="Authentication\ICredentials.cs" />
-    <Compile Include="Authentication\ICredentialsProvider.cs" />
     <Compile Include="Authentication\IOAuth2TokenStore.cs" />
-    <Compile Include="Authentication\InMemoryCredentialsProvider.cs" />
     <Compile Include="Authentication\InMemoryOAuth2TokenStore.cs" />
     <Compile Include="Clients\ApiRootClient.cs" />
     <Compile Include="Clients\IOAuth2Client.cs" />

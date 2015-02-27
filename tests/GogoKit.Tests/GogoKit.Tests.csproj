@@ -57,7 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\InMemoryCredentialsProviderTests.cs" />
     <Compile Include="Clients\ApiRootClientTests.cs" />
     <Compile Include="Clients\OAuth2ClientTests.cs" />
     <Compile Include="Extensions\IOAuth2ClientExtensionsTests.cs" />
@@ -65,7 +64,6 @@
     <Compile Include="Fakes\FakeDelegatingHandler.cs" />
     <Compile Include="Fakes\FakeHttpClientFactory.cs" />
     <Compile Include="Fakes\FakeHttpConnection.cs" />
-    <Compile Include="Fakes\FakeCredentials.cs" />
     <Compile Include="Helpers\LinkResolverTests.cs" />
     <Compile Include="Helpers\LinkFactoryTests.cs" />
     <Compile Include="Http\Handlers\BasicAuthenticationHandlerTests.cs" />

@@ -3,19 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using GogoKit;
 using GogoKit.Http;
 
 public class HttpClientFactory : IHttpClientFactory
 {
-    public HttpClient CreateClient(IEnumerable<DelegatingHandler> handlers)
+    private readonly HttpClientHandler _clientHandler;
+
+    public HttpClientFactory()
+        : this(new HttpClientHandler())
     {
-        var clientHandler = new HttpClientHandler();
+    }
+
+    public HttpClientFactory(HttpClientHandler clientHandler)
+    {
+        Requires.ArgumentNotNull(clientHandler, "clientHandler");
+
         if (clientHandler.SupportsAutomaticDecompression)
         {
             clientHandler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
         }
+        _clientHandler = clientHandler;
+    }
 
-        HttpMessageHandler pipeline = clientHandler;
+    public HttpClient CreateClient(IEnumerable<DelegatingHandler> handlers)
+    {
+        HttpMessageHandler pipeline = _clientHandler;
         foreach (var handler in handlers.Reverse())
         {
             if (handler == null)

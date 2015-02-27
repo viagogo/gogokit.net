@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using GogoKit.Http;
 using GogoKit.Tests.Fakes;
 using Moq;
 using NUnit.Framework;
@@ -12,33 +11,20 @@ namespace GogoKit.Tests.Http
     [TestFixture]
     public class HttpClientFactoryTests
     {
-        private static HttpClientFactory CreateFactory()
+        private static HttpClientFactory CreateFactory(HttpClientHandler clientHndl = null)
         {
-            return new HttpClientFactory();
+            return new HttpClientFactory(
+                clientHndl ?? new Mock<HttpClientHandler>(MockBehavior.Loose).Object);
         }
 
         [Test]
-        public void CreateClient_ShouldSetTheInnerHandlerOfTheLastGivenHandler_ToAnHttpClientHandlerThatSupportsAutomaticDecompression()
-        {
-            var lastHandler = new FakeDelegatingHandler();
-            var factory = CreateFactory();
-
-            factory.CreateClient(new[]
-                                 {
-                                     new FakeDelegatingHandler(),
-                                     new FakeDelegatingHandler(),
-                                     lastHandler
-                                 });
-
-            Assert.IsTrue(((HttpClientHandler) lastHandler.InnerHandler).SupportsAutomaticDecompression);
-        }
-
-        [Test]
-        public void CreateClient_ShouldSetTheInnerHandlerOfTheLastGivenHandler_ToAnHttpClientHandlerWithAutomaticGzipAndDeflateCompression()
+        public void Ctor_ShouldSetTheClientHandlerToSupportAutomaticGzipAndDeflateCompression_WhenItSupportsAutoDecompression()
         {
             var expectedDecompressionMethods = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             var lastHandler = new FakeDelegatingHandler();
-            var factory = CreateFactory();
+            var mockClientHandler = new Mock<HttpClientHandler>(MockBehavior.Loose);
+            mockClientHandler.Setup(h => h.SupportsAutomaticDecompression).Returns(true);
+            var factory = CreateFactory(clientHndl: mockClientHandler.Object);
 
             factory.CreateClient(new[]
                                  {
@@ -47,7 +33,32 @@ namespace GogoKit.Tests.Http
                                      lastHandler
                                  });
 
-            Assert.AreEqual(expectedDecompressionMethods, ((HttpClientHandler)lastHandler.InnerHandler).AutomaticDecompression);
+            Assert.AreEqual(expectedDecompressionMethods, mockClientHandler.Object.AutomaticDecompression);
+        }
+
+        [Test]
+        public void Ctor_ShouldNotSetTheClientHandlerAutomaticDecompressionToNone_WhenItDoesntSupportAutoDecompression()
+        {
+            var expectedDecompressionMethods = DecompressionMethods.None;
+            var lastHandler = new FakeDelegatingHandler();
+            var mockClientHandler = new Mock<HttpClientHandler>(MockBehavior.Loose);
+            mockClientHandler.Setup(h => h.SupportsAutomaticDecompression).Returns(false);
+
+            CreateFactory(clientHndl: mockClientHandler.Object);
+
+            Assert.AreEqual(expectedDecompressionMethods, mockClientHandler.Object.AutomaticDecompression);
+        }
+
+        [Test]
+        public void CreateClient_ShouldSetTheInnerHandlerOfTheLastGivenHandler_ToTheGivenClientHandler()
+        {
+            var expectedHandler = new Mock<HttpClientHandler>(MockBehavior.Loose).Object;
+            var lastHandler = new FakeDelegatingHandler();
+            var factory = CreateFactory(clientHndl: expectedHandler);
+
+            factory.CreateClient(new[] {new FakeDelegatingHandler(), lastHandler});
+
+            Assert.AreSame(expectedHandler, lastHandler.InnerHandler);
         }
 
         [Test]

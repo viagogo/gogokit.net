@@ -51,7 +51,7 @@ namespace GogoKit
             ProductHeaderValue product,
             IOAuth2TokenStore tokenStore,
             IConfiguration configuration)
-            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, tokenStore),
+            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, tokenStore: tokenStore),
                    HttpConnection.CreateOAuthConnection(clientId, clientSecret, product, configuration),
                    configuration)
         {

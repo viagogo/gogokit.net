@@ -27,13 +27,15 @@ namespace GogoKit.Http
             string clientId,
             string clientSecret,
             ProductHeaderValue product,
-            IConfiguration configuration,
-            params DelegatingHandler[] customHandlers)
+            IConfiguration configuration = null,
+            IHttpClientFactory httpClientFactory = null,
+            IList<DelegatingHandler> customHandlers = null)
         {
             return CreateConnection(
                 product,
-                configuration,
                 new BasicAuthenticationHandler(clientId, clientSecret),
+                configuration,
+                httpClientFactory,
                 customHandlers);
         }
 
@@ -41,23 +43,35 @@ namespace GogoKit.Http
             string clientId,
             string clientSecret,
             ProductHeaderValue product,
-            IConfiguration configuration,
-            IOAuth2TokenStore tokenStore,
-            params DelegatingHandler[] customHandlers)
+            IConfiguration configuration = null,
+            IHttpClientFactory httpClientFactory = null,
+            IList<DelegatingHandler> customHandlers = null,
+            IOAuth2TokenStore tokenStore = null)
         {
-            var oauthConnection = CreateOAuthConnection(clientId, clientSecret, product, configuration, customHandlers);
+            var oauthConnection = CreateOAuthConnection(
+                                    clientId,
+                                    clientSecret,
+                                    product,
+                                    configuration,
+                                    httpClientFactory,
+                                    customHandlers);
+            configuration = configuration ?? GogoKit.Configuration.Configuration.Default;
+            tokenStore = tokenStore ?? new InMemoryOAuth2TokenStore();
+
             return CreateConnection(
                 product,
-                configuration,
                 new BearerTokenAuthenticationHandler(new OAuth2Client(oauthConnection), tokenStore, configuration),
+                configuration,
+                httpClientFactory,
                 customHandlers);
         }
 
         private static HttpConnection CreateConnection(
             ProductHeaderValue product,
-            IConfiguration configuration,
             DelegatingHandler authenticationHandler,
-            params DelegatingHandler[] customHandlers)
+            IConfiguration configuration = null,
+            IHttpClientFactory httpClientFactory = null,
+            IList<DelegatingHandler> customHandlers = null)
         {
             var serializer = new NewtonsoftJsonSerializer();
             var responseFactory = new ApiResponseFactory(serializer, configuration);
@@ -67,12 +81,12 @@ namespace GogoKit.Http
                                new UserAgentHandler(product),
                                authenticationHandler
                            };
-            handlers.AddRange(customHandlers);
+            handlers.AddRange(customHandlers ?? new DelegatingHandler[] {});
 
             return new HttpConnection(
                 handlers,
-                configuration,
-                new HttpClientFactory(),
+                configuration ?? GogoKit.Configuration.Configuration.Default,
+                httpClientFactory ?? new HttpClientFactory(),
                 serializer,
                 responseFactory);
         }
@@ -118,9 +132,6 @@ namespace GogoKit.Http
 
             using (var request = new HttpRequestMessage { RequestUri = uri, Method = method })
             {
-                //var credentials = await CredentialsProvider.GetCredentialsAsync().ConfigureAwait(_configuration);
-                //request.Headers.Authorization = AuthenticationHeaderValue.Parse(credentials.AuthorizationHeader);
-
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
                 request.Content = await GetRequestContentAsync(method, body, contentType).ConfigureAwait(_configuration);
 

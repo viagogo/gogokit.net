@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using GogoKit.Authentication;
 using GogoKit.Clients;
@@ -41,7 +43,7 @@ namespace GogoKit
             string clientSecret,
             ProductHeaderValue product,
             IOAuth2TokenStore tokenStore)
-            : this(clientId, clientSecret, product, tokenStore, GogoKit.Configuration.Configuration.Default)
+            : this(clientId, clientSecret, product, tokenStore, new DelegatingHandler[] {})
         {
         }
 
@@ -50,9 +52,20 @@ namespace GogoKit
             string clientSecret,
             ProductHeaderValue product,
             IOAuth2TokenStore tokenStore,
+            IList<DelegatingHandler> customHandlers)
+            : this(clientId, clientSecret, product, tokenStore, customHandlers, GogoKit.Configuration.Configuration.Default)
+        {
+        }
+
+        public ViagogoClient(
+            string clientId,
+            string clientSecret,
+            ProductHeaderValue product,
+            IOAuth2TokenStore tokenStore,
+            IList<DelegatingHandler> customHandlers,
             IConfiguration configuration)
-            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, tokenStore: tokenStore),
-                   HttpConnection.CreateOAuthConnection(clientId, clientSecret, product, configuration),
+            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, tokenStore: tokenStore, customHandlers: customHandlers),
+                   HttpConnection.CreateOAuthConnection(clientId, clientSecret, product, configuration, customHandlers: customHandlers),
                    configuration)
         {
         }

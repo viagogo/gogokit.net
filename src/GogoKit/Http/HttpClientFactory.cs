@@ -36,11 +36,6 @@ public class HttpClientFactory : IHttpClientFactory
                 throw new ArgumentException("Handlers contains null handler", "handlers");
             }
 
-            if (handler.InnerHandler != null)
-            {
-                throw new ArgumentException("Handlers already contain inner handlers", "handlers");
-            }
-
             handler.InnerHandler = pipeline;
             pipeline = handler;
         }

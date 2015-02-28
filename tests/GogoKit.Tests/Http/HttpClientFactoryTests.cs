@@ -90,20 +90,6 @@ namespace GogoKit.Tests.Http
         }
 
         [Test]
-        public void CreateClient_ShouldThrowAnException_WhenAGivenHandlerAlreadyHasAnInnerHandler()
-        {
-            var factory = CreateFactory();
-
-            Assert.Throws<ArgumentException>(
-                () => factory.CreateClient(new[]
-                {
-                    new FakeDelegatingHandler(),
-                    new FakeDelegatingHandler(),
-                    new FakeDelegatingHandler {InnerHandler = new FakeDelegatingHandler()},
-                }));
-        }
-
-        [Test]
         public void CreateClient_ShouldReturnAnHttpClient()
         {
             var factory = CreateFactory();

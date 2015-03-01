@@ -63,6 +63,7 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Helpers\ILinkFactory.cs" />
     <Compile Include="Helpers\LinkFactory.cs" />
+    <Compile Include="Helpers\Parameters.cs" />
     <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\BearerTokenAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\ErrorHandler.cs" />
@@ -78,7 +79,9 @@
     <Compile Include="Requests\NewPayPal.cs" />
     <Compile Include="Requests\NewPurchase.cs" />
     <Compile Include="Requests\NewPurchasePreview.cs" />
+    <Compile Include="Requests\PageRequest.cs" />
     <Compile Include="Requests\PaymentMethodUpdate.cs" />
+    <Compile Include="Requests\SearchResultRequest.cs" />
     <Compile Include="Resources\PurchasePreview.cs" />
     <Compile Include="Resources\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

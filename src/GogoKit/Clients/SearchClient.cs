@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Helpers;
 using GogoKit.Http;
+using GogoKit.Models;
+using GogoKit.Requests;
 using GogoKit.Resources;
 
 namespace GogoKit.Clients
@@ -16,28 +20,42 @@ namespace GogoKit.Clients
             _connection = connection;
         }
 
-        public async Task<PagedResource<SearchResult>> GetAsync(string query, int page, int pageSize)
+        public Task<PagedResource<SearchResult>> GetAsync(string query, SearchResultRequest request)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
-            return await _connection.GetAsync<PagedResource<SearchResult>>(
-                root.Links["viagogo:search"],
-                new Dictionary<string, string>
-                {
-                    {"query", query},
-                    {"page", page.ToString()},
-                    {"page_size", pageSize.ToString()}
-                }).ConfigureAwait(_connection);
+            return GetInternalAsync(query, request, _connection.GetAsync<PagedResource<SearchResult>>);
         }
 
-        public async Task<IReadOnlyList<SearchResult>> GetAllAsync(string query)
+        public Task<IReadOnlyList<SearchResult>> GetAllAsync(string query)
         {
+            return GetAllAsync(query, new SearchResultRequest());
+        }
+
+        public Task<IReadOnlyList<SearchResult>> GetAllAsync(string query, SearchResultRequest request)
+        {
+            return GetInternalAsync(query, request, _connection.GetAllPagesAsync<SearchResult>);
+        }
+
+        private async Task<T> GetInternalAsync<T>(
+            string query,
+            SearchResultRequest request,
+            Func<Link, IDictionary<string, string>, Task<T>> getSearchResultsFunc)
+        {
+            Requires.ArgumentNotNull(query, "query");
+            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(getSearchResultsFunc, "getSearchResultsFunc");
+
+            var type = request.TypeFilter.HasValue
+                        ? request.TypeFilter.Value.ToString().Replace(" ", "").ToLower()
+                        : null;
             var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
-            return await _connection.GetAllPagesAsync<SearchResult>(
-                            root.Links["viagogo:search"],
-                            new Dictionary<string, string>
-                            {
-                                {"query", query}
-                            }).ConfigureAwait(_connection);
+
+            return await getSearchResultsFunc(
+                root.Links["viagogo:search"],
+                Parameters.WithPaging(request)
+                          .And("query", query)
+                          .And("type", type)
+                          .And("embed", "category,event,venue,metro_area")
+                          .Build()).ConfigureAwait(_connection);
         }
     }
 }

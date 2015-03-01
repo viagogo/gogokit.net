@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using GogoKit.Json;
 
 namespace GogoKit.Resources
 {
@@ -13,5 +14,14 @@ namespace GogoKit.Resources
 
         [DataMember(Name = "type_description")]
         public string TypeDescription { get; set; }
+
+        [Embedded("category")]
+        public Category Category { get; set; }
+
+        [Embedded("event")]
+        public Event Event { get; set; }
+
+        [Embedded("venue")]
+        public Venue Venue { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using GogoKit.Authentication;
 using GogoKit.Clients;
 using GogoKit.Configuration;
+using GogoKit.Exceptions;
 using GogoKit.Models;
 
 namespace GogoKit.Http.Handlers
@@ -47,7 +49,13 @@ namespace GogoKit.Http.Handlers
                                                     string.Format("Bearer {0}", token.AccessToken));
             }
 
-            return await base.SendAsync(request, cancellationToken).ConfigureAwait(_configuration);
+            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(_configuration);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await _tokenStore.DeleteTokenAsync().ConfigureAwait(_configuration);
+            }
+
+            return response;
         }
 
         private async Task<OAuth2Token> GetTokenAsync()
@@ -56,19 +64,33 @@ namespace GogoKit.Http.Handlers
             if (token == null ||
                 token.IssueDate.AddSeconds(token.ExpiresIn) <= DateTime.UtcNow)
             {
-                if (token == null || token.RefreshToken == null)
+                ApiException refreshTokenException = null;
+                try
                 {
-                    token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null).ConfigureAwait(_configuration);
+                    if (token == null || token.RefreshToken == null)
+                    {
+                        token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null).ConfigureAwait(_configuration);
+                    }
+                    else
+                    {
+                        token = await _oauthClient.GetAccessTokenAsync(
+                            "refresh_token",
+                            (token.Scope ?? "").Split(' '),
+                            new Dictionary<string, string>
+                            {
+                                {"refresh_token", token.RefreshToken}
+                            }).ConfigureAwait(_configuration);
+                    }
                 }
-                else
+                catch (ApiException ex)
                 {
-                    token = await _oauthClient.GetAccessTokenAsync(
-                                    "refresh_token",
-                                    (token.Scope ?? "").Split(' '),
-                                    new Dictionary<string, string>
-                                    {
-                                        {"refresh_token", token.RefreshToken}
-                                    }).ConfigureAwait(_configuration);
+                    refreshTokenException = ex;
+                }
+
+                if (refreshTokenException != null)
+                {
+                    await _tokenStore.DeleteTokenAsync().ConfigureAwait(_configuration);
+                    throw refreshTokenException;
                 }
 
                 await _tokenStore.SetTokenAsync(token).ConfigureAwait(_configuration);

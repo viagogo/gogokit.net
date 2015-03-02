@@ -22,7 +22,13 @@ namespace GogoKit.Authentication
             Requires.ArgumentNotNull(token, "token");
 
             _token = token;
-            return Task.FromResult<object>(null);
+            return Task.FromResult(0);
+        }
+
+        public Task DeleteTokenAsync()
+        {
+            _token = null;
+            return Task.FromResult(0);
         }
     }
 }

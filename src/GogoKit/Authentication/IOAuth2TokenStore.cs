@@ -7,5 +7,6 @@ namespace GogoKit.Authentication
     {
         Task<OAuth2Token> GetTokenAsync();
         Task SetTokenAsync(OAuth2Token token);
+        Task DeleteTokenAsync();
     }
 }

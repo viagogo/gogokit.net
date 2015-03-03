@@ -57,6 +57,7 @@
     <Compile Include="Clients\PurchasesClient.cs" />
     <Compile Include="Clients\VenuesClient.cs" />
     <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\ConfigurationLocalizationProvider.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Exceptions\InternalServerErrorException.cs" />
     <Compile Include="Exceptions\SslConnectionRequiredException.cs" />
@@ -67,9 +68,12 @@
     <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\BearerTokenAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\ErrorHandler.cs" />
+    <Compile Include="Http\Handlers\LocalizationHandler.cs" />
     <Compile Include="Http\Handlers\UserAgentHandler.cs" />
+    <Compile Include="Http\Headers.cs" />
     <Compile Include="Http\HttpClientFactory.cs" />
     <Compile Include="Http\IHttpClientFactory.cs" />
+    <Compile Include="Localization\ILocalizationProvider.cs" />
     <Compile Include="Models\AddressSnapshot.cs" />
     <Compile Include="Requests\NewAddress.cs" />
     <Compile Include="Requests\AddressUpdate.cs" />

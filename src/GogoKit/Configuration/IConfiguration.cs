@@ -14,5 +14,9 @@ namespace GogoKit.Configuration
         /// </summary>
         /// <remarks>See http://blog.stephencleary.com/2012/02/async-and-await.html#avoiding-context.</remarks>
         bool CaptureSynchronizationContext { get; }
+
+        string LanguageCode { get; set; }
+        string CountryCode { get; set; }
+        string CurrencyCode { get; set; }
     }
 }

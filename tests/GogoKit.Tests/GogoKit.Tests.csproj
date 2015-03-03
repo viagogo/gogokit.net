@@ -61,6 +61,8 @@
     <Compile Include="Clients\OAuth2ClientTests.cs" />
     <Compile Include="Extensions\IOAuth2ClientExtensionsTests.cs" />
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
+    <Compile Include="Fakes\FakeConfiguration.cs" />
+    <Compile Include="Fakes\FakeLocalizationProvider.cs" />
     <Compile Include="Fakes\FakeDelegatingHandler.cs" />
     <Compile Include="Fakes\FakeHttpClientFactory.cs" />
     <Compile Include="Fakes\FakeHttpConnection.cs" />
@@ -69,11 +71,13 @@
     <Compile Include="Http\Handlers\BasicAuthenticationHandlerTests.cs" />
     <Compile Include="Http\Handlers\BearerTokenAuthenticationHandlerTests.cs" />
     <Compile Include="Http\Handlers\ErrorHandlerTests.cs" />
+    <Compile Include="Http\Handlers\LocalizationHandlerTests.cs" />
     <Compile Include="Http\HttpClientFactoryTests.cs" />
     <Compile Include="Http\HypermediaConnectionTests.cs" />
     <Compile Include="Http\ApiResponseFactoryTests.cs" />
     <Compile Include="Http\HttpConnectionTests.cs" />
     <Compile Include="Http\Handlers\UserAgentHandlerTests.cs" />
+    <Compile Include="Localization\ConfigurationLocalizationProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

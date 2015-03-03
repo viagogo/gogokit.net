@@ -1,2 +1,2 @@
-### New in 0.1.0-rc05 (Released 2015/02/08)
+### New in 0.1.0-rc06 (Released 2015/03/04)
 * Initial release

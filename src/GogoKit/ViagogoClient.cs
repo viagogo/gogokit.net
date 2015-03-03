@@ -6,6 +6,8 @@ using GogoKit.Clients;
 using GogoKit.Configuration;
 using GogoKit.Helpers;
 using GogoKit.Http;
+using GogoKit.Http.Handlers;
+using GogoKit.Localization;
 
 namespace GogoKit
 {
@@ -44,6 +46,16 @@ namespace GogoKit
             ProductHeaderValue product,
             IOAuth2TokenStore tokenStore)
             : this(clientId, clientSecret, product, tokenStore, new DelegatingHandler[] {})
+        {
+        }
+
+        public ViagogoClient(
+            string clientId,
+            string clientSecret,
+            ProductHeaderValue product,
+            IOAuth2TokenStore tokenStore,
+            IConfiguration configuration)
+            : this(clientId, clientSecret, product, tokenStore, new DelegatingHandler[] {new LocalizationHandler(new ConfigurationLocalizationProvider(configuration))}, configuration)
         {
         }
 

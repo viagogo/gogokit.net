@@ -78,36 +78,31 @@ namespace GogoKit.Http
             IHttpClientFactory httpClientFactory = null,
             IList<DelegatingHandler> customHandlers = null)
         {
+            configuration = configuration ?? GogoKit.Configuration.Configuration.Default;
+            localizationProvider = localizationProvider ?? new ConfigurationLocalizationProvider(configuration);
+            httpClientFactory = httpClientFactory ?? new HttpClientFactory();
+
             var serializer = new NewtonsoftJsonSerializer();
             var responseFactory = new ApiResponseFactory(serializer, configuration);
+
+            // IMPORTANT: The order of these handlers is significant!
             var handlers = new List<DelegatingHandler>
                            {
                                new ErrorHandler(responseFactory, configuration),
                                new UserAgentHandler(product),
-                               authenticationHandler
+                               authenticationHandler,
+                               new LocalizationHandler(localizationProvider)
                            };
             handlers.AddRange(customHandlers ?? new DelegatingHandler[] {});
 
-            handlers.Add(GetLocalizationHandler(configuration, localizationProvider));
-
             return new HttpConnection(
                 handlers,
-                configuration ?? GogoKit.Configuration.Configuration.Default,
-                httpClientFactory ?? new HttpClientFactory(),
+                configuration,
+                httpClientFactory,
                 serializer,
                 responseFactory);
         }
-
-        private static LocalizationHandler GetLocalizationHandler(IConfiguration configuration, ILocalizationProvider localizationProvider)
-        {
-            if (localizationProvider == null)
-            {
-                return new LocalizationHandler(new ConfigurationLocalizationProvider(configuration ?? GogoKit.Configuration.Configuration.Default));
-            }
-
-            return new LocalizationHandler(localizationProvider);
-        }
-
+        
         public HttpConnection(IEnumerable<DelegatingHandler> handlers, IConfiguration configuration)
             : this(handlers,
                    configuration,

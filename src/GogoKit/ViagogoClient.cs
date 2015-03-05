@@ -35,58 +35,36 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
-            : this(clientId, clientSecret, product, new InMemoryOAuth2TokenStore())
+            : this(clientId, clientSecret, product, GogoKit.Configuration.Configuration.Default)
         {
         }
-
+        
         public ViagogoClient(
             string clientId,
             string clientSecret,
             ProductHeaderValue product,
-            IOAuth2TokenStore tokenStore)
-            : this(clientId, clientSecret, product, tokenStore, new DelegatingHandler[] { })
+            IConfiguration configuration)
+            : this(clientId,
+                   clientSecret,
+                   product,
+                   configuration,
+                   new InMemoryOAuth2TokenStore(),
+                   new ConfigurationLocalizationProvider(configuration),
+                   new DelegatingHandler[] {})
         {
         }
-
-        public ViagogoClient(
-            string clientId,
-            string clientSecret,
-            ProductHeaderValue product,
-            IOAuth2TokenStore tokenStore,
-            IList<DelegatingHandler> customHandlers)
-            : this(clientId, clientSecret, product, tokenStore, customHandlers, GogoKit.Configuration.Configuration.Default)
-        {
-        }
-
 
         public ViagogoClient(
            string clientId,
            string clientSecret,
            ProductHeaderValue product,
+           IConfiguration configuration,
            IOAuth2TokenStore tokenStore,
            ILocalizationProvider localizationProvider,
-           IConfiguration configuration)
-            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, null, localizationProvider, tokenStore: tokenStore),
-                   HttpConnection.CreateOAuthConnection(clientId, clientSecret, product),
-                   configuration)
-        {
-        }
-
-        public ViagogoClient(
-            string clientId,
-            string clientSecret,
-            ProductHeaderValue product,
-            IOAuth2TokenStore tokenStore,
-            IList<DelegatingHandler> customHandlers,
-            IConfiguration configuration)
-            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, tokenStore: tokenStore, customHandlers: customHandlers),
+           IList<DelegatingHandler> customHandlers)
+            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, localizationProvider: localizationProvider, tokenStore: tokenStore, customHandlers: customHandlers),
                    HttpConnection.CreateOAuthConnection(clientId, clientSecret, product, configuration, customHandlers: customHandlers),
                    configuration)
-        {
-        }
-
-        public ViagogoClient(IHttpConnection connection, IHttpConnection oauthConnection)
-            : this(connection, oauthConnection, GogoKit.Configuration.Configuration.Default)
         {
         }
 

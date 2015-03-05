@@ -6,7 +6,6 @@ using GogoKit.Clients;
 using GogoKit.Configuration;
 using GogoKit.Helpers;
 using GogoKit.Http;
-using GogoKit.Http.Handlers;
 using GogoKit.Localization;
 
 namespace GogoKit
@@ -31,7 +30,7 @@ namespace GogoKit
         private readonly IEventsClient _eventClient;
         private readonly IListingsClient _listingClient;
         private readonly IVenuesClient _venueClient;
-        
+
         public ViagogoClient(
             string clientId,
             string clientSecret,
@@ -45,17 +44,7 @@ namespace GogoKit
             string clientSecret,
             ProductHeaderValue product,
             IOAuth2TokenStore tokenStore)
-            : this(clientId, clientSecret, product, tokenStore, new DelegatingHandler[] {})
-        {
-        }
-
-        public ViagogoClient(
-            string clientId,
-            string clientSecret,
-            ProductHeaderValue product,
-            IOAuth2TokenStore tokenStore,
-            IConfiguration configuration)
-            : this(clientId, clientSecret, product, tokenStore, new DelegatingHandler[] {new LocalizationHandler(new ConfigurationLocalizationProvider(configuration))}, configuration)
+            : this(clientId, clientSecret, product, tokenStore, new DelegatingHandler[] { })
         {
         }
 
@@ -66,6 +55,20 @@ namespace GogoKit
             IOAuth2TokenStore tokenStore,
             IList<DelegatingHandler> customHandlers)
             : this(clientId, clientSecret, product, tokenStore, customHandlers, GogoKit.Configuration.Configuration.Default)
+        {
+        }
+
+
+        public ViagogoClient(
+           string clientId,
+           string clientSecret,
+           ProductHeaderValue product,
+           IOAuth2TokenStore tokenStore,
+           ILocalizationProvider localizationProvider,
+           IConfiguration configuration)
+            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, null, localizationProvider, tokenStore: tokenStore),
+                   HttpConnection.CreateOAuthConnection(clientId, clientSecret, product),
+                   configuration)
         {
         }
 
@@ -176,7 +179,7 @@ namespace GogoKit
 
         public IEventsClient Events
         {
-            get { return _eventClient;  }
+            get { return _eventClient; }
         }
 
         public IListingsClient Listings

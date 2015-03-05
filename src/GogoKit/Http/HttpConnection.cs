@@ -12,6 +12,7 @@ using GogoKit.Clients;
 using GogoKit.Configuration;
 using GogoKit.Http.Handlers;
 using GogoKit.Json;
+using GogoKit.Localization;
 
 namespace GogoKit.Http
 {
@@ -35,6 +36,7 @@ namespace GogoKit.Http
                 product,
                 new BasicAuthenticationHandler(clientId, clientSecret),
                 configuration,
+                null,
                 httpClientFactory,
                 customHandlers);
         }
@@ -44,6 +46,7 @@ namespace GogoKit.Http
             string clientSecret,
             ProductHeaderValue product,
             IConfiguration configuration = null,
+            ILocalizationProvider localizationProvider = null,
             IHttpClientFactory httpClientFactory = null,
             IList<DelegatingHandler> customHandlers = null,
             IOAuth2TokenStore tokenStore = null)
@@ -62,6 +65,7 @@ namespace GogoKit.Http
                 product,
                 new BearerTokenAuthenticationHandler(new OAuth2Client(oauthConnection), tokenStore, configuration),
                 configuration,
+                localizationProvider,
                 httpClientFactory,
                 customHandlers);
         }
@@ -70,6 +74,7 @@ namespace GogoKit.Http
             ProductHeaderValue product,
             DelegatingHandler authenticationHandler,
             IConfiguration configuration = null,
+            ILocalizationProvider localizationProvider = null,
             IHttpClientFactory httpClientFactory = null,
             IList<DelegatingHandler> customHandlers = null)
         {
@@ -83,12 +88,24 @@ namespace GogoKit.Http
                            };
             handlers.AddRange(customHandlers ?? new DelegatingHandler[] {});
 
+            handlers.Add(GetLocalizationHandler(configuration, localizationProvider));
+
             return new HttpConnection(
                 handlers,
                 configuration ?? GogoKit.Configuration.Configuration.Default,
                 httpClientFactory ?? new HttpClientFactory(),
                 serializer,
                 responseFactory);
+        }
+
+        private static LocalizationHandler GetLocalizationHandler(IConfiguration configuration, ILocalizationProvider localizationProvider)
+        {
+            if (localizationProvider == null)
+            {
+                return new LocalizationHandler(new ConfigurationLocalizationProvider(configuration ?? GogoKit.Configuration.Configuration.Default));
+            }
+
+            return new LocalizationHandler(localizationProvider);
         }
 
         public HttpConnection(IEnumerable<DelegatingHandler> handlers, IConfiguration configuration)

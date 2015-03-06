@@ -36,7 +36,8 @@ namespace GogoKit.Helpers
             }
 
             // Any remaining parameters are query string parameters
-            var parametersQueryString = string.Join("&", unresolvedParameters.Select(kv => kv.Key + "=" + kv.Value));
+            var unresolvedParametersWithValues = unresolvedParameters.Where(kv => kv.Value != null);
+            var parametersQueryString = string.Join("&", unresolvedParametersWithValues.Select(kv => kv.Key + "=" + kv.Value));
             var resolvedParameters = uriBuilder.Query.Replace("?", "");
             if (NeedsAmpersandBetweenResolvedAndUnresolvedParameters(resolvedParameters, unresolvedParameters))
             {
@@ -47,24 +48,11 @@ namespace GogoKit.Helpers
             return uriBuilder.Uri;
         }
 
-        private static bool NeedsAmpersandBetweenResolvedAndUnresolvedParameters(string resolvedParameters, Dictionary<string, string> unresolvedParameters)
+        private static bool NeedsAmpersandBetweenResolvedAndUnresolvedParameters(
+            string resolvedParameters,
+            Dictionary<string, string> unresolvedParameters)
         {
-            return HasResolvedParameters(resolvedParameters) && !ResolvedParametersAlreadyHaveTrailingAmpersand(resolvedParameters) && HasUnresolvedParameters(unresolvedParameters);
-        }
-
-        private static bool HasUnresolvedParameters(Dictionary<string, string> unresolvedParameters)
-        {
-            return unresolvedParameters.Any();
-        }
-
-        private static bool ResolvedParametersAlreadyHaveTrailingAmpersand(string resolvedParameters)
-        {
-            return resolvedParameters.EndsWith("&");
-        }
-
-        private static bool HasResolvedParameters(string resolvedParameters)
-        {
-            return !string.IsNullOrEmpty(resolvedParameters);
+            return unresolvedParameters.Any() && !string.IsNullOrEmpty(resolvedParameters) && !resolvedParameters.EndsWith("&");
         }
     }
 }

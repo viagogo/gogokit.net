@@ -96,5 +96,22 @@ namespace GogoKit.Tests.Helpers
 
             Assert.AreEqual(expectedUri, actualUri);
         }
+
+        [Test]
+        public void ResolveLink_ShouldReturnUriWithoutParametersWithNullValues()
+        {
+            var expectedUri = new Uri("https://url.com/path?foo=fooval");
+            var resolver = CreateResolver();
+
+            var actualUri = resolver.ResolveLink(
+                                new Link {HRef = "https://url.com/path"},
+                                new Dictionary<string, string>
+                                {
+                                    {"foo", "fooval"},
+                                    {"bar", null}
+                                });
+
+            Assert.AreEqual(expectedUri, actualUri);
+        }
     }
 }

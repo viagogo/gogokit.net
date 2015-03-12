@@ -123,7 +123,6 @@
     <Compile Include="Exceptions\ResourceNotFoundException.cs" />
     <Compile Include="Exceptions\UserAgentRequiredException.cs" />
     <Compile Include="Exceptions\ValidationFailedException.cs" />
-    <Compile Include="Extensions\IOAuth2ClientExtensions.cs" />
     <Compile Include="Helpers\ILinkResolver.cs" />
     <Compile Include="Helpers\LinkResolver.cs" />
     <Compile Include="Http\HypermediaConnection.cs" />

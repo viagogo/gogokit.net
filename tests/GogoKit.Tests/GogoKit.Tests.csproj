@@ -59,7 +59,6 @@
   <ItemGroup>
     <Compile Include="Clients\ApiRootClientTests.cs" />
     <Compile Include="Clients\OAuth2ClientTests.cs" />
-    <Compile Include="Extensions\IOAuth2ClientExtensionsTests.cs" />
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
     <Compile Include="Fakes\FakeConfiguration.cs" />
     <Compile Include="Fakes\FakeLocalizationProvider.cs" />

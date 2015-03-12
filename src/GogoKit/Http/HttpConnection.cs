@@ -63,7 +63,7 @@ namespace GogoKit.Http
 
             return CreateConnection(
                 product,
-                new BearerTokenAuthenticationHandler(new OAuth2Client(oauthConnection), tokenStore, configuration),
+                new BearerTokenAuthenticationHandler(new OAuth2Client(oauthConnection, tokenStore), tokenStore, configuration),
                 configuration,
                 localizationProvider,
                 httpClientFactory,

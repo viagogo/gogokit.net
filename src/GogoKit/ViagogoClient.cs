@@ -64,20 +64,22 @@ namespace GogoKit
            IList<DelegatingHandler> customHandlers)
             : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, localizationProvider: localizationProvider, tokenStore: tokenStore, customHandlers: customHandlers),
                    HttpConnection.CreateOAuthConnection(clientId, clientSecret, product, configuration, customHandlers: customHandlers),
-                   configuration)
+                   configuration,
+                   tokenStore)
         {
         }
 
         public ViagogoClient(IHttpConnection connection,
                              IHttpConnection oauthConnection,
-                             IConfiguration configuration)
+                             IConfiguration configuration,
+                             IOAuth2TokenStore tokenStore)
         {
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(oauthConnection, "oauthConnection");
             Requires.ArgumentNotNull(configuration, "configuration");
 
             _configuration = configuration;
-            _oauth2Client = new OAuth2Client(oauthConnection);
+            _oauth2Client = new OAuth2Client(oauthConnection, tokenStore);
             _rootClient = new ApiRootClient(connection);
             var linkFactory = new LinkFactory(_rootClient, configuration);
 

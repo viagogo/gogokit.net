@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GogoKit.Authentication;
 using GogoKit.Http;
 using GogoKit.Models;
 
@@ -11,13 +12,15 @@ namespace GogoKit.Clients
     public class OAuth2Client : IOAuth2Client
     {
         private readonly IHttpConnection _connection;
+        private readonly IOAuth2TokenStore _tokenStore;
         private readonly Uri _tokenUrl;
 
-        public OAuth2Client(IHttpConnection connection)
+        public OAuth2Client(IHttpConnection connection, IOAuth2TokenStore tokenStore)
         {
             Requires.ArgumentNotNull(connection, "connection");
 
             _connection = connection;
+            _tokenStore = tokenStore;
             _tokenUrl = connection.Configuration.ViagogoOAuthTokenUrl;
         }
 
@@ -43,6 +46,8 @@ namespace GogoKit.Clients
             token.IssueDate = response.Headers.ContainsKey("Date")
                                 ? DateTimeOffset.Parse(response.Headers["Date"])
                                 : DateTime.UtcNow;
+
+            await _tokenStore.SetTokenAsync(token);
 
             return token;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GogoKit.Authentication;
 using GogoKit.Clients;
 using GogoKit.Configuration;
 using GogoKit.Http;
@@ -19,7 +20,8 @@ namespace GogoKit.Tests.Clients
             var mockClient = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockClient.Setup(c => c.Configuration).Returns(config ?? Configuration.Configuration.Default);
             return new OAuth2Client(
-                conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object);
+                conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object, 
+                new Mock<IOAuth2TokenStore>().Object);
         }
 
         private static IApiResponse<OAuth2Token> CreateResponse(

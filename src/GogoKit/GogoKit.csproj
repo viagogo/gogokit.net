@@ -51,10 +51,12 @@
     <Compile Include="Clients\IListingsClient.cs" />
     <Compile Include="Clients\IPaymentMethodsClient.cs" />
     <Compile Include="Clients\IPurchasesClient.cs" />
+    <Compile Include="Clients\ISalesClient.cs" />
     <Compile Include="Clients\IVenuesClient.cs" />
     <Compile Include="Clients\ListingsClient.cs" />
     <Compile Include="Clients\PaymentMethodsClient.cs" />
     <Compile Include="Clients\PurchasesClient.cs" />
+    <Compile Include="Clients\SalesClient.cs" />
     <Compile Include="Clients\VenuesClient.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\ConfigurationLocalizationProvider.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Requests\PaymentMethodUpdate.cs" />
     <Compile Include="Requests\SearchResultRequest.cs" />
     <Compile Include="Resources\PurchasePreview.cs" />
+    <Compile Include="Resources\Sale.cs" />
     <Compile Include="Resources\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">

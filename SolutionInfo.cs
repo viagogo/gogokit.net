@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyrightAttribute("Copyright © viagogo 2014")]
 [assembly: AssemblyVersionAttribute("0.1.0")]
 [assembly: AssemblyFileVersionAttribute("0.1.0")]
-[assembly: AssemblyInformationalVersionAttribute("0.1.0-rc06")]
+[assembly: AssemblyInformationalVersionAttribute("0.1.0-rc07")]
 [assembly: ComVisibleAttribute(false)]
 namespace System {
     internal static class AssemblyVersionInformation {

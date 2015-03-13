@@ -12,7 +12,6 @@ namespace GogoKit.Clients
     public class OAuth2Client : IOAuth2Client
     {
         private readonly IHttpConnection _connection;
-        private readonly IOAuth2TokenStore _tokenStore;
         private readonly Uri _tokenUrl;
 
         public OAuth2Client(IHttpConnection connection, IOAuth2TokenStore tokenStore)
@@ -20,14 +19,11 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(connection, "connection");
 
             _connection = connection;
-            _tokenStore = tokenStore;
+            TokenStore = tokenStore;
             _tokenUrl = connection.Configuration.ViagogoOAuthTokenUrl;
         }
 
-        public IOAuth2TokenStore TokenStore
-        {
-            get { return _tokenStore; }
-        }
+        public IOAuth2TokenStore TokenStore { get; private set; }
 
         public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
         {

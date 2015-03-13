@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Authentication;
 using GogoKit.Models;
 
 namespace GogoKit.Clients
@@ -22,5 +23,7 @@ namespace GogoKit.Clients
             IEnumerable<string> scopes);
 
         Task AuthenticateClientCredentialsAsync(IEnumerable<string> scopes);
+
+        IOAuth2TokenStore TokenStore { get; }
     }
 }

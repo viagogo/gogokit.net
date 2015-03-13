@@ -24,6 +24,11 @@ namespace GogoKit.Clients
             _tokenUrl = connection.Configuration.ViagogoOAuthTokenUrl;
         }
 
+        public IOAuth2TokenStore TokenStore
+        {
+            get { return _tokenStore; }
+        }
+
         public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
         {
             Requires.ArgumentNotNullOrEmpty(grantType, "grantType");
@@ -59,7 +64,7 @@ namespace GogoKit.Clients
         public async Task AuthenticateClientCredentialsAsync(IEnumerable<string> scopes)
         {
             var token = await GetClientCredentialsAccessTokenAsync(scopes);
-            await _tokenStore.SetTokenAsync(token);
+            await TokenStore.SetTokenAsync(token);
         }
 
         public async Task<OAuth2Token> GetPasswordAccessTokenAsync(
@@ -84,7 +89,7 @@ namespace GogoKit.Clients
             IEnumerable<string> scopes)
         {
             var token = await GetPasswordAccessTokenAsync(userName, password, scopes);
-            await _tokenStore.SetTokenAsync(token);
+            await TokenStore.SetTokenAsync(token);
         }
     }
 }

@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{8849B856
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		appveyor.yaml = appveyor.yaml
 		build.cmd = build.cmd
 		build.fsx = build.fsx
 		build.sh = build.sh

@@ -1,14 +1,21 @@
-﻿#r @"packages/FAKE/tools/FakeLib.dll"
+﻿#r @"tools/FAKE.Core/tools/FakeLib.dll"
+#load "tools/SourceLink.Fake/tools/SourceLink.fsx"
+
+#r @"tools/FAKE.Core/tools/FakeLib.dll"
+#load "tools/SourceLink.Fake/tools/SourceLink.fsx"
 
 open System
+open System.IO
 open Fake
 open Fake.AssemblyInfoFile
+open Fake.XUnit2Helper
+open SourceLink
 
 // Project information used to generate AssemblyInfo and .nuspec
 let projectName = "GogoKit"
 let projectDescription = "A lightweight async viagogo API client library for .NET"
 let authors = ["viagogo"]
-let copyright = @"Copyright © viagogo 2014"
+let copyright = @"Copyright © viagogo " + DateTime.UtcNow.ToString("yyyy");
 
 // Directories
 let buildDir = @"./artifacts/"
@@ -42,9 +49,10 @@ Target "BuildApp" (fun _ ->
 
     RestorePackages()
 
-    MSBuild buildDir "Build" ["Configuration", buildMode] ["./Gogokit.sln"]
+    MSBuild buildDir "Build" ["Configuration", buildMode] ["./GogoKit.sln"]
     |> Log "AppBuild-Output: "
 )
+
 
 Target "UnitTests" (fun _ ->
     !! (buildDir + @"\GogoKit*.Tests.dll")
@@ -55,10 +63,29 @@ Target "UnitTests" (fun _ ->
     )
 )
 
-Target "CreateGogoKitPackage" (fun _ ->
-    CopyFiles buildDir ["LICENSE.txt"; "README.md"; "ReleaseNotes.md"]
+Target "SourceLink" (fun _ ->
+    use repo = new GitRepo(__SOURCE_DIRECTORY__)
+    let proj = VsProj.LoadRelease "src/GogoKit/GogoKit.csproj"
+    let pdb = new PdbFile(buildDir @@ "GogoKit.pdb")
+    let pdbSrcSrvPath = buildDir @@ "GogoKit.srcsrv"
 
-    let tags = "GogoKit viagogo API"
+    logfn "source linking %s" pdb.Path
+    let files = (proj.Compiles -- "SolutionInfo.cs").SetBaseDirectory __SOURCE_DIRECTORY__
+    repo.VerifyChecksums files
+    pdb.VerifyChecksums files |> ignore
+
+    // Make sure that we don't hold onto a file lock on the .pdb
+    pdb.Dispose()
+
+    let pdbSrcSrvBytes = SrcSrv.create "https://raw.githubusercontent.com/viagogo/gogokit.net/{0}/%var2%" repo.Revision (repo.Paths files)
+    File.WriteAllBytes(pdbSrcSrvPath, pdbSrcSrvBytes)
+    Pdbstr.exec pdb.Path pdbSrcSrvPath
+)
+
+Target "CreatePackage" (fun _ ->
+    CopyFiles buildDir ["LICENSE.txt"; "README.md"; "ReleaseNotes.md"]
+    
+    let tags = "viagogo API HAL tickets concerts"
     let dependencies = [
         ("Microsoft.Net.Http", GetPackageVersion "./packages/" "Microsoft.Net.Http")
         ("Newtonsoft.Json", GetPackageVersion "./packages/" "Newtonsoft.Json")
@@ -67,6 +94,7 @@ Target "CreateGogoKitPackage" (fun _ ->
     let files = [
         ("GogoKit.dll", Some libPortableDir, None)
         ("GogoKit.pdb", Some libPortableDir, None)
+        ("GogoKit.xml", Some libPortableDir, None)
         ("LICENSE.txt", None, None)
         ("README.md", None, None)
         ("ReleaseNotes.md", None, None)
@@ -93,9 +121,10 @@ Target "CreatePackages" DoNothing
     ==> "AssemblyInfo"
     ==> "BuildApp"
     ==> "UnitTests"
-    ==> "CreateGogoKitPackage"
+    //==> "SourceLink" 
+    ==> "CreatePackage"
 
-"CreateGogoKitPackage"
+"CreatePackage"
     ==> "CreatePackages"
 
-RunTargetOrDefault "UnitTests"
+RunTargetOrDefault "BuildApp"

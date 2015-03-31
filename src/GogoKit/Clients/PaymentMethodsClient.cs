@@ -6,6 +6,8 @@ using GogoKit.Http;
 using GogoKit.Models;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using HalKit.Http;
+using HalKit.Models;
 
 namespace GogoKit.Clients
 {

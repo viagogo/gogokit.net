@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Http;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using HalKit.Http;
 
 namespace GogoKit.Clients
 {

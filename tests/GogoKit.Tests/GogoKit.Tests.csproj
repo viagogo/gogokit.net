@@ -82,10 +82,7 @@
     <Compile Include="Http\Handlers\BearerTokenAuthenticationHandlerTests.cs" />
     <Compile Include="Http\Handlers\ErrorHandlerTests.cs" />
     <Compile Include="Http\Handlers\LocalizationHandlerTests.cs" />
-    <Compile Include="Http\HttpClientFactoryTests.cs" />
     <Compile Include="Http\HypermediaConnectionTests.cs" />
-    <Compile Include="Http\ApiResponseFactoryTests.cs" />
-    <Compile Include="Http\HttpConnectionTests.cs" />
     <Compile Include="Http\Handlers\UserAgentHandlerTests.cs" />
     <Compile Include="Localization\ConfigurationLocalizationProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

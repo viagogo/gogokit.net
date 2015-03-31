@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using GogoKit.Models;
+using HalKit.Resources;
 
 namespace GogoKit.Resources
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GogoKit.Models;
+using HalKit.Models;
 
 namespace GogoKit.Helpers
 {

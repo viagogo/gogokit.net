@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using GogoKit.Models;
+using HalKit.Models;
 
 namespace GogoKit.Helpers
 {

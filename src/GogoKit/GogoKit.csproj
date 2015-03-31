@@ -124,16 +124,11 @@
     <Compile Include="Helpers\LinkResolver.cs" />
     <Compile Include="Http\HypermediaConnection.cs" />
     <Compile Include="Http\IHypermediaConnection.cs" />
-    <Compile Include="Json\EmbeddedAttribute.cs" />
-    <Compile Include="Json\IJsonSerializer.cs" />
     <Compile Include="IViagogoClient.cs" />
-    <Compile Include="Json\ResourceConverter.cs" />
     <Compile Include="Models\ApiError.cs" />
-    <Compile Include="Models\Link.cs" />
     <Compile Include="Requests\UserUpdate.cs" />
     <Compile Include="Resources\Address.cs" />
     <Compile Include="Resources\ApiRoot.cs" />
-    <Compile Include="Models\LinkCollection.cs" />
     <Compile Include="Resources\Category.cs" />
     <Compile Include="Resources\Country.cs" />
     <Compile Include="Resources\Currency.cs" />
@@ -142,10 +137,8 @@
     <Compile Include="Resources\PagedResource.cs" />
     <Compile Include="Resources\PaymentMethod.cs" />
     <Compile Include="Resources\Purchase.cs" />
-    <Compile Include="Resources\Resource.cs" />
     <Compile Include="Models\AuthorizationError.cs" />
     <Compile Include="Models\OAuth2Token.cs" />
-    <Compile Include="Json\NewtonsoftJsonSerializer.cs" />
     <Compile Include="Requires.cs" />
     <Compile Include="Resources\SearchResult.cs" />
     <Compile Include="Models\Seating.cs" />

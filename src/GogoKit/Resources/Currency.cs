@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using HalKit.Resources;
 
 namespace GogoKit.Resources
 {

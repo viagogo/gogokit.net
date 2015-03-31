@@ -5,6 +5,9 @@ using GogoKit.Configuration;
 using GogoKit.Helpers;
 using GogoKit.Models;
 using GogoKit.Resources;
+using HalKit.Http;
+using HalKit.Models;
+using HalKit.Resources;
 
 namespace GogoKit.Http
 {

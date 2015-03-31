@@ -4,6 +4,7 @@ using GogoKit.Helpers;
 using GogoKit.Http;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using HalKit.Http;
 
 namespace GogoKit.Clients
 {

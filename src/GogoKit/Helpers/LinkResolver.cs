@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GogoKit.Models;
+using HalKit.Models;
 
 namespace GogoKit.Helpers
 {

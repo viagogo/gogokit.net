@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
-using GogoKit.Json;
+using HalKit.Json;
+using HalKit.Resources;
 
 namespace GogoKit.Resources
 {

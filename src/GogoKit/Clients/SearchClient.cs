@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Helpers;
 using GogoKit.Http;
-using GogoKit.Models;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using HalKit.Models;
 
 namespace GogoKit.Clients
 {

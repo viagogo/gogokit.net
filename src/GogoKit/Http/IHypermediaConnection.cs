@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Configuration;
-using GogoKit.Models;
-using GogoKit.Resources;
+using HalKit.Http;
+using HalKit.Models;
+using HalKit.Resources;
 
 namespace GogoKit.Http
 {

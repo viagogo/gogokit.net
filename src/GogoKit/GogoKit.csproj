@@ -56,13 +56,12 @@
     <Compile Include="Clients\PurchasesClient.cs" />
     <Compile Include="Clients\SalesClient.cs" />
     <Compile Include="Clients\VenuesClient.cs" />
-    <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\ConfigurationLocalizationProvider.cs" />
-    <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Exceptions\InternalServerErrorException.cs" />
     <Compile Include="Exceptions\SslConnectionRequiredException.cs" />
     <Compile Include="Extensions\HalClientExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="GogoKitConfiguration.cs" />
     <Compile Include="Helpers\ILinkFactory.cs" />
     <Compile Include="Helpers\LinkFactory.cs" />
     <Compile Include="Helpers\Parameters.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Http\Handlers\UserAgentHandler.cs" />
     <Compile Include="Http\Headers.cs" />
     <Compile Include="Http\HttpConnectionBuilder.cs" />
+    <Compile Include="IGogoKitConfiguration.cs" />
     <Compile Include="Localization\ILocalizationProvider.cs" />
     <Compile Include="Models\AddressSnapshot.cs" />
     <Compile Include="Requests\NewAddress.cs" />

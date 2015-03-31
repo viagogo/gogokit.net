@@ -1,8 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using GogoKit.Configuration;
 using HalKit;
-using IHalClient = HalKit.IHalClient;
 
 namespace GogoKit
 {
@@ -17,12 +15,12 @@ namespace GogoKit
 
         public static ConfiguredTaskAwaitable<TResult> ConfigureAwait<TResult>(
             this Task<TResult> task,
-            IConfiguration configuration)
+            IGogoKitConfiguration configuration)
         {
             return task.ConfigureAwait(configuration.CaptureSynchronizationContext);
         }
 
-        public static ConfiguredTaskAwaitable ConfigureAwait(this Task task, IConfiguration configuration)
+        public static ConfiguredTaskAwaitable ConfigureAwait(this Task task, IGogoKitConfiguration configuration)
         {
             return task.ConfigureAwait(configuration.CaptureSynchronizationContext);
         }

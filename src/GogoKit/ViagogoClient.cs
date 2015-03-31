@@ -8,13 +8,13 @@ using GogoKit.Helpers;
 using GogoKit.Http;
 using GogoKit.Localization;
 using HalKit;
-using IHttpConnection = HalKit.Http.IHttpConnection;
+using HalKit.Http;
 
 namespace GogoKit
 {
     public class ViagogoClient : IViagogoClient
     {
-        private readonly IConfiguration _configuration;
+        private readonly IGogoKitConfiguration _configuration;
         private readonly IHalClient _hypermedia;
         private readonly IOAuth2Client _oauth2Client;
         private readonly IUserClient _userClient;
@@ -33,7 +33,7 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
-            : this(clientId, clientSecret, product, new Configuration.Configuration())
+            : this(clientId, clientSecret, product, new GogoKitConfiguration())
         {
         }
 
@@ -41,7 +41,7 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product,
-            IConfiguration configuration)
+            IGogoKitConfiguration configuration)
             : this(clientId,
                    clientSecret,
                    product,
@@ -56,7 +56,7 @@ namespace GogoKit
            string clientId,
            string clientSecret,
            ProductHeaderValue product,
-           IConfiguration configuration,
+           IGogoKitConfiguration configuration,
            IOAuth2TokenStore tokenStore,
            ILocalizationProvider localizationProvider,
            IList<DelegatingHandler> customHandlers)
@@ -78,7 +78,7 @@ namespace GogoKit
 
         public ViagogoClient(IHttpConnection connection,
                              IHttpConnection oauthConnection,
-                             IConfiguration configuration,
+                             IGogoKitConfiguration configuration,
                              IOAuth2TokenStore tokenStore)
         {
             Requires.ArgumentNotNull(connection, "connection");
@@ -108,7 +108,7 @@ namespace GogoKit
             _venueClient = new VenuesClient(_hypermedia);
         }
 
-        public IConfiguration Configuration
+        public IGogoKitConfiguration Configuration
         {
             get { return _configuration; }
         }

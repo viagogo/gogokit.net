@@ -4,9 +4,9 @@ namespace GogoKit.Configuration
 {
     public class ConfigurationLocalizationProvider : ILocalizationProvider
     {
-        private readonly IConfiguration _configuration;
+        private readonly IGogoKitConfiguration _configuration;
 
-        public ConfigurationLocalizationProvider(IConfiguration configuration)
+        public ConfigurationLocalizationProvider(IGogoKitConfiguration configuration)
         {
             _configuration = configuration;
         }

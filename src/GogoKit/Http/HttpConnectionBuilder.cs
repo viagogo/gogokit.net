@@ -18,7 +18,7 @@ namespace GogoKit.Http
         private readonly string _clientSecret;
         private readonly ProductHeaderValue _product;
         private readonly ConnectionType _connectionType;
-        private IConfiguration _configuration;
+        private IGogoKitConfiguration _configuration;
         private IOAuth2TokenStore _tokenStore;
         private ILocalizationProvider _localizationProvider;
         private HttpClientHandler _httpClientHandler;
@@ -48,14 +48,14 @@ namespace GogoKit.Http
             _product = product;
             _connectionType = connectionType;
 
-            _configuration = new Configuration.Configuration();
+            _configuration = new GogoKitConfiguration();
             _tokenStore = new InMemoryOAuth2TokenStore();
             _localizationProvider = new ConfigurationLocalizationProvider(_configuration);
             _httpClientHandler = new HttpClientHandler();
             _additionalHandlers = new DelegatingHandler[] { };
         }
 
-        public HttpConnectionBuilder Configuration(IConfiguration configuration)
+        public HttpConnectionBuilder Configuration(IGogoKitConfiguration configuration)
         {
             Requires.ArgumentNotNull(configuration, "configuration");
 

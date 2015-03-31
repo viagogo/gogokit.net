@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
 using GogoKit.Clients;
-using GogoKit.Configuration;
 using GogoKit.Http.Handlers;
 using GogoKit.Models;
 using GogoKit.Tests.Fakes;
@@ -18,7 +17,7 @@ namespace GogoKit.Tests.Http.Handlers
     {
         private static BearerTokenAuthenticationHandler CreateHandler(
             IOAuth2TokenStore tokenStore = null,
-            IConfiguration config = null,
+            IGogoKitConfiguration config = null,
             IOAuth2Client client = null,
             OAuth2Token token = null,
             HttpResponseMessage resp = null)
@@ -35,7 +34,7 @@ namespace GogoKit.Tests.Http.Handlers
             return new BearerTokenAuthenticationHandler(
                 client ?? mockOAuthClient.Object,
                 tokenStore ?? mockTokenStore.Object,
-                config ?? new Configuration.Configuration())
+                config ?? new GogoKitConfiguration())
             {
                 InnerHandler = new FakeDelegatingHandler(resp: resp)
             };

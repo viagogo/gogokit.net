@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Http.Handlers;
 using GogoKit.Models;
@@ -21,12 +20,12 @@ namespace GogoKit.Tests.Http.Handlers
     {
         private static ErrorHandler CreateErrorHandler(
             IApiResponseFactory respFact = null,
-            IConfiguration config = null,
+            IGogoKitConfiguration config = null,
             HttpResponseMessage resp = null)
         {
             return new ErrorHandler(
                 respFact ?? new FakeApiResponseFactory(),
-                config ?? new Configuration.Configuration())
+                config ?? new GogoKitConfiguration())
             {
                 InnerHandler = new FakeDelegatingHandler(resp: resp)
             };

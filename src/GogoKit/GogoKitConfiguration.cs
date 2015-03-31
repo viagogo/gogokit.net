@@ -1,16 +1,16 @@
 ﻿using System;
 using HalKit;
 
-namespace GogoKit.Configuration
+namespace GogoKit
 {
-    public class Configuration : IConfiguration
+    public class GogoKitConfiguration : IGogoKitConfiguration
     {
         public static readonly Uri DefaultViagogoApiRootEndpoint = new Uri("https://api.viagogo.net/v2");
         public static readonly Uri DefaultViagogoOAuthTokenEndpoint = new Uri("https://www.viagogo.com/secure/oauth2/token");
 
         private readonly HalKitConfiguration _halKitConfiguration;
 
-        public Configuration()
+        public GogoKitConfiguration()
         {
             _halKitConfiguration = new HalKitConfiguration(DefaultViagogoApiRootEndpoint)
                                    {

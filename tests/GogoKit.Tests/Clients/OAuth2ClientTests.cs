@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
 using GogoKit.Clients;
-using GogoKit.Configuration;
 using GogoKit.Models;
 using HalKit.Http;
 using Moq;
@@ -17,12 +16,12 @@ namespace GogoKit.Tests.Clients
     {
         private static OAuth2Client CreateClient(
             IHttpConnection conn = null,
-            IConfiguration config = null,
+            IGogoKitConfiguration config = null,
             IOAuth2TokenStore tokenStore = null)
         {
             return new OAuth2Client(
                 conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
-                config ?? new Configuration.Configuration(),
+                config ?? new GogoKitConfiguration(),
                 tokenStore ?? new Mock<IOAuth2TokenStore>().Object);
         }
 
@@ -48,7 +47,7 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
-            var client = CreateClient(conn: mockConn.Object, config: new Configuration.Configuration {ViagogoOAuthTokenEndpoint = expectedUri});
+            var client = CreateClient(conn: mockConn.Object, config: new GogoKitConfiguration {ViagogoOAuthTokenEndpoint = expectedUri});
 
             await client.GetAccessTokenAsync("grantType", null, null);
 

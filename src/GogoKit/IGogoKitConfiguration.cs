@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 
-namespace GogoKit.Configuration
+namespace GogoKit
 {
-    public interface IConfiguration
+    public interface IGogoKitConfiguration
     {
         Uri ViagogoApiRootEndpoint { get; set; }
 

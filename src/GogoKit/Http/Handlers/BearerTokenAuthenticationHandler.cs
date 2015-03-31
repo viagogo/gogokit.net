@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
 using GogoKit.Clients;
-using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Models;
 
@@ -17,17 +16,17 @@ namespace GogoKit.Http.Handlers
     {
         private readonly IOAuth2TokenStore _tokenStore;
         private readonly IOAuth2Client _oauthClient;
-        private readonly IConfiguration _configuration;
+        private readonly IGogoKitConfiguration _configuration;
 
         public BearerTokenAuthenticationHandler(IOAuth2Client oauthClient)
-            : this(oauthClient, new InMemoryOAuth2TokenStore(), new Configuration.Configuration())
+            : this(oauthClient, new InMemoryOAuth2TokenStore(), new GogoKitConfiguration())
         {
         }
 
         public BearerTokenAuthenticationHandler(
             IOAuth2Client oauthClient,
             IOAuth2TokenStore tokenStore,
-            IConfiguration configuration)
+            IGogoKitConfiguration configuration)
         {
             Requires.ArgumentNotNull(oauthClient, "oauthClient");
             Requires.ArgumentNotNull(tokenStore, "tokenStore");

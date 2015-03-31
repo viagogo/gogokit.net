@@ -7,7 +7,6 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Models;
 using HalKit.Http;
@@ -41,9 +40,9 @@ namespace GogoKit.Http.Handlers
             };
 
         private readonly IApiResponseFactory _responseFactory;
-        private readonly IConfiguration _configuration;
+        private readonly IGogoKitConfiguration _configuration;
 
-        public ErrorHandler(IApiResponseFactory responseFactory, IConfiguration configuration)
+        public ErrorHandler(IApiResponseFactory responseFactory, IGogoKitConfiguration configuration)
         {
             Requires.ArgumentNotNull(responseFactory, "responseFactory");
             Requires.ArgumentNotNull(configuration, "configuration");

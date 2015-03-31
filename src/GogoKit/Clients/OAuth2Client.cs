@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
-using GogoKit.Configuration;
 using GogoKit.Models;
 using HalKit.Http;
 
@@ -13,11 +12,11 @@ namespace GogoKit.Clients
     public class OAuth2Client : IOAuth2Client
     {
         private readonly IHttpConnection _connection;
-        private readonly IConfiguration _configuration;
+        private readonly IGogoKitConfiguration _configuration;
         private readonly IOAuth2TokenStore _tokenStore;
 
         public OAuth2Client(IHttpConnection connection,
-                            IConfiguration configuration,
+                            IGogoKitConfiguration configuration,
                             IOAuth2TokenStore tokenStore)
         {
             Requires.ArgumentNotNull(connection, "connection");

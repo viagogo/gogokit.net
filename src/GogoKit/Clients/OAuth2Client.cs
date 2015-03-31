@@ -46,7 +46,7 @@ namespace GogoKit.Clients
             }
 
             var response = await _connection.SendRequestAsync<OAuth2Token>(
-                                    _configuration.ViagogoOAuthTokenUrl,
+                                    _configuration.ViagogoOAuthTokenEndpoint,
                                     HttpMethod.Post,
                                     new FormUrlEncodedContent(parameters),
                                     new Dictionary<string, IEnumerable<string>>

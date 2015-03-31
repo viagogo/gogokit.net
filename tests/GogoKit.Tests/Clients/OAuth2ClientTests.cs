@@ -22,7 +22,7 @@ namespace GogoKit.Tests.Clients
         {
             return new OAuth2Client(
                 conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
-                config ?? Configuration.Configuration.Default,
+                config ?? new Configuration.Configuration(),
                 tokenStore ?? new Mock<IOAuth2TokenStore>().Object);
         }
 
@@ -48,7 +48,7 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
-            var client = CreateClient(conn: mockConn.Object, config: new Configuration.Configuration {ViagogoOAuthTokenUrl = expectedUri});
+            var client = CreateClient(conn: mockConn.Object, config: new Configuration.Configuration {ViagogoOAuthTokenEndpoint = expectedUri});
 
             await client.GetAccessTokenAsync("grantType", null, null);
 

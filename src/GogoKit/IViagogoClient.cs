@@ -1,13 +1,13 @@
 ﻿using GogoKit.Clients;
 using GogoKit.Configuration;
-using GogoKit.Http;
+using HalKit;
 
 namespace GogoKit
 {
     public interface IViagogoClient
     {
         IConfiguration Configuration { get; }
-        IHypermediaConnection Connection { get; }
+        IHalClient Hypermedia { get; }
         IOAuth2Client OAuth2 { get; }
         IApiRootClient Root { get; }
         IUserClient User { get; }

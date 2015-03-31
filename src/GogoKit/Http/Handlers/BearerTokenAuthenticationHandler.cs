@@ -20,7 +20,7 @@ namespace GogoKit.Http.Handlers
         private readonly IConfiguration _configuration;
 
         public BearerTokenAuthenticationHandler(IOAuth2Client oauthClient)
-            : this(oauthClient, new InMemoryOAuth2TokenStore(), Configuration.Configuration.Default)
+            : this(oauthClient, new InMemoryOAuth2TokenStore(), new Configuration.Configuration())
         {
         }
 

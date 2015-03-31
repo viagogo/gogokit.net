@@ -1,60 +1,61 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Http;
+using GogoKit.Extensions;
 using GogoKit.Resources;
+using HalKit;
 using HalKit.Models;
 
 namespace GogoKit.Clients
 {
     public class ListingsClient : IListingsClient
     {
-        private readonly IHypermediaConnection _connection;
+        private readonly IHalClient _halClient;
         private readonly IApiRootClient _rootClient;
 
-        public ListingsClient(IApiRootClient rootClient, IHypermediaConnection connection)
+        public ListingsClient(IApiRootClient rootClient, IHalClient halClient)
         {
             _rootClient = rootClient;
-            _connection = connection;
+            _halClient = halClient;
         }
 
         public async Task<PagedResource<Listing>> GetAsync(int eventId, int page, int pageSize)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
+            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient.Configuration);
             var listingsLink = new Link
             {
                 HRef = string.Format("{0}/events/{1}/listings", root.Links["self"].HRef, eventId),
                 Rel = "event:listings"
             };
 
-            return await _connection.GetAsync<PagedResource<Listing>>(listingsLink, new Dictionary<string, string>()
+            return await _halClient.GetAsync<PagedResource<Listing>>(listingsLink, new Dictionary<string, string>()
                                                                         {
                                                                             {"page", page.ToString()},
                                                                             {"page_size", pageSize.ToString()}
-                                                                        }).ConfigureAwait(_connection.Configuration);
+                                                                        }).ConfigureAwait(_halClient.Configuration);
         }
 
         public async Task<IReadOnlyList<Listing>> GetAllAsync(int eventId)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
+            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient.Configuration);
             var listingsLink = new Link
             {
                 HRef = string.Format("{0}/events/{1}/listings", root.Links["self"].HRef, eventId),
                 Rel = "event:listings"
             };
 
-            return await _connection.GetAllPagesAsync<Listing>(listingsLink, null).ConfigureAwait(_connection.Configuration);
+            return await _halClient.GetAllPagesAsync<Listing>(listingsLink, null).ConfigureAwait(_halClient.Configuration);
         }
 
         public async Task<Listing> GetAsync(int listingId)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_connection.Configuration);
+            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient.Configuration);
             var listingLink = new Link
             {
                 HRef = string.Format("{0}/listings/{1}", root.Links["self"].HRef, listingId),
                 Rel = "event:listings"
             };
 
-            return await _connection.GetAsync<Listing>(listingLink, null).ConfigureAwait(_connection.Configuration);
+            return await _halClient.GetAsync<Listing>(listingLink).ConfigureAwait(_halClient.Configuration);
         }
     }
 }

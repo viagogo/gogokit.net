@@ -2,33 +2,34 @@
 using GogoKit.Http;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using HalKit;
 
 namespace GogoKit.Clients
 {
     public class UserClient : IUserClient
     {
         private readonly IApiRootClient _rootClient;
-        private readonly IHypermediaConnection _connection;
+        private readonly IHalClient _halClient;
 
-        public UserClient(IApiRootClient rootClient, IHypermediaConnection connection)
+        public UserClient(IApiRootClient rootClient, IHalClient halClient)
         {
             Requires.ArgumentNotNull(rootClient, "rootClient");
-            Requires.ArgumentNotNull(connection, "connection");
+            Requires.ArgumentNotNull(halClient, "halClient");
 
             _rootClient = rootClient;
-            _connection = connection;
+            _halClient = halClient;
         }
 
         public async Task<User> GetAsync()
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_connection);
+            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient);
             return root.AuthenticatedUser;
         }
 
         public async Task<User> UpdateAsync(UserUpdate userUpdate)
         {
-            var user = await GetAsync().ConfigureAwait(_connection);
-            return await _connection.PatchAsync<User>(user.Links["user:update"], null, userUpdate).ConfigureAwait(_connection);
+            var user = await GetAsync().ConfigureAwait(_halClient);
+            return await _halClient.PatchAsync<User>(user.Links["user:update"], userUpdate).ConfigureAwait(_halClient);
         }
     }
 }

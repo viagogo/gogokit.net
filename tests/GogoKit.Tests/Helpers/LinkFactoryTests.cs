@@ -2,6 +2,7 @@
 using GogoKit.Helpers;
 using GogoKit.Models;
 using GogoKit.Resources;
+using HalKit.Models;
 using Moq;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace GogoKit.Tests.Helpers
         {
             var expectedLinkHRef = "http://base.url/relative/url";
             var apiRootClient = CreateMockApiRootClient("http://base.url");
-            var factory = new LinkFactory(apiRootClient.Object, Configuration.Configuration.Default);
+            var factory = new LinkFactory(apiRootClient.Object, new Configuration.Configuration());
 
             var actualLink = await factory.CreateLinkAsync("relative/url");
 
@@ -27,7 +28,7 @@ namespace GogoKit.Tests.Helpers
         {
             var expectedLinkHRef = "http://base.url/relative/url/foo/bar";
             var apiRootClient = CreateMockApiRootClient("http://base.url");
-            var factory = new LinkFactory(apiRootClient.Object, Configuration.Configuration.Default);
+            var factory = new LinkFactory(apiRootClient.Object, new Configuration.Configuration());
 
             var actualLink = await factory.CreateLinkAsync("relative/url/{0}/bar", "foo");
 
@@ -38,7 +39,7 @@ namespace GogoKit.Tests.Helpers
         {
             var apiRoot = new ApiRoot()
                           {
-                              Links = new LinkCollection(new[] { new Link() { Rel = "self", HRef = expectedBaseUrl } })
+                              Links = new LinkCollection(new[] { new Link() { Rel = "self", HRef = expectedBaseUrl } }, new CurieLink[] {})
                           };
             return apiRoot;
         }

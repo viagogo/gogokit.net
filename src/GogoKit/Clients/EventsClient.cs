@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Extensions;
 using GogoKit.Http;
 using GogoKit.Resources;
+using HalKit;
 using HalKit.Models;
 
 namespace GogoKit.Clients
 {
     public class EventsClient : IEventsClient
     {
-        private readonly IHypermediaConnection _connection;
+        private readonly IHalClient _connection;
         private readonly IApiRootClient _rootClient;
 
-        public EventsClient(IApiRootClient rootClient, IHypermediaConnection connection)
+        public EventsClient(IApiRootClient rootClient, IHalClient connection)
         {
             _rootClient = rootClient;
             _connection = connection;

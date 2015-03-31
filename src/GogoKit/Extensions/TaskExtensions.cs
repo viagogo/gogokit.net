@@ -1,7 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GogoKit.Configuration;
-using GogoKit.Http;
+using HalKit;
+using IHalClient = HalKit.IHalClient;
 
 namespace GogoKit
 {
@@ -9,9 +10,9 @@ namespace GogoKit
     {
         public static ConfiguredTaskAwaitable<TResult> ConfigureAwait<TResult>(
             this Task<TResult> task,
-            IHypermediaConnection connection)
+            IHalClient client)
         {
-            return task.ConfigureAwait(connection.Configuration);
+            return task.ConfigureAwait(client.Configuration);
         }
 
         public static ConfiguredTaskAwaitable<TResult> ConfigureAwait<TResult>(

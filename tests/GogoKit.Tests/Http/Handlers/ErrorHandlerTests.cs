@@ -26,7 +26,7 @@ namespace GogoKit.Tests.Http.Handlers
         {
             return new ErrorHandler(
                 respFact ?? new FakeApiResponseFactory(),
-                config ?? Configuration.Configuration.Default)
+                config ?? new Configuration.Configuration())
             {
                 InnerHandler = new FakeDelegatingHandler(resp: resp)
             };

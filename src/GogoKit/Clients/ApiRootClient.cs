@@ -15,19 +15,13 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(connection, "connection");
 
-            _apiRootUrl = new Uri(connection.Configuration.ViagogoApiUrl, "/v2?embed=user");
+            _apiRootUrl = null;//new Uri(connection.Configuration.ViagogoApiUrl, "/v2?embed=user");
             _connection = connection;
         }
 
         public async Task<ApiRoot> GetAsync()
         {
-            var response = await _connection.SendRequestAsync<ApiRoot>(
-                                    _apiRootUrl,
-                                    HttpMethod.Get,
-                                    "application/hal+json",
-                                    null,
-                                    null).ConfigureAwait(_connection.Configuration);
-            return response.BodyAsObject;
+            throw new NotImplementedException();
         }
     }
 }

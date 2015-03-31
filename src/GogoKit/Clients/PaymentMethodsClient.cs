@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Extensions;
 using GogoKit.Helpers;
-using GogoKit.Http;
-using GogoKit.Models;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using HalKit;
 using HalKit.Http;
 using HalKit.Models;
 
@@ -14,38 +14,38 @@ namespace GogoKit.Clients
     public class PaymentMethodsClient : IPaymentMethodsClient
     {
         private readonly IUserClient _userClient;
-        private readonly IHypermediaConnection _connection;
+        private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
 
         public PaymentMethodsClient(IUserClient userClient,
-                                    IHypermediaConnection connection,
+                                    IHalClient halClient,
                                     ILinkFactory linkFactory)
         {
             _userClient = userClient;
-            _connection = connection;
+            _halClient = halClient;
             _linkFactory = linkFactory;
         }
 
         public async Task<PagedResource<PaymentMethod>> GetAsync(int page, int pageSize)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_connection);
-            return await _connection.GetAsync<PagedResource<PaymentMethod>>(
+            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<PaymentMethod>>(
                 user.Links["user:paymentmethods"],
-                null).ConfigureAwait(_connection);
+                null).ConfigureAwait(_halClient);
         }
 
         public async Task<IReadOnlyList<PaymentMethod>> GetAllAsync()
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_connection);
-            return await _connection.GetAllPagesAsync<PaymentMethod>(
+            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<PaymentMethod>(
                 user.Links["user:paymentmethods"],
-                null).ConfigureAwait(_connection);
+                null).ConfigureAwait(_halClient);
         }
 
         public async Task<PaymentMethod> GetAsync(int paymentMethodId)
         {
-            var paymentMethodLink = await _linkFactory.CreateLinkAsync("paymentMethods/{0}", paymentMethodId).ConfigureAwait(_connection);
-            return await _connection.GetAsync<PaymentMethod>(paymentMethodLink, null).ConfigureAwait(_connection);
+            var paymentMethodLink = await _linkFactory.CreateLinkAsync("paymentMethods/{0}", paymentMethodId).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PaymentMethod>(paymentMethodLink, null).ConfigureAwait(_halClient);
         }
 
         public Task<PaymentMethod> CreateAsync(NewCreditCard creditCard)
@@ -62,11 +62,10 @@ namespace GogoKit.Clients
             NewPaymentMethod paymentMethod,
             string createLinkRel)
         {
-            var paymentMethodsPage = await GetAsync(1, 1).ConfigureAwait(_connection);
-            return await _connection.PostAsync<PaymentMethod>(
+            var paymentMethodsPage = await GetAsync(1, 1).ConfigureAwait(_halClient);
+            return await _halClient.PostAsync<PaymentMethod>(
                 paymentMethodsPage.Links[createLinkRel],
-                null,
-                paymentMethod).ConfigureAwait(_connection);
+                paymentMethod).ConfigureAwait(_halClient);
         }
 
         public Task<PaymentMethod> UpdateAsync(int paymentMethodId, NewCreditCard creditCard)
@@ -87,7 +86,7 @@ namespace GogoKit.Clients
             return GetPaymentMethodAndFollowLinkAsync(
                 paymentMethodId,
                 linkRel,
-                putLink => _connection.PutAsync<PaymentMethod>(putLink, null, paymentMethod));
+                putLink => _halClient.PutAsync<PaymentMethod>(putLink, paymentMethod));
         }
 
         public Task<PaymentMethod> UpdateAsync(int paymentMethodId, PaymentMethodUpdate paymentMethod)
@@ -95,7 +94,7 @@ namespace GogoKit.Clients
             return GetPaymentMethodAndFollowLinkAsync(
                 paymentMethodId,
                 "paymentmethod:updatedefaults",
-                link => _connection.PatchAsync<PaymentMethod>(link, null, paymentMethod));
+                link => _halClient.PatchAsync<PaymentMethod>(link, paymentMethod));
         }
 
         public Task<IApiResponse> DeleteAsync(int paymentMethodId)
@@ -103,7 +102,7 @@ namespace GogoKit.Clients
             return GetPaymentMethodAndFollowLinkAsync(
                 paymentMethodId,
                 "paymentmethod:delete",
-                deleteLink => _connection.DeleteAsync(deleteLink, null));
+                deleteLink => _halClient.DeleteAsync(deleteLink));
         }
 
         private async Task<T> GetPaymentMethodAndFollowLinkAsync<T>(
@@ -111,8 +110,8 @@ namespace GogoKit.Clients
             string linkRel,
             Func<Link, Task<T>> followLinkFunc)
         {
-            var paymentMethod = await GetAsync(paymentMethodId).ConfigureAwait(_connection);
-            return await followLinkFunc(paymentMethod.Links[linkRel]).ConfigureAwait(_connection);
+            var paymentMethod = await GetAsync(paymentMethodId).ConfigureAwait(_halClient);
+            return await followLinkFunc(paymentMethod.Links[linkRel]).ConfigureAwait(_halClient);
         }
     }
 }

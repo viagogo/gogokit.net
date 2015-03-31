@@ -48,7 +48,7 @@ namespace GogoKit.Http
             _product = product;
             _connectionType = connectionType;
 
-            _configuration = GogoKit.Configuration.Configuration.Default;
+            _configuration = new Configuration.Configuration();
             _tokenStore = new InMemoryOAuth2TokenStore();
             _localizationProvider = new ConfigurationLocalizationProvider(_configuration);
             _httpClientHandler = new HttpClientHandler();
@@ -123,7 +123,7 @@ namespace GogoKit.Http
                 }
             }
 
-            var halKitConfiguration = new HalKitConfiguration(_configuration.ViagogoApiUrl)
+            var halKitConfiguration = new HalKitConfiguration(_configuration.ViagogoApiRootEndpoint)
                                       {
                                           CaptureSynchronizationContext = _configuration.CaptureSynchronizationContext
                                       };

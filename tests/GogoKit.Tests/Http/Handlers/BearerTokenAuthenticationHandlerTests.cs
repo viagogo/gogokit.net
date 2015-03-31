@@ -35,7 +35,7 @@ namespace GogoKit.Tests.Http.Handlers
             return new BearerTokenAuthenticationHandler(
                 client ?? mockOAuthClient.Object,
                 tokenStore ?? mockTokenStore.Object,
-                config ?? Configuration.Configuration.Default)
+                config ?? new Configuration.Configuration())
             {
                 InnerHandler = new FakeDelegatingHandler(resp: resp)
             };

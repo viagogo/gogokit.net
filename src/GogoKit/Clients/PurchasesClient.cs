@@ -1,62 +1,61 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GogoKit.Extensions;
 using GogoKit.Helpers;
-using GogoKit.Http;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using HalKit;
 
 namespace GogoKit.Clients
 {
     public class PurchasesClient : IPurchasesClient
     {
         private readonly IUserClient _userClient;
-        private readonly IHypermediaConnection _connection;
+        private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
 
         public PurchasesClient(IUserClient userClient,
-                               IHypermediaConnection connection,
+                               IHalClient halClient,
                                ILinkFactory linkFactory)
         {
             _userClient = userClient;
-            _connection = connection;
+            _halClient = halClient;
             _linkFactory = linkFactory;
         }
 
         public async Task<Purchase> GetAsync(int purchaseId)
         {
-            var purchaseLink = await _linkFactory.CreateLinkAsync("purchases/{0}", purchaseId).ConfigureAwait(_connection);
-            return await _connection.GetAsync<Purchase>(purchaseLink, null).ConfigureAwait(_connection);
+            var purchaseLink = await _linkFactory.CreateLinkAsync("purchases/{0}", purchaseId).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Purchase>(purchaseLink, null).ConfigureAwait(_halClient);
         }
 
         public async Task<PagedResource<Purchase>> GetAsync(int page, int pageSize)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_connection);
-            return await _connection.GetAsync<PagedResource<Purchase>>(
+            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Purchase>>(
                 user.Links["user:purchases"],
-                null).ConfigureAwait(_connection);
+                null).ConfigureAwait(_halClient);
         }
 
         public async Task<IReadOnlyList<Purchase>> GetAllAsync()
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_connection);
-            return await _connection.GetAllPagesAsync<Purchase>(
+            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Purchase>(
                 user.Links["user:purchases"],
-                null).ConfigureAwait(_connection);
+                null).ConfigureAwait(_halClient);
         }
 
         public Task<PurchasePreview> CreatePurchasePreviewAsync(Listing listing, NewPurchasePreview preview)
         {
-            return _connection.PostAsync<PurchasePreview>(
+            return _halClient.PostAsync<PurchasePreview>(
                 listing.PurchasePreviewLink,
-                null,
                 preview);
         }
 
         public Task<Purchase> CreatePurchaseAsync(PurchasePreview preview, NewPurchase purchase)
         {
-            return _connection.PostAsync<Purchase>(
+            return _halClient.PostAsync<Purchase>(
                 preview.CreatePurchaseLink,
-                null,
                 purchase);
         }
     }

@@ -5,8 +5,15 @@ namespace GogoKit.Configuration
 {
     public interface IConfiguration
     {
-        Uri ViagogoApiUrl { get; set; }
-        Uri ViagogoOAuthTokenUrl { get; set; }
+        Uri ViagogoApiRootEndpoint { get; set; }
+
+        Uri ViagogoOAuthTokenEndpoint { get; set; }
+
+        string LanguageCode { get; set; }
+
+        string CountryCode { get; set; }
+
+        string CurrencyCode { get; set; }
 
         /// <summary>
         /// Determines whether asynchronous operations should capture the current
@@ -14,9 +21,5 @@ namespace GogoKit.Configuration
         /// </summary>
         /// <remarks>See http://blog.stephencleary.com/2012/02/async-and-await.html#avoiding-context.</remarks>
         bool CaptureSynchronizationContext { get; set; }
-
-        string LanguageCode { get; set; }
-        string CountryCode { get; set; }
-        string CurrencyCode { get; set; }
     }
 }

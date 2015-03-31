@@ -7,17 +7,15 @@ using GogoKit.Configuration;
 using GogoKit.Helpers;
 using GogoKit.Http;
 using GogoKit.Localization;
+using HalKit;
 using IHttpConnection = HalKit.Http.IHttpConnection;
 
 namespace GogoKit
 {
     public class ViagogoClient : IViagogoClient
     {
-        public const string ViagogoApiUrl = "https://api.viagogo.net";
-        public const string ViagogoOAuthTokenUrl = "https://www.viagogo.com/secure/oauth2/token";
-
         private readonly IConfiguration _configuration;
-        private readonly IHypermediaConnection _connection;
+        private readonly IHalClient _hypermedia;
         private readonly IOAuth2Client _oauth2Client;
         private readonly IApiRootClient _rootClient;
         private readonly IUserClient _userClient;
@@ -36,10 +34,10 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
-            : this(clientId, clientSecret, product, GogoKit.Configuration.Configuration.Default)
+            : this(clientId, clientSecret, product, new Configuration.Configuration())
         {
         }
-        
+
         public ViagogoClient(
             string clientId,
             string clientSecret,
@@ -93,18 +91,22 @@ namespace GogoKit
             _rootClient = new ApiRootClient(connection);
             var linkFactory = new LinkFactory(_rootClient, configuration);
 
-            _connection = new HypermediaConnection(connection);
-            _userClient = new UserClient(_rootClient, _connection);
-            _searchClient = new SearchClient(_rootClient, _connection);
-            _addressesClient = new AddressesClient(_userClient, _connection, linkFactory);
-            _purchaseClient = new PurchasesClient(_userClient, _connection, linkFactory);
-            _paymentMethodsClients = new PaymentMethodsClient(_userClient, _connection, linkFactory);
-            _countriesClient = new CountriesClient(_rootClient, _connection, linkFactory);
-            _currencyClient = new CurrenciesClient(_rootClient, _connection, linkFactory);
-            _categoryClient = new CategoriesClient(_rootClient, _connection, linkFactory);
-            _eventClient = new EventsClient(_rootClient, _connection);
-            _listingClient = new ListingsClient(_rootClient, _connection);
-            _venueClient = new VenuesClient(_rootClient, _connection);
+            var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoApiRootEndpoint)
+                                      {
+                                          CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
+                                      };
+            _hypermedia = new HalClient(halKitConfiguration, connection);
+            _userClient = new UserClient(_rootClient, _hypermedia);
+            _searchClient = new SearchClient(_rootClient, _hypermedia);
+            _addressesClient = new AddressesClient(_userClient, _hypermedia, linkFactory);
+            _purchaseClient = new PurchasesClient(_userClient, _hypermedia, linkFactory);
+            _paymentMethodsClients = new PaymentMethodsClient(_userClient, _hypermedia, linkFactory);
+            _countriesClient = new CountriesClient(_rootClient, _hypermedia, linkFactory);
+            _currencyClient = new CurrenciesClient(_rootClient, _hypermedia, linkFactory);
+            _categoryClient = new CategoriesClient(_rootClient, _hypermedia, linkFactory);
+            _eventClient = new EventsClient(_rootClient, _hypermedia);
+            _listingClient = new ListingsClient(_rootClient, _hypermedia);
+            _venueClient = new VenuesClient(_rootClient, _hypermedia);
         }
 
         public IConfiguration Configuration
@@ -112,9 +114,9 @@ namespace GogoKit
             get { return _configuration; }
         }
 
-        public IHypermediaConnection Connection
+        public IHalClient Hypermedia
         {
-            get { return _connection; }
+            get { return _hypermedia; }
         }
 
         public IOAuth2Client OAuth2

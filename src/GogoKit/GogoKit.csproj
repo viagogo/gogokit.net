@@ -61,6 +61,7 @@
     <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Exceptions\InternalServerErrorException.cs" />
     <Compile Include="Exceptions\SslConnectionRequiredException.cs" />
+    <Compile Include="Extensions\HalClientExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Helpers\ILinkFactory.cs" />
     <Compile Include="Helpers\LinkFactory.cs" />
@@ -120,10 +121,6 @@
     <Compile Include="Exceptions\ResourceNotFoundException.cs" />
     <Compile Include="Exceptions\UserAgentRequiredException.cs" />
     <Compile Include="Exceptions\ValidationFailedException.cs" />
-    <Compile Include="Helpers\ILinkResolver.cs" />
-    <Compile Include="Helpers\LinkResolver.cs" />
-    <Compile Include="Http\HypermediaConnection.cs" />
-    <Compile Include="Http\IHypermediaConnection.cs" />
     <Compile Include="IViagogoClient.cs" />
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="Requests\UserUpdate.cs" />

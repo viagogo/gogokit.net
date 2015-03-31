@@ -56,15 +56,11 @@
     <Compile Include="Clients\PurchasesClient.cs" />
     <Compile Include="Clients\SalesClient.cs" />
     <Compile Include="Clients\VenuesClient.cs" />
-    <Compile Include="Configuration\ConfigurationLocalizationProvider.cs" />
     <Compile Include="Exceptions\InternalServerErrorException.cs" />
     <Compile Include="Exceptions\SslConnectionRequiredException.cs" />
     <Compile Include="Extensions\HalClientExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="GogoKitConfiguration.cs" />
-    <Compile Include="Helpers\ILinkFactory.cs" />
-    <Compile Include="Helpers\LinkFactory.cs" />
-    <Compile Include="Helpers\Parameters.cs" />
     <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\BearerTokenAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\ErrorHandler.cs" />
@@ -73,7 +69,6 @@
     <Compile Include="Http\Headers.cs" />
     <Compile Include="Http\HttpConnectionBuilder.cs" />
     <Compile Include="IGogoKitConfiguration.cs" />
-    <Compile Include="Localization\ILocalizationProvider.cs" />
     <Compile Include="Models\AddressSnapshot.cs" />
     <Compile Include="Requests\NewAddress.cs" />
     <Compile Include="Requests\AddressUpdate.cs" />
@@ -84,6 +79,7 @@
     <Compile Include="Requests\NewPurchase.cs" />
     <Compile Include="Requests\NewPurchasePreview.cs" />
     <Compile Include="Requests\PageRequest.cs" />
+    <Compile Include="Requests\Parameters.cs" />
     <Compile Include="Requests\PaymentMethodUpdate.cs" />
     <Compile Include="Requests\SearchResultRequest.cs" />
     <Compile Include="Resources\PurchasePreview.cs" />
@@ -95,8 +91,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\IOAuth2TokenStore.cs" />
-    <Compile Include="Authentication\InMemoryOAuth2TokenStore.cs" />
     <Compile Include="Clients\IOAuth2Client.cs" />
     <Compile Include="Clients\ISearchClient.cs" />
     <Compile Include="Clients\IUserClient.cs" />
@@ -139,6 +133,12 @@
     <Compile Include="Models\Seating.cs" />
     <Compile Include="Resources\User.cs" />
     <Compile Include="Resources\Venue.cs" />
+    <Compile Include="Services\ConfigurationLocalizationProvider.cs" />
+    <Compile Include="Services\ILinkFactory.cs" />
+    <Compile Include="Services\ILocalizationProvider.cs" />
+    <Compile Include="Services\InMemoryOAuth2TokenStore.cs" />
+    <Compile Include="Services\IOAuth2TokenStore.cs" />
+    <Compile Include="Services\LinkFactory.cs" />
     <Compile Include="ViagogoClient.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +164,7 @@
       <HintPath>..\..\packages\Tavis.UriTemplates.0.6.2\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1\Tavis.UriTemplates.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

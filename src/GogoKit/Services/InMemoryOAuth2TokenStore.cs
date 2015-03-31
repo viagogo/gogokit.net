@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GogoKit.Models;
 
-namespace GogoKit.Authentication
+namespace GogoKit.Services
 {
     public class InMemoryOAuth2TokenStore : IOAuth2TokenStore
     {

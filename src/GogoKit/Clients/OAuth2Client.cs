@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GogoKit.Authentication;
 using GogoKit.Models;
+using GogoKit.Services;
 using HalKit.Http;
 
 namespace GogoKit.Clients

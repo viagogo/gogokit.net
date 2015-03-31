@@ -1,4 +1,4 @@
-using GogoKit.Localization;
+using GogoKit.Services;
 
 namespace GogoKit.Tests.Fakes
 {

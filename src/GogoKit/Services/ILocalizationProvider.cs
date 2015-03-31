@@ -1,4 +1,4 @@
-namespace GogoKit.Localization
+namespace GogoKit.Services
 {
     public interface ILocalizationProvider
     {

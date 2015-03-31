@@ -1,6 +1,4 @@
-﻿using GogoKit.Localization;
-
-namespace GogoKit.Configuration
+﻿namespace GogoKit.Services
 {
     public class ConfigurationLocalizationProvider : ILocalizationProvider
     {

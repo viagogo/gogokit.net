@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Extensions;
-using GogoKit.Helpers;
 using GogoKit.Requests;
 using GogoKit.Resources;
+using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
 using HalKit.Models;

@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using GogoKit.Http;
 using GogoKit.Http.Handlers;
-using GogoKit.Localization;
+using GogoKit.Services;
 using GogoKit.Tests.Fakes;
 using NUnit.Framework;
 

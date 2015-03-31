@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Authentication;
 using GogoKit.Models;
+using GogoKit.Services;
 
 namespace GogoKit.Clients
 {

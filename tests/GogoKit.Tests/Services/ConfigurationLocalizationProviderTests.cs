@@ -1,9 +1,7 @@
-﻿using System.Linq.Expressions;
-using GogoKit.Configuration;
-using GogoKit.Tests.Fakes;
+﻿using GogoKit.Services;
 using NUnit.Framework;
 
-namespace GogoKit.Tests.Localization
+namespace GogoKit.Tests.Services
 {
     [TestFixture]
     public class ConfigurationLocalizationProviderTests

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using HalKit;
 using HalKit.Models;
 
-namespace GogoKit.Helpers
+namespace GogoKit.Services
 {
     public class LinkFactory : ILinkFactory
     {

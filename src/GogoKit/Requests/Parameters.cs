@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using GogoKit.Requests;
 
-namespace GogoKit.Helpers
+namespace GogoKit.Requests
 {
     public class Parameters
     {

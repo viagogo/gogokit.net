@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
-using GogoKit.Models;
 using HalKit.Models;
 
-namespace GogoKit.Helpers
+namespace GogoKit.Services
 {
     public interface ILinkFactory
     {

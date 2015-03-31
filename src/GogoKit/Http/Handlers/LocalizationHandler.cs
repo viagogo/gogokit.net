@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using GogoKit.Localization;
+using GogoKit.Services;
 
 namespace GogoKit.Http.Handlers
 {

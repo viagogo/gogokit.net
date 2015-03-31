@@ -5,10 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using GogoKit.Authentication;
 using GogoKit.Clients;
 using GogoKit.Exceptions;
 using GogoKit.Models;
+using GogoKit.Services;
 
 namespace GogoKit.Http.Handlers
 {

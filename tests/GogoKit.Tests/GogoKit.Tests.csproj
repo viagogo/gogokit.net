@@ -77,8 +77,8 @@
     <Compile Include="Http\Handlers\ErrorHandlerTests.cs" />
     <Compile Include="Http\Handlers\LocalizationHandlerTests.cs" />
     <Compile Include="Http\Handlers\UserAgentHandlerTests.cs" />
-    <Compile Include="Localization\ConfigurationLocalizationProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ConfigurationLocalizationProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\GogoKit\GogoKit.csproj">

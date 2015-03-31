@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using GogoKit.Authentication;
 using GogoKit.Clients;
 using GogoKit.Http.Handlers;
 using GogoKit.Models;
+using GogoKit.Services;
 using GogoKit.Tests.Fakes;
 using Moq;
 using NUnit.Framework;

@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using GogoKit.Authentication;
 using GogoKit.Clients;
-using GogoKit.Configuration;
-using GogoKit.Helpers;
 using GogoKit.Http;
-using GogoKit.Localization;
+using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
 

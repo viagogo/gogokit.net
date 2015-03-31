@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using GogoKit.Configuration;
 using GogoKit.Exceptions;
 using GogoKit.Models;
+using HalKit.Http;
 
 namespace GogoKit.Http.Handlers
 {

@@ -7,10 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Configuration;
 using GogoKit.Exceptions;
-using GogoKit.Http;
 using GogoKit.Http.Handlers;
 using GogoKit.Models;
 using GogoKit.Tests.Fakes;
+using HalKit.Http;
 using Moq;
 using NUnit.Framework;
 

@@ -87,8 +87,7 @@ Target "CreatePackage" (fun _ ->
     
     let tags = "viagogo API HAL tickets concerts"
     let dependencies = [
-        ("Microsoft.Net.Http", GetPackageVersion "./packages/" "Microsoft.Net.Http")
-        ("Newtonsoft.Json", GetPackageVersion "./packages/" "Newtonsoft.Json")
+        ("HalKit", GetPackageVersion "./packages/" "HalKit")
     ]
     let libPortableDir = "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/"
     let files = [

@@ -4,26 +4,35 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
-using GogoKit.Http;
+using GogoKit.Configuration;
 using GogoKit.Models;
+using HalKit.Http;
 
 namespace GogoKit.Clients
 {
     public class OAuth2Client : IOAuth2Client
     {
         private readonly IHttpConnection _connection;
-        private readonly Uri _tokenUrl;
+        private readonly IConfiguration _configuration;
+        private readonly IOAuth2TokenStore _tokenStore;
 
-        public OAuth2Client(IHttpConnection connection, IOAuth2TokenStore tokenStore)
+        public OAuth2Client(IHttpConnection connection,
+                            IConfiguration configuration,
+                            IOAuth2TokenStore tokenStore)
         {
             Requires.ArgumentNotNull(connection, "connection");
+            Requires.ArgumentNotNull(configuration, "configuration");
+            Requires.ArgumentNotNull(tokenStore, "tokenStore");
 
             _connection = connection;
-            TokenStore = tokenStore;
-            _tokenUrl = connection.Configuration.ViagogoOAuthTokenUrl;
+            _configuration = configuration;
+            _tokenStore = tokenStore;
         }
 
-        public IOAuth2TokenStore TokenStore { get; private set; }
+        public IOAuth2TokenStore TokenStore
+        {
+            get { return _tokenStore; }
+        }
 
         public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
         {
@@ -37,11 +46,13 @@ namespace GogoKit.Clients
             }
 
             var response = await _connection.SendRequestAsync<OAuth2Token>(
-                                    _tokenUrl,
+                                    _configuration.ViagogoOAuthTokenUrl,
                                     HttpMethod.Post,
-                                    "application/json",
                                     new FormUrlEncodedContent(parameters),
-                                    null).ConfigureAwait(_connection.Configuration);
+                                    new Dictionary<string, IEnumerable<string>>
+                                    {
+                                        {"Accept", new[] {"application/json"}}
+                                    }).ConfigureAwait(_configuration);
             var token = response.BodyAsObject;
 
             token.IssueDate = response.Headers.ContainsKey("Date")

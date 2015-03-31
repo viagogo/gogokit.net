@@ -71,8 +71,7 @@
     <Compile Include="Http\Handlers\LocalizationHandler.cs" />
     <Compile Include="Http\Handlers\UserAgentHandler.cs" />
     <Compile Include="Http\Headers.cs" />
-    <Compile Include="Http\HttpClientFactory.cs" />
-    <Compile Include="Http\IHttpClientFactory.cs" />
+    <Compile Include="Http\HttpConnectionBuilder.cs" />
     <Compile Include="Localization\ILocalizationProvider.cs" />
     <Compile Include="Models\AddressSnapshot.cs" />
     <Compile Include="Requests\NewAddress.cs" />
@@ -124,12 +123,7 @@
     <Compile Include="Helpers\ILinkResolver.cs" />
     <Compile Include="Helpers\LinkResolver.cs" />
     <Compile Include="Http\HypermediaConnection.cs" />
-    <Compile Include="Http\ApiResponseFactory.cs" />
-    <Compile Include="Http\HttpConnection.cs" />
     <Compile Include="Http\IHypermediaConnection.cs" />
-    <Compile Include="Http\IApiResponseFactory.cs" />
-    <Compile Include="Http\IHttpConnection.cs" />
-    <Compile Include="Http\IApiResponse.cs" />
     <Compile Include="Json\EmbeddedAttribute.cs" />
     <Compile Include="Json\IJsonSerializer.cs" />
     <Compile Include="IViagogoClient.cs" />
@@ -152,7 +146,6 @@
     <Compile Include="Models\AuthorizationError.cs" />
     <Compile Include="Models\OAuth2Token.cs" />
     <Compile Include="Json\NewtonsoftJsonSerializer.cs" />
-    <Compile Include="Http\ApiResponse.cs" />
     <Compile Include="Requires.cs" />
     <Compile Include="Resources\SearchResult.cs" />
     <Compile Include="Models\Seating.cs" />
@@ -164,17 +157,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="HalKit">
+      <HintPath>..\..\packages\HalKit.0.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Tavis.UriTemplates">
+      <HintPath>..\..\packages\Tavis.UriTemplates.0.6.2\lib\portable-net45+sl5+wp8+win8+wpa81+MonoTouch1+MonoAndroid1\Tavis.UriTemplates.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

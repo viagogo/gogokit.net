@@ -7,6 +7,7 @@ using GogoKit.Configuration;
 using GogoKit.Helpers;
 using GogoKit.Http;
 using GogoKit.Localization;
+using IHttpConnection = HalKit.Http.IHttpConnection;
 
 namespace GogoKit
 {
@@ -62,8 +63,17 @@ namespace GogoKit
            IOAuth2TokenStore tokenStore,
            ILocalizationProvider localizationProvider,
            IList<DelegatingHandler> customHandlers)
-            : this(HttpConnection.CreateApiConnection(clientId, clientSecret, product, configuration, localizationProvider: localizationProvider, tokenStore: tokenStore, customHandlers: customHandlers),
-                   HttpConnection.CreateOAuthConnection(clientId, clientSecret, product, configuration, customHandlers: customHandlers),
+            : this(HttpConnectionBuilder.ApiConnection(clientId, clientSecret, product)
+                                        .Configuration(configuration)
+                                        .TokenStore(tokenStore)
+                                        .LocalizationProvider(localizationProvider)
+                                        .AdditionalHandlers(customHandlers)
+                                        .Build(),
+                   HttpConnectionBuilder.OAuthConnection(clientId, clientSecret, product)
+                                        .Configuration(configuration)
+                                        .LocalizationProvider(localizationProvider)
+                                        .AdditionalHandlers(customHandlers)
+                                        .Build(),
                    configuration,
                    tokenStore)
         {
@@ -79,7 +89,7 @@ namespace GogoKit
             Requires.ArgumentNotNull(configuration, "configuration");
 
             _configuration = configuration;
-            _oauth2Client = new OAuth2Client(oauthConnection, tokenStore);
+            _oauth2Client = new OAuth2Client(oauthConnection, configuration, tokenStore);
             _rootClient = new ApiRootClient(connection);
             var linkFactory = new LinkFactory(_rootClient, configuration);
 

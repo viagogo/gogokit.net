@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using GogoKit.Http;
+using HalKit.Http;
 
 namespace GogoKit.Tests.Fakes
 {

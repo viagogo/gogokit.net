@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GogoKit.Authentication;
 using GogoKit.Clients;
 using GogoKit.Configuration;
-using GogoKit.Http;
 using GogoKit.Models;
+using HalKit.Http;
 using Moq;
 using NUnit.Framework;
 
@@ -18,10 +20,9 @@ namespace GogoKit.Tests.Clients
             IConfiguration config = null,
             IOAuth2TokenStore tokenStore = null)
         {
-            var mockClient = new Mock<IHttpConnection>(MockBehavior.Loose);
-            mockClient.Setup(c => c.Configuration).Returns(config ?? Configuration.Configuration.Default);
             return new OAuth2Client(
-                conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object, 
+                conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
+                config ?? Configuration.Configuration.Default,
                 tokenStore ?? new Mock<IOAuth2TokenStore>().Object);
         }
 
@@ -43,13 +44,11 @@ namespace GogoKit.Tests.Clients
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     expectedUri,
                                     It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<string>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
-            mockConn.Setup(c => c.Configuration).Returns(new Configuration.Configuration {ViagogoOAuthTokenUrl = expectedUri});
-            var client = CreateClient(conn: mockConn.Object);
+            var client = CreateClient(conn: mockConn.Object, config: new Configuration.Configuration {ViagogoOAuthTokenUrl = expectedUri});
 
             await client.GetAccessTokenAsync("grantType", null, null);
 
@@ -63,12 +62,10 @@ namespace GogoKit.Tests.Clients
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     HttpMethod.Post,
-                                    It.IsAny<string>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<string>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAccessTokenAsync("grantType", null, null);
@@ -79,21 +76,21 @@ namespace GogoKit.Tests.Clients
         [Test]
         public async void GetAccessTokenAsync_ShouldPassApplicationJsonAcceptHeaderToTheConnection()
         {
+            IDictionary<string, IEnumerable<string>> actualHeaders = null;
             var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
-                                    "application/json",
                                     It.IsAny<object>(),
-                                    It.IsAny<string>()))
-                    .Returns(Task.FromResult(CreateResponse()))
-                    .Verifiable();
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
+                    .Callback((Uri uri, HttpMethod method, object body, IDictionary<string, IEnumerable<string>> headers) =>
+                        actualHeaders = headers)
+                    .Returns(Task.FromResult(CreateResponse()));
             var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAccessTokenAsync("grantType", null, null);
 
-            mockConn.Verify();
+            Assert.AreEqual("application/json", actualHeaders["Accept"].Single());
         }
 
         [Test]
@@ -103,32 +100,10 @@ namespace GogoKit.Tests.Clients
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
                                     It.IsNotNull<FormUrlEncodedContent>(),
-                                    It.IsAny<string>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
-            var client = CreateClient(conn: mockConn.Object);
-
-            await client.GetAccessTokenAsync("grantType", null, null);
-
-            mockConn.Verify();
-        }
-
-        [Test]
-        public async void GetAccessTokenAsync_ShouldPassNullContentTypeToTheConnection()
-        {
-            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
-                                    It.IsAny<Uri>(),
-                                    It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
-                                    It.IsAny<object>(),
-                                    null))
-                    .Returns(Task.FromResult(CreateResponse()))
-                    .Verifiable();
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             await client.GetAccessTokenAsync("grantType", null, null);
@@ -144,11 +119,9 @@ namespace GogoKit.Tests.Clients
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<string>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse(token: expectedToken)));
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             var actualToken = await client.GetAccessTokenAsync("grantType", null, null);
@@ -164,11 +137,9 @@ namespace GogoKit.Tests.Clients
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<string>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse(dateHeader: expectedIssueDate.ToString())));
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var client = CreateClient(conn: mockConn.Object);
 
             var actualToken = await client.GetAccessTokenAsync("grantType", null, null);
@@ -184,11 +155,9 @@ namespace GogoKit.Tests.Clients
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<string>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse(token: expectedToken)));
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var mockTokenStore = new Mock<IOAuth2TokenStore>();
             mockTokenStore.Setup(x => x.SetTokenAsync(expectedToken)).Returns(Task.FromResult(true)).Verifiable();
             var client = CreateClient(conn: mockConn.Object, tokenStore: mockTokenStore.Object);
@@ -206,11 +175,9 @@ namespace GogoKit.Tests.Clients
             mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
-                                    It.IsAny<string>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<string>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
                     .Returns(Task.FromResult(CreateResponse(token: expectedToken)));
-            mockConn.Setup(c => c.Configuration).Returns(Configuration.Configuration.Default);
             var mockTokenStore = new Mock<IOAuth2TokenStore>();
             mockTokenStore.Setup(x => x.SetTokenAsync(expectedToken)).Returns(Task.FromResult(true)).Verifiable();
             var client = CreateClient(conn: mockConn.Object, tokenStore: mockTokenStore.Object);

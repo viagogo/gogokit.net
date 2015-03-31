@@ -1,6 +1,6 @@
 ﻿using System;
-using GogoKit.Http;
 using GogoKit.Models;
+using HalKit.Http;
 
 namespace GogoKit.Exceptions
 {

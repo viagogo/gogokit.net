@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using GogoKit.Extensions;
 using GogoKit.Helpers;
-using GogoKit.Http;
 using GogoKit.Resources;
 using HalKit;
 
@@ -10,15 +9,12 @@ namespace GogoKit.Clients
 {
     public class CurrenciesClient : ICurrenciesClient
     {
-        private readonly IApiRootClient _rootClient;
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
 
-        public CurrenciesClient(IApiRootClient rootClient,
-                                IHalClient halClient,
+        public CurrenciesClient(IHalClient halClient,
                                 ILinkFactory linkFactory)
         {
-            _rootClient = rootClient;
             _halClient = halClient;
             _linkFactory = linkFactory;
         }
@@ -31,7 +27,7 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<Currency>> GetAsync(int page, int pageSize)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Currency>>(
                 root.Links["viagogo:currencies"],
                 new Dictionary<string, string>
@@ -43,7 +39,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Currency>> GetAllAsync()
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Currency>(root.Links["viagogo:currencies"], null).ConfigureAwait(_halClient);
         }
     }

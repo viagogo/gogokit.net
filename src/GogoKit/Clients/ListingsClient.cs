@@ -10,17 +10,15 @@ namespace GogoKit.Clients
     public class ListingsClient : IListingsClient
     {
         private readonly IHalClient _halClient;
-        private readonly IApiRootClient _rootClient;
 
-        public ListingsClient(IApiRootClient rootClient, IHalClient halClient)
+        public ListingsClient(IHalClient halClient)
         {
-            _rootClient = rootClient;
             _halClient = halClient;
         }
 
         public async Task<PagedResource<Listing>> GetAsync(int eventId, int page, int pageSize)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient.Configuration);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
             var listingsLink = new Link
             {
                 HRef = string.Format("{0}/events/{1}/listings", root.Links["self"].HRef, eventId),
@@ -36,7 +34,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Listing>> GetAllAsync(int eventId)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient.Configuration);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
             var listingsLink = new Link
             {
                 HRef = string.Format("{0}/events/{1}/listings", root.Links["self"].HRef, eventId),
@@ -48,7 +46,7 @@ namespace GogoKit.Clients
 
         public async Task<Listing> GetAsync(int listingId)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient.Configuration);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
             var listingLink = new Link
             {
                 HRef = string.Format("{0}/listings/{1}", root.Links["self"].HRef, listingId),

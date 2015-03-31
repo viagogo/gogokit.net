@@ -9,15 +9,11 @@ namespace GogoKit.Clients
 {
     public class CategoriesClient : ICategoriesClient
     {
-        private readonly IApiRootClient _rootClient;
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
 
-        public CategoriesClient(IApiRootClient rootClient,
-                                IHalClient halClient,
-                                ILinkFactory linkFactory)
+        public CategoriesClient(IHalClient halClient, ILinkFactory linkFactory)
         {
-            _rootClient = rootClient;
             _halClient = halClient;
             _linkFactory = linkFactory;
         }
@@ -30,7 +26,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Category>> GetAllGenresAsync()
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Category>(root.Links["viagogo:genres"], null).ConfigureAwait(_halClient);
         }
     }

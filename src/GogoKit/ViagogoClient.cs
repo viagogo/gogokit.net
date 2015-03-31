@@ -17,7 +17,6 @@ namespace GogoKit
         private readonly IConfiguration _configuration;
         private readonly IHalClient _hypermedia;
         private readonly IOAuth2Client _oauth2Client;
-        private readonly IApiRootClient _rootClient;
         private readonly IUserClient _userClient;
         private readonly ISearchClient _searchClient;
         private readonly IAddressesClient _addressesClient;
@@ -88,25 +87,25 @@ namespace GogoKit
 
             _configuration = configuration;
             _oauth2Client = new OAuth2Client(oauthConnection, configuration, tokenStore);
-            _rootClient = new ApiRootClient(connection);
-            var linkFactory = new LinkFactory(_rootClient, configuration);
 
             var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoApiRootEndpoint)
                                       {
                                           CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
                                       };
             _hypermedia = new HalClient(halKitConfiguration, connection);
-            _userClient = new UserClient(_rootClient, _hypermedia);
-            _searchClient = new SearchClient(_rootClient, _hypermedia);
+            var linkFactory = new LinkFactory(_hypermedia);
+
+            _userClient = new UserClient(_hypermedia);
+            _searchClient = new SearchClient(_hypermedia);
             _addressesClient = new AddressesClient(_userClient, _hypermedia, linkFactory);
             _purchaseClient = new PurchasesClient(_userClient, _hypermedia, linkFactory);
             _paymentMethodsClients = new PaymentMethodsClient(_userClient, _hypermedia, linkFactory);
-            _countriesClient = new CountriesClient(_rootClient, _hypermedia, linkFactory);
-            _currencyClient = new CurrenciesClient(_rootClient, _hypermedia, linkFactory);
-            _categoryClient = new CategoriesClient(_rootClient, _hypermedia, linkFactory);
-            _eventClient = new EventsClient(_rootClient, _hypermedia);
-            _listingClient = new ListingsClient(_rootClient, _hypermedia);
-            _venueClient = new VenuesClient(_rootClient, _hypermedia);
+            _countriesClient = new CountriesClient(_hypermedia, linkFactory);
+            _currencyClient = new CurrenciesClient(_hypermedia, linkFactory);
+            _categoryClient = new CategoriesClient(_hypermedia, linkFactory);
+            _eventClient = new EventsClient(_hypermedia);
+            _listingClient = new ListingsClient(_hypermedia);
+            _venueClient = new VenuesClient(_hypermedia);
         }
 
         public IConfiguration Configuration
@@ -122,11 +121,6 @@ namespace GogoKit
         public IOAuth2Client OAuth2
         {
             get { return _oauth2Client; }
-        }
-
-        public IApiRootClient Root
-        {
-            get { return _rootClient; }
         }
 
         public IUserClient User

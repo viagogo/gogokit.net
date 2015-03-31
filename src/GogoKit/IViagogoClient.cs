@@ -9,7 +9,6 @@ namespace GogoKit
         IConfiguration Configuration { get; }
         IHalClient Hypermedia { get; }
         IOAuth2Client OAuth2 { get; }
-        IApiRootClient Root { get; }
         IUserClient User { get; }
         ISearchClient Search { get; }
         IAddressesClient Addresses { get; }

@@ -12,12 +12,10 @@ namespace GogoKit.Clients
 {
     public class SearchClient : ISearchClient
     {
-        private readonly IApiRootClient _rootClient;
         private readonly IHalClient _halClient;
 
-        public SearchClient(IApiRootClient rootClient, IHalClient halClient)
+        public SearchClient(IHalClient halClient)
         {
-            _rootClient = rootClient;
             _halClient = halClient;
         }
 
@@ -48,7 +46,7 @@ namespace GogoKit.Clients
             var type = request.TypeFilter.HasValue
                         ? request.TypeFilter.Value.ToString().Replace(" ", "").ToLower()
                         : null;
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
 
             return await getSearchResultsFunc(
                 root.Links["viagogo:search"],

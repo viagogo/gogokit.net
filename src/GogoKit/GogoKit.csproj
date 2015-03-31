@@ -97,9 +97,7 @@
   <ItemGroup>
     <Compile Include="Authentication\IOAuth2TokenStore.cs" />
     <Compile Include="Authentication\InMemoryOAuth2TokenStore.cs" />
-    <Compile Include="Clients\ApiRootClient.cs" />
     <Compile Include="Clients\IOAuth2Client.cs" />
-    <Compile Include="Clients\IApiRootClient.cs" />
     <Compile Include="Clients\ISearchClient.cs" />
     <Compile Include="Clients\IUserClient.cs" />
     <Compile Include="Clients\OAuth2Client.cs" />

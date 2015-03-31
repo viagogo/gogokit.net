@@ -1,28 +1,24 @@
 using System;
 using System.Threading.Tasks;
-using GogoKit.Clients;
-using GogoKit.Configuration;
-using GogoKit.Models;
+using HalKit;
 using HalKit.Models;
 
 namespace GogoKit.Helpers
 {
     public class LinkFactory : ILinkFactory
     {
-        private readonly IApiRootClient _rootClient;
-        private readonly IConfiguration _configuration;
+        private readonly IHalClient _halClient;
 
-        public LinkFactory(IApiRootClient rootClient, IConfiguration configuration)
+        public LinkFactory(IHalClient halClient)
         {
-            _rootClient = rootClient;
-            _configuration = configuration;
+            _halClient = halClient;
         }
 
         public async Task<Link> CreateLinkAsync(string relativeUriFormat, params object[] args)
         {
             Requires.ArgumentNotNull(relativeUriFormat, "relativeUriFormat");
 
-            var root = await _rootClient.GetAsync().ConfigureAwait(_configuration);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var baseUri = new Uri(root.Links["self"].HRef);
             var relativeUri = new Uri(string.Format(relativeUriFormat, args), UriKind.Relative);
 

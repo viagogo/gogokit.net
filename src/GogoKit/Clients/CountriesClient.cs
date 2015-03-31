@@ -1,6 +1,5 @@
 ﻿using GogoKit.Extensions;
 using GogoKit.Helpers;
-using GogoKit.Http;
 using GogoKit.Resources;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,15 +9,11 @@ namespace GogoKit.Clients
 {
     public class CountriesClient : ICountriesClient
     {
-        private readonly IApiRootClient _rootClient;
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
 
-        public CountriesClient(IApiRootClient rootClient,
-                               IHalClient halClient,
-                               ILinkFactory linkFactory)
+        public CountriesClient(IHalClient halClient, ILinkFactory linkFactory)
         {
-            _rootClient = rootClient;
             _halClient = halClient;
             _linkFactory = linkFactory;
         }
@@ -31,7 +26,7 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<Country>> GetAsync(int page, int pageSize)
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Country>>(
                 root.Links["viagogo:countries"],
                 new Dictionary<string, string>
@@ -43,7 +38,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Country>> GetAllAsync()
         {
-            var root = await _rootClient.GetAsync().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Country>(
                 root.Links["viagogo:countries"], null).ConfigureAwait(_halClient);
         }

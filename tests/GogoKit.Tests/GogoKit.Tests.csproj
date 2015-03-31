@@ -72,7 +72,6 @@
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
     <Compile Include="Fakes\FakeLocalizationProvider.cs" />
     <Compile Include="Fakes\FakeDelegatingHandler.cs" />
-    <Compile Include="Helpers\LinkFactoryTests.cs" />
     <Compile Include="Http\Handlers\BasicAuthenticationHandlerTests.cs" />
     <Compile Include="Http\Handlers\BearerTokenAuthenticationHandlerTests.cs" />
     <Compile Include="Http\Handlers\ErrorHandlerTests.cs" />

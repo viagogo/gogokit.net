@@ -114,14 +114,19 @@ Target "CreatePackage" (fun _ ->
             Files = files}) "GogoKit.nuspec"
 )
 
+Target "Default" DoNothing
+
 Target "CreatePackages" DoNothing
 
 "Clean"
     ==> "AssemblyInfo"
     ==> "BuildApp"
-    ==> "UnitTests"
-    ==> "SourceLink" 
-    ==> "CreatePackage"
+
+"UnitTests"
+    ==> "Default"
+
+"SourceLink"
+    ==> "Default"
 
 "CreatePackage"
     ==> "CreatePackages"

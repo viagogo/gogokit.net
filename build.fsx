@@ -1,15 +1,10 @@
 ﻿#r @"tools/FAKE.Core/tools/FakeLib.dll"
-#load "tools/SourceLink.Fake/tools/SourceLink.fsx"
-
-#r @"tools/FAKE.Core/tools/FakeLib.dll"
-#load "tools/SourceLink.Fake/tools/SourceLink.fsx"
 
 open System
 open System.IO
 open Fake
 open Fake.AssemblyInfoFile
 open Fake.XUnit2Helper
-open SourceLink
 
 // Project information used to generate AssemblyInfo and .nuspec
 let projectName = "GogoKit"
@@ -63,40 +58,23 @@ Target "UnitTests" (fun _ ->
     )
 )
 
-Target "SourceLink" (fun _ ->
-    use repo = new GitRepo(__SOURCE_DIRECTORY__)
-    let proj = VsProj.LoadRelease "src/GogoKit/GogoKit.csproj"
-    let pdb = new PdbFile(buildDir @@ "GogoKit.pdb")
-    let pdbSrcSrvPath = buildDir @@ "GogoKit.srcsrv"
-
-    logfn "source linking %s" pdb.Path
-    let files = (proj.Compiles -- "SolutionInfo.cs").SetBaseDirectory __SOURCE_DIRECTORY__
-    repo.VerifyChecksums files
-    pdb.VerifyChecksums files |> ignore
-
-    // Make sure that we don't hold onto a file lock on the .pdb
-    pdb.Dispose()
-
-    let pdbSrcSrvBytes = SrcSrv.create "https://raw.githubusercontent.com/viagogo/gogokit.net/{0}/%var2%" repo.Revision (repo.Paths files)
-    File.WriteAllBytes(pdbSrcSrvPath, pdbSrcSrvBytes)
-    Pdbstr.exec pdb.Path pdbSrcSrvPath
-)
-
 Target "CreatePackage" (fun _ ->
-    CopyFiles buildDir ["LICENSE.txt"; "README.md"; "ReleaseNotes.md"]
-    
     let tags = "viagogo API HAL tickets concerts"
     let dependencies = [
         ("HalKit", GetPackageVersion "./packages/" "HalKit")
     ]
+    
+    let inline nugetFriendlyPath (path : string) = if path.StartsWith("./") then path.Remove(0, 2) else path
+
     let libPortableDir = "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/"
     let files = [
-        ("GogoKit.dll", Some libPortableDir, None)
-        ("GogoKit.pdb", Some libPortableDir, None)
-        ("GogoKit.xml", Some libPortableDir, None)
+        (nugetFriendlyPath buildDir @@ "GogoKit.dll", Some libPortableDir, None)
+        (nugetFriendlyPath buildDir @@ "GogoKit.pdb", Some libPortableDir, None)
+        (nugetFriendlyPath buildDir @@ "GogoKit.xml", Some libPortableDir, None)
         ("LICENSE.txt", None, None)
         ("README.md", None, None)
         ("ReleaseNotes.md", None, None)
+        ("src\GogoKit\**\*.cs", Some "src", None)
     ]
 
     NuGet (fun p ->
@@ -106,7 +84,7 @@ Target "CreatePackage" (fun _ ->
             Copyright = copyright
             Authors = authors
             OutputPath = packagingDir
-            WorkingDir = buildDir
+            WorkingDir = @"."
             SymbolPackage = NugetSymbolPackage.Nuspec
             Version = releaseNotes.NugetVersion
             ReleaseNotes = toLines releaseNotes.Notes
@@ -114,21 +92,15 @@ Target "CreatePackage" (fun _ ->
             Files = files}) "GogoKit.nuspec"
 )
 
-Target "Default" DoNothing
-
 Target "CreatePackages" DoNothing
 
 "Clean"
     ==> "AssemblyInfo"
     ==> "BuildApp"
-
-"UnitTests"
-    ==> "Default"
-
-"SourceLink"
-    ==> "Default"
-
-"CreatePackage"
+    ==> "UnitTests"
     ==> "CreatePackages"
+
+"CreatePackages"
+    ==> "CreatePackage"
 
 RunTargetOrDefault "BuildApp"

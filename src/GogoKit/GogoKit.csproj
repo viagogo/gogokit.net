@@ -36,6 +36,11 @@
     <DocumentationFile>bin\Release\GogoKit.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Http\BasicAuthenticationHandler.cs" />
+    <Compile Include="Http\BearerTokenAuthenticationHandler.cs" />
+    <Compile Include="Http\ErrorHandler.cs" />
+    <Compile Include="Http\LocalizationHandler.cs" />
+    <Compile Include="Http\UserAgentHandler.cs" />
     <Compile Include="Models\Response\AddressSnapshot.cs" />
     <Compile Include="Models\Response\ApiError.cs" />
     <Compile Include="Models\Response\AuthorizationError.cs" />
@@ -71,11 +76,6 @@
     <Compile Include="Extensions\HalClientExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="GogoKitConfiguration.cs" />
-    <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
-    <Compile Include="Http\Handlers\BearerTokenAuthenticationHandler.cs" />
-    <Compile Include="Http\Handlers\ErrorHandler.cs" />
-    <Compile Include="Http\Handlers\LocalizationHandler.cs" />
-    <Compile Include="Http\Handlers\UserAgentHandler.cs" />
     <Compile Include="Http\Headers.cs" />
     <Compile Include="Http\HttpConnectionBuilder.cs" />
     <Compile Include="IGogoKitConfiguration.cs" />

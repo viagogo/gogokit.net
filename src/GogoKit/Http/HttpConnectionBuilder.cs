@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using GogoKit.Clients;
-using GogoKit.Http.Handlers;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Json;

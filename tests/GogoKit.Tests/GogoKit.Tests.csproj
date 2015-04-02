@@ -72,11 +72,11 @@
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
     <Compile Include="Fakes\FakeLocalizationProvider.cs" />
     <Compile Include="Fakes\FakeDelegatingHandler.cs" />
-    <Compile Include="Http\Handlers\BasicAuthenticationHandlerTests.cs" />
-    <Compile Include="Http\Handlers\BearerTokenAuthenticationHandlerTests.cs" />
-    <Compile Include="Http\Handlers\ErrorHandlerTests.cs" />
-    <Compile Include="Http\Handlers\LocalizationHandlerTests.cs" />
-    <Compile Include="Http\Handlers\UserAgentHandlerTests.cs" />
+    <Compile Include="Http\BasicAuthenticationHandlerTests.cs" />
+    <Compile Include="Http\BearerTokenAuthenticationHandlerTests.cs" />
+    <Compile Include="Http\ErrorHandlerTests.cs" />
+    <Compile Include="Http\LocalizationHandlerTests.cs" />
+    <Compile Include="Http\UserAgentHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ConfigurationLocalizationProviderTests.cs" />
   </ItemGroup>

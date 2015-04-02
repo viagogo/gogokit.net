@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GogoKit.Models;
+using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit.Http;
 

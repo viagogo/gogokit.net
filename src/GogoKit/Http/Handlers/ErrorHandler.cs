@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Exceptions;
 using GogoKit.Models;
+using GogoKit.Models.Response;
 using HalKit.Http;
 
 namespace GogoKit.Http.Handlers

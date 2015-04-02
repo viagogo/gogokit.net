@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Extensions;
-using GogoKit.Resources;
+using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 

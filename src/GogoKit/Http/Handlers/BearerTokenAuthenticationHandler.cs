@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using GogoKit.Clients;
 using GogoKit.Exceptions;
 using GogoKit.Models;
+using GogoKit.Models.Response;
 using GogoKit.Services;
 
 namespace GogoKit.Http.Handlers

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GogoKit.Clients;
 using GogoKit.Models;
+using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit.Http;
 using Moq;

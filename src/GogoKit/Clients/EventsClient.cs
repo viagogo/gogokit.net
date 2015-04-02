@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using GogoKit.Extensions;
 using GogoKit.Http;
-using GogoKit.Resources;
+using GogoKit.Models.Response;
 using HalKit;
 using HalKit.Models;
 

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using GogoKit.Requests;
-using GogoKit.Resources;
+using GogoKit.Models.Request;
+using GogoKit.Models.Response;
 using HalKit;
 
 namespace GogoKit.Clients

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using GogoKit.Exceptions;
 using GogoKit.Http.Handlers;
 using GogoKit.Models;
+using GogoKit.Models.Response;
 using GogoKit.Tests.Fakes;
 using HalKit.Http;
 using Moq;

@@ -26,12 +26,12 @@ namespace GogoKit.Http
 
             if (_localizationProvider.CountryCode != null)
             {
-                request.Headers.Add(Headers.Country, _localizationProvider.CountryCode);
+                request.Headers.Add("VGG-Country", _localizationProvider.CountryCode);
             }
 
             if (_localizationProvider.CurrencyCode != null)
             {
-                request.Headers.Add(Headers.Currency, _localizationProvider.CurrencyCode);
+                request.Headers.Add("Accept-Currency", _localizationProvider.CurrencyCode);
             }
 
             return base.SendAsync(request, cancellationToken);

@@ -41,6 +41,7 @@
     <Compile Include="Http\ErrorHandler.cs" />
     <Compile Include="Http\LocalizationHandler.cs" />
     <Compile Include="Http\UserAgentHandler.cs" />
+    <Compile Include="Models\Request\RequestParameters.cs" />
     <Compile Include="Models\Response\AddressSnapshot.cs" />
     <Compile Include="Models\Response\ApiError.cs" />
     <Compile Include="Models\Response\AuthorizationError.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="Extensions\HalClientExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="GogoKitConfiguration.cs" />
-    <Compile Include="Http\Headers.cs" />
     <Compile Include="Http\HttpConnectionBuilder.cs" />
     <Compile Include="IGogoKitConfiguration.cs" />
     <Compile Include="Models\Request\AddressUpdate.cs" />
@@ -86,8 +86,6 @@
     <Compile Include="Models\Request\NewPayPal.cs" />
     <Compile Include="Models\Request\NewPurchase.cs" />
     <Compile Include="Models\Request\NewPurchasePreview.cs" />
-    <Compile Include="Models\Request\PageRequest.cs" />
-    <Compile Include="Models\Request\Parameters.cs" />
     <Compile Include="Models\Request\PaymentMethodUpdate.cs" />
     <Compile Include="Models\Request\SearchResultRequest.cs" />
     <Compile Include="Models\Request\UserUpdate.cs" />

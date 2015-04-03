@@ -18,6 +18,11 @@ namespace GogoKit.Clients
             _halClient = halClient;
         }
 
+        public Task<PagedResource<SearchResult>> GetAsync(string query)
+        {
+            return GetAsync(query, new SearchResultRequest());
+        }
+
         public Task<PagedResource<SearchResult>> GetAsync(string query, SearchResultRequest request)
         {
             return GetInternalAsync(query, request, _halClient.GetAsync<PagedResource<SearchResult>>);
@@ -36,24 +41,23 @@ namespace GogoKit.Clients
         private async Task<T> GetInternalAsync<T>(
             string query,
             SearchResultRequest request,
-            Func<Link, IDictionary<string, string>, Task<T>> getSearchResultsFunc)
+            Func<Link,
+                 IDictionary<string, string>,
+                 IDictionary<string, IEnumerable<string>>,
+                 Task<T>> getSearchResultsFunc)
         {
             Requires.ArgumentNotNull(query, "query");
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(getSearchResultsFunc, "getSearchResultsFunc");
 
-            var type = request.TypeFilter.HasValue
-                        ? request.TypeFilter.Value.ToString().Replace(" ", "").ToLower()
-                        : null;
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
+
+            request.Parameters.Add("query", query);
 
             return await getSearchResultsFunc(
                 root.Links["viagogo:search"],
-                Parameters.WithPaging(request)
-                          .And("query", query)
-                          .And("type", type)
-                          .And("embed", "category,event,venue,metro_area")
-                          .Build()).ConfigureAwait(_halClient);
+                request.Parameters,
+                request.Headers).ConfigureAwait(_halClient);
         }
     }
 }

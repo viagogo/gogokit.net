@@ -51,7 +51,7 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> countryValues;
-            Assert.IsTrue(request.Headers.TryGetValues(Headers.Country, out countryValues));
+            Assert.IsTrue(request.Headers.TryGetValues("VGG-Country", out countryValues));
             Assert.AreEqual(expectedCountryHeaderValue, countryValues.Single());
         }
 
@@ -64,7 +64,7 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> countryValues;
-            Assert.IsFalse(request.Headers.TryGetValues(Headers.Country, out countryValues));
+            Assert.IsFalse(request.Headers.TryGetValues("VGG-Country", out countryValues));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> currencyValues;
-            Assert.IsTrue(request.Headers.TryGetValues(Headers.Currency, out currencyValues));
+            Assert.IsTrue(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
             Assert.AreEqual(expectedCurrencyHeaderValue, currencyValues.Single());
         }
 
@@ -91,7 +91,7 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> currencyValues;
-            Assert.IsFalse(request.Headers.TryGetValues(Headers.Currency, out currencyValues));
+            Assert.IsFalse(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
         }
 
         [Test]
@@ -117,8 +117,8 @@ namespace GogoKit.Tests.Http
             IEnumerable<string> currencyValues;
 
             CollectionAssert.IsEmpty(request.Headers.AcceptLanguage);
-            Assert.IsFalse(request.Headers.TryGetValues(Headers.Country, out countryValues));
-            Assert.IsFalse(request.Headers.TryGetValues(Headers.Currency, out currencyValues));
+            Assert.IsFalse(request.Headers.TryGetValues("VGG-Country", out countryValues));
+            Assert.IsFalse(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
         }
 
         private static LocalizationHandler CreateLocalizationHandler(ILocalizationProvider localizationProvider = null)

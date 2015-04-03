@@ -7,6 +7,8 @@ namespace GogoKit.Clients
 {
     public interface ISearchClient
     {
+        Task<PagedResource<SearchResult>> GetAsync(string query);
+
         Task<PagedResource<SearchResult>> GetAsync(string query, SearchResultRequest request);
 
         Task<IReadOnlyList<SearchResult>> GetAllAsync(string query);

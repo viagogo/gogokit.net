@@ -9,10 +9,23 @@ namespace GogoKit.Extensions
 {
     public static class HalClientExtensions
     {
-        public static async Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
+        public static Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
             this IHalClient client,
             Link link,
             IDictionary<string, string> parameters) where T : Resource
+        {
+            return GetAllPagesAsync<T>(
+                client,
+                link,
+                parameters,
+                new Dictionary<string, IEnumerable<string>>());
+        }
+
+        public static async Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
+            this IHalClient client,
+            Link link,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers) where T : Resource
         {
             Requires.ArgumentNotNull(client, "client");
             Requires.ArgumentNotNull(link, "link");
@@ -25,7 +38,8 @@ namespace GogoKit.Extensions
             {
                 var currentPage = await client.GetAsync<PagedResource<T>>(
                                             currentLink,
-                                            currentParameters).ConfigureAwait(client.Configuration);
+                                            currentParameters,
+                                            headers).ConfigureAwait(client.Configuration);
 
                 items.AddRange(currentPage.Items);
 

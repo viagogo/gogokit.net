@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Extensions;
+using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
@@ -18,16 +19,33 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public async Task<Category> GetAsync(int categoryId)
+        public Task<Category> GetAsync(int categoryId)
         {
-            var categoryLink = await _linkFactory.CreateLinkAsync("categories/{0}", categoryId).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<Category>(categoryLink, null).ConfigureAwait(_halClient);
+            return GetAsync(categoryId, new CategoryRequest());
         }
 
-        public async Task<IReadOnlyList<Category>> GetAllGenresAsync()
+        public async Task<Category> GetAsync(int categoryId, CategoryRequest request)
         {
+            Requires.ArgumentNotNull(request, "request");
+
+            var categoryLink = await _linkFactory.CreateLinkAsync("categories/{0}", categoryId).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Category>(categoryLink, request.Parameters, request.Headers).ConfigureAwait(_halClient);
+        }
+
+        public Task<IReadOnlyList<Category>> GetAllGenresAsync()
+        {
+            return GetAllGenresAsync(new CategoryRequest());
+        }
+
+        public async Task<IReadOnlyList<Category>> GetAllGenresAsync(CategoryRequest request)
+        {
+            Requires.ArgumentNotNull(request, "request");
+
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Category>(root.Links["viagogo:genres"], null).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Category>(
+                                        root.Links["viagogo:genres"],
+                                        request.Parameters,
+                                        request.Headers).ConfigureAwait(_halClient);
         }
     }
 }

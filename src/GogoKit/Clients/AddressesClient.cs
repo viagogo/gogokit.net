@@ -24,40 +24,57 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public async Task<IReadOnlyList<Address>> GetAllAsync()
-        {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Address>(user.Links["user:addresses"], null)
-                                    .ConfigureAwait(_halClient);
-        }
-
-        public async Task<PagedResource<Address>> GetAsync(int page, int pageSize)
-        {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<Address>>(
-                user.Links["user:addresses"],
-                new Dictionary<string, string>()
-                {
-                    {"page", page.ToString()},
-                    {"page_size", pageSize.ToString()}
-                }).ConfigureAwait(_halClient);
-        }
-
         public async Task<Address> GetAsync(int addressId)
         {
             var addressLink = await _linkFactory.CreateLinkAsync("addresses/{0}", addressId).ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Address>(addressLink).ConfigureAwait(_halClient);
         }
 
+        public Task<PagedResource<Address>> GetAsync()
+        {
+            return GetAsync(new AddressRequest());
+        }
+
+        public async Task<PagedResource<Address>> GetAsync(AddressRequest request)
+        {
+            Requires.ArgumentNotNull(request, "request");
+
+            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Address>>(
+                user.Links["user:addresses"],
+                request.Parameters,
+                request.Headers).ConfigureAwait(_halClient);
+        }
+
+        public Task<IReadOnlyList<Address>> GetAllAsync()
+        {
+            return GetAllAsync(new AddressRequest());
+        }
+
+        public async Task<IReadOnlyList<Address>> GetAllAsync(AddressRequest request)
+        {
+            Requires.ArgumentNotNull(request, "request");
+
+            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Address>(
+                user.Links["user:addresses"],
+                request.Parameters,
+                request.Headers).ConfigureAwait(_halClient);
+        }
+
         public async Task<Address> CreateAsync(NewAddress address)
         {
-            var addresses = await GetAsync(1, 1).ConfigureAwait(_halClient);
+            Requires.ArgumentNotNull(address, "address");
+
+            var addresses = await GetAsync(new AddressRequest {PageSize = 1}).ConfigureAwait(_halClient);
             var createAddressLink = addresses.Links["address:create"];
             return await _halClient.PostAsync<Address>(createAddressLink, address).ConfigureAwait(_halClient);
         }
 
         public async Task<Address> UpdateAsync(int addressId, AddressUpdate addressUpdate)
         {
+            Requires.ArgumentNotNull(addressUpdate, "addressUpdate");
+
             var address = await GetAsync(addressId).ConfigureAwait(_halClient);
             return await _halClient.PatchAsync<Address>(address.Links["address:update"],
                                                         addressUpdate).ConfigureAwait(_halClient);

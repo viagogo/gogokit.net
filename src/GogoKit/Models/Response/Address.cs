@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using HalKit.Json;
+using HalKit.Models;
 using HalKit.Resources;
 
 namespace GogoKit.Models.Response
@@ -36,5 +37,17 @@ namespace GogoKit.Models.Response
 
         [Embedded("country")]
         public Country Country { get; set; }
+
+        [IgnoreDataMember]
+        public Link UpdateLink
+        {
+            get { return Links.TryGetLink("address:update"); }
+        }
+
+        [IgnoreDataMember]
+        public Link DeleteLink
+        {
+            get { return Links.TryGetLink("address:delete"); }
+        }
     }
 }

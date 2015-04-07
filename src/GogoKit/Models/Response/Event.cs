@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using HalKit.Json;
-using HalKit.Resources;
 
 namespace GogoKit.Models.Response
 {
-    public class Event : Resource
+    public class Event : EmbeddedEvent
     {
-        [DataMember(Name = "id")]
-        public int Id { get; set; }
-
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        [DataMember(Name = "start_date")]
-        public DateTimeOffset? StartDate { get; set; }
-
         [DataMember(Name = "end_date")]
         public DateTimeOffset? EndDate { get; set; }
 

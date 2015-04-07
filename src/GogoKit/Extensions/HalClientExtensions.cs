@@ -31,7 +31,18 @@ namespace GogoKit.Extensions
             Requires.ArgumentNotNull(link, "link");
 
             var currentLink = link;
-            var currentParameters = parameters;
+            var currentParameters = new Dictionary<string, string>(parameters);
+            // Increase page-size to reduce the number of round-trips
+            var maxPageSize = "1000";
+            if (currentParameters.ContainsKey("page_size"))
+            {
+                currentParameters["page_size"] = maxPageSize;
+            }
+            else
+            {
+                currentParameters.Add("page_size", maxPageSize);
+            }
+
             var items = new List<T>();
             var hasAnotherPage = true;
             while (hasAnotherPage)

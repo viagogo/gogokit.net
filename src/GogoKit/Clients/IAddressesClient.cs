@@ -6,13 +6,25 @@ using HalKit.Http;
 
 namespace GogoKit.Clients
 {
+    /// <summary>
+    /// A client for viagogo's User Addresses API.
+    /// </summary>
     public interface IAddressesClient
     {
-        Task<IReadOnlyList<Address>> GetAllAsync();
-        Task<PagedResource<Address>> GetAsync(int page, int pageSize);
         Task<Address> GetAsync(int addressId);
+
+        Task<PagedResource<Address>> GetAsync();
+
+        Task<PagedResource<Address>> GetAsync(AddressRequest request);
+
+        Task<IReadOnlyList<Address>> GetAllAsync();
+
+        Task<IReadOnlyList<Address>> GetAllAsync(AddressRequest request);
+
         Task<Address> CreateAsync(NewAddress address);
+
         Task<Address> UpdateAsync(int addressId, AddressUpdate addressUpdate);
+
         Task<IApiResponse> DeleteAsync(int addressId);
     }
 }

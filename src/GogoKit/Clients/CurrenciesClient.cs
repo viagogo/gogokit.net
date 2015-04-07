@@ -30,10 +30,7 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(request, "request");
 
             var currencyLink = await _linkFactory.CreateLinkAsync("currencies/{0}", code).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<Currency>(
-                currencyLink,
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Currency>(currencyLink, request).ConfigureAwait(_halClient);
         }
 
         public async Task<PagedResource<Currency>> GetAsync(CurrencyRequest request)
@@ -43,8 +40,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Currency>>(
                 root.Links["viagogo:currencies"],
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+                request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Currency>> GetAllAsync()
@@ -57,8 +53,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Currency>(
                 root.Links["viagogo:currencies"],
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+                request).ConfigureAwait(_halClient);
         }
     }
 }

@@ -5,6 +5,7 @@ using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
+using HalKit.Models.Request;
 using HalKit.Models.Response;
 
 namespace GogoKit.Clients
@@ -41,10 +42,7 @@ namespace GogoKit.Clients
         private async Task<T> GetInternalAsync<T>(
             string query,
             SearchResultRequest request,
-            Func<Link,
-                 IDictionary<string, string>,
-                 IDictionary<string, IEnumerable<string>>,
-                 Task<T>> getSearchResultsFunc)
+            Func<Link, IRequestParameters, Task<T>> getSearchResultsFunc)
         {
             Requires.ArgumentNotNull(query, "query");
             Requires.ArgumentNotNull(request, "request");
@@ -54,10 +52,7 @@ namespace GogoKit.Clients
 
             request.Parameters.Add("query", query);
 
-            return await getSearchResultsFunc(
-                root.Links["viagogo:search"],
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await getSearchResultsFunc(root.Links["viagogo:search"], request).ConfigureAwait(_halClient);
         }
     }
 }

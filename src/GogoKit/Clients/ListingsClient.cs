@@ -33,10 +33,7 @@ namespace GogoKit.Clients
                 Rel = "event:listings"
             };
 
-            return await _halClient.GetAsync<Listing>(
-                listingLink,
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Listing>(listingLink, request).ConfigureAwait(_halClient);
         }
 
         public async Task<PagedResource<Listing>> GetByEventAsync(int eventId, ListingRequest request)
@@ -50,10 +47,7 @@ namespace GogoKit.Clients
                 Rel = "event:listings"
             };
 
-            return await _halClient.GetAsync<PagedResource<Listing>>(
-                listingsLink,
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Listing>>(listingsLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Listing>> GetAllByEventAsync(int eventId)
@@ -72,10 +66,7 @@ namespace GogoKit.Clients
                 Rel = "event:listings"
             };
 
-            return await _halClient.GetAllPagesAsync<Listing>(
-                listingsLink,
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Listing>(listingsLink, request).ConfigureAwait(_halClient);
         }
     }
 }

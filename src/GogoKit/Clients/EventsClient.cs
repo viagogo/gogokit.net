@@ -32,10 +32,7 @@ namespace GogoKit.Clients
                 HRef = string.Format("{0}/events/{1}", root.Links["self"].HRef, eventId)
             };
 
-            return await _halClient.GetAsync<Event>(
-                eventsLink,
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Event>(eventsLink, request).ConfigureAwait(_halClient);
         }
 
         public async Task<PagedResource<Event>> GetByCategoryAsync(int categoryId, EventRequest request)
@@ -49,10 +46,7 @@ namespace GogoKit.Clients
                 Rel = "category:events"
             };
 
-            return await _halClient.GetAsync<PagedResource<Event>>(
-                eventsLink,
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Event>>(eventsLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Event>> GetAllByCategoryAsync(int categoryId)
@@ -71,10 +65,7 @@ namespace GogoKit.Clients
                 Rel = "category:events"
             };
 
-            return await _halClient.GetAllPagesAsync<Event>(
-                eventsLink,
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Event>(eventsLink, request).ConfigureAwait(_halClient);
         }
     }
 }

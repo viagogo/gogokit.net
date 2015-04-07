@@ -37,8 +37,7 @@ namespace GogoKit.Clients
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Address>>(
                 user.Links["user:addresses"],
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+                request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Address>> GetAllAsync()
@@ -53,8 +52,7 @@ namespace GogoKit.Clients
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Address>(
                 user.Links["user:addresses"],
-                request.Parameters,
-                request.Headers).ConfigureAwait(_halClient);
+                request).ConfigureAwait(_halClient);
         }
 
         public async Task<Address> CreateAsync(NewAddress address)

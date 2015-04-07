@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using HalKit.Models.Request;
 
 namespace GogoKit.Models.Request
 {
@@ -8,7 +9,7 @@ namespace GogoKit.Models.Request
     /// Base class for classes that represent query parameters and headers to a
     /// particular API endpoint
     /// </summary>
-    public abstract class RequestParameters<TEmbed, TSort>
+    public abstract class RequestParameters<TEmbed, TSort> : IRequestParameters
     {
         private readonly IDictionary<string, string> _parameters;
         private readonly IDictionary<string, IEnumerable<string>> _headers;

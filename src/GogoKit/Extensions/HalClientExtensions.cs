@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GogoKit.Models.Response;
 using HalKit;
+using HalKit.Models.Request;
 using HalKit.Models.Response;
 
 namespace GogoKit.Extensions
@@ -11,13 +12,13 @@ namespace GogoKit.Extensions
         public static Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
             this IHalClient client,
             Link link,
-            IDictionary<string, string> parameters) where T : Resource
+            IRequestParameters request) where T : Resource
         {
             return GetAllPagesAsync<T>(
                 client,
                 link,
-                parameters,
-                new Dictionary<string, IEnumerable<string>>());
+                request.Parameters,
+                request.Headers);
         }
 
         public static async Task<IReadOnlyList<T>> GetAllPagesAsync<T>(

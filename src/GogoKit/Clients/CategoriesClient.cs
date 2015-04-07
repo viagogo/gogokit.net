@@ -29,7 +29,7 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(request, "request");
 
             var categoryLink = await _linkFactory.CreateLinkAsync("categories/{0}", categoryId).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<Category>(categoryLink, request.Parameters, request.Headers).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Category>(categoryLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Category>> GetAllGenresAsync()
@@ -44,8 +44,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Category>(
                                         root.Links["viagogo:genres"],
-                                        request.Parameters,
-                                        request.Headers).ConfigureAwait(_halClient);
+                                        request).ConfigureAwait(_halClient);
         }
     }
 }

@@ -5,6 +5,7 @@ using HalKit.Resources;
 
 namespace GogoKit.Models.Response
 {
+    [DataContract]
     public class Listing : Resource
     {
         [DataMember(Name = "id")]
@@ -46,6 +47,28 @@ namespace GogoKit.Models.Response
         [Embedded("ticket_type")]
         public TicketType TicketType { get; set; }
 
+        [Embedded("listing_notes")]
+        public ListingNote[] ListingNotes { get; set; }
+
+        [IgnoreDataMember]
+        public Link EventLink
+        {
+            get { return Links.TryGetLink("listing:event"); }
+        }
+
+        [IgnoreDataMember]
+        public Link LocalWebPageLink
+        {
+            get { return Links.TryGetLink("listing:localwebpage"); }
+        }
+
+        [IgnoreDataMember]
+        public Link WebPageLink
+        {
+            get { return Links.TryGetLink("listing:webpage"); }
+        }
+
+        [IgnoreDataMember]
         public Link PurchasePreviewLink
         {
             get { return Links["listing:purchasepreview"]; }

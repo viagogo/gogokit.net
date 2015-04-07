@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using HalKit.Json;
+using HalKit.Models;
 
 namespace GogoKit.Models.Response
 {
@@ -22,6 +23,33 @@ namespace GogoKit.Models.Response
         public string Restrictions { get; set; }
 
         [Embedded("venue")]
-        public Venue Venue { get; set; }
+        public EmbeddedVenue Venue { get; set; }
+
+        [Embedded("category")]
+        public EmbeddedCategory Category { get; set; }
+
+        [IgnoreDataMember]
+        public Link CategoryLink
+        {
+            get { return Links.TryGetLink("event:category"); }
+        }
+
+        [IgnoreDataMember]
+        public Link ListingsLink
+        {
+            get { return Links.TryGetLink("event:listings"); }
+        }
+
+        [IgnoreDataMember]
+        public Link LocalWebPageLink
+        {
+            get { return Links.TryGetLink("event:localwebpage"); }
+        }
+
+        [IgnoreDataMember]
+        public Link WebPageLink
+        {
+            get { return Links.TryGetLink("event:webpage"); }
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace GogoKit
         ISearchClient Search { get; }
         IAddressesClient Addresses { get; }
         IPurchasesClient Purchases { get; }
+        ISalesClient Sales { get; }
         ICountriesClient Countries { get; }
         ICurrenciesClient Currencies { get; }
         IPaymentMethodsClient PaymentMethods { get; }

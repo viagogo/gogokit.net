@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Extensions;
-using GogoKit.Requests;
-using GogoKit.Resources;
+using GogoKit.Models.Request;
+using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
-using HalKit.Models;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -26,26 +26,38 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public async Task<PagedResource<PaymentMethod>> GetAsync(int page, int pageSize)
+        public Task<PaymentMethod> GetAsync(int paymentMethodId)
+        {
+            return GetAsync(paymentMethodId, new PaymentMethodRequest());
+        }
+
+        public async Task<PaymentMethod> GetAsync(int paymentMethodId, PaymentMethodRequest request)
+        {
+            var paymentMethodLink = await _linkFactory.CreateLinkAsync(
+                                            "paymentMethods/{0}",
+                                            paymentMethodId).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PaymentMethod>(paymentMethodLink, request).ConfigureAwait(_halClient);
+        }
+
+        public async Task<PagedResource<PaymentMethod>> GetAsync(PaymentMethodRequest request)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<PaymentMethod>>(
                 user.Links["user:paymentmethods"],
-                null).ConfigureAwait(_halClient);
+                request).ConfigureAwait(_halClient);
         }
 
-        public async Task<IReadOnlyList<PaymentMethod>> GetAllAsync()
+        public Task<IReadOnlyList<PaymentMethod>> GetAllAsync()
+        {
+            return GetAllAsync(new PaymentMethodRequest());
+        }
+
+        public async Task<IReadOnlyList<PaymentMethod>> GetAllAsync(PaymentMethodRequest request)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<PaymentMethod>(
                 user.Links["user:paymentmethods"],
-                null).ConfigureAwait(_halClient);
-        }
-
-        public async Task<PaymentMethod> GetAsync(int paymentMethodId)
-        {
-            var paymentMethodLink = await _linkFactory.CreateLinkAsync("paymentMethods/{0}", paymentMethodId).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PaymentMethod>(paymentMethodLink, null).ConfigureAwait(_halClient);
+                request).ConfigureAwait(_halClient);
         }
 
         public Task<PaymentMethod> CreateAsync(NewCreditCard creditCard)
@@ -62,7 +74,7 @@ namespace GogoKit.Clients
             NewPaymentMethod paymentMethod,
             string createLinkRel)
         {
-            var paymentMethodsPage = await GetAsync(1, 1).ConfigureAwait(_halClient);
+            var paymentMethodsPage = await GetAsync(new PaymentMethodRequest {PageSize = 1}).ConfigureAwait(_halClient);
             return await _halClient.PostAsync<PaymentMethod>(
                 paymentMethodsPage.Links[createLinkRel],
                 paymentMethod).ConfigureAwait(_halClient);

@@ -18,6 +18,7 @@ namespace GogoKit
         private readonly ISearchClient _searchClient;
         private readonly IAddressesClient _addressesClient;
         private readonly IPurchasesClient _purchaseClient;
+        private readonly ISalesClient _salesClient;
         private readonly ICountriesClient _countriesClient;
         private readonly ICurrenciesClient _currencyClient;
         private readonly IPaymentMethodsClient _paymentMethodsClients;
@@ -81,6 +82,7 @@ namespace GogoKit
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(oauthConnection, "oauthConnection");
             Requires.ArgumentNotNull(configuration, "configuration");
+            Requires.ArgumentNotNull(tokenStore, "tokenStore");
 
             _configuration = configuration;
             _oauth2Client = new OAuth2Client(oauthConnection, configuration, tokenStore);
@@ -96,6 +98,7 @@ namespace GogoKit
             _searchClient = new SearchClient(_hypermedia);
             _addressesClient = new AddressesClient(_userClient, _hypermedia, linkFactory);
             _purchaseClient = new PurchasesClient(_userClient, _hypermedia, linkFactory);
+            _salesClient = new SalesClient(_userClient, _hypermedia, linkFactory);
             _paymentMethodsClients = new PaymentMethodsClient(_userClient, _hypermedia, linkFactory);
             _countriesClient = new CountriesClient(_hypermedia, linkFactory);
             _currencyClient = new CurrenciesClient(_hypermedia, linkFactory);
@@ -138,6 +141,11 @@ namespace GogoKit
         public IPurchasesClient Purchases
         {
             get { return _purchaseClient; }
+        }
+
+        public ISalesClient Sales
+        {
+            get { return _salesClient; }
         }
 
         public ICountriesClient Countries

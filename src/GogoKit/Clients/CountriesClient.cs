@@ -1,5 +1,6 @@
 ﻿using GogoKit.Extensions;
-using GogoKit.Resources;
+using GogoKit.Models.Request;
+using GogoKit.Models.Response;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Services;
@@ -18,29 +19,42 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public async Task<Country> GetAsync(string code)
+        public Task<Country> GetAsync(string code)
         {
-            var countryLink = await _linkFactory.CreateLinkAsync("countries/{0}", code).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<Country>(countryLink, null).ConfigureAwait(_halClient);
+            return GetAsync(code, new CountryRequest());
         }
 
-        public async Task<PagedResource<Country>> GetAsync(int page, int pageSize)
+        public async Task<Country> GetAsync(string code, CountryRequest request)
         {
+            Requires.ArgumentNotNull(request, "request");
+
+            var countryLink = await _linkFactory.CreateLinkAsync("countries/{0}", code).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Country>(countryLink, request).ConfigureAwait(_halClient);
+        }
+
+        public async Task<PagedResource<Country>> GetAsync(CountryRequest request)
+        {
+            Requires.ArgumentNotNull(request, "request");
+
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Country>>(
                 root.Links["viagogo:countries"],
-                new Dictionary<string, string>
-                {
-                    {"page", page.ToString()},
-                    {"page_size", pageSize.ToString()}
-                }).ConfigureAwait(_halClient);
+                request).ConfigureAwait(_halClient);
         }
 
-        public async Task<IReadOnlyList<Country>> GetAllAsync()
+        public Task<IReadOnlyList<Country>> GetAllAsync()
         {
+            return GetAllAsync(new CountryRequest());
+        }
+
+        public async Task<IReadOnlyList<Country>> GetAllAsync(CountryRequest request)
+        {
+            Requires.ArgumentNotNull(request, "request");
+
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Country>(
-                root.Links["viagogo:countries"], null).ConfigureAwait(_halClient);
+                root.Links["viagogo:countries"],
+                request).ConfigureAwait(_halClient);
         }
     }
 }

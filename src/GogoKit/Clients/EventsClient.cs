@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Extensions;
-using GogoKit.Http;
-using GogoKit.Resources;
+using GogoKit.Models.Request;
+using GogoKit.Models.Response;
 using HalKit;
-using HalKit.Models;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -17,43 +17,55 @@ namespace GogoKit.Clients
             _halClient = halClient;
         }
 
-        public async Task<PagedResource<Event>> GetByCategoryAsync(int categoryId, int page, int pageSize)
+        public Task<Event> GetAsync(int eventId)
         {
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
-            var eventsLink = new Link
-            {
-                HRef = string.Format("{0}/categories/{1}/events", root.Links["self"].HRef, categoryId),
-                Rel = "category:events"
-            };
-
-            return await _halClient.GetAsync<PagedResource<Event>>(eventsLink, new Dictionary<string, string>()
-                                                                        {
-                                                                            {"page", page.ToString()},
-                                                                            {"page_size", pageSize.ToString()}
-                                                                        }).ConfigureAwait(_halClient.Configuration);
+            return GetAsync(eventId, new EventRequest());
         }
 
-        public async Task<IReadOnlyList<Event>> GetAllByCategoryAsync(int categoryId)
+        public async Task<Event> GetAsync(int eventId, EventRequest request)
         {
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
-            var eventsLink = new Link
-            {
-                HRef = string.Format("{0}/categories/{1}/events", root.Links["self"].HRef, categoryId),
-                Rel = "category:events"
-            };
+            Requires.ArgumentNotNull(request, "request");
 
-            return await _halClient.GetAllPagesAsync<Event>(eventsLink, null).ConfigureAwait(_halClient.Configuration);
-        }
-
-        public async Task<Event> GetAsync(int eventId)
-        {
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var eventsLink = new Link
             {
                 HRef = string.Format("{0}/events/{1}", root.Links["self"].HRef, eventId)
             };
 
-            return await _halClient.GetAsync<Event>(eventsLink, null).ConfigureAwait(_halClient.Configuration);
+            return await _halClient.GetAsync<Event>(eventsLink, request).ConfigureAwait(_halClient);
+        }
+
+        public async Task<PagedResource<Event>> GetByCategoryAsync(int categoryId, EventRequest request)
+        {
+            Requires.ArgumentNotNull(request, "request");
+
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
+            var eventsLink = new Link
+            {
+                HRef = string.Format("{0}/categories/{1}/events", root.Links["self"].HRef, categoryId),
+                Rel = "category:events"
+            };
+
+            return await _halClient.GetAsync<PagedResource<Event>>(eventsLink, request).ConfigureAwait(_halClient);
+        }
+
+        public Task<IReadOnlyList<Event>> GetAllByCategoryAsync(int categoryId)
+        {
+            return GetAllByCategoryAsync(categoryId, new EventRequest());
+        }
+
+        public async Task<IReadOnlyList<Event>> GetAllByCategoryAsync(int categoryId, EventRequest request)
+        {
+            Requires.ArgumentNotNull(request, "request");
+
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
+            var eventsLink = new Link
+            {
+                HRef = string.Format("{0}/categories/{1}/events", root.Links["self"].HRef, categoryId),
+                Rel = "category:events"
+            };
+
+            return await _halClient.GetAllPagesAsync<Event>(eventsLink, request).ConfigureAwait(_halClient);
         }
     }
 }

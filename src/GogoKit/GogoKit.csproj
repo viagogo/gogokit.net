@@ -36,6 +36,37 @@
     <DocumentationFile>bin\Release\GogoKit.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Extensions\LinkCollectionExtensions.cs" />
+    <Compile Include="Http\BasicAuthenticationHandler.cs" />
+    <Compile Include="Http\BearerTokenAuthenticationHandler.cs" />
+    <Compile Include="Http\ErrorHandler.cs" />
+    <Compile Include="Http\LocalizationHandler.cs" />
+    <Compile Include="Http\UserAgentHandler.cs" />
+    <Compile Include="Models\Request\AddressRequest.cs" />
+    <Compile Include="Models\Request\CategoryRequest.cs" />
+    <Compile Include="Models\Request\CountryRequest.cs" />
+    <Compile Include="Models\Request\CurrencyRequest.cs" />
+    <Compile Include="Models\Request\EventRequest.cs" />
+    <Compile Include="Models\Request\ListingRequest.cs" />
+    <Compile Include="Models\Request\PaymentMethodRequest.cs" />
+    <Compile Include="Models\Request\PurchaseRequest.cs" />
+    <Compile Include="Models\Request\RequestParameters.cs" />
+    <Compile Include="Models\Request\SaleRequest.cs" />
+    <Compile Include="Models\Request\VenueRequest.cs" />
+    <Compile Include="Models\Response\AddressSnapshot.cs" />
+    <Compile Include="Models\Response\ApiError.cs" />
+    <Compile Include="Models\Response\AuthorizationError.cs" />
+    <Compile Include="Models\Response\EmbeddedCategory.cs" />
+    <Compile Include="Models\Response\EmbeddedEvent.cs" />
+    <Compile Include="Models\Response\EmbeddedVenue.cs" />
+    <Compile Include="Models\Response\ListingNote.cs" />
+    <Compile Include="Models\Response\Money.cs" />
+    <Compile Include="Models\Response\OAuth2Token.cs" />
+    <Compile Include="Models\Response\Seating.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Clients\AddressesClient.cs" />
     <Compile Include="Clients\CategoriesClient.cs" />
     <Compile Include="Clients\CountriesClient.cs" />
@@ -61,36 +92,33 @@
     <Compile Include="Extensions\HalClientExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="GogoKitConfiguration.cs" />
-    <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
-    <Compile Include="Http\Handlers\BearerTokenAuthenticationHandler.cs" />
-    <Compile Include="Http\Handlers\ErrorHandler.cs" />
-    <Compile Include="Http\Handlers\LocalizationHandler.cs" />
-    <Compile Include="Http\Handlers\UserAgentHandler.cs" />
-    <Compile Include="Http\Headers.cs" />
     <Compile Include="Http\HttpConnectionBuilder.cs" />
     <Compile Include="IGogoKitConfiguration.cs" />
-    <Compile Include="Models\AddressSnapshot.cs" />
-    <Compile Include="Requests\NewAddress.cs" />
-    <Compile Include="Requests\AddressUpdate.cs" />
-    <Compile Include="Models\Money.cs" />
-    <Compile Include="Requests\NewCreditCard.cs" />
-    <Compile Include="Requests\NewPaymentMethod.cs" />
-    <Compile Include="Requests\NewPayPal.cs" />
-    <Compile Include="Requests\NewPurchase.cs" />
-    <Compile Include="Requests\NewPurchasePreview.cs" />
-    <Compile Include="Requests\PageRequest.cs" />
-    <Compile Include="Requests\Parameters.cs" />
-    <Compile Include="Requests\PaymentMethodUpdate.cs" />
-    <Compile Include="Requests\SearchResultRequest.cs" />
-    <Compile Include="Resources\PurchasePreview.cs" />
-    <Compile Include="Resources\Sale.cs" />
-    <Compile Include="Resources\TicketType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Models\Request\AddressUpdate.cs" />
+    <Compile Include="Models\Request\NewAddress.cs" />
+    <Compile Include="Models\Request\NewCreditCard.cs" />
+    <Compile Include="Models\Request\NewPaymentMethod.cs" />
+    <Compile Include="Models\Request\NewPayPal.cs" />
+    <Compile Include="Models\Request\NewPurchase.cs" />
+    <Compile Include="Models\Request\NewPurchasePreview.cs" />
+    <Compile Include="Models\Request\PaymentMethodUpdate.cs" />
+    <Compile Include="Models\Request\SearchResultRequest.cs" />
+    <Compile Include="Models\Request\UserUpdate.cs" />
+    <Compile Include="Models\Response\Address.cs" />
+    <Compile Include="Models\Response\Category.cs" />
+    <Compile Include="Models\Response\Country.cs" />
+    <Compile Include="Models\Response\Currency.cs" />
+    <Compile Include="Models\Response\Event.cs" />
+    <Compile Include="Models\Response\Listing.cs" />
+    <Compile Include="Models\Response\PagedResource.cs" />
+    <Compile Include="Models\Response\PaymentMethod.cs" />
+    <Compile Include="Models\Response\Purchase.cs" />
+    <Compile Include="Models\Response\PurchasePreview.cs" />
+    <Compile Include="Models\Response\Sale.cs" />
+    <Compile Include="Models\Response\TicketType.cs" />
+    <Compile Include="Models\Response\SearchResult.cs" />
+    <Compile Include="Models\Response\User.cs" />
+    <Compile Include="Models\Response\Venue.cs" />
     <Compile Include="Clients\IOAuth2Client.cs" />
     <Compile Include="Clients\ISearchClient.cs" />
     <Compile Include="Clients\IUserClient.cs" />
@@ -114,25 +142,7 @@
     <Compile Include="Exceptions\UserAgentRequiredException.cs" />
     <Compile Include="Exceptions\ValidationFailedException.cs" />
     <Compile Include="IViagogoClient.cs" />
-    <Compile Include="Models\ApiError.cs" />
-    <Compile Include="Requests\UserUpdate.cs" />
-    <Compile Include="Resources\Address.cs" />
-    <Compile Include="Resources\ApiRoot.cs" />
-    <Compile Include="Resources\Category.cs" />
-    <Compile Include="Resources\Country.cs" />
-    <Compile Include="Resources\Currency.cs" />
-    <Compile Include="Resources\Event.cs" />
-    <Compile Include="Resources\Listing.cs" />
-    <Compile Include="Resources\PagedResource.cs" />
-    <Compile Include="Resources\PaymentMethod.cs" />
-    <Compile Include="Resources\Purchase.cs" />
-    <Compile Include="Models\AuthorizationError.cs" />
-    <Compile Include="Models\OAuth2Token.cs" />
     <Compile Include="Requires.cs" />
-    <Compile Include="Resources\SearchResult.cs" />
-    <Compile Include="Models\Seating.cs" />
-    <Compile Include="Resources\User.cs" />
-    <Compile Include="Resources\Venue.cs" />
     <Compile Include="Services\ConfigurationLocalizationProvider.cs" />
     <Compile Include="Services\ILinkFactory.cs" />
     <Compile Include="Services\ILocalizationProvider.cs" />
@@ -146,7 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HalKit">
-      <HintPath>..\..\packages\HalKit.0.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
+      <HintPath>..\..\packages\HalKit.0.2.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Models;
+using GogoKit.Models.Response;
 using GogoKit.Services;
 
 namespace GogoKit.Clients

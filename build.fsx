@@ -10,7 +10,7 @@ open Fake.XUnit2Helper
 let projectName = "GogoKit"
 let projectDescription = "A viagogo API client library for .NET"
 let authors = ["viagogo"]
-let copyright = @"Copyright © viagogo " + DateTime.UtcNow.ToString("yyyy");
+let copyright = @"Copyright viagogo " + DateTime.UtcNow.ToString("yyyy");
 
 // Directories
 let buildDir = @"./artifacts/"
@@ -98,9 +98,9 @@ Target "CreatePackages" DoNothing
     ==> "AssemblyInfo"
     ==> "BuildApp"
     ==> "UnitTests"
-    ==> "CreatePackages"
-
-"CreatePackages"
     ==> "CreatePackage"
+
+"CreatePackage"
+    ==> "CreatePackages"
 
 RunTargetOrDefault "BuildApp"

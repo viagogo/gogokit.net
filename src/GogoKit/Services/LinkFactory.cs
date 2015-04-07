@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using HalKit;
-using HalKit.Models;
+using HalKit.Models.Response;
 
 namespace GogoKit.Services
 {

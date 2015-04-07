@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Extensions;
-using GogoKit.Requests;
-using GogoKit.Resources;
+using GogoKit.Models.Request;
+using GogoKit.Models.Response;
 using HalKit;
-using HalKit.Models;
+using HalKit.Models.Request;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -16,6 +17,11 @@ namespace GogoKit.Clients
         public SearchClient(IHalClient halClient)
         {
             _halClient = halClient;
+        }
+
+        public Task<PagedResource<SearchResult>> GetAsync(string query)
+        {
+            return GetAsync(query, new SearchResultRequest());
         }
 
         public Task<PagedResource<SearchResult>> GetAsync(string query, SearchResultRequest request)
@@ -36,24 +42,17 @@ namespace GogoKit.Clients
         private async Task<T> GetInternalAsync<T>(
             string query,
             SearchResultRequest request,
-            Func<Link, IDictionary<string, string>, Task<T>> getSearchResultsFunc)
+            Func<Link, IRequestParameters, Task<T>> getSearchResultsFunc)
         {
             Requires.ArgumentNotNull(query, "query");
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(getSearchResultsFunc, "getSearchResultsFunc");
 
-            var type = request.TypeFilter.HasValue
-                        ? request.TypeFilter.Value.ToString().Replace(" ", "").ToLower()
-                        : null;
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
 
-            return await getSearchResultsFunc(
-                root.Links["viagogo:search"],
-                Parameters.WithPaging(request)
-                          .And("query", query)
-                          .And("type", type)
-                          .And("embed", "category,event,venue,metro_area")
-                          .Build()).ConfigureAwait(_halClient);
+            request.Parameters.Add("query", query);
+
+            return await getSearchResultsFunc(root.Links["viagogo:search"], request).ConfigureAwait(_halClient);
         }
     }
 }

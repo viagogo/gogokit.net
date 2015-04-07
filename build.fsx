@@ -98,9 +98,9 @@ Target "CreatePackages" DoNothing
     ==> "AssemblyInfo"
     ==> "BuildApp"
     ==> "UnitTests"
-    ==> "CreatePackages"
-
-"CreatePackages"
     ==> "CreatePackage"
+
+"CreatePackage"
+    ==> "CreatePackages"
 
 RunTargetOrDefault "BuildApp"

@@ -26,7 +26,7 @@ namespace GogoKit.Clients
         public async Task<Purchase> GetAsync(int purchaseId)
         {
             var purchaseLink = await _linkFactory.CreateLinkAsync("purchases/{0}", purchaseId).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<Purchase>(purchaseLink, null).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Purchase>(purchaseLink, null, null).ConfigureAwait(_halClient);
         }
 
         public async Task<PagedResource<Purchase>> GetAsync(int page, int pageSize)
@@ -34,6 +34,7 @@ namespace GogoKit.Clients
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Purchase>>(
                 user.Links["user:purchases"],
+                null,
                 null).ConfigureAwait(_halClient);
         }
 

@@ -1,4 +1,4 @@
-﻿using HalKit.Models;
+﻿using HalKit.Models.Response;
 
 namespace GogoKit
 {

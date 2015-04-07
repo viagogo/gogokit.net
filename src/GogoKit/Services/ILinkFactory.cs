@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using HalKit.Models;
+using HalKit.Models.Response;
 
 namespace GogoKit.Services
 {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using GogoKit.Extensions;
 using GogoKit.Models.Response;
 using HalKit;
-using HalKit.Models;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {

@@ -21,6 +21,7 @@ namespace GogoKit.Clients
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Sale>>(
                 user.Links["user:sales"],
+                null,
                 null).ConfigureAwait(_halClient);
         }
     }

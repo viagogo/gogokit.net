@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 using GogoKit.Models.Response;
 using HalKit;
-using HalKit.Models;
-using HalKit.Resources;
+using HalKit.Models.Response;
 
 namespace GogoKit.Extensions
 {

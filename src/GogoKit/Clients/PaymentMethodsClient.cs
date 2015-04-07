@@ -7,7 +7,7 @@ using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
-using HalKit.Models;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -31,6 +31,7 @@ namespace GogoKit.Clients
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<PaymentMethod>>(
                 user.Links["user:paymentmethods"],
+                null,
                 null).ConfigureAwait(_halClient);
         }
 
@@ -45,7 +46,7 @@ namespace GogoKit.Clients
         public async Task<PaymentMethod> GetAsync(int paymentMethodId)
         {
             var paymentMethodLink = await _linkFactory.CreateLinkAsync("paymentMethods/{0}", paymentMethodId).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PaymentMethod>(paymentMethodLink, null).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PaymentMethod>(paymentMethodLink, null, null).ConfigureAwait(_halClient);
         }
 
         public Task<PaymentMethod> CreateAsync(NewCreditCard creditCard)

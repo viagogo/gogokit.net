@@ -30,7 +30,10 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(request, "request");
 
             var currencyLink = await _linkFactory.CreateLinkAsync("currencies/{0}", code).ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<Currency>(currencyLink, null).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Currency>(
+                currencyLink,
+                request.Parameters,
+                request.Headers).ConfigureAwait(_halClient);
         }
 
         public async Task<PagedResource<Currency>> GetAsync(CurrencyRequest request)

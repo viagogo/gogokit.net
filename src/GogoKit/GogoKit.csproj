@@ -48,7 +48,11 @@
     <Compile Include="Models\Request\CurrencyRequest.cs" />
     <Compile Include="Models\Request\EventRequest.cs" />
     <Compile Include="Models\Request\ListingRequest.cs" />
+    <Compile Include="Models\Request\PaymentMethodRequest.cs" />
+    <Compile Include="Models\Request\PurchaseRequest.cs" />
     <Compile Include="Models\Request\RequestParameters.cs" />
+    <Compile Include="Models\Request\SaleRequest.cs" />
+    <Compile Include="Models\Request\VenueRequest.cs" />
     <Compile Include="Models\Response\AddressSnapshot.cs" />
     <Compile Include="Models\Response\ApiError.cs" />
     <Compile Include="Models\Response\AuthorizationError.cs" />

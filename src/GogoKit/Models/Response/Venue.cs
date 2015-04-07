@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using HalKit.Models.Response;
 
 namespace GogoKit.Models.Response
 {
@@ -22,5 +23,17 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "postal_code")]
         public string PostalCode { get; set; }
+
+        [IgnoreDataMember]
+        public Link EventsLink
+        {
+            get { return Links.TryGetLink("venue:events"); }
+        }
+
+        [IgnoreDataMember]
+        public Link MetroAreasLink
+        {
+            get { return Links.TryGetLink("venue:metroarea"); }
+        }
     }
 }

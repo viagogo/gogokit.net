@@ -8,9 +8,17 @@ namespace GogoKit.Clients
     public interface IPurchasesClient
     {
         Task<Purchase> GetAsync(int purchaseId);
-        Task<PagedResource<Purchase>> GetAsync(int page, int pageSize);
+
+        Task<Purchase> GetAsync(int purchaseId, PurchaseRequest request);
+
+        Task<PagedResource<Purchase>> GetAsync(PurchaseRequest request);
+
         Task<IReadOnlyList<Purchase>> GetAllAsync();
+
+        Task<IReadOnlyList<Purchase>> GetAllAsync(PurchaseRequest request);
+
         Task<PurchasePreview> CreatePurchasePreviewAsync(Listing listing, NewPurchasePreview preview);
+
         Task<Purchase> CreatePurchaseAsync(PurchasePreview preview, NewPurchase purchase);
     }
 }

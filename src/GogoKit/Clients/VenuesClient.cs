@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Extensions;
+using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
 using HalKit.Models.Response;
@@ -16,23 +17,12 @@ namespace GogoKit.Clients
             _halClient = halClient;
         }
 
-        public async Task<PagedResource<Venue>> GetAsync(int page, int pageSize)
+        public Task<Venue> GetAsync(int venueId)
         {
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<Venue>>(root.Links["viagogo:venues"], new Dictionary<string, string>()
-                                                                        {
-                                                                            {"page", page.ToString()},
-                                                                            {"page_size", pageSize.ToString()}
-                                                                        }).ConfigureAwait(_halClient);
+            return GetAsync(venueId, new VenueRequest());
         }
 
-        public async Task<IReadOnlyList<Venue>> GetAllAsync()
-        {
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Venue>(root.Links["viagogo:venues"], null).ConfigureAwait(_halClient);
-        }
-
-        public async Task<Venue> GetAsync(int venueId)
+        public async Task<Venue> GetAsync(int venueId, VenueRequest request)
         {
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var venueLink = new Link
@@ -40,7 +30,28 @@ namespace GogoKit.Clients
                 HRef = string.Format("{0}/{1}", root.Links["viagogo:venues"].HRef, venueId)
             };
 
-            return await _halClient.GetAsync<Venue>(venueLink).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Venue>(venueLink, request).ConfigureAwait(_halClient);
+        }
+
+        public async Task<PagedResource<Venue>> GetAsync(VenueRequest request)
+        {
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Venue>>(
+                root.Links["viagogo:venues"],
+                request).ConfigureAwait(_halClient);
+        }
+
+        public Task<IReadOnlyList<Venue>> GetAllAsync()
+        {
+            return GetAllAsync(new VenueRequest());
+        }
+
+        public async Task<IReadOnlyList<Venue>> GetAllAsync(VenueRequest request)
+        {
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Venue>(
+                root.Links["viagogo:venues"],
+                request).ConfigureAwait(_halClient);
         }
     }
 }

@@ -83,6 +83,7 @@ namespace GogoKit.Models.Response
         [Embedded("venue")]
         public Venue Venue { get; set; }
 
-        // TODO: ListingNotes
+        [Embedded("listing_notes")]
+        public ListingNote[] ListingNotes { get; set; }
     }
 }

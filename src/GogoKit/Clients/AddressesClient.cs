@@ -30,11 +30,6 @@ namespace GogoKit.Clients
             return await _halClient.GetAsync<Address>(addressLink).ConfigureAwait(_halClient);
         }
 
-        public Task<PagedResource<Address>> GetAsync()
-        {
-            return GetAsync(new AddressRequest());
-        }
-
         public async Task<PagedResource<Address>> GetAsync(AddressRequest request)
         {
             Requires.ArgumentNotNull(request, "request");

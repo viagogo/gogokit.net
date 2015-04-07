@@ -35,105 +35,32 @@ namespace GogoKit.Models.Request
 
         public DateTimeOffset? MinStartDate
         {
-            get
-            {
-                DateTimeOffset minStartDate;
-                string minStartDateText;
-                if (!Parameters.TryGetValue("min_start_date", out minStartDateText) ||
-                    !DateTimeOffset.TryParse(minStartDateText, out minStartDate))
-                {
-                    return null;
-                }
-
-                return minStartDate;
-            }
-            set
-            {
-                Parameters.Add("min_start_date", value != null ? value.ToString() : null);
-            }
+            get { return GetParameter("min_start_date", DateTimeOffset.Parse); }
+            set { SetParameter("min_start_date", value); }
         }
 
         public DateTimeOffset? MaxStartDate
         {
-            get
-            {
-                DateTimeOffset maxStartDate;
-                string maxStartDateText;
-                if (!Parameters.TryGetValue("max_start_date", out maxStartDateText) ||
-                    !DateTimeOffset.TryParse(maxStartDateText, out maxStartDate))
-                {
-                    return null;
-                }
-
-                return maxStartDate;
-            }
-            set
-            {
-                Parameters.Add("max_start_date", value != null ? value.ToString() : null);
-            }
+            get { return GetParameter("max_start_date", DateTimeOffset.Parse); }
+            set { SetParameter("max_start_date", value); }
         }
 
         public decimal? MaxTicketPrice
         {
-            get
-            {
-
-                decimal maxTicketPrice;
-                string maxTicketPriceText;
-                if (!Parameters.TryGetValue("max_ticket_price", out maxTicketPriceText) ||
-                    !decimal.TryParse(maxTicketPriceText, out maxTicketPrice))
-                {
-                    return null;
-                }
-
-                return maxTicketPrice;
-            }
-            set
-            {
-                Parameters.Add("max_ticket_price", value != null ? value.ToString() : null);
-            }
+            get { return GetParameter("max_ticket_price", decimal.Parse); }
+            set { SetParameter("max_ticket_price", value); }
         }
 
         public bool? OnlyWithEvents
         {
-            get
-            {
-
-                bool onlyWithEvents;
-                string onlyWithEventsText;
-                if (!Parameters.TryGetValue("only_with_events", out onlyWithEventsText) ||
-                    !bool.TryParse(onlyWithEventsText, out onlyWithEvents))
-                {
-                    return null;
-                }
-
-                return onlyWithEvents;
-            }
-            set
-            {
-                Parameters.Add("only_with_events", value != null ? value.ToString() : null);
-            }
+            get { return GetParameter("only_with_events", bool.Parse); }
+            set { SetParameter("only_with_events", value); }
         }
 
         public bool? OnlyWithTickets
         {
-            get
-            {
-
-                bool onlyWithTickets;
-                string onlyWithTicketsText;
-                if (!Parameters.TryGetValue("only_with_tickets", out onlyWithTicketsText) ||
-                    !bool.TryParse(onlyWithTicketsText, out onlyWithTickets))
-                {
-                    return null;
-                }
-
-                return onlyWithTickets;
-            }
-            set
-            {
-                Parameters.Add("only_with_tickets", value != null ? value.ToString() : null);
-            }
+            get { return GetParameter("only_with_tickets", bool.Parse); }
+            set { SetParameter("only_with_tickets", value); }
         }
     }
 

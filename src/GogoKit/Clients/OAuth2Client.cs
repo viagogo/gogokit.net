@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GogoKit.Models;
 using GogoKit.Models.Response;
-using GogoKit.Services;
 using HalKit.Http;
 
 namespace GogoKit.Clients
@@ -14,27 +12,20 @@ namespace GogoKit.Clients
     {
         private readonly IHttpConnection _connection;
         private readonly IGogoKitConfiguration _configuration;
-        private readonly IOAuth2TokenStore _tokenStore;
 
-        public OAuth2Client(IHttpConnection connection,
-                            IGogoKitConfiguration configuration,
-                            IOAuth2TokenStore tokenStore)
+        public OAuth2Client(IHttpConnection connection, IGogoKitConfiguration configuration)
         {
             Requires.ArgumentNotNull(connection, "connection");
             Requires.ArgumentNotNull(configuration, "configuration");
-            Requires.ArgumentNotNull(tokenStore, "tokenStore");
 
             _connection = connection;
             _configuration = configuration;
-            _tokenStore = tokenStore;
         }
 
-        public IOAuth2TokenStore TokenStore
-        {
-            get { return _tokenStore; }
-        }
-
-        public async Task<OAuth2Token> GetAccessTokenAsync(string grantType, IEnumerable<string> scopes, IDictionary<string, string> parameters)
+        public async Task<OAuth2Token> GetAccessTokenAsync(
+            string grantType,
+            IEnumerable<string> scopes,
+            IDictionary<string, string> parameters)
         {
             Requires.ArgumentNotNullOrEmpty(grantType, "grantType");
 
@@ -62,41 +53,20 @@ namespace GogoKit.Clients
             return token;
         }
 
-        public async Task<OAuth2Token> GetClientCredentialsAccessTokenAsync(
-            IEnumerable<string> scopes)
+        public Task<OAuth2Token> GetClientAccessTokenAsync(IEnumerable<string> scopes)
         {
-            return await GetAccessTokenAsync("client_credentials", scopes, new Dictionary<string, string>());
+            return GetAccessTokenAsync("client_credentials", scopes, new Dictionary<string, string>());
         }
 
-        public async Task AuthenticateClientCredentialsAsync(IEnumerable<string> scopes)
+        public Task<OAuth2Token> RefreshTokenAccessTokenAsync(OAuth2Token token)
         {
-            var token = await GetClientCredentialsAccessTokenAsync(scopes);
-            await TokenStore.SetTokenAsync(token);
-        }
+            Requires.ArgumentNotNull(token, "token");
+            Requires.ArgumentNotNullOrEmpty(token.RefreshToken, "token has no refresh token");
 
-        public async Task<OAuth2Token> GetPasswordAccessTokenAsync(
-            string userName,
-            string password,
-            IEnumerable<string> scopes)
-        {
-            Requires.ArgumentNotNullOrEmpty(userName, "userName");
-            Requires.ArgumentNotNullOrEmpty(password, "password");
-
-            var parameters = new Dictionary<string, string>
-                             {
-                                 {"username", userName},
-                                 {"password", password}
-                             };
-            return await GetAccessTokenAsync("password", scopes, parameters);
-        }
-
-        public async Task AuthenticatePasswordCredentialsAsync(
-            string userName,
-            string password,
-            IEnumerable<string> scopes)
-        {
-            var token = await GetPasswordAccessTokenAsync(userName, password, scopes);
-            await TokenStore.SetTokenAsync(token);
+            var scopes = token.Scope != null
+                            ? token.Scope.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)
+                            : new string[] {};
+            return GetAccessTokenAsync("refresh_token", scopes, new Dictionary<string, string>());
         }
     }
 }

@@ -18,11 +18,6 @@ namespace GogoKit.Http
         private readonly IOAuth2Client _oauthClient;
         private readonly IGogoKitConfiguration _configuration;
 
-        public BearerTokenAuthenticationHandler(IOAuth2Client oauthClient)
-            : this(oauthClient, new InMemoryOAuth2TokenStore(), new GogoKitConfiguration())
-        {
-        }
-
         public BearerTokenAuthenticationHandler(
             IOAuth2Client oauthClient,
             IOAuth2TokenStore tokenStore,
@@ -60,40 +55,39 @@ namespace GogoKit.Http
         private async Task<OAuth2Token> GetTokenAsync()
         {
             var token = await _tokenStore.GetTokenAsync().ConfigureAwait(_configuration);
-            if (token == null ||
-                token.IssueDate.AddSeconds(token.ExpiresIn) <= DateTime.UtcNow)
+            if (token == null || token.IssueDate.AddSeconds(token.ExpiresIn) > DateTime.UtcNow)
             {
-                ApiException refreshTokenException = null;
-                try
-                {
-                    if (token == null || token.RefreshToken == null)
-                    {
-                        token = await _oauthClient.GetClientCredentialsAccessTokenAsync(null).ConfigureAwait(_configuration);
-                    }
-                    else
-                    {
-                        token = await _oauthClient.GetAccessTokenAsync(
-                            "refresh_token",
-                            (token.Scope ?? "").Split(' '),
-                            new Dictionary<string, string>
-                            {
-                                {"refresh_token", token.RefreshToken}
-                            }).ConfigureAwait(_configuration);
-                    }
-                }
-                catch (ApiException ex)
-                {
-                    refreshTokenException = ex;
-                }
-
-                if (refreshTokenException != null)
-                {
-                    await _tokenStore.DeleteTokenAsync().ConfigureAwait(_configuration);
-                    throw refreshTokenException;
-                }
-
-                await _tokenStore.SetTokenAsync(token).ConfigureAwait(_configuration);
+                // We have a valid token or we don't have any token
+                return token;
             }
+
+            // We have an expired token so refresh it
+            ApiException refreshTokenException = null;
+            try
+            {
+                if (token.RefreshToken != null)
+                {
+                    token = await _oauthClient.RefreshTokenAccessTokenAsync(token).ConfigureAwait(_configuration);
+                }
+                else
+                {
+                    // Only client credentials tokens don't have refresh tokens
+                    // so grab another client credentials token
+                    token = await _oauthClient.GetClientAccessTokenAsync(null).ConfigureAwait(_configuration);
+                }
+            }
+            catch (ApiException ex)
+            {
+                refreshTokenException = ex;
+            }
+
+            if (refreshTokenException != null)
+            {
+                await _tokenStore.DeleteTokenAsync().ConfigureAwait(_configuration);
+                throw refreshTokenException;
+            }
+
+            await _tokenStore.SetTokenAsync(token).ConfigureAwait(_configuration);
 
             return token;
         }

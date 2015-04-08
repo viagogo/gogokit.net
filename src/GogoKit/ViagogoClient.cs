@@ -106,7 +106,7 @@ namespace GogoKit
             _configuration = configuration;
             _tokenStore = tokenStore;
             _hypermedia = new HalClient(halKitConfiguration, apiConnection);
-            _oauth2Client = new OAuth2Client(oauthConnection, configuration, tokenStore);
+            _oauth2Client = new OAuth2Client(oauthConnection, configuration);
             _userClient = new UserClient(_hypermedia);
             _searchClient = new SearchClient(_hypermedia);
             _addressesClient = new AddressesClient(_userClient, _hypermedia, linkFactory);

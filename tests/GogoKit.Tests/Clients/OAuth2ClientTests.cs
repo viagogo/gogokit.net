@@ -17,13 +17,11 @@ namespace GogoKit.Tests.Clients
     {
         private static OAuth2Client CreateClient(
             IHttpConnection conn = null,
-            IGogoKitConfiguration config = null,
-            IOAuth2TokenStore tokenStore = null)
+            IGogoKitConfiguration config = null)
         {
             return new OAuth2Client(
                 conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
-                config ?? new GogoKitConfiguration(),
-                tokenStore ?? new Mock<IOAuth2TokenStore>().Object);
+                config ?? new GogoKitConfiguration());
         }
 
         private static IApiResponse<OAuth2Token> CreateResponse(
@@ -145,46 +143,6 @@ namespace GogoKit.Tests.Clients
             var actualToken = await client.GetAccessTokenAsync("grantType", null, null);
 
             Assert.AreEqual(expectedIssueDate, actualToken.IssueDate);
-        }
-
-        [Test]
-        public async void AuthenticatePasswordCredentialsAsync_ShouldStoreToken()
-        {
-            var expectedToken = new OAuth2Token();
-            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
-                                    It.IsAny<Uri>(),
-                                    It.IsAny<HttpMethod>(),
-                                    It.IsAny<object>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
-                    .Returns(Task.FromResult(CreateResponse(token: expectedToken)));
-            var mockTokenStore = new Mock<IOAuth2TokenStore>();
-            mockTokenStore.Setup(x => x.SetTokenAsync(expectedToken)).Returns(Task.FromResult(true)).Verifiable();
-            var client = CreateClient(conn: mockConn.Object, tokenStore: mockTokenStore.Object);
-
-            await client.AuthenticatePasswordCredentialsAsync("username", "password", new string[0]);
-
-            mockTokenStore.Verify();
-        }
-
-        [Test]
-        public async void AuthenticateClientCredentialsAsync_ShouldStoreToken()
-        {
-            var expectedToken = new OAuth2Token();
-            var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
-            mockConn.Setup(c => c.SendRequestAsync<OAuth2Token>(
-                                    It.IsAny<Uri>(),
-                                    It.IsAny<HttpMethod>(),
-                                    It.IsAny<object>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
-                    .Returns(Task.FromResult(CreateResponse(token: expectedToken)));
-            var mockTokenStore = new Mock<IOAuth2TokenStore>();
-            mockTokenStore.Setup(x => x.SetTokenAsync(expectedToken)).Returns(Task.FromResult(true)).Verifiable();
-            var client = CreateClient(conn: mockConn.Object, tokenStore: mockTokenStore.Object);
-
-            await client.AuthenticateClientCredentialsAsync(new string[0]);
-
-            mockTokenStore.Verify();
         }
     }
 }

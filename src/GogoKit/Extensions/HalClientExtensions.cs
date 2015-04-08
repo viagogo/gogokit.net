@@ -11,6 +11,13 @@ namespace GogoKit.Extensions
     {
         public static Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
             this IHalClient client,
+            Link link) where T : Resource
+        {
+            return GetAllPagesAsync<T>(client, link, null, null);
+        }
+
+        public static Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
+            this IHalClient client,
             Link link,
             IRequestParameters request) where T : Resource
         {
@@ -31,7 +38,7 @@ namespace GogoKit.Extensions
             Requires.ArgumentNotNull(link, "link");
 
             var currentLink = link;
-            var currentParameters = new Dictionary<string, string>(parameters);
+            var currentParameters = new Dictionary<string, string>(parameters ?? new Dictionary<string, string>());
             // Increase page-size to reduce the number of round-trips
             var maxPageSize = "1000";
             if (currentParameters.ContainsKey("page_size"))

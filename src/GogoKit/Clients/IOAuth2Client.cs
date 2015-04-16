@@ -12,6 +12,6 @@ namespace GogoKit.Clients
 
         Task<OAuth2Token> GetClientAccessTokenAsync(IEnumerable<string> scopes);
 
-        Task<OAuth2Token> RefreshTokenAccessTokenAsync(OAuth2Token token);
+        Task<OAuth2Token> RefreshAccessTokenAsync(OAuth2Token token);
     }
 }

@@ -58,7 +58,7 @@ namespace GogoKit.Clients
             return GetAccessTokenAsync("client_credentials", scopes, new Dictionary<string, string>());
         }
 
-        public Task<OAuth2Token> RefreshTokenAccessTokenAsync(OAuth2Token token)
+        public Task<OAuth2Token> RefreshAccessTokenAsync(OAuth2Token token)
         {
             Requires.ArgumentNotNull(token, "token");
             Requires.ArgumentNotNullOrEmpty(token.RefreshToken, "token has no refresh token");
@@ -66,7 +66,10 @@ namespace GogoKit.Clients
             var scopes = token.Scope != null
                             ? token.Scope.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)
                             : new string[] {};
-            return GetAccessTokenAsync("refresh_token", scopes, new Dictionary<string, string>());
+            return GetAccessTokenAsync(
+                "refresh_token",
+                scopes,
+                new Dictionary<string, string> {{ "refresh_token", token.RefreshToken }});
         }
     }
 }

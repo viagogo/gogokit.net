@@ -67,7 +67,7 @@ namespace GogoKit.Http
             {
                 if (token.RefreshToken != null)
                 {
-                    token = await _oauthClient.RefreshTokenAccessTokenAsync(token).ConfigureAwait(_configuration);
+                    token = await _oauthClient.RefreshAccessTokenAsync(token).ConfigureAwait(_configuration);
                 }
                 else
                 {

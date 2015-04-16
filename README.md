@@ -31,8 +31,8 @@ var searchResults = await viagogo.Search.GetSearchResultsAsync("FC Barcelona tic
 
 ## Getting Started
 
-HalKit is available on NuGet.
+GogoKit is available on NuGet.
 
 ```
-Install-Package HalKit
+Install-Package GogoKit
 ```

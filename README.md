@@ -10,7 +10,7 @@ GogoKit is a lightweight, async viagogo API client library for .NET.
 
 ## Usage
 
-```c#
+```c# 
 // All methods require authentication. To get your viagogo OAuth credentials,
 // See TODO: docs url
 var viagogo = new ViagogoClient(CLIENT_ID,

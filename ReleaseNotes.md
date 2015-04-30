@@ -1,3 +1,6 @@
+### New in 0.1.2 (Released 2015/04/30)
+* Fixed a bug in ViagogoClient where it wasn't creating the LinkFactory correctly
+
 ### New in 0.1.1 (Relesed 2015/04/15)
 * Fixed bug in OAuth2Client where it wasn't refreshing access tokens correctly
 

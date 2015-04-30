@@ -97,7 +97,6 @@ namespace GogoKit
                                                        .HttpClientHandler(httpClientHandler)
                                                        .AdditionalHandlers(customHandlers)
                                                        .Build();
-            var linkFactory = new LinkFactory(_hypermedia);
             var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoApiRootEndpoint)
                                       {
                                           CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
@@ -106,6 +105,7 @@ namespace GogoKit
             _configuration = configuration;
             _tokenStore = tokenStore;
             _hypermedia = new HalClient(halKitConfiguration, apiConnection);
+            var linkFactory = new LinkFactory(_hypermedia);
             _oauth2Client = new OAuth2Client(oauthConnection, configuration);
             _userClient = new UserClient(_hypermedia);
             _searchClient = new SearchClient(_hypermedia);

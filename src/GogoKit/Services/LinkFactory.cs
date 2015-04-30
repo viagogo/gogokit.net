@@ -11,6 +11,8 @@ namespace GogoKit.Services
 
         public LinkFactory(IHalClient halClient)
         {
+            Requires.ArgumentNotNull(halClient, "halClient");
+
             _halClient = halClient;
         }
 

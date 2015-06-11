@@ -85,5 +85,11 @@ namespace GogoKit.Models.Response
 
         [Embedded("listing_notes")]
         public ListingNote[] ListingNotes { get; set; }
+
+        [Rel("purchase:threedsecure")]
+        public Link ThreeDSecureLink { get; set; }
+
+        [Rel("purchase:retrypurchasepreview")]
+        public Link RetryPurchasePreviewLink { get; set; }
     }
 }

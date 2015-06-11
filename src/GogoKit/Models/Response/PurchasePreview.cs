@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using HalKit.Models.Response;
+using HalKit.Json;
 
 namespace GogoKit.Models.Response
 {
@@ -33,9 +34,10 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "estimated_total_charge")]
         public Money EstimatedTotalCharge { get; set; }
 
-        public Link CreatePurchaseLink
-        {
-            get { return Links["purchasepreview:createpurchase"]; }
-        }
+        [Rel("purchasepreview:createpurchase")]
+        public Link CreatePurchaseLink { get; set; }
+
+        [Rel("purchasepreview:retrypayment")]
+        public Link RetryPaymentLink { get; set; }
     }
 }

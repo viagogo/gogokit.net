@@ -36,7 +36,6 @@
     <DocumentationFile>bin\Release\GogoKit.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Extensions\LinkCollectionExtensions.cs" />
     <Compile Include="Http\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\BearerTokenAuthenticationHandler.cs" />
     <Compile Include="Http\ErrorHandler.cs" />
@@ -51,8 +50,10 @@
     <Compile Include="Models\Request\PaymentMethodRequest.cs" />
     <Compile Include="Models\Request\PurchaseRequest.cs" />
     <Compile Include="Models\Request\RequestParameters.cs" />
+    <Compile Include="Models\Request\RootRequest.cs" />
     <Compile Include="Models\Request\SaleRequest.cs" />
     <Compile Include="Models\Request\VenueRequest.cs" />
+    <Compile Include="Models\Response\Addresses.cs" />
     <Compile Include="Models\Response\AddressSnapshot.cs" />
     <Compile Include="Models\Response\ApiError.cs" />
     <Compile Include="Models\Response\AuthorizationError.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="Models\Response\ListingNote.cs" />
     <Compile Include="Models\Response\Money.cs" />
     <Compile Include="Models\Response\OAuth2Token.cs" />
+    <Compile Include="Models\Response\PaymentMethods.cs" />
+    <Compile Include="Models\Response\Root.cs" />
     <Compile Include="Models\Response\Seating.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">
@@ -155,8 +158,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="HalKit">
-      <HintPath>..\..\packages\HalKit.0.2.1\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
+    <Reference Include="HalKit, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HalKit.0.3.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>

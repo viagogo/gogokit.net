@@ -1,5 +1,4 @@
-﻿using GogoKit.Extensions;
-using GogoKit.Models.Request;
+﻿using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,8 +37,8 @@ namespace GogoKit.Clients
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Country>>(
-                root.Links["viagogo:countries"],
-                request).ConfigureAwait(_halClient);
+                            root.CountriesLink,
+                            request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Country>> GetAllAsync()
@@ -52,9 +51,7 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(request, "request");
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Country>(
-                root.Links["viagogo:countries"],
-                request).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Country>(root.CountriesLink, request).ConfigureAwait(_halClient);
         }
     }
 }

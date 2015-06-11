@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
@@ -27,7 +26,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var venueLink = new Link
             {
-                HRef = string.Format("{0}/{1}", root.Links["viagogo:venues"].HRef, venueId)
+                HRef = string.Format("{0}/{1}", root.VenuesLink.HRef, venueId)
             };
 
             return await _halClient.GetAsync<Venue>(venueLink, request).ConfigureAwait(_halClient);
@@ -36,9 +35,7 @@ namespace GogoKit.Clients
         public async Task<PagedResource<Venue>> GetAsync(VenueRequest request)
         {
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<Venue>>(
-                root.Links["viagogo:venues"],
-                request).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Venue>>(root.VenuesLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Venue>> GetAllAsync()
@@ -49,9 +46,7 @@ namespace GogoKit.Clients
         public async Task<IReadOnlyList<Venue>> GetAllAsync(VenueRequest request)
         {
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Venue>(
-                root.Links["viagogo:venues"],
-                request).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Venue>(root.VenuesLink, request).ConfigureAwait(_halClient);
         }
     }
 }

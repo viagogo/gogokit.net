@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using GogoKit.Services;
@@ -37,9 +36,7 @@ namespace GogoKit.Clients
         public async Task<PagedResource<Purchase>> GetAsync(PurchaseRequest request)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<Purchase>>(
-                user.Links["user:purchases"],
-                request).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Purchase>>(user.PurchasesLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Purchase>> GetAllAsync()
@@ -50,9 +47,7 @@ namespace GogoKit.Clients
         public async Task<IReadOnlyList<Purchase>> GetAllAsync(PurchaseRequest request)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Purchase>(
-                user.Links["user:purchases"],
-                request).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Purchase>(user.PurchasesLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<PurchasePreview> CreatePurchasePreviewAsync(Listing listing, NewPurchasePreview preview)

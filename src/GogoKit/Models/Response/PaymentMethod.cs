@@ -31,6 +31,18 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "default_seller_method")]
         public bool? IsDefaultSellMethod { get; set; }
 
+        [Rel("paymentmethod:updatecreditcard")]
+        public Link UpdateCreditCardLink { get; set; }
+
+        [Rel("paymentmethod:updatepaypal")]
+        public Link UpdatePayPalLink { get; set; }
+
+        [Rel("paymentmethod:updatedefaults")]
+        public Link UpdateDefaultsLink { get; set; }
+
+        [Rel("paymentmethod:delete")]
+        public Link DeleteLink { get; set; }
+
         [Embedded("billing_address")]
         public Address BillingAddress { get; set; }
     }

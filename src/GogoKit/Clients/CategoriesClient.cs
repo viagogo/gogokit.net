@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using GogoKit.Services;
@@ -42,9 +41,7 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(request, "request");
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Category>(
-                                        root.Links["viagogo:genres"],
-                                        request).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Category>(root.GenresLink, request).ConfigureAwait(_halClient);
         }
     }
 }

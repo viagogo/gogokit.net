@@ -29,34 +29,43 @@ namespace GogoKit.Models.Response
         [Embedded("top_performers")]
         public PagedResource<EmbeddedCategory> TopPerformers { get; set; }
 
-        [IgnoreDataMember]
-        public Link ChildrenLink
-        {
-            get { return Links.TryGetLink("category:children"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Category"/>
+        /// resources that are the direct children of a <see cref="Category"/>.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#categorychildren.</remarks>
+        [Rel("category:children")]
+        public Link ChildrenLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link EventsLink
-        {
-            get { return Links.TryGetLink("category:events"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Event"/>
+        /// resources in a <see cref="Category"/>.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#categoryevents.</remarks>
+        [Rel("category:events")]
+        public Link EventsLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link ParentLink
-        {
-            get { return Links.TryGetLink("category:parent"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Category"/>
+        /// resource that is a parent of a <see cref="Category"/>.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#categoryparent.</remarks>
+        [Rel("category:parent")]
+        public Link ParentLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link PerformersLink
-        {
-            get { return Links.TryGetLink("category:performers"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Category"/>
+        /// resources that are the leaf-descendants of a <see cref="Category"/>.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#categoryperformers.</remarks>
+        [Rel("category:performers")]
+        public Link PerformersLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link WebPageLink
-        {
-            get { return Links.TryGetLink("category:webpage"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the viagogo website
+        /// webpage for a <see cref="Category"/>.
+        /// </summary>
+        [Rel("category:webpage")]
+        public Link WebPageLink { get; set; }
     }
 }

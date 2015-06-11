@@ -5,6 +5,9 @@ using HalKit.Models.Response;
 
 namespace GogoKit.Models.Response
 {
+    /// <summary>
+    /// An event on the viagogo platform.
+    /// </summary>
     public class Event : EmbeddedEvent
     {
         [DataMember(Name = "end_date")]
@@ -28,28 +31,36 @@ namespace GogoKit.Models.Response
         [Embedded("category")]
         public EmbeddedCategory Category { get; set; }
 
-        [IgnoreDataMember]
-        public Link CategoryLink
-        {
-            get { return Links.TryGetLink("event:category"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Category"/>
+        /// resource that contains an <see cref="Event"/>.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#eventcategory.</remarks>
+        [Rel("event:category")]
+        public Link CategoryLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link ListingsLink
-        {
-            get { return Links.TryGetLink("event:listings"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Listing"/>
+        /// resources in an event.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#eventlistings.</remarks>
+        [Rel("event:listings")]
+        public Link ListingsLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link LocalWebPageLink
-        {
-            get { return Links.TryGetLink("event:localwebpage"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the local viagogo website webpage
+        /// for an event.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#eventlocalwebpage.</remarks>
+        [Rel("event:localwebpage")]
+        public Link LocalWebPageLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link WebPageLink
-        {
-            get { return Links.TryGetLink("event:webpage"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the viagogo website
+        /// webpage for an event.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#eventwebpage.</remarks>
+        [Rel("event:webpage")]
+        public Link WebPageLink { get; set; }
     }
 }

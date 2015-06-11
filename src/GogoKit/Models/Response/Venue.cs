@@ -1,8 +1,12 @@
 ﻿using System.Runtime.Serialization;
 using HalKit.Models.Response;
+using HalKit.Json;
 
 namespace GogoKit.Models.Response
 {
+    /// <summary>
+    /// A venue is a location where an event takes place.
+    /// </summary>
     [DataContract]
     public class Venue : EmbeddedVenue
     {
@@ -24,16 +28,20 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "postal_code")]
         public string PostalCode { get; set; }
 
-        [IgnoreDataMember]
-        public Link EventsLink
-        {
-            get { return Links.TryGetLink("venue:events"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Event"/>
+        /// resources taking place in a particular venue.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#venueevents.</remarks>
+        [Rel("venue:events")]
+        public Link EventsLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link MetroAreasLink
-        {
-            get { return Links.TryGetLink("venue:metroarea"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="MetroArea"/>
+        /// resource that contains a venue.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#venueevents.</remarks>
+        [Rel("venue:metroarea")]
+        public Link MetroAreaLink { get; set; }
     }
 }

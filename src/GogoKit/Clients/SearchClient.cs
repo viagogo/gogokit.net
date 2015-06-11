@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
@@ -52,7 +51,7 @@ namespace GogoKit.Clients
 
             request.Parameters.Add("query", query);
 
-            return await getSearchResultsFunc(root.Links["viagogo:search"], request).ConfigureAwait(_halClient);
+            return await getSearchResultsFunc(root.SearchLink, request).ConfigureAwait(_halClient);
         }
     }
 }

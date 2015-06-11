@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
@@ -29,7 +28,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var eventsLink = new Link
             {
-                HRef = string.Format("{0}/events/{1}", root.Links["self"].HRef, eventId)
+                HRef = string.Format("{0}/events/{1}", root.SelfLink.HRef, eventId)
             };
 
             return await _halClient.GetAsync<Event>(eventsLink, request).ConfigureAwait(_halClient);
@@ -42,8 +41,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var eventsLink = new Link
             {
-                HRef = string.Format("{0}/categories/{1}/events", root.Links["self"].HRef, categoryId),
-                Rel = "category:events"
+                HRef = string.Format("{0}/categories/{1}/events", root.SelfLink.HRef, categoryId)
             };
 
             return await _halClient.GetAsync<PagedResource<Event>>(eventsLink, request).ConfigureAwait(_halClient);
@@ -61,8 +59,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var eventsLink = new Link
             {
-                HRef = string.Format("{0}/categories/{1}/events", root.Links["self"].HRef, categoryId),
-                Rel = "category:events"
+                HRef = string.Format("{0}/categories/{1}/events", root.SelfLink.HRef, categoryId)
             };
 
             return await _halClient.GetAllPagesAsync<Event>(eventsLink, request).ConfigureAwait(_halClient);

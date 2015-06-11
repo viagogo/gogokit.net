@@ -12,7 +12,7 @@ namespace GogoKit.Clients
 
         Task<PaymentMethod> GetAsync(int paymentMethodId, PaymentMethodRequest request);
 
-        Task<PagedResource<PaymentMethod>> GetAsync(PaymentMethodRequest request);
+        Task<PaymentMethods> GetAsync(PaymentMethodRequest request);
 
         Task<IReadOnlyList<PaymentMethod>> GetAllAsync();
 

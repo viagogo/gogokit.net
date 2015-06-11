@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using HalKit.Models.Response;
+using HalKit.Json;
 
 namespace GogoKit.Models.Response
 {
@@ -17,5 +18,20 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "email_optin")]
         public bool EmailOptIn { get; set; }
+
+        [Rel("user:update")]
+        public Link UpdateLink { get; set; }
+
+        [Rel("user:addresses")]
+        public Link AddressesLink { get; set; }
+
+        [Rel("user:paymentmethods")]
+        public Link PaymentMethodsLink { get; set; }
+
+        [Rel("user:purchases")]
+        public Link PurchasesLink { get; set; }
+
+        [Rel("user:sales")]
+        public Link SalesLink { get; set; }
     }
 }

@@ -1,25 +1,47 @@
 # GogoKit - viagogo API Client Library for .NET
 
-[![Build status](https://ci.appveyor.com/api/projects/status/ri2rbvoinudw27en/branch/master?svg=true)][appveyor]
 [![NuGet version](https://badge.fury.io/nu/gogokit.svg)][badgefury]
+[![Build status](https://ci.appveyor.com/api/projects/status/ri2rbvoinudw27en/branch/master?svg=true)][appveyor]
 
 [appveyor]: https://ci.appveyor.com/project/viagogo/gogokit-net/branch/master
 [badgefury]: http://badge.fury.io/nu/gogokit
 
-GogoKit is a lightweight, async viagogo API client library for .NET.
+GogoKit is a lightweight, async viagogo API client library for .NET. Our [developer site][apidocs]
+documents all of the viagogo APIs.
+
+[apidocs]: http://developer.viagogo.net
+
+
+## Getting Started
+
+GogoKit is available on NuGet.
+
+```
+Install-Package GogoKit
+```
+
 
 ## Usage
 
 ```c#
-// All methods require authentication. To get your viagogo OAuth credentials,
-// See TODO: docs url
-var viagogo = new ViagogoClient(CLIENT_ID,
-                                CLIENT_SECRET,
-                                new ProductHeaderValue("AwesomeApp", "1.0"));
+// All methods require OAuth2 authentication. To get OAuth2 credentials for your
+// application, see http://developer.viagogo.net/#authentication.
+var client = new ViagogoClient(CLIENT_ID,
+                               CLIENT_SECRET,
+                               new ProductHeaderValue("AwesomeApp", "1.0"));
 
-// Get a list of results that match your search query
-var searchResults = await viagogo.Search.GetSearchResultsAsync("FC Barcelona tickets");
+// Get an access token. See http://developer.viagogo.net/#getting-access-tokens
+var token = await client.OAuth2.GetClientAccessTokenAsync();
+await client.TokenStore.SetTokenAsync(token);
+
+// Get a list of events, categories, venues and metro areas that match the given
+// search query
+var searchResults = await client.Search.GetSearchResultsAsync("FC Barcelona tickets");
+
+// Get the different event genres (see http://developer.viagogo.net/#entities)
+var genres = await client.Categories.GetAllGenresAsync();
 ```
+
 
 ## Supported Platforms
 
@@ -29,10 +51,17 @@ var searchResults = await viagogo.Search.GetSearchResultsAsync("FC Barcelona tic
 * Xamarin.iOS / Xamarin.Android / Xamarin.Mac
 * Mono 3.x
 
-## Getting Started
 
-GogoKit is available on NuGet.
+## How to contribute
 
-```
-Install-Package GogoKit
-```
+All submissions are welcome. Fork the repository, read the rest of this README
+file and make some changes. Once you're done with your changes send a pull
+request. Thanks!
+
+
+## Need Help? Found a bug?
+
+[submitanissue]: https://github.com/viagogo/gogokit.net/issues
+
+Just [submit a issue][submitanissue] if you need any help. And, of course, feel
+free to submit pull requests with bug fixes or changes.

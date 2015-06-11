@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
@@ -26,7 +25,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, "request");
 
-            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var eventsLink = new Link
             {
                 HRef = string.Format("{0}/events/{1}", root.SelfLink.HRef, eventId)
@@ -39,7 +38,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, "request");
 
-            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var eventsLink = new Link
             {
                 HRef = string.Format("{0}/categories/{1}/events", root.SelfLink.HRef, categoryId)
@@ -57,7 +56,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, "request");
 
-            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var eventsLink = new Link
             {
                 HRef = string.Format("{0}/categories/{1}/events", root.SelfLink.HRef, categoryId)

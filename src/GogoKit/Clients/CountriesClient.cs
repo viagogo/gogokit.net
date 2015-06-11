@@ -1,5 +1,4 @@
-﻿using GogoKit.Extensions;
-using GogoKit.Models.Request;
+﻿using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,7 +35,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, "request");
 
-            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Country>>(
                             root.CountriesLink,
                             request).ConfigureAwait(_halClient);
@@ -51,7 +50,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, "request");
 
-            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Country>(root.CountriesLink, request).ConfigureAwait(_halClient);
         }
     }

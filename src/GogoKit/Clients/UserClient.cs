@@ -18,7 +18,7 @@ namespace GogoKit.Clients
 
         public async Task<User> GetAsync()
         {
-            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<User>(root.UserLink).ConfigureAwait(_halClient);
         }
 

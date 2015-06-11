@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GogoKit.Extensions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
@@ -48,7 +47,7 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(getSearchResultsFunc, "getSearchResultsFunc");
 
-            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
 
             request.Parameters.Add("query", query);
 

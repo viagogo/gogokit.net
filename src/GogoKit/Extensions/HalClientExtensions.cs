@@ -4,11 +4,22 @@ using GogoKit.Models.Response;
 using HalKit;
 using HalKit.Models.Request;
 using HalKit.Models.Response;
+using GogoKit.Models.Request;
 
-namespace GogoKit.Extensions
+namespace GogoKit
 {
     public static class HalClientExtensions
     {
+        public static Task<Root> GetRootAsync(this IHalClient client)
+        {
+            return client.GetRootAsync(new RootRequest());
+        }
+
+        public static Task<Root> GetRootAsync(this IHalClient client, RootRequest request)
+        {
+            return client.GetRootAsync<Root>(request);
+        }
+
         public static Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
             this IHalClient client,
             Link link) where T : Resource

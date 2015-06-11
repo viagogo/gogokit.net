@@ -50,6 +50,7 @@
     <Compile Include="Models\Request\PaymentMethodRequest.cs" />
     <Compile Include="Models\Request\PurchaseRequest.cs" />
     <Compile Include="Models\Request\RequestParameters.cs" />
+    <Compile Include="Models\Request\RootRequest.cs" />
     <Compile Include="Models\Request\SaleRequest.cs" />
     <Compile Include="Models\Request\VenueRequest.cs" />
     <Compile Include="Models\Response\Addresses.cs" />

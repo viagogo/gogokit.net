@@ -1,5 +1,5 @@
 ### New in 0.2.0 (Released 2015/06/11)
-* Updated Resource models to define Link properties using HalKit's new RellAttribute
+* Updated Resource models to define Link properties using HalKit's new RelAttribute
 
 ### New in 0.1.2 (Released 2015/04/30)
 * Fixed a bug in ViagogoClient where it wasn't creating the LinkFactory correctly

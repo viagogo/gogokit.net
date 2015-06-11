@@ -48,11 +48,11 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(request, "request");
             Requires.ArgumentNotNull(getSearchResultsFunc, "getSearchResultsFunc");
 
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
 
             request.Parameters.Add("query", query);
 
-            return await getSearchResultsFunc(root.Links["viagogo:search"], request).ConfigureAwait(_halClient);
+            return await getSearchResultsFunc(root.SearchLink, request).ConfigureAwait(_halClient);
         }
     }
 }

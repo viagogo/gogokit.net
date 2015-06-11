@@ -64,7 +64,8 @@ namespace GogoKit.Extensions
                 // Stop passing parameters on subsequent calls since the "next" links
                 // will already be assembled with all the parameters needed
                 currentParameters = null;
-                hasAnotherPage = currentPage.Links.TryGetLink("next", out currentLink);
+                currentLink = currentPage.NextLink;
+                hasAnotherPage = currentLink != null;
             }
 
             return items;

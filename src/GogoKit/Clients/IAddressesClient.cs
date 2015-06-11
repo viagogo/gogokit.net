@@ -13,7 +13,7 @@ namespace GogoKit.Clients
     {
         Task<Address> GetAsync(int addressId);
 
-        Task<PagedResource<Address>> GetAsync(AddressRequest request);
+        Task<Addresses> GetAsync(AddressRequest request);
 
         Task<IReadOnlyList<Address>> GetAllAsync();
 

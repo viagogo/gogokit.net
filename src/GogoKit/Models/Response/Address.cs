@@ -37,16 +37,10 @@ namespace GogoKit.Models.Response
         [Embedded("country")]
         public Country Country { get; set; }
 
-        [IgnoreDataMember]
-        public Link UpdateLink
-        {
-            get { return Links.TryGetLink("address:update"); }
-        }
+        [Rel("address:update")]
+        public Link UpdateLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link DeleteLink
-        {
-            get { return Links.TryGetLink("address:delete"); }
-        }
+        [Rel("address:delete")]
+        public Link DeleteLink { get; set; }
     }
 }

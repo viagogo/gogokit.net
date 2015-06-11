@@ -37,9 +37,7 @@ namespace GogoKit.Clients
         public async Task<PagedResource<Sale>> GetAsync(SaleRequest request)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<Sale>>(
-                user.Links["user:sales"],
-                request).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Sale>>(user.SalesLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Sale>> GetAllAsync()
@@ -50,9 +48,7 @@ namespace GogoKit.Clients
         public async Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Sale>(
-                user.Links["user:sales"],
-                request).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Sale>(user.SalesLink, request).ConfigureAwait(_halClient);
         }
     }
 }

@@ -41,10 +41,8 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, "request");
 
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Category>(
-                                        root.Links["viagogo:genres"],
-                                        request).ConfigureAwait(_halClient);
+            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Category>(root.GenresLink, request).ConfigureAwait(_halClient);
         }
     }
 }

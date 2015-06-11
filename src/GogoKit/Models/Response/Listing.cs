@@ -4,6 +4,9 @@ using HalKit.Models.Response;
 
 namespace GogoKit.Models.Response
 {
+    /// <summary>
+    /// A set of tickets for sale on the viagogo marketplace.
+    /// </summary>
     [DataContract]
     public class Listing : Resource
     {
@@ -49,28 +52,34 @@ namespace GogoKit.Models.Response
         [Embedded("listing_notes")]
         public ListingNote[] ListingNotes { get; set; }
 
-        [IgnoreDataMember]
-        public Link EventLink
-        {
-            get { return Links.TryGetLink("listing:event"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Event"/>
+        /// resource that a <see cref="Listing"/> is for.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#listingevent.</remarks>
+        [Rel("listing:event")]
+        public Link EventLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link LocalWebPageLink
-        {
-            get { return Links.TryGetLink("listing:localwebpage"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the local viagogo website webpage
+        /// where a listing can be purchased.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#listinglocalwebpage.</remarks>
+        [Rel("listing:localwebpage")]
+        public Link LocalWebPageLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link WebPageLink
-        {
-            get { return Links.TryGetLink("listing:webpage"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the viagogo website
+        /// webpage where a listing can be purchased.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#listingwebpage.</remarks>
+        [Rel("listing:webpage")]
+        public Link WebPageLink { get; set; }
 
-        [IgnoreDataMember]
-        public Link PurchasePreviewLink
-        {
-            get { return Links["listing:purchasepreview"]; }
-        }
+        [Rel("listing:deliverymethods")]
+        public Link DeliveryMethodsLink { get; set; }
+
+        [Rel("listing:purchasepreview")]
+        public Link PurchasePreviewLink { get; set; }
     }
 }

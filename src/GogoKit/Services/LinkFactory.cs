@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using HalKit;
 using HalKit.Models.Response;
+using GogoKit.Models.Response;
 
 namespace GogoKit.Services
 {
@@ -20,8 +21,8 @@ namespace GogoKit.Services
         {
             Requires.ArgumentNotNull(relativeUriFormat, "relativeUriFormat");
 
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            var baseUri = new Uri(root.Links["self"].HRef);
+            var root = await _halClient.GetRootAsync<Root>().ConfigureAwait(_halClient);
+            var baseUri = new Uri(root.SelfLink.HRef);
             var relativeUri = new Uri(string.Format(relativeUriFormat, args), UriKind.Relative);
 
             return new Link {HRef = new Uri(baseUri, relativeUri).ToString()};

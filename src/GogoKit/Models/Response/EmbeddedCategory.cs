@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using HalKit.Models.Response;
+using HalKit.Json;
 
 namespace GogoKit.Models.Response
 {
@@ -12,10 +13,11 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [IgnoreDataMember]
-        public Link ImageLink
-        {
-            get { return Links.TryGetLink("category:image"); }
-        }
+        /// <summary>
+        /// You can GET the href of this link to retrieve the image for a
+        /// <see cref="Category"/>.
+        /// </summary>
+        [Rel("category:image")]
+        public Link ImageLink { get; set; }
     }
 }

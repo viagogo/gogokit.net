@@ -19,5 +19,17 @@ namespace GogoKit.Models.Response
 
         [Embedded("items")]
         public IReadOnlyList<T> Items { get; set; }
+
+        [Rel("next")]
+        public Link NextLink { get; set; }
+
+        [Rel("prev")]
+        public Link PrevLink { get; set; }
+
+        [Rel("first")]
+        public Link FirstLink { get; set; }
+
+        [Rel("last")]
+        public Link LastLink { get; set; }
     }
 }

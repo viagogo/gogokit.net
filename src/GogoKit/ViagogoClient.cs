@@ -26,6 +26,7 @@ namespace GogoKit
         private readonly IEventsClient _eventClient;
         private readonly IListingsClient _listingClient;
         private readonly IVenuesClient _venueClient;
+        private readonly ISellerListingsClient _sellerListingsClient;
 
         public ViagogoClient(
             string clientId,
@@ -119,6 +120,7 @@ namespace GogoKit
             _eventClient = new EventsClient(_hypermedia);
             _listingClient = new ListingsClient(_hypermedia);
             _venueClient = new VenuesClient(_hypermedia);
+            _sellerListingsClient = new SellerListingsClient(_userClient, _hypermedia, linkFactory);
         }
 
         public IGogoKitConfiguration Configuration
@@ -194,6 +196,11 @@ namespace GogoKit
         public IListingsClient Listings
         {
             get { return _listingClient; }
+        }
+
+        public ISellerListingsClient SellerListings
+        {
+            get { return _sellerListingsClient; }
         }
 
         public IVenuesClient Venues

@@ -62,5 +62,30 @@ namespace GogoKit.Models.Response
         /// <remarks>See http://developer.viagogo.net/#eventwebpage.</remarks>
         [Rel("event:webpage")]
         public Link WebPageLink { get; set; }
+
+        /// <summary>
+        /// You can GET the href of this link to retrieve the
+        /// <see cref="ListingConstraints"/> resource for creating listings for
+        /// this event.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#eventlistingconstraints.</remarks>
+        [Rel("event:listingconstraints")]
+        public Link ListingConstraintsLink { get; set; }
+
+        /// <summary>
+        /// You can use a POST request on the href of this link to create a
+        /// preview of a <see cref="SellerListing"/> for this event.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#eventsellerlistingpreview.</remarks>
+        [Rel("event:sellerlistingpreview")]
+        public Link CreateSellerListingPreviewLink { get; set; }
+
+        /// <summary>
+        /// You can use a POST request on the href of this link to create a
+        /// <see cref="SellerListing"/> for this event.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#eventcreatesellerlisting.</remarks>
+        [Rel("event:createsellerlisting")]
+        public Link CreateSellerListingLink { get; set; }
     }
 }

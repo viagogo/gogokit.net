@@ -1,3 +1,6 @@
+### New in 0.3.0 (Released 2015/06/16)
+* Added SellerListingsClient
+
 ### New in 0.2.0 (Released 2015/06/11)
 * Updated Resource models to define Link properties using HalKit's new RelAttribute
 

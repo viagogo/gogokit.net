@@ -21,6 +21,7 @@ namespace GogoKit
         ICategoriesClient Categories { get; }
         IEventsClient Events { get; }
         IListingsClient Listings { get; }
+        ISellerListingsClient SellerListings { get; }
         IVenuesClient Venues { get; }
     }
 }

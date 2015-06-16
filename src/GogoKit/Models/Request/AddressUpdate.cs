@@ -1,6 +1,6 @@
 ﻿namespace GogoKit.Models.Request
 {
-    public class AddressUpdate : NewAddress    
+    public class AddressUpdate : NewAddress
     {
     }
 }

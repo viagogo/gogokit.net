@@ -33,5 +33,13 @@ namespace GogoKit.Models.Response
 
         [Rel("user:sales")]
         public Link SalesLink { get; set; }
+
+        /// <summary>
+        /// You can GET the href of this link to retrieve the current user's
+        /// <see cref="SellerListing"/>s.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#usersellerlistings.</remarks>
+        [Rel("user:sellerlistings")]
+        public Link SellerListingsLink { get; set; }
     }
 }

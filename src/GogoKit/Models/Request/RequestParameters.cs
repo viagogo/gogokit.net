@@ -30,6 +30,29 @@ namespace GogoKit.Models.Request
             get { return _headers; }
         }
 
+        public Guid? IdempotencyKey
+        {
+            get
+            {
+                Guid idempotencyKey;
+                IEnumerable<string> textValues;
+                if (!_headers.TryGetValue("Idempotency-Key", out textValues) ||
+                    !Guid.TryParse(textValues.First(), out idempotencyKey))
+                {
+                    return null;
+                }
+
+                return idempotencyKey;
+            }
+            set
+            {
+                _headers.Add("Idempotency-Key",
+                             value.HasValue
+                                 ? new[] {value.ToString()}
+                                 : null);
+            }
+        }
+
         public int? PageSize
         {
             get { return GetParameter("page_size", int.Parse); }

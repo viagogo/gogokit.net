@@ -25,7 +25,7 @@ namespace GogoKit.Models.Request
                 {
                     {EventSort.Id, "id"},
                     {EventSort.Name, "name"},
-                    {EventSort.MinStartDate, "min_start_date"},
+                    {EventSort.StartDate, "start_date"},
                     {EventSort.MinTicketPrice, "min_ticket_price"},
                     {EventSort.Distance, "distance"}
                 };
@@ -112,7 +112,7 @@ namespace GogoKit.Models.Request
     {
         Id,
         Name,
-        MinStartDate,
+        StartDate,
         MinTicketPrice,
         Distance
     }

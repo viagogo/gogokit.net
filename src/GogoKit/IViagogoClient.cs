@@ -23,5 +23,6 @@ namespace GogoKit
         IListingsClient Listings { get; }
         ISellerListingsClient SellerListings { get; }
         IVenuesClient Venues { get; }
+        IWebhooksClient Webhooks { get; }
     }
 }

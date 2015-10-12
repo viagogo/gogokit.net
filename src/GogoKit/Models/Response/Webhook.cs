@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using HalKit.Json;
 using HalKit.Models.Response;
 
 namespace GogoKit.Models.Response
@@ -22,5 +23,11 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "topics")]
         public IList<string> Topics { get; set; }
+
+        [Rel("webhook:update")]
+        public Link UpdateLink { get; set; }
+
+        [Rel("webhook:delete")]
+        public Link DeleteLink { get; set; }
     }
 }

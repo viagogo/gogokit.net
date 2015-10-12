@@ -37,7 +37,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Clients\ISellerListingsClient.cs" />
+    <Compile Include="Clients\IWebhooksClient.cs" />
     <Compile Include="Clients\SellerListingsClient.cs" />
+    <Compile Include="Clients\WebhooksClient.cs" />
     <Compile Include="Http\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\BearerTokenAuthenticationHandler.cs" />
     <Compile Include="Http\ErrorHandler.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Models\Response\SellerListing.cs" />
     <Compile Include="Models\Response\SplitType.cs" />
     <Compile Include="Models\Response\Webhook.cs" />
+    <Compile Include="Models\Response\Webhooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>

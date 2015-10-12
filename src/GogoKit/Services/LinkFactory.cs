@@ -24,7 +24,7 @@ namespace GogoKit.Services
             var baseUri = new Uri(root.SelfLink.HRef);
             var relativeUri = new Uri(string.Format(relativeUriFormat, args), UriKind.Relative);
 
-            return new Link {HRef = new Uri(baseUri, relativeUri).ToString()};
+            return new Link { HRef = new Uri(baseUri, relativeUri).ToString() };
         }
     }
 }

@@ -1,3 +1,6 @@
+### New in 0.4.0 (Released 2015/06/16)
+* Added WebhooksClient
+
 ### New in 0.3.0 (Released 2015/06/16)
 * Added SellerListingsClient
 

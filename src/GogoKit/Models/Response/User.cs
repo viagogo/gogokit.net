@@ -34,6 +34,9 @@ namespace GogoKit.Models.Response
         [Rel("user:sales")]
         public Link SalesLink { get; set; }
 
+        [Rel("user:webhooks")]
+        public Link WebhooksLink { get; set; }
+
         /// <summary>
         /// You can GET the href of this link to retrieve the current user's
         /// <see cref="SellerListing"/>s.

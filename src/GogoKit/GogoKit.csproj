@@ -37,7 +37,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Clients\ISellerListingsClient.cs" />
+    <Compile Include="Clients\IWebhooksClient.cs" />
     <Compile Include="Clients\SellerListingsClient.cs" />
+    <Compile Include="Clients\WebhooksClient.cs" />
     <Compile Include="Http\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\BearerTokenAuthenticationHandler.cs" />
     <Compile Include="Http\ErrorHandler.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="Models\Request\ListingConstraintsRequest.cs" />
     <Compile Include="Models\Request\ListingRequest.cs" />
     <Compile Include="Models\Request\NewSellerListing.cs" />
+    <Compile Include="Models\Request\NewWebhook.cs" />
     <Compile Include="Models\Request\PaymentMethodRequest.cs" />
     <Compile Include="Models\Request\PurchaseRequest.cs" />
     <Compile Include="Models\Request\RequestParameters.cs" />
@@ -59,6 +62,8 @@
     <Compile Include="Models\Request\SellerListingRequest.cs" />
     <Compile Include="Models\Request\SellerListingUpdate.cs" />
     <Compile Include="Models\Request\VenueRequest.cs" />
+    <Compile Include="Models\Request\WebhookRequest.cs" />
+    <Compile Include="Models\Request\WebhookUpdate.cs" />
     <Compile Include="Models\Response\Addresses.cs" />
     <Compile Include="Models\Response\AddressSnapshot.cs" />
     <Compile Include="Models\Response\ApiError.cs" />
@@ -77,6 +82,8 @@
     <Compile Include="Models\Response\Section.cs" />
     <Compile Include="Models\Response\SellerListing.cs" />
     <Compile Include="Models\Response\SplitType.cs" />
+    <Compile Include="Models\Response\Webhook.cs" />
+    <Compile Include="Models\Response\Webhooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>

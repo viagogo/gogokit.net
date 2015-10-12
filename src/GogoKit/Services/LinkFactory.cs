@@ -19,11 +19,12 @@ namespace GogoKit.Services
         public async Task<Link> CreateLinkAsync(string relativeUriFormat, params object[] args)
         {
             Requires.ArgumentNotNull(relativeUriFormat, "relativeUriFormat");
-            
-            var baseUri = _halClient.Configuration.RootEndpoint;
+
+            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
+            var baseUri = new Uri(root.SelfLink.HRef);
             var relativeUri = new Uri(string.Format(relativeUriFormat, args), UriKind.Relative);
 
-            return new Link {HRef = new Uri(baseUri, relativeUri).ToString()};
+            return new Link { HRef = new Uri(baseUri, relativeUri).ToString() };
         }
     }
 }

@@ -34,15 +34,15 @@ namespace GogoKit.Clients
             return await _halClient.GetAsync<Webhook>(webhookLink, request).ConfigureAwait(_halClient);
         }
 
-        public Task<PagedResource<Webhook>> GetAsync()
+        public Task<Webhooks> GetAsync()
         {
             return GetAsync(new WebhookRequest());
         }
 
-        public async Task<PagedResource<Webhook>> GetAsync(WebhookRequest request)
+        public async Task<Webhooks> GetAsync(WebhookRequest request)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<Webhook>>(user.WebhooksLink, request).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Webhooks>(user.WebhooksLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Webhook>> GetAllAsync()

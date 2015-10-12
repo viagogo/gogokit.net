@@ -9,11 +9,12 @@ namespace GogoKit.Clients
     public interface IWebhooksClient
     {
         Task<Webhook> GetAsync(int webhookId);
+
         Task<Webhook> GetAsync(int webhookId, WebhookRequest request);
 
-        Task<PagedResource<Webhook>> GetAsync();
+        Task<Webhooks> GetAsync();
 
-        Task<PagedResource<Webhook>> GetAsync(WebhookRequest request);
+        Task<Webhooks> GetAsync(WebhookRequest request);
 
         Task<IReadOnlyList<Webhook>> GetAllAsync();
 

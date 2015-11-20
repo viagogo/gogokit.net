@@ -143,9 +143,7 @@ namespace GogoKit.Tests.Http
         {
             var expectedError = "some error";
             var expectedErrorDescription = "some description";
-            var authenticationHeader = string.Format("realm=\"viagogo\",error=\"{0}\",error_description=\"{1}\"",
-                                                     expectedError,
-                                                     expectedErrorDescription);
+            var authenticationHeader = $"realm=\"viagogo\",error=\"{expectedError}\",error_description=\"{expectedErrorDescription}\"";
             string actualError = null;
             string actualErrorDescription = null;
             var response = new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized };

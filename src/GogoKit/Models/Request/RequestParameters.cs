@@ -121,9 +121,8 @@ namespace GogoKit.Models.Request
                 var sortStrings = new List<string>();
                 foreach (var sort in value ?? new Sort<TSort>[] {})
                 {
-                    var sortString = string.Format("{0}{1}",
-                                                   sort.Direction == SortDirection.Descending ? "-" : "",
-                                                   SortFieldNameMap[sort.Field]);
+                    var sortString = sort.Direction == SortDirection.Descending ? "-" : "" +
+                                     SortFieldNameMap[sort.Field];
                     sortStrings.Add(sortString);
                 }
 

@@ -39,8 +39,7 @@ namespace GogoKit.Http
             var token = await GetTokenAsync().ConfigureAwait(_configuration);
             if (token != null)
             {
-                request.Headers.Authorization = AuthenticationHeaderValue.Parse(
-                                                    string.Format("Bearer {0}", token.AccessToken));
+                request.Headers.Authorization = AuthenticationHeaderValue.Parse($"Bearer {token.AccessToken}");
             }
 
             var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(_configuration);

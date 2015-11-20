@@ -44,8 +44,8 @@ namespace GogoKit.Http
 
         public ErrorHandler(IApiResponseFactory responseFactory, IGogoKitConfiguration configuration)
         {
-            Requires.ArgumentNotNull(responseFactory, "responseFactory");
-            Requires.ArgumentNotNull(configuration, "configuration");
+            Requires.ArgumentNotNull(responseFactory, nameof(responseFactory));
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
 
             _responseFactory = responseFactory;
             _configuration = configuration;

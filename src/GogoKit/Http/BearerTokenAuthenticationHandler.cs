@@ -23,9 +23,9 @@ namespace GogoKit.Http
             IOAuth2TokenStore tokenStore,
             IGogoKitConfiguration configuration)
         {
-            Requires.ArgumentNotNull(oauthClient, "oauthClient");
-            Requires.ArgumentNotNull(tokenStore, "tokenStore");
-            Requires.ArgumentNotNull(configuration, "configuration");
+            Requires.ArgumentNotNull(oauthClient, nameof(oauthClient));
+            Requires.ArgumentNotNull(tokenStore, nameof(tokenStore));
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
 
             _oauthClient = oauthClient;
             _tokenStore = tokenStore;

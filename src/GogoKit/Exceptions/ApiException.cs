@@ -10,7 +10,7 @@ namespace GogoKit.Exceptions
 
         public ApiException(IApiResponse response)
         {
-            Requires.ArgumentNotNull(response, "response");
+            Requires.ArgumentNotNull(response, nameof(response));
 
             _response = response;
         }

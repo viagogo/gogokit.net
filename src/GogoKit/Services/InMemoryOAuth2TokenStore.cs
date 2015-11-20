@@ -19,7 +19,7 @@ namespace GogoKit.Services
 
         public Task SetTokenAsync(OAuth2Token token)
         {
-            Requires.ArgumentNotNull(token, "token");
+            Requires.ArgumentNotNull(token, nameof(token));
 
             _token = token;
             return Task.FromResult(0);

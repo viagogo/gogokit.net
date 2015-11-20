@@ -9,7 +9,7 @@ namespace GogoKit.Exceptions
 
         public ApiErrorException(IApiResponse<ApiError> response) : base(response)
         {
-            Requires.ArgumentNotNull(response, "response");
+            Requires.ArgumentNotNull(response, nameof(response));
 
             _error = response.BodyAsObject;
         }

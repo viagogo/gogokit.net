@@ -63,7 +63,7 @@ namespace GogoKit.Tests.Http
             new object[] {"internal_server_error", typeof(InternalServerErrorException)},
         };
 
-        [Test, TestCaseSource("ApiSuccessCodes")]
+        [Test, TestCaseSource(nameof(ApiSuccessCodes))]
         public async void SendAsync_ShouldReturnTheResponseReturnedByTheInnerHandler_WhenResponseStatusCodeIsSuccessCodeOrNotModified(
             HttpStatusCode statusCode)
         {
@@ -167,7 +167,7 @@ namespace GogoKit.Tests.Http
             Assert.AreEqual(expectedErrorDescription, actualErrorDescription);
         }
 
-        [Test, TestCaseSource("NonAuthorizationErrorCodes")]
+        [Test, TestCaseSource(nameof(NonAuthorizationErrorCodes))]
         public async void SendAsync_ShouldProcessTheResponseAsAnApiError_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
@@ -189,7 +189,7 @@ namespace GogoKit.Tests.Http
             mockResponseFact.Verify();
         }
 
-        [Test, TestCaseSource("NonAuthorizationErrorCodes")]
+        [Test, TestCaseSource(nameof(NonAuthorizationErrorCodes))]
         public async void SendAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
@@ -210,7 +210,7 @@ namespace GogoKit.Tests.Http
             Assert.AreSame(expectedResponse, actualResponse);
         }
 
-        [Test, TestCaseSource("NonAuthorizationErrorCodes")]
+        [Test, TestCaseSource(nameof(NonAuthorizationErrorCodes))]
         public async void SendAsync_ShouldThrowApiErrorExceptionWithErrorSetToTheResponseBodyReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
@@ -249,7 +249,7 @@ namespace GogoKit.Tests.Http
             Assert.IsInstanceOf<ResourceNotFoundException>(actualException);
         }
 
-        [Test, TestCaseSource("ApiErrorCodesAndExceptionTypes")]
+        [Test, TestCaseSource(nameof(ApiErrorCodesAndExceptionTypes))]
         public async void SendAsync_ShouldThrowExceptionAssociatedWithTheApiErrorCode_WhenResponseStatusCodeIsError(
             string errorCode,
             Type expectedExceptionType)

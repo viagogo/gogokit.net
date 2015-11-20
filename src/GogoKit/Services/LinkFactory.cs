@@ -11,14 +11,14 @@ namespace GogoKit.Services
 
         public LinkFactory(IHalClient halClient)
         {
-            Requires.ArgumentNotNull(halClient, "halClient");
+            Requires.ArgumentNotNull(halClient, nameof(halClient));
 
             _halClient = halClient;
         }
 
         public async Task<Link> CreateLinkAsync(string relativeUriFormat, params object[] args)
         {
-            Requires.ArgumentNotNull(relativeUriFormat, "relativeUriFormat");
+            Requires.ArgumentNotNull(relativeUriFormat, nameof(relativeUriFormat));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var baseUri = new Uri(root.SelfLink.HRef);

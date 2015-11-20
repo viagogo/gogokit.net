@@ -77,14 +77,14 @@ namespace GogoKit
            HttpClientHandler httpClientHandler,
            IList<DelegatingHandler> customHandlers)
         {
-            Requires.ArgumentNotNull(clientId, "clientId");
-            Requires.ArgumentNotNull(clientSecret, "clientSecret");
-            Requires.ArgumentNotNull(product, "product");
-            Requires.ArgumentNotNull(configuration, "configuration");
-            Requires.ArgumentNotNull(tokenStore, "tokenStore");
-            Requires.ArgumentNotNull(localizationProvider, "localizationProvider");
-            Requires.ArgumentNotNull(httpClientHandler, "httpClientHandler");
-            Requires.ArgumentNotNull(customHandlers, "customHandlers");
+            Requires.ArgumentNotNull(clientId, nameof(clientId));
+            Requires.ArgumentNotNull(clientSecret, nameof(clientSecret));
+            Requires.ArgumentNotNull(product, nameof(product));
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
+            Requires.ArgumentNotNull(tokenStore, nameof(tokenStore));
+            Requires.ArgumentNotNull(localizationProvider, nameof(localizationProvider));
+            Requires.ArgumentNotNull(httpClientHandler, nameof(httpClientHandler));
+            Requires.ArgumentNotNull(customHandlers, nameof(customHandlers));
 
             var apiConnection = HttpConnectionBuilder.ApiConnection(clientId, clientSecret, product)
                                                      .Configuration(configuration)

@@ -18,9 +18,9 @@ namespace GogoKit.Clients
                                     IHalClient halClient,
                                     ILinkFactory linkFactory)
         {
-            Requires.ArgumentNotNull(userClient, "userClient");
-            Requires.ArgumentNotNull(halClient, "halClient");
-            Requires.ArgumentNotNull(linkFactory, "linkFactory");
+            Requires.ArgumentNotNull(userClient, nameof(userClient));
+            Requires.ArgumentNotNull(halClient, nameof(halClient));
+            Requires.ArgumentNotNull(linkFactory, nameof(linkFactory));
 
             _userClient = userClient;
             _halClient = halClient;

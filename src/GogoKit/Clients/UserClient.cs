@@ -11,7 +11,7 @@ namespace GogoKit.Clients
 
         public UserClient(IHalClient halClient)
         {
-            Requires.ArgumentNotNull(halClient, "halClient");
+            Requires.ArgumentNotNull(halClient, nameof(halClient));
 
             _halClient = halClient;
         }

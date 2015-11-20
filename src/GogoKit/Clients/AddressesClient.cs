@@ -31,7 +31,7 @@ namespace GogoKit.Clients
 
         public async Task<Addresses> GetAsync(AddressRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Addresses>(user.AddressesLink,
@@ -45,7 +45,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Address>> GetAllAsync(AddressRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Address>(
@@ -55,7 +55,7 @@ namespace GogoKit.Clients
 
         public async Task<Address> CreateAsync(NewAddress address)
         {
-            Requires.ArgumentNotNull(address, "address");
+            Requires.ArgumentNotNull(address, nameof(address));
 
             var addresses = await GetAsync(new AddressRequest {PageSize = 1}).ConfigureAwait(_halClient);
             return await _halClient.PostAsync<Address>(addresses.CreateAddressLink, address)
@@ -64,7 +64,7 @@ namespace GogoKit.Clients
 
         public async Task<Address> UpdateAsync(int addressId, AddressUpdate addressUpdate)
         {
-            Requires.ArgumentNotNull(addressUpdate, "addressUpdate");
+            Requires.ArgumentNotNull(addressUpdate, nameof(addressUpdate));
 
             var address = await GetAsync(addressId).ConfigureAwait(_halClient);
             return await _halClient.PatchAsync<Address>(address.UpdateLink,

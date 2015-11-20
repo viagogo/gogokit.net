@@ -14,7 +14,7 @@ namespace GogoKit.Http
 
         public UserAgentHandler(ProductHeaderValue product)
         {
-            Requires.ArgumentNotNull(product, "product");
+            Requires.ArgumentNotNull(product, nameof(product));
 
             _userAgentHeaderValues = GetUserAgentHeaderValues(product);
         }

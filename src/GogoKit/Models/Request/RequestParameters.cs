@@ -177,8 +177,8 @@ namespace GogoKit.Models.Request
 
         public Sort(T field, SortDirection direction)
         {
-            Requires.ArgumentNotNull(field, "fieldName");
-            Requires.ArgumentNotNull(direction, "direction");
+            Requires.ArgumentNotNull(field, nameof(field));
+            Requires.ArgumentNotNull(direction, nameof(direction));
 
             _field = field;
             _direction = direction;

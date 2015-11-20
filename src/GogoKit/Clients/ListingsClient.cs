@@ -23,7 +23,7 @@ namespace GogoKit.Clients
 
         public async Task<Listing> GetAsync(int listingId, ListingRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var listingLink = new Link
@@ -36,7 +36,7 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<Listing>> GetByEventAsync(int eventId, ListingRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
             var listingsLink = new Link
@@ -54,7 +54,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Listing>> GetAllByEventAsync(int eventId, ListingRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var listingsLink = new Link

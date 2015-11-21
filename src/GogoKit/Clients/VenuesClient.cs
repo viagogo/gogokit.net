@@ -26,7 +26,7 @@ namespace GogoKit.Clients
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var venueLink = new Link
             {
-                HRef = string.Format("{0}/{1}", root.VenuesLink.HRef, venueId)
+                HRef = $"{root.VenuesLink.HRef}/{venueId}"
             };
 
             return await _halClient.GetAsync<Venue>(venueLink, request).ConfigureAwait(_halClient);

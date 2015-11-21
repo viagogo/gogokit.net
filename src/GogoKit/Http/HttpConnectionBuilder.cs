@@ -36,9 +36,9 @@ namespace GogoKit.Http
                                       ProductHeaderValue product,
                                       ConnectionType connectionType)
         {
-            Requires.ArgumentNotNull(clientId, "clientId");
-            Requires.ArgumentNotNull(clientSecret, "clientSecret");
-            Requires.ArgumentNotNull(product, "product");
+            Requires.ArgumentNotNull(clientId, nameof(clientId));
+            Requires.ArgumentNotNull(clientSecret, nameof(clientSecret));
+            Requires.ArgumentNotNull(product, nameof(product));
 
             _clientId = clientId;
             _clientSecret = clientSecret;
@@ -54,7 +54,7 @@ namespace GogoKit.Http
 
         public HttpConnectionBuilder Configuration(IGogoKitConfiguration configuration)
         {
-            Requires.ArgumentNotNull(configuration, "configuration");
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
 
             _configuration = configuration;
             return this;
@@ -62,7 +62,7 @@ namespace GogoKit.Http
 
         public HttpConnectionBuilder TokenStore(IOAuth2TokenStore tokenStore)
         {
-            Requires.ArgumentNotNull(tokenStore, "tokenStore");
+            Requires.ArgumentNotNull(tokenStore, nameof(tokenStore));
 
             _tokenStore = tokenStore;
             return this;
@@ -70,7 +70,7 @@ namespace GogoKit.Http
 
         public HttpConnectionBuilder LocalizationProvider(ILocalizationProvider provider)
         {
-            Requires.ArgumentNotNull(provider, "provider");
+            Requires.ArgumentNotNull(provider, nameof(provider));
 
             _localizationProvider = provider;
             return this;
@@ -78,7 +78,7 @@ namespace GogoKit.Http
 
         public HttpConnectionBuilder HttpClientHandler(HttpClientHandler httpClientHandler)
         {
-            Requires.ArgumentNotNull(httpClientHandler, "httpClientHandler");
+            Requires.ArgumentNotNull(httpClientHandler, nameof(httpClientHandler));
 
             _httpClientHandler = httpClientHandler;
             return this;
@@ -86,7 +86,7 @@ namespace GogoKit.Http
 
         public HttpConnectionBuilder AdditionalHandlers(IList<DelegatingHandler> customHandlers)
         {
-            Requires.ArgumentNotNull(customHandlers, "customHandlers");
+            Requires.ArgumentNotNull(customHandlers, nameof(customHandlers));
 
             _additionalHandlers = customHandlers;
             return this;

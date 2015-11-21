@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace GogoKit.Models.Response
@@ -27,14 +26,7 @@ namespace GogoKit.Models.Response
 
         public override string ToString()
         {
-            return string.Format(
-                CultureInfo.InvariantCulture,
-                "TokenType: {0}, Scope: {1}, ExpiresIn: {2}, RefreshToken: {3}, AccessToken: {4}",
-                TokenType,
-                Scope,
-                ExpiresIn,
-                RefreshToken,
-                AccessToken);
+            return $"TokenType: {TokenType}, Scope: {Scope}, ExpiresIn: {ExpiresIn}, RefreshToken: {RefreshToken}, AccessToken: {AccessToken}";
         }
     }
 }

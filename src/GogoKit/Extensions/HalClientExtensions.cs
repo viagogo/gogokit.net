@@ -45,8 +45,8 @@ namespace GogoKit
             IDictionary<string, string> parameters,
             IDictionary<string, IEnumerable<string>> headers) where T : Resource
         {
-            Requires.ArgumentNotNull(client, "client");
-            Requires.ArgumentNotNull(link, "link");
+            Requires.ArgumentNotNull(client, nameof(client));
+            Requires.ArgumentNotNull(link, nameof(link));
 
             var currentLink = link;
             var currentParameters = new Dictionary<string, string>(parameters ?? new Dictionary<string, string>());

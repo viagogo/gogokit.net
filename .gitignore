@@ -37,6 +37,9 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+# FAKE cache folder
+.fake/
+
 *_i.c
 *_p.c
 *_i.h

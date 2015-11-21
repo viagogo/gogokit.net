@@ -23,12 +23,12 @@ namespace GogoKit.Clients
 
         public async Task<Listing> GetAsync(int listingId, ListingRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var listingLink = new Link
             {
-                HRef = string.Format("{0}/listings/{1}", root.SelfLink.HRef, listingId)
+                HRef = $"{root.SelfLink.HRef}/listings/{listingId}"
             };
 
             return await _halClient.GetAsync<Listing>(listingLink, request).ConfigureAwait(_halClient);
@@ -36,12 +36,12 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<Listing>> GetByEventAsync(int eventId, ListingRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient.Configuration);
             var listingsLink = new Link
             {
-                HRef = string.Format("{0}/events/{1}/listings", root.SelfLink.HRef, eventId)
+                HRef = $"{root.SelfLink.HRef}/events/{eventId}/listings"
             };
 
             return await _halClient.GetAsync<PagedResource<Listing>>(listingsLink, request).ConfigureAwait(_halClient);
@@ -54,12 +54,12 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Listing>> GetAllByEventAsync(int eventId, ListingRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             var listingsLink = new Link
             {
-                HRef = string.Format("{0}/events/{1}/listings", root.SelfLink.HRef, eventId)
+                HRef = $"{root.SelfLink.HRef}/events/{eventId}/listings"
             };
 
             return await _halClient.GetAllPagesAsync<Listing>(listingsLink, request).ConfigureAwait(_halClient);

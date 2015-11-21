@@ -11,24 +11,15 @@ namespace GogoKit.Models.Request
     /// </summary>
     public abstract class RequestParameters<TEmbed, TSort> : IRequestParameters
     {
-        private readonly IDictionary<string, string> _parameters;
-        private readonly IDictionary<string, IEnumerable<string>> _headers;
-
         protected RequestParameters()
         {
-            _parameters = new Dictionary<string, string>();
-            _headers = new Dictionary<string, IEnumerable<string>>();
+            Parameters = new Dictionary<string, string>();
+            Headers = new Dictionary<string, IEnumerable<string>>();
         }
 
-        public IDictionary<string, string> Parameters
-        {
-            get { return _parameters; }
-        }
+        public IDictionary<string, string> Parameters { get; }
 
-        public IDictionary<string, IEnumerable<string>> Headers
-        {
-            get { return _headers; }
-        }
+        public IDictionary<string, IEnumerable<string>> Headers { get; }
 
         public Guid? IdempotencyKey
         {
@@ -36,7 +27,7 @@ namespace GogoKit.Models.Request
             {
                 Guid idempotencyKey;
                 IEnumerable<string> textValues;
-                if (!_headers.TryGetValue("Idempotency-Key", out textValues) ||
+                if (!Headers.TryGetValue("Idempotency-Key", out textValues) ||
                     !Guid.TryParse(textValues.First(), out idempotencyKey))
                 {
                     return null;
@@ -46,10 +37,8 @@ namespace GogoKit.Models.Request
             }
             set
             {
-                _headers.Add("Idempotency-Key",
-                             value.HasValue
-                                 ? new[] {value.ToString()}
-                                 : null);
+                Headers.Add("Idempotency-Key",
+                            value.HasValue ? new[] {value.ToString()} : null);
             }
         }
 
@@ -70,7 +59,7 @@ namespace GogoKit.Models.Request
             get
             {
                 string embed;
-                if (!_parameters.TryGetValue("embed", out embed))
+                if (!Parameters.TryGetValue("embed", out embed))
                 {
                     yield break;
                 }
@@ -84,9 +73,7 @@ namespace GogoKit.Models.Request
             }
             set
             {
-                var embedValues = value != null 
-                                    ? value.Select(e => EmbedFieldNameMap[e])
-                                    : null;
+                var embedValues = value?.Select(e => EmbedFieldNameMap[e]);
                 SetParameter("embed", string.Join(",", embedValues ?? new string[] {}));
             }
         }
@@ -96,7 +83,7 @@ namespace GogoKit.Models.Request
             get
             {
                 string valueText;
-                if (!_parameters.TryGetValue("sort", out valueText) || valueText == null)
+                if (!Parameters.TryGetValue("sort", out valueText) || valueText == null)
                 {
                     yield break;
                 }
@@ -121,9 +108,8 @@ namespace GogoKit.Models.Request
                 var sortStrings = new List<string>();
                 foreach (var sort in value ?? new Sort<TSort>[] {})
                 {
-                    var sortString = string.Format("{0}{1}",
-                                                   sort.Direction == SortDirection.Descending ? "-" : "",
-                                                   SortFieldNameMap[sort.Field]);
+                    var sortString = sort.Direction == SortDirection.Descending ? "-" : "" +
+                                     SortFieldNameMap[sort.Field];
                     sortStrings.Add(sortString);
                 }
 
@@ -131,21 +117,15 @@ namespace GogoKit.Models.Request
             }
         }
 
-        protected virtual IDictionary<TEmbed, string> EmbedFieldNameMap
-        {
-            get { return new Dictionary<TEmbed, string>(); }
-        }
+        protected virtual IDictionary<TEmbed, string> EmbedFieldNameMap => new Dictionary<TEmbed, string>();
 
-        protected virtual IDictionary<TSort, string> SortFieldNameMap
-        {
-            get { return new Dictionary<TSort, string>(); }
-        }
+        protected virtual IDictionary<TSort, string> SortFieldNameMap => new Dictionary<TSort, string>();
 
         protected T? GetParameter<T>(string key, Func<string, T> parseFunc)
             where T : struct
         {
             string valueText;
-            if (!_parameters.TryGetValue(key, out valueText))
+            if (!Parameters.TryGetValue(key, out valueText))
             {
                 return null;
             }
@@ -161,38 +141,29 @@ namespace GogoKit.Models.Request
 
         protected void SetParameter(string key, string value)
         {
-            if (_parameters.ContainsKey(key))
+            if (Parameters.ContainsKey(key))
             {
-                _parameters[key] = value;
+                Parameters[key] = value;
             }
 
-            _parameters.Add(key, value);
+            Parameters.Add(key, value);
         }
     }
 
     public class Sort<T>
     {
-        private readonly T _field;
-        private readonly SortDirection _direction;
-
         public Sort(T field, SortDirection direction)
         {
-            Requires.ArgumentNotNull(field, "fieldName");
-            Requires.ArgumentNotNull(direction, "direction");
+            Requires.ArgumentNotNull(field, nameof(field));
+            Requires.ArgumentNotNull(direction, nameof(direction));
 
-            _field = field;
-            _direction = direction;
+            Field = field;
+            Direction = direction;
         }
 
-        public T Field
-        {
-            get { return _field; }
-        }
+        public T Field { get; }
 
-        public SortDirection Direction
-        {
-            get { return _direction; }
-        }
+        public SortDirection Direction { get; }
     }
 
     public enum SortDirection

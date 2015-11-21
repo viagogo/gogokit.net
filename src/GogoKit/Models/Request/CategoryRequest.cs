@@ -5,33 +5,23 @@ namespace GogoKit.Models.Request
 {
     public class CategoryRequest : RequestParameters<CategoryEmbed, CategorySort>
     {
-        protected override IDictionary<CategoryEmbed, string> EmbedFieldNameMap
-        {
-            get
+        protected override IDictionary<CategoryEmbed, string> EmbedFieldNameMap =>
+            new Dictionary<CategoryEmbed, string>
             {
-                return new Dictionary<CategoryEmbed, string>
-                {
-                    {CategoryEmbed.TopChildren, "top_children"},
-                    {CategoryEmbed.TopEvents, "top_events"},
-                    {CategoryEmbed.TopPerformers, "top_performers"},
-                };
-            }
-        }
+                {CategoryEmbed.TopChildren, "top_children"},
+                {CategoryEmbed.TopEvents, "top_events"},
+                {CategoryEmbed.TopPerformers, "top_performers"},
+            };
 
-        protected override IDictionary<CategorySort, string> SortFieldNameMap
-        {
-            get
+        protected override IDictionary<CategorySort, string> SortFieldNameMap =>
+            new Dictionary<CategorySort, string>
             {
-                return new Dictionary<CategorySort, string>
-                {
-                    {CategorySort.Id, "id"},
-                    {CategorySort.Name, "name"},
-                    {CategorySort.MinEventDate, "min_event_date"},
-                    {CategorySort.MaxEventDate, "max_event_date"},
-                    {CategorySort.MinTicketPrice, "min_ticket_price"},
-                };
-            }
-        }
+                {CategorySort.Id, "id"},
+                {CategorySort.Name, "name"},
+                {CategorySort.MinEventDate, "min_event_date"},
+                {CategorySort.MaxEventDate, "max_event_date"},
+                {CategorySort.MinTicketPrice, "min_ticket_price"},
+            };
 
         public DateTimeOffset? MinStartDate
         {

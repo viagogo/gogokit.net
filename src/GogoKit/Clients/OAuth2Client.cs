@@ -15,8 +15,8 @@ namespace GogoKit.Clients
 
         public OAuth2Client(IHttpConnection connection, IGogoKitConfiguration configuration)
         {
-            Requires.ArgumentNotNull(connection, "connection");
-            Requires.ArgumentNotNull(configuration, "configuration");
+            Requires.ArgumentNotNull(connection, nameof(connection));
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
 
             _connection = connection;
             _configuration = configuration;
@@ -33,7 +33,7 @@ namespace GogoKit.Clients
             parameters.Add("grant_type", grantType);
             if (scopes != null && scopes.Any())
             {
-                parameters.Add("scope", String.Join(" ", scopes));
+                parameters.Add("scope", string.Join(" ", scopes));
             }
 
             var response = await _connection.SendRequestAsync<OAuth2Token>(
@@ -60,7 +60,7 @@ namespace GogoKit.Clients
 
         public Task<OAuth2Token> RefreshAccessTokenAsync(OAuth2Token token)
         {
-            Requires.ArgumentNotNull(token, "token");
+            Requires.ArgumentNotNull(token, nameof(token));
             Requires.ArgumentNotNullOrEmpty(token.RefreshToken, "token has no refresh token");
 
             var scopes = token.Scope != null

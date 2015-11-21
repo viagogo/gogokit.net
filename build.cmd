@@ -1,7 +1,7 @@
 @echo off
 
 echo Installing build tools...
-".\tools\nuget\NuGet.exe" "Install" "FAKE.Core" "-OutputDirectory" "tools" "-ExcludeVersion" "-version" "3.23.0"
+".\tools\nuget\NuGet.exe" "Install" "FAKE.Core" "-OutputDirectory" "tools" "-ExcludeVersion" "-version" "4.9.3"
 ".\tools\nuget\NuGet.exe" "Install" "NUnit.Runners" "-OutputDirectory" "tools" "-ExcludeVersion" "-version" "2.6.4"
 
 set TARGET="BuildApp"

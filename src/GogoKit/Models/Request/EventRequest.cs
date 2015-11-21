@@ -6,31 +6,21 @@ namespace GogoKit.Models.Request
 {
     public class EventRequest : RequestParameters<EventEmbed, EventSort>
     {
-        protected override IDictionary<EventEmbed, string> EmbedFieldNameMap
-        {
-            get
+        protected override IDictionary<EventEmbed, string> EmbedFieldNameMap =>
+            new Dictionary<EventEmbed, string>
             {
-                return new Dictionary<EventEmbed, string>
-                {
-                    {EventEmbed.Category, "category"}
-                };
-            }
-        }
+                {EventEmbed.Category, "category"}
+            };
 
-        protected override IDictionary<EventSort, string> SortFieldNameMap
-        {
-            get
+        protected override IDictionary<EventSort, string> SortFieldNameMap =>
+            new Dictionary<EventSort, string>
             {
-                return new Dictionary<EventSort, string>
-                {
-                    {EventSort.Id, "id"},
-                    {EventSort.Name, "name"},
-                    {EventSort.StartDate, "start_date"},
-                    {EventSort.MinTicketPrice, "min_ticket_price"},
-                    {EventSort.Distance, "distance"}
-                };
-            }
-        }
+                {EventSort.Id, "id"},
+                {EventSort.Name, "name"},
+                {EventSort.StartDate, "start_date"},
+                {EventSort.MinTicketPrice, "min_ticket_price"},
+                {EventSort.Distance, "distance"}
+            };
 
         public double? Latitude
         {

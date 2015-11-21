@@ -43,9 +43,9 @@ namespace GogoKit.Clients
             SearchResultRequest request,
             Func<Link, IRequestParameters, Task<T>> getSearchResultsFunc)
         {
-            Requires.ArgumentNotNull(query, "query");
-            Requires.ArgumentNotNull(request, "request");
-            Requires.ArgumentNotNull(getSearchResultsFunc, "getSearchResultsFunc");
+            Requires.ArgumentNotNull(query, nameof(query));
+            Requires.ArgumentNotNull(request, nameof(request));
+            Requires.ArgumentNotNull(getSearchResultsFunc, nameof(getSearchResultsFunc));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
 

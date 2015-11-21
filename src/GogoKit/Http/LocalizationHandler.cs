@@ -12,7 +12,7 @@ namespace GogoKit.Http
 
         public LocalizationHandler(ILocalizationProvider localizationProvider)
         {
-            Requires.ArgumentNotNull(localizationProvider, "localizationProvider");
+            Requires.ArgumentNotNull(localizationProvider, nameof(localizationProvider));
             _localizationProvider = localizationProvider;
         }
 

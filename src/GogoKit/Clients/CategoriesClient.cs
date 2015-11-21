@@ -25,9 +25,9 @@ namespace GogoKit.Clients
 
         public async Task<Category> GetAsync(int categoryId, CategoryRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
-            var categoryLink = await _linkFactory.CreateLinkAsync("categories/{0}", categoryId).ConfigureAwait(_halClient);
+            var categoryLink = await _linkFactory.CreateLinkAsync($"categories/{categoryId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Category>(categoryLink, request).ConfigureAwait(_halClient);
         }
 
@@ -38,7 +38,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Category>> GetAllGenresAsync(CategoryRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Category>(root.GenresLink, request).ConfigureAwait(_halClient);

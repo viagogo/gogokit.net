@@ -25,15 +25,15 @@ namespace GogoKit.Clients
 
         public async Task<Country> GetAsync(string code, CountryRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
-            var countryLink = await _linkFactory.CreateLinkAsync("countries/{0}", code).ConfigureAwait(_halClient);
+            var countryLink = await _linkFactory.CreateLinkAsync($"countries/{code}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Country>(countryLink, request).ConfigureAwait(_halClient);
         }
 
         public async Task<PagedResource<Country>> GetAsync(CountryRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PagedResource<Country>>(
@@ -48,7 +48,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Country>> GetAllAsync(CountryRequest request)
         {
-            Requires.ArgumentNotNull(request, "request");
+            Requires.ArgumentNotNull(request, nameof(request));
 
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Country>(root.CountriesLink, request).ConfigureAwait(_halClient);

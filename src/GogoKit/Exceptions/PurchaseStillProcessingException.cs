@@ -1,5 +1,4 @@
-﻿using GogoKit.Models;
-using GogoKit.Models.Response;
+﻿using GogoKit.Models.Response;
 using HalKit.Http;
 
 namespace GogoKit.Exceptions

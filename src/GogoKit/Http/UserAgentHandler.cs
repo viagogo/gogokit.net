@@ -10,11 +10,11 @@ namespace GogoKit.Http
 {
     public class UserAgentHandler : DelegatingHandler
     {
-        private IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
+        private readonly IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
 
         public UserAgentHandler(ProductHeaderValue product)
         {
-            Requires.ArgumentNotNull(product, "product");
+            Requires.ArgumentNotNull(product, nameof(product));
 
             _userAgentHeaderValues = GetUserAgentHeaderValues(product);
         }
@@ -24,10 +24,7 @@ namespace GogoKit.Http
             return new List<ProductInfoHeaderValue>
             {
                 new ProductInfoHeaderValue(product),
-                new ProductInfoHeaderValue(string.Format("({0}; {1} {2})",
-                                                         CultureInfo.CurrentCulture.Name,
-                                                         "GogoKit",
-                                                         AssemblyVersionInformation.Version))
+                new ProductInfoHeaderValue($"({CultureInfo.CurrentCulture.Name}; {"GogoKit"} {AssemblyVersionInformation.Version})")
             };
         }
 

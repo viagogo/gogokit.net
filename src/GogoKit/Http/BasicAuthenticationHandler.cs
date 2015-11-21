@@ -18,8 +18,8 @@ namespace GogoKit.Http
             _clientId = clientId;
             _clientSecret = clientSecret;
 
-            var loginAndPassword = string.Format("{0}:{1}", _clientId, _clientSecret);
-            var headerText = string.Format("Basic {0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(loginAndPassword)));
+            var loginAndPassword = $"{_clientId}:{_clientSecret}";
+            var headerText = $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes(loginAndPassword))}";
             _authorizationHeader = AuthenticationHeaderValue.Parse(headerText);
         }
 

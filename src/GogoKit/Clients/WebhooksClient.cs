@@ -30,7 +30,7 @@ namespace GogoKit.Clients
 
         public async Task<Webhook> GetAsync(int webhookId, WebhookRequest request)
         {
-            var webhookLink = await _linkFactory.CreateLinkAsync("webhooks/{0}", webhookId).ConfigureAwait(_halClient);
+            var webhookLink = await _linkFactory.CreateLinkAsync($"webhooks/{webhookId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Webhook>(webhookLink, request).ConfigureAwait(_halClient);
         }
 
@@ -74,13 +74,13 @@ namespace GogoKit.Clients
 
         public async Task<Webhook> UpdateAsync(int webhookId, WebhookUpdate webhookUpdate, WebhookRequest request)
         {
-            var updateLink = await _linkFactory.CreateLinkAsync("webhooks/{0}", webhookId).ConfigureAwait(_halClient);
+            var updateLink = await _linkFactory.CreateLinkAsync($"webhooks/{webhookId}").ConfigureAwait(_halClient);
             return await _halClient.PostAsync<Webhook>(updateLink, webhookUpdate, request).ConfigureAwait(_halClient);
         }
 
         public async Task<IApiResponse> DeleteAsync(int webhookId)
         {
-            var deleteLink = await _linkFactory.CreateLinkAsync("webhooks/{0}", webhookId).ConfigureAwait(_halClient);
+            var deleteLink = await _linkFactory.CreateLinkAsync($"webhooks/{webhookId}").ConfigureAwait(_halClient);
             return await _halClient.DeleteAsync(deleteLink).ConfigureAwait(_halClient);
         }
     }

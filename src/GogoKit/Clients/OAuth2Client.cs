@@ -33,7 +33,7 @@ namespace GogoKit.Clients
             parameters.Add("grant_type", grantType);
             if (scopes != null && scopes.Any())
             {
-                parameters.Add("scope", String.Join(" ", scopes));
+                parameters.Add("scope", string.Join(" ", scopes));
             }
 
             var response = await _connection.SendRequestAsync<OAuth2Token>(

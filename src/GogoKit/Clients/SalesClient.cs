@@ -29,7 +29,7 @@ namespace GogoKit.Clients
 
         public async Task<Sale> GetAsync(int saleId, SaleRequest request)
         {
-            var saleLink = await _linkFactory.CreateLinkAsync("sales/{0}", saleId).ConfigureAwait(_halClient);
+            var saleLink = await _linkFactory.CreateLinkAsync($"sales/{saleId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Sale>(saleLink, request).ConfigureAwait(_halClient);
         }
 

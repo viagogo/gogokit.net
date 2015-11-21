@@ -27,7 +27,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, nameof(request));
 
-            var countryLink = await _linkFactory.CreateLinkAsync("countries/{0}", code).ConfigureAwait(_halClient);
+            var countryLink = await _linkFactory.CreateLinkAsync($"countries/{code}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Country>(countryLink, request).ConfigureAwait(_halClient);
         }
 

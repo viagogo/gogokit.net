@@ -28,7 +28,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, nameof(request));
 
-            var currencyLink = await _linkFactory.CreateLinkAsync("currencies/{0}", code).ConfigureAwait(_halClient);
+            var currencyLink = await _linkFactory.CreateLinkAsync($"currencies/{code}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Currency>(currencyLink, request).ConfigureAwait(_halClient);
         }
 

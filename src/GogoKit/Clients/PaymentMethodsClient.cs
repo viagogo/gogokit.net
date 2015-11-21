@@ -32,9 +32,7 @@ namespace GogoKit.Clients
 
         public async Task<PaymentMethod> GetAsync(int paymentMethodId, PaymentMethodRequest request)
         {
-            var paymentMethodLink = await _linkFactory.CreateLinkAsync(
-                                            "paymentMethods/{0}",
-                                            paymentMethodId).ConfigureAwait(_halClient);
+            var paymentMethodLink = await _linkFactory.CreateLinkAsync($"paymentMethods/{paymentMethodId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<PaymentMethod>(paymentMethodLink, request).ConfigureAwait(_halClient);
         }
 

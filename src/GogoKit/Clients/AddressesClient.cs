@@ -25,7 +25,7 @@ namespace GogoKit.Clients
 
         public async Task<Address> GetAsync(int addressId)
         {
-            var addressLink = await _linkFactory.CreateLinkAsync("addresses/{0}", addressId).ConfigureAwait(_halClient);
+            var addressLink = await _linkFactory.CreateLinkAsync($"addresses/{addressId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Address>(addressLink).ConfigureAwait(_halClient);
         }
 

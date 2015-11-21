@@ -27,7 +27,7 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(request, nameof(request));
 
-            var categoryLink = await _linkFactory.CreateLinkAsync("categories/{0}", categoryId).ConfigureAwait(_halClient);
+            var categoryLink = await _linkFactory.CreateLinkAsync($"categories/{categoryId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Category>(categoryLink, request).ConfigureAwait(_halClient);
         }
 

@@ -6,13 +6,11 @@ namespace GogoKit.Exceptions
 {
     public class ApiException : Exception
     {
-        private readonly IApiResponse _response;
-
         public ApiException(IApiResponse response)
         {
             Requires.ArgumentNotNull(response, nameof(response));
 
-            _response = response;
+            Response = response;
         }
 
         public override string Message
@@ -20,7 +18,7 @@ namespace GogoKit.Exceptions
             get
             {
                 string message = null;
-                var authorizationErrorResponse = _response as IApiResponse<AuthorizationError>;
+                var authorizationErrorResponse = Response as IApiResponse<AuthorizationError>;
                 if (authorizationErrorResponse != null &&
                     authorizationErrorResponse.BodyAsObject != null)
                 {
@@ -31,9 +29,6 @@ namespace GogoKit.Exceptions
             }
         }
 
-        public IApiResponse Response
-        {
-            get { return _response; }
-        }
+        public IApiResponse Response { get; }
     }
 }

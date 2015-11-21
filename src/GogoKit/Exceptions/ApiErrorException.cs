@@ -5,18 +5,13 @@ namespace GogoKit.Exceptions
 {
     public class ApiErrorException : ApiException
     {
-        private readonly ApiError _error;
-
         public ApiErrorException(IApiResponse<ApiError> response) : base(response)
         {
             Requires.ArgumentNotNull(response, nameof(response));
 
-            _error = response.BodyAsObject;
+            Error = response.BodyAsObject;
         }
 
-        public ApiError Error
-        {
-            get { return _error; }
-        }
+        public ApiError Error { get; }
     }
 }

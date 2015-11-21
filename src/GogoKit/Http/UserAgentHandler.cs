@@ -10,7 +10,7 @@ namespace GogoKit.Http
 {
     public class UserAgentHandler : DelegatingHandler
     {
-        private IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
+        private readonly IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
 
         public UserAgentHandler(ProductHeaderValue product)
         {

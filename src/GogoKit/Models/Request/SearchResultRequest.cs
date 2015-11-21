@@ -25,20 +25,15 @@ namespace GogoKit.Models.Request
             }
         }
 
-        protected override IDictionary<SearchResultEmbed, string> EmbedFieldNameMap
-        {
-            get
+        protected override IDictionary<SearchResultEmbed, string> EmbedFieldNameMap =>
+            new Dictionary<SearchResultEmbed, string>
             {
-                return new Dictionary<SearchResultEmbed, string>
-                {
-                    {SearchResultEmbed.Category, "category"},
-                    {SearchResultEmbed.Event, "event"},
-                    {SearchResultEmbed.Genre, "genre"},
-                    {SearchResultEmbed.MetroArea, "metro_area"},
-                    {SearchResultEmbed.Venue, "venue"},
-                };
-            }
-        }
+                {SearchResultEmbed.Category, "category"},
+                {SearchResultEmbed.Event, "event"},
+                {SearchResultEmbed.Genre, "genre"},
+                {SearchResultEmbed.MetroArea, "metro_area"},
+                {SearchResultEmbed.Venue, "venue"},
+            };
     }
 
     public enum SearchResultTypeFilter

@@ -4,16 +4,11 @@ namespace GogoKit.Models.Request
 {
     public class WebhookRequest : RequestParameters<WebhookEmbed, WebhookSort>
     {
-        protected override IDictionary<WebhookSort, string> SortFieldNameMap
-        {
-            get
+        protected override IDictionary<WebhookSort, string> SortFieldNameMap =>
+            new Dictionary<WebhookSort, string>
             {
-                return new Dictionary<WebhookSort, string>
-                {
-                    {WebhookSort.CreatedAt, "created_at"}
-                };
-            }
-        }
+                {WebhookSort.CreatedAt, "created_at"}
+            };
     }
 
     public enum WebhookEmbed

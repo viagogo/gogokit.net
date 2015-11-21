@@ -9,19 +9,10 @@
             _configuration = configuration;
         }
 
-        public string LanguageCode
-        {
-            get { return _configuration.LanguageCode; }
-        }
+        public string LanguageCode => _configuration.LanguageCode;
 
-        public string CountryCode
-        {
-            get { return _configuration.CountryCode; }
-        }
+        public string CountryCode => _configuration.CountryCode;
 
-        public string CurrencyCode
-        {
-            get { return _configuration.CurrencyCode; }
-        }
+        public string CurrencyCode => _configuration.CurrencyCode;
     }
 }

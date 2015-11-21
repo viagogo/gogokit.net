@@ -10,25 +10,6 @@ namespace GogoKit
 {
     public class ViagogoClient : IViagogoClient
     {
-        private readonly IGogoKitConfiguration _configuration;
-        private readonly IHalClient _hypermedia;
-        private readonly IOAuth2TokenStore _tokenStore;
-        private readonly IOAuth2Client _oauth2Client;
-        private readonly IUserClient _userClient;
-        private readonly ISearchClient _searchClient;
-        private readonly IAddressesClient _addressesClient;
-        private readonly IPurchasesClient _purchaseClient;
-        private readonly ISalesClient _salesClient;
-        private readonly ICountriesClient _countriesClient;
-        private readonly ICurrenciesClient _currencyClient;
-        private readonly IPaymentMethodsClient _paymentMethodsClients;
-        private readonly ICategoriesClient _categoryClient;
-        private readonly IEventsClient _eventClient;
-        private readonly IListingsClient _listingClient;
-        private readonly IVenuesClient _venueClient;
-        private readonly ISellerListingsClient _sellerListingsClient;
-        private readonly IWebhooksClient _webhooksClient;
-
         public ViagogoClient(
             string clientId,
             string clientSecret,
@@ -104,115 +85,61 @@ namespace GogoKit
                                           CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
                                       };
 
-            _configuration = configuration;
-            _tokenStore = tokenStore;
-            _hypermedia = new HalClient(halKitConfiguration, apiConnection);
-            var linkFactory = new LinkFactory(_hypermedia);
-            _oauth2Client = new OAuth2Client(oauthConnection, configuration);
-            _userClient = new UserClient(_hypermedia);
-            _searchClient = new SearchClient(_hypermedia);
-            _addressesClient = new AddressesClient(_userClient, _hypermedia, linkFactory);
-            _purchaseClient = new PurchasesClient(_userClient, _hypermedia, linkFactory);
-            _salesClient = new SalesClient(_userClient, _hypermedia, linkFactory);
-            _paymentMethodsClients = new PaymentMethodsClient(_userClient, _hypermedia, linkFactory);
-            _countriesClient = new CountriesClient(_hypermedia, linkFactory);
-            _currencyClient = new CurrenciesClient(_hypermedia, linkFactory);
-            _categoryClient = new CategoriesClient(_hypermedia, linkFactory);
-            _eventClient = new EventsClient(_hypermedia);
-            _listingClient = new ListingsClient(_hypermedia);
-            _venueClient = new VenuesClient(_hypermedia);
-            _sellerListingsClient = new SellerListingsClient(_userClient, _hypermedia, linkFactory);
-            _webhooksClient = new WebhooksClient(_userClient, _hypermedia, linkFactory);
+            Configuration = configuration;
+            TokenStore = tokenStore;
+            Hypermedia = new HalClient(halKitConfiguration, apiConnection);
+            var linkFactory = new LinkFactory(Hypermedia);
+            OAuth2 = new OAuth2Client(oauthConnection, configuration);
+            User = new UserClient(Hypermedia);
+            Search = new SearchClient(Hypermedia);
+            Addresses = new AddressesClient(User, Hypermedia, linkFactory);
+            Purchases = new PurchasesClient(User, Hypermedia, linkFactory);
+            Sales = new SalesClient(User, Hypermedia, linkFactory);
+            PaymentMethods = new PaymentMethodsClient(User, Hypermedia, linkFactory);
+            Countries = new CountriesClient(Hypermedia, linkFactory);
+            Currencies = new CurrenciesClient(Hypermedia, linkFactory);
+            Categories = new CategoriesClient(Hypermedia, linkFactory);
+            Events = new EventsClient(Hypermedia);
+            Listings = new ListingsClient(Hypermedia);
+            Venues = new VenuesClient(Hypermedia);
+            SellerListings = new SellerListingsClient(User, Hypermedia, linkFactory);
+            Webhooks = new WebhooksClient(User, Hypermedia, linkFactory);
         }
 
-        public IGogoKitConfiguration Configuration
-        {
-            get { return _configuration; }
-        }
+        public IGogoKitConfiguration Configuration { get; }
 
-        public IHalClient Hypermedia
-        {
-            get { return _hypermedia; }
-        }
+        public IHalClient Hypermedia { get; }
 
-        public IOAuth2TokenStore TokenStore
-        {
-            get { return _tokenStore; }
-        }
+        public IOAuth2TokenStore TokenStore { get; }
 
-        public IOAuth2Client OAuth2
-        {
-            get { return _oauth2Client; }
-        }
+        public IOAuth2Client OAuth2 { get; }
 
-        public IUserClient User
-        {
-            get { return _userClient; }
-        }
+        public IUserClient User { get; }
 
-        public ISearchClient Search
-        {
-            get { return _searchClient; }
-        }
+        public ISearchClient Search { get; }
 
-        public IAddressesClient Addresses
-        {
-            get { return _addressesClient; }
-        }
+        public IAddressesClient Addresses { get; }
 
-        public IPurchasesClient Purchases
-        {
-            get { return _purchaseClient; }
-        }
+        public IPurchasesClient Purchases { get; }
 
-        public ISalesClient Sales
-        {
-            get { return _salesClient; }
-        }
+        public ISalesClient Sales { get; }
 
-        public ICountriesClient Countries
-        {
-            get { return _countriesClient; }
-        }
+        public ICountriesClient Countries { get; }
 
-        public ICurrenciesClient Currencies
-        {
-            get { return _currencyClient; }
-        }
+        public ICurrenciesClient Currencies { get; }
 
-        public IPaymentMethodsClient PaymentMethods
-        {
-            get { return _paymentMethodsClients; }
-        }
+        public IPaymentMethodsClient PaymentMethods { get; }
 
-        public ICategoriesClient Categories
-        {
-            get { return _categoryClient; }
-        }
+        public ICategoriesClient Categories { get; }
 
-        public IEventsClient Events
-        {
-            get { return _eventClient; }
-        }
+        public IEventsClient Events { get; }
 
-        public IListingsClient Listings
-        {
-            get { return _listingClient; }
-        }
+        public IListingsClient Listings { get; }
 
-        public ISellerListingsClient SellerListings
-        {
-            get { return _sellerListingsClient; }
-        }
+        public ISellerListingsClient SellerListings { get; }
 
-        public IVenuesClient Venues
-        {
-            get { return _venueClient; }
-        }
+        public IVenuesClient Venues { get; }
 
-        public IWebhooksClient Webhooks
-        {
-            get { return _webhooksClient; }
-        }
+        public IWebhooksClient Webhooks { get; }
     }
 }

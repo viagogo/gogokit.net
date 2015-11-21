@@ -4,19 +4,14 @@ namespace GogoKit.Models.Request
 {
     public class ListingRequest : RequestParameters<string, ListingSort>
     {
-        protected override IDictionary<ListingSort, string> SortFieldNameMap
-        {
-            get
+        protected override IDictionary<ListingSort, string> SortFieldNameMap =>
+            new Dictionary<ListingSort, string>
             {
-                return new Dictionary<ListingSort, string>
-                {
-                    {ListingSort.Id, "id"},
-                    {ListingSort.TicketPrice, "ticket_price"},
-                    {ListingSort.SeatingSection, "seating.section"},
-                    {ListingSort.NumberOfTickets, "number_of_tickets"},
-                };
-            }
-        }
+                {ListingSort.Id, "id"},
+                {ListingSort.TicketPrice, "ticket_price"},
+                {ListingSort.SeatingSection, "seating.section"},
+                {ListingSort.NumberOfTickets, "number_of_tickets"},
+            };
 
         public int? NumberOfTickets
         {

@@ -54,7 +54,7 @@ namespace GogoKit.Http
         private async Task<OAuth2Token> GetTokenAsync()
         {
             var token = await _tokenStore.GetTokenAsync().ConfigureAwait(_configuration);
-            if (token.IssueDate.AddSeconds(token.ExpiresIn) > DateTime.UtcNow)
+            if (token != null && token.IssueDate.AddSeconds(token.ExpiresIn) > DateTime.UtcNow)
             {
                 // We have a valid token
                 return token;

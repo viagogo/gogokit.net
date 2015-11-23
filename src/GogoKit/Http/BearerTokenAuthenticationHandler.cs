@@ -54,17 +54,17 @@ namespace GogoKit.Http
         private async Task<OAuth2Token> GetTokenAsync()
         {
             var token = await _tokenStore.GetTokenAsync().ConfigureAwait(_configuration);
-            if (token == null || token.IssueDate.AddSeconds(token.ExpiresIn) > DateTime.UtcNow)
+            if (token != null && token.IssueDate.AddSeconds(token.ExpiresIn) > DateTime.UtcNow)
             {
-                // We have a valid token or we don't have any token
+                // We have a valid token
                 return token;
             }
 
-            // We have an expired token so refresh it
+            // We don't have a token or the token is expired - so refresh it
             ApiException refreshTokenException = null;
             try
             {
-                if (token.RefreshToken != null)
+                if (token != null && token.RefreshToken != null)
                 {
                     token = await _oauthClient.RefreshAccessTokenAsync(token).ConfigureAwait(_configuration);
                 }

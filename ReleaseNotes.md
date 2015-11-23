@@ -1,3 +1,7 @@
+### New in 0.5.0 (Releases 2015/11/23)
+* BearerAuthenticationHandler gets a `client_credentials` token automatically if
+the token store doesn't have a token yet
+
 ### New in 0.4.0 (Released 2015/06/16)
 * Added WebhooksClient
 

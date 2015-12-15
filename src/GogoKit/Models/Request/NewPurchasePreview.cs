@@ -28,5 +28,11 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "coupons")]
         public string[] Coupons { get; set; }
+
+        [DataMember(Name = "confirm_complete_callback")]
+        public string ConfirmCompleteCallbackUrl { get; set; }
+
+        [DataMember(Name = "confirm_cancelled_callback")]
+        public string ConfirmCancelledCallbackUrl { get; set; }
     }
 }

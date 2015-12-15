@@ -1,4 +1,8 @@
-### New in 0.5.0 (Releases 2015/11/23)
+### New in 0.6.0 (Released 2015/12/15)
+* ApiException.Message now returns actual error information from the API
+* `purchasepreview:confirm` link added to PurchasePreview resource
+
+### New in 0.5.0 (Released 2015/11/23)
 * BearerAuthenticationHandler gets a `client_credentials` token automatically if
 the token store doesn't have a token yet
 

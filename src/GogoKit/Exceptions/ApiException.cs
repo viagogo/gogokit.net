@@ -13,21 +13,7 @@ namespace GogoKit.Exceptions
             Response = response;
         }
 
-        public override string Message
-        {
-            get
-            {
-                string message = null;
-                var authorizationErrorResponse = Response as IApiResponse<AuthorizationError>;
-                if (authorizationErrorResponse != null &&
-                    authorizationErrorResponse.BodyAsObject != null)
-                {
-                    message = authorizationErrorResponse.BodyAsObject.ErrorDescription;
-                }
-
-                return message ?? "An error occurred with this API request";
-            }
-        }
+        public override string Message => $"An error occurred with this API request: {Response.Body}";
 
         public IApiResponse Response { get; }
     }

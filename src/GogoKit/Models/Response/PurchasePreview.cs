@@ -34,6 +34,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "estimated_total_charge")]
         public Money EstimatedTotalCharge { get; set; }
 
+        [Rel("purchasepreview:confirm")]
+        public Link ConfirmLink { get; set; }
+
         [Rel("purchasepreview:createpurchase")]
         public Link CreatePurchaseLink { get; set; }
 

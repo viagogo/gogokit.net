@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\OAuth2ClientTests.cs" />
+    <Compile Include="Exceptions\ApiErrorExceptionTests.cs" />
     <Compile Include="Fakes\FakeApiResponseFactory.cs" />
     <Compile Include="Fakes\FakeLocalizationProvider.cs" />
     <Compile Include="Fakes\FakeDelegatingHandler.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -39,22 +40,33 @@ namespace GogoKit.Clients
 
         private HttpRequestMessage CreateBatchRequest(IEnumerable<IApiRequest> requests)
         {
-            var content = new MultipartContent("mixed", $"batch_{Guid.NewGuid()}");
-            const string contentType = "application/hal+json";
-
+            var batchRequestContent = new MultipartContent("mixed", $"batch_{Guid.NewGuid()}");
+            
             foreach (var request in requests)
             {
-                var innerRequest = new HttpRequestMessage(request.Method, request.Uri)
-                {
-                    Content = GetRequestContent(request.Method, request.Body, contentType)
-                };
+                var contentType = "application/hal+json";
+                var innerRequest = new HttpRequestMessage(request.Method, request.Uri);
 
-                content.Add(new BatchRequestContent(innerRequest));
+                var headers = request.Headers ?? new Dictionary<string, IEnumerable<string>>();
+                foreach (var header in headers)
+                {
+                    if (header.Key == "Content-Type")
+                    {
+                        contentType = header.Value.FirstOrDefault();
+                        continue;
+                    }
+
+                    innerRequest.Headers.Add(header.Key, header.Value);
+                }
+
+                innerRequest.Content = GetRequestContent(request.Method, request.Body, contentType);
+
+                batchRequestContent.Add(new BatchRequestContent(innerRequest));
             }
 
             return new HttpRequestMessage(HttpMethod.Post, $"{_httpConnection.Configuration.RootEndpoint.AbsoluteUri}batch")
             {
-                Content = content
+                Content = batchRequestContent
             };
         }
 

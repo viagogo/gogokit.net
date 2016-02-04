@@ -5,6 +5,9 @@ using GogoKit.Clients;
 using GogoKit.Http;
 using GogoKit.Services;
 using HalKit;
+using HalKit.Http;
+using HalKit.Json;
+using HalKit.Services;
 
 namespace GogoKit
 {
@@ -104,6 +107,9 @@ namespace GogoKit
             Venues = new VenuesClient(Hypermedia);
             SellerListings = new SellerListingsClient(User, Hypermedia, linkFactory);
             Webhooks = new WebhooksClient(User, Hypermedia, linkFactory);
+
+            var jsonSerializer = new DefaultJsonSerializer();
+            BatchClient = new BatchClient(apiConnection, new ApiResponseFactory(jsonSerializer, halKitConfiguration), jsonSerializer);
         }
 
         public IGogoKitConfiguration Configuration { get; }
@@ -141,5 +147,7 @@ namespace GogoKit
         public IVenuesClient Venues { get; }
 
         public IWebhooksClient Webhooks { get; }
+
+        public IBatchClient BatchClient { get; }
     }
 }

@@ -37,6 +37,8 @@
     <DocumentationFile>bin\Release\GogoKit.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Clients\BatchClient.cs" />
+    <Compile Include="Clients\IBatchClient.cs" />
     <Compile Include="Clients\ISellerListingsClient.cs" />
     <Compile Include="Clients\IWebhooksClient.cs" />
     <Compile Include="Clients\SellerListingsClient.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="Models\Request\EventRequest.cs" />
     <Compile Include="Models\Request\ListingConstraintsRequest.cs" />
     <Compile Include="Models\Request\ListingRequest.cs" />
+    <Compile Include="Models\Request\NewRequestedEventSellerListing.cs" />
     <Compile Include="Models\Request\NewSellerListing.cs" />
     <Compile Include="Models\Request\NewWebhook.cs" />
     <Compile Include="Models\Request\PaymentMethodRequest.cs" />
@@ -165,6 +168,8 @@
     <Compile Include="Exceptions\ValidationFailedException.cs" />
     <Compile Include="IViagogoClient.cs" />
     <Compile Include="Requires.cs" />
+    <Compile Include="Services\BatchRequestContent.cs" />
+    <Compile Include="Services\BatchResponseParser.cs" />
     <Compile Include="Services\ConfigurationLocalizationProvider.cs" />
     <Compile Include="Services\ILinkFactory.cs" />
     <Compile Include="Services\ILocalizationProvider.cs" />
@@ -177,8 +182,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="HalKit, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\HalKit.0.3.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
+    <Reference Include="HalKit, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HalKit.0.6.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">

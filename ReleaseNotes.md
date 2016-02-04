@@ -1,3 +1,7 @@
+### New in 0.7.0 (Released 2016/02/04)
+* ApiException.Message now returns actual error information from the API
+* Add new request event seller listing request
+
 ### New in 0.6.0 (Released 2015/12/15)
 * ApiException.Message now returns actual error information from the API
 * `purchasepreview:confirm` link added to PurchasePreview resource

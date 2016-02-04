@@ -15,5 +15,8 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "start_date")]
         public DateTimeOffset? StartDate { get; set; }
+
+        [DataMember(Name = "end_date")]
+        public DateTimeOffset? EndDate { get; set; }
     }
 }

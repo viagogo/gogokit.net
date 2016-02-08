@@ -7,7 +7,7 @@ namespace GogoKit.Models.Response
     public class ListingNote : Resource
     {
         [DataMember(Name = "id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [DataMember(Name = "note")]
         public string Note { get; set; }

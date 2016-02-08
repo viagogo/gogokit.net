@@ -36,5 +36,8 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "guarantee_payment_method_id")]
         public int? GuaranteePaymentMethodId { get; set; }
+
+        [DataMember(Name = "external_id")]
+        public string ExternalId { get; set; }
     }
 }

@@ -33,6 +33,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "ticket_proceeds")]
         public Money TicketProceeds { get; set; }
 
+        [DataMember(Name = "external_id")]
+        public string ExternalId { get; set; }
+
         [Embedded("event")]
         public EmbeddedEvent Event { get; set; }
 

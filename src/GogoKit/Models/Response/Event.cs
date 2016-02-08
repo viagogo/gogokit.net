@@ -14,7 +14,7 @@ namespace GogoKit.Models.Response
         public DateTimeOffset? EndDate { get; set; }
 
         [DataMember(Name = "date_confirmed")]
-        public bool DateConfirmed { get; set; }
+        public bool? DateConfirmed { get; set; }
 
         [DataMember(Name = "min_ticket_price")]
         public Money MinTicketPrice { get; set; }

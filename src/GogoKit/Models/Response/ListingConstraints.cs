@@ -15,10 +15,10 @@ namespace GogoKit.Models.Response
         public Money MaxTicketPrice { get; set; }
 
         [DataMember(Name = "min_number_of_tickets")]
-        public int MinNumberOfTickets { get; set; }
+        public int? MinNumberOfTickets { get; set; }
 
         [DataMember(Name = "max_number_of_tickets")]
-        public int MaxNumberOfTickets { get; set; }
+        public int? MaxNumberOfTickets { get; set; }
 
         [DataMember(Name = "ticket_location_required")]
         public bool IsTicketLocationRequired { get; set; }

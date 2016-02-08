@@ -6,6 +6,9 @@ namespace GogoKit.Models.Request
     [DataContract]
     public class NewRequestedEventSellerListing : NewSellerListing
     {
+        [DataMember(Name = "notes")]
+        public string Notes { get; set; }
+
         [DataMember(Name = "event")]
         public EmbeddedEvent Event { get; set; }
 

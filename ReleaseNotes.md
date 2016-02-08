@@ -1,3 +1,6 @@
+### New in 0.8.0 (Released 2016/02/)
+* Add `external_id` and `notes` to create seller listing payloads
+
 ### New in 0.7.1 (Released 2016/02/05)
 * Add BatchClient to IViagogoClient
 

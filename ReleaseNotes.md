@@ -1,3 +1,6 @@
+### New in 0.8.2 (Released 2016/02/10)
+* Fixed BatchClient issue generating the Uri for the batch endpoint
+
 ### New in 0.8.1 (Released 2016/02/10)
 * Fixed BatchClient issue generating the Uri for the batch endpoint
 

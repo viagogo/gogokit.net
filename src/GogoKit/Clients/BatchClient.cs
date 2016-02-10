@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using GogoLib;
+using HalKit;
 using HalKit.Http;
 using HalKit.Json;
 
@@ -17,6 +18,7 @@ namespace GogoKit.Clients
         private readonly IHttpConnection _httpConnection;
         private readonly IApiResponseFactory _responseFactory;
         private readonly IJsonSerializer _jsonSerializer;
+        private readonly IHalKitConfiguration _configuration;
 
         public BatchClient(
             IHttpConnection connection, 
@@ -25,15 +27,16 @@ namespace GogoKit.Clients
         {
             _responseFactory = responseFactory;
             _httpConnection = connection;
+            _configuration = connection.Configuration;
             _jsonSerializer = jsonSerializer;
         }
 
         public async Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(IEnumerable<IApiRequest> requests)
         {
             var httpBatchRequest = CreateBatchRequest(requests);
-            var httpBatchResponse = await _httpConnection.Client.SendAsync(httpBatchRequest);
+            var httpBatchResponse = await _httpConnection.Client.SendAsync(httpBatchRequest).ConfigureAwait(_configuration);
 
-            var apiResponses = await ParseBatchResponse<TResponse>(httpBatchResponse);
+            var apiResponses = await ParseBatchResponse<TResponse>(httpBatchResponse).ConfigureAwait(_configuration);
 
             return apiResponses;
         }
@@ -64,7 +67,7 @@ namespace GogoKit.Clients
                 batchRequestContent.Add(new BatchRequestContent(innerRequest));
             }
 
-            return new HttpRequestMessage(HttpMethod.Post, $"{_httpConnection.Configuration.RootEndpoint.AbsoluteUri}batch")
+            return new HttpRequestMessage(HttpMethod.Post, new Uri(_configuration.RootEndpoint, "batch"))
             {
                 Content = batchRequestContent
             };
@@ -72,12 +75,12 @@ namespace GogoKit.Clients
 
         private async Task<IReadOnlyList<IApiResponse<TResponse>>> ParseBatchResponse<TResponse>(HttpResponseMessage httpBatchResponse)
         {
-            var innerResponses = BatchResponseParser.Parse(await httpBatchResponse.Content.ReadAsStringAsync());
+            var innerResponses = BatchResponseParser.Parse(await httpBatchResponse.Content.ReadAsStringAsync().ConfigureAwait(_configuration));
 
             var apiResponses = new List<IApiResponse<TResponse>>();
             foreach (var response in innerResponses)
             {
-                apiResponses.Add(await _responseFactory.CreateApiResponseAsync<TResponse>(response));
+                apiResponses.Add(await _responseFactory.CreateApiResponseAsync<TResponse>(response).ConfigureAwait(_configuration));
             }
 
             return apiResponses;

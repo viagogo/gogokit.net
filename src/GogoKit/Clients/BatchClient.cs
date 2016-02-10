@@ -67,7 +67,8 @@ namespace GogoKit.Clients
                 batchRequestContent.Add(new BatchRequestContent(innerRequest));
             }
 
-            return new HttpRequestMessage(HttpMethod.Post, new Uri(_configuration.RootEndpoint, "batch"))
+            var batchEndpointUri = new Uri(_configuration.RootEndpoint, $"{_configuration.RootEndpoint}/batch");
+            return new HttpRequestMessage(HttpMethod.Post, batchEndpointUri)
             {
                 Content = batchRequestContent
             };

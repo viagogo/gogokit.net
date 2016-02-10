@@ -1,4 +1,7 @@
-### New in 0.8.0 (Released 2016/02/)
+### New in 0.8.1 (Released 2016/02/10)
+* Fixed BatchClient issue generating the Uri for the batch endpoint
+
+### New in 0.8.0 (Released 2016/02/08)
 * Add `external_id` and `notes` to create seller listing payloads
 
 ### New in 0.7.1 (Released 2016/02/05)

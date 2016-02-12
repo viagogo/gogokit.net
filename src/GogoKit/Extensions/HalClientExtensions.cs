@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Models.Response;
 using HalKit;
@@ -35,15 +36,44 @@ namespace GogoKit
             return GetAllPagesAsync<T>(
                 client,
                 link,
+                request,
+                CancellationToken.None);
+        }
+
+        public static Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
+            this IHalClient client,
+            Link link,
+            IRequestParameters request,
+            CancellationToken cancellationToken) where T : Resource
+        {
+            return GetAllPagesAsync<T>(
+                client,
+                link,
                 request.Parameters,
-                request.Headers);
+                request.Headers,
+                cancellationToken);
+        }
+
+        public static Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
+            this IHalClient client,
+            Link link,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers) where T : Resource
+        {
+            return GetAllPagesAsync<T>(
+                client,
+                link,
+                parameters,
+                headers,
+                CancellationToken.None);
         }
 
         public static async Task<IReadOnlyList<T>> GetAllPagesAsync<T>(
             this IHalClient client,
             Link link,
             IDictionary<string, string> parameters,
-            IDictionary<string, IEnumerable<string>> headers) where T : Resource
+            IDictionary<string, IEnumerable<string>> headers,
+            CancellationToken cancellationToken) where T : Resource
         {
             Requires.ArgumentNotNull(client, nameof(client));
             Requires.ArgumentNotNull(link, nameof(link));
@@ -65,10 +95,13 @@ namespace GogoKit
             var hasAnotherPage = true;
             while (hasAnotherPage)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var currentPage = await client.GetAsync<PagedResource<T>>(
                                             currentLink,
                                             currentParameters,
-                                            headers).ConfigureAwait(client.Configuration);
+                                            headers,
+                                            cancellationToken).ConfigureAwait(client.Configuration);
 
                 items.AddRange(currentPage.Items);
 

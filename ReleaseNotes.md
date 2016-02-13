@@ -1,3 +1,6 @@
+### New in 0.9.0 (Released 2016/02/13)
+* Added support for cancelling requests in the ISellerListingClient, IBatchClient and IUserClient
+
 ### New in 0.8.2 (Released 2016/02/10)
 * Fixed BatchClient issue generating the Uri for the batch endpoint
 

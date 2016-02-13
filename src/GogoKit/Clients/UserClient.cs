@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
@@ -16,10 +17,23 @@ namespace GogoKit.Clients
             _halClient = halClient;
         }
 
-        public async Task<User> GetAsync()
+        public Task<User> GetAsync()
+        {
+            return GetAsync(new UserRequest());
+        }
+
+        public Task<User> GetAsync(UserRequest request)
+        {
+            return GetAsync(request, CancellationToken.None);
+        }
+
+        public async Task<User> GetAsync(UserRequest request, CancellationToken cancellationToken)
         {
             var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<User>(root.UserLink).ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<User>(
+                            root.UserLink,
+                            request,
+                            cancellationToken).ConfigureAwait(_halClient);
         }
 
         public async Task<User> UpdateAsync(UserUpdate userUpdate)

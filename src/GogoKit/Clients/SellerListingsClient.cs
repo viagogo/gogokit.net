@@ -62,7 +62,7 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request, CancellationToken cancellationToken)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
+            var user = await _userClient.GetAsync(new UserRequest(), cancellationToken).ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<SellerListing>(
                             user.SellerListingsLink,
                             request,

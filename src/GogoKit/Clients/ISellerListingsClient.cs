@@ -1,6 +1,7 @@
 ﻿using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HalKit.Http;
 
@@ -19,6 +20,8 @@ namespace GogoKit.Clients
         Task<IReadOnlyList<SellerListing>> GetAllAsync();
 
         Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request);
+
+        Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request, CancellationToken cancellationToken);
 
         Task<ListingConstraints> GetConstraintsAsync(int sellerListingId);
 

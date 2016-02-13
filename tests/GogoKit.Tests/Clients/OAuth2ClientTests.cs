@@ -83,7 +83,7 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<object>(),
                                     It.IsAny<IDictionary<string, IEnumerable<string>>>(),
                                     It.IsAny<CancellationToken>()))
-                    .Callback((Uri uri, HttpMethod method, object body, IDictionary<string, IEnumerable<string>> headers) =>
+                    .Callback((Uri uri, HttpMethod method, object body, IDictionary<string, IEnumerable<string>> headers, CancellationToken token) =>
                         actualHeaders = headers)
                     .Returns(Task.FromResult(CreateResponse()));
             var client = CreateClient(conn: mockConn.Object);

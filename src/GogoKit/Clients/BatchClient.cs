@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoLib;
 using HalKit;
@@ -31,10 +32,16 @@ namespace GogoKit.Clients
             _jsonSerializer = jsonSerializer;
         }
 
-        public async Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(IEnumerable<IApiRequest> requests)
+        public Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(IEnumerable<IApiRequest> requests)
+        {
+            return SendBatch<TResponse>(requests, CancellationToken.None);
+        }
+
+        public async Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(IEnumerable<IApiRequest> requests, CancellationToken cancellationToken)
         {
             var httpBatchRequest = CreateBatchRequest(requests);
-            var httpBatchResponse = await _httpConnection.Client.SendAsync(httpBatchRequest).ConfigureAwait(_configuration);
+            var httpBatchResponse = await _httpConnection.Client.SendAsync(httpBatchRequest, cancellationToken)
+                                                                .ConfigureAwait(_configuration);
 
             var apiResponses = await ParseBatchResponse<TResponse>(httpBatchResponse).ConfigureAwait(_configuration);
 

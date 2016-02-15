@@ -109,7 +109,10 @@ namespace GogoKit
             Webhooks = new WebhooksClient(User, Hypermedia, linkFactory);
 
             var jsonSerializer = new DefaultJsonSerializer();
-            BatchClient = new BatchClient(apiConnection, new ApiResponseFactory(jsonSerializer, halKitConfiguration), jsonSerializer);
+            BatchClient = new BatchClient(apiConnection,
+                                          new ApiResponseFactory(jsonSerializer, halKitConfiguration),
+                                          jsonSerializer,
+                                          new LinkResolver());
         }
 
         public IGogoKitConfiguration Configuration { get; }

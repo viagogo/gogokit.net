@@ -11,6 +11,8 @@ namespace GogoKit.Clients
 
         Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(
             IEnumerable<IApiRequest> requests,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers,
             CancellationToken cancellationToken);
     }
 }

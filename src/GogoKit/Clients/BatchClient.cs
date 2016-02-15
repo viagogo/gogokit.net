@@ -11,6 +11,8 @@ using GogoLib;
 using HalKit;
 using HalKit.Http;
 using HalKit.Json;
+using HalKit.Models.Response;
+using HalKit.Services;
 
 namespace GogoKit.Clients
 {
@@ -19,27 +21,38 @@ namespace GogoKit.Clients
         private readonly IHttpConnection _httpConnection;
         private readonly IApiResponseFactory _responseFactory;
         private readonly IJsonSerializer _jsonSerializer;
+        private readonly ILinkResolver _linkResolver;
         private readonly IHalKitConfiguration _configuration;
 
         public BatchClient(
-            IHttpConnection connection, 
+            IHttpConnection connection,
             IApiResponseFactory responseFactory,
-            IJsonSerializer jsonSerializer)
+            IJsonSerializer jsonSerializer,
+            ILinkResolver linkResolver)
         {
             _responseFactory = responseFactory;
             _httpConnection = connection;
             _configuration = connection.Configuration;
             _jsonSerializer = jsonSerializer;
+            _linkResolver = linkResolver;
         }
 
         public Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(IEnumerable<IApiRequest> requests)
         {
-            return SendBatch<TResponse>(requests, CancellationToken.None);
+            return SendBatch<TResponse>(
+                requests,
+                new Dictionary<string, string>(),
+                new Dictionary<string, IEnumerable<string>>(),
+                CancellationToken.None);
         }
 
-        public async Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(IEnumerable<IApiRequest> requests, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<IApiResponse<TResponse>>> SendBatch<TResponse>(
+            IEnumerable<IApiRequest> requests,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers,
+            CancellationToken cancellationToken)
         {
-            var httpBatchRequest = CreateBatchRequest(requests);
+            var httpBatchRequest = CreateBatchRequest(requests, parameters, headers);
             var httpBatchResponse = await _httpConnection.Client.SendAsync(httpBatchRequest, cancellationToken)
                                                                 .ConfigureAwait(_configuration);
 
@@ -48,7 +61,10 @@ namespace GogoKit.Clients
             return apiResponses;
         }
 
-        private HttpRequestMessage CreateBatchRequest(IEnumerable<IApiRequest> requests)
+        private HttpRequestMessage CreateBatchRequest(
+            IEnumerable<IApiRequest> requests,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers)
         {
             var batchRequestContent = new MultipartContent("mixed", $"batch_{Guid.NewGuid()}");
             
@@ -57,8 +73,8 @@ namespace GogoKit.Clients
                 var contentType = "application/hal+json";
                 var innerRequest = new HttpRequestMessage(request.Method, request.Uri);
 
-                var headers = request.Headers ?? new Dictionary<string, IEnumerable<string>>();
-                foreach (var header in headers)
+                var innerRequestHeaders = request.Headers ?? new Dictionary<string, IEnumerable<string>>();
+                foreach (var header in innerRequestHeaders)
                 {
                     if (header.Key == "Content-Type")
                     {
@@ -74,11 +90,28 @@ namespace GogoKit.Clients
                 batchRequestContent.Add(new BatchRequestContent(innerRequest));
             }
 
-            var batchEndpointUri = new Uri(_configuration.RootEndpoint, $"{_configuration.RootEndpoint}/batch");
-            return new HttpRequestMessage(HttpMethod.Post, batchEndpointUri)
+            var batchLink = new Link
+                            {
+                                HRef = new Uri(_configuration.RootEndpoint, $"{_configuration.RootEndpoint}/batch").AbsoluteUri
+                            };
+            var batchEndpointUri = _linkResolver.ResolveLink(batchLink, parameters);
+            var batchRequest = new HttpRequestMessage(HttpMethod.Post, batchEndpointUri)
+                               {
+                                   Content = batchRequestContent
+                               };
+
+            headers = headers ?? new Dictionary<string, IEnumerable<string>>();
+            foreach (var header in headers)
             {
-                Content = batchRequestContent
-            };
+                if (header.Key == "Content-Type")
+                {
+                    continue;
+                }
+
+                batchRequest.Headers.Add(header.Key, header.Value);
+            }
+
+            return batchRequest;
         }
 
         private async Task<IReadOnlyList<IApiResponse<TResponse>>> ParseBatchResponse<TResponse>(HttpResponseMessage httpBatchResponse)

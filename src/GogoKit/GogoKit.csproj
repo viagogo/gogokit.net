@@ -65,6 +65,7 @@
     <Compile Include="Models\Request\SaleRequest.cs" />
     <Compile Include="Models\Request\SellerListingRequest.cs" />
     <Compile Include="Models\Request\SellerListingUpdate.cs" />
+    <Compile Include="Models\Request\UserRequest.cs" />
     <Compile Include="Models\Request\VenueRequest.cs" />
     <Compile Include="Models\Request\WebhookRequest.cs" />
     <Compile Include="Models\Request\WebhookUpdate.cs" />
@@ -182,8 +183,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="HalKit, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\HalKit.0.6.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
+    <Reference Include="HalKit, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\HalKit.0.7.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\HalKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">

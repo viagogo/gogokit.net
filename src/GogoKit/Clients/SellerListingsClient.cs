@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
@@ -54,10 +55,18 @@ namespace GogoKit.Clients
             return GetAllAsync(new SellerListingRequest());
         }
 
-        public async Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request)
+        public Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<SellerListing>(user.SellerListingsLink, request).ConfigureAwait(_halClient);
+            return GetAllAsync(request, CancellationToken.None);
+        }
+
+        public async Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request, CancellationToken cancellationToken)
+        {
+            var user = await _userClient.GetAsync(new UserRequest(), cancellationToken).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<SellerListing>(
+                            user.SellerListingsLink,
+                            request,
+                            cancellationToken).ConfigureAwait(_halClient);
         }
 
         public Task<ListingConstraints> GetConstraintsAsync(int sellerListingId)

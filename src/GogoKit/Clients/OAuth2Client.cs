@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Models.Response;
 using HalKit.Http;
@@ -43,7 +44,8 @@ namespace GogoKit.Clients
                                     new Dictionary<string, IEnumerable<string>>
                                     {
                                         {"Accept", new[] {"application/json"}}
-                                    }).ConfigureAwait(_configuration);
+                                    },
+                                    CancellationToken.None).ConfigureAwait(_configuration);
             var token = response.BodyAsObject;
 
             token.IssueDate = response.Headers.ContainsKey("Date")

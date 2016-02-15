@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Clients;
 using GogoKit.Models.Response;
@@ -41,7 +42,8 @@ namespace GogoKit.Tests.Clients
                                     expectedUri,
                                     It.IsAny<HttpMethod>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>(),
+                                    It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
             var client = CreateClient(conn: mockConn.Object, config: new GogoKitConfiguration {ViagogoOAuthTokenEndpoint = expectedUri});
@@ -59,7 +61,8 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<Uri>(),
                                     HttpMethod.Post,
                                     It.IsAny<object>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>(),
+                                    It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
             var client = CreateClient(conn: mockConn.Object);
@@ -78,8 +81,9 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
-                    .Callback((Uri uri, HttpMethod method, object body, IDictionary<string, IEnumerable<string>> headers) =>
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>(),
+                                    It.IsAny<CancellationToken>()))
+                    .Callback((Uri uri, HttpMethod method, object body, IDictionary<string, IEnumerable<string>> headers, CancellationToken token) =>
                         actualHeaders = headers)
                     .Returns(Task.FromResult(CreateResponse()));
             var client = CreateClient(conn: mockConn.Object);
@@ -97,7 +101,8 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
                                     It.IsNotNull<FormUrlEncodedContent>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>(),
+                                    It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
             var client = CreateClient(conn: mockConn.Object);
@@ -116,7 +121,8 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>(),
+                                    It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(CreateResponse(token: expectedToken)));
             var client = CreateClient(conn: mockConn.Object);
 
@@ -134,7 +140,8 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<Uri>(),
                                     It.IsAny<HttpMethod>(),
                                     It.IsAny<object>(),
-                                    It.IsAny<IDictionary<string, IEnumerable<string>>>()))
+                                    It.IsAny<IDictionary<string, IEnumerable<string>>>(),
+                                    It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(CreateResponse(dateHeader: expectedIssueDate.ToString())));
             var client = CreateClient(conn: mockConn.Object);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GogoKit.Enumerations;
+using System;
 using System.Threading;
 
 namespace GogoKit
@@ -8,6 +9,14 @@ namespace GogoKit
         Uri ViagogoApiRootEndpoint { get; set; }
 
         Uri ViagogoOAuthTokenEndpoint { get; set; }
+
+        /// <summary>
+        /// Determines which <see cref="ApiEnvironment"/> should be used. Setting
+        /// this will value overrides the values for <see cref="ViagogoApiRootEndpoint"/>
+        /// and <see cref="ViagogoOAuthTokenEndpoint"/>.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#sandbox-environment</remarks>
+        ApiEnvironment ViagogoApiEnvironment { get; set; }
 
         string LanguageCode { get; set; }
 

@@ -1,22 +1,36 @@
 ﻿using System;
+using GogoKit.Enumerations;
 using HalKit;
+using System.Collections.Generic;
 
 namespace GogoKit
 {
     public class GogoKitConfiguration : IGogoKitConfiguration
     {
-        public static readonly Uri DefaultViagogoApiRootEndpoint = new Uri("https://api.viagogo.net/v2");
-        public static readonly Uri DefaultViagogoOAuthTokenEndpoint = new Uri("https://www.viagogo.com/secure/oauth2/token");
+        private static readonly IDictionary<ApiEnvironment, Uri> DefaultViagogoApiRootEndpoints =
+            new Dictionary<ApiEnvironment, Uri>()
+            {
+                [ApiEnvironment.Production] = new Uri("https://api.viagogo.net/v2"),
+                [ApiEnvironment.Sandbox] = new Uri("https://sandbox.api.viagogo.net/v2")
+            };
+
+        private static readonly IDictionary<ApiEnvironment, Uri> DefaultViagogoOAuthTokenEndpoints =
+            new Dictionary<ApiEnvironment, Uri>()
+            {
+                [ApiEnvironment.Production] = new Uri("https://www.viagogo.com/secure/oauth2/token"),
+                [ApiEnvironment.Sandbox] = new Uri("https://sandbox.api.viagogo.net/v2")
+            };
 
         private readonly HalKitConfiguration _halKitConfiguration;
+        private ApiEnvironment _apiEnvironment;
 
         public GogoKitConfiguration()
         {
-            _halKitConfiguration = new HalKitConfiguration(DefaultViagogoApiRootEndpoint)
+            _halKitConfiguration = new HalKitConfiguration(DefaultViagogoApiRootEndpoints[ApiEnvironment.Production])
                                    {
                                        CaptureSynchronizationContext = false
                                    };
-            ViagogoOAuthTokenEndpoint = DefaultViagogoOAuthTokenEndpoint;
+            ViagogoApiEnvironment = ApiEnvironment.Production;
         }
 
         public Uri ViagogoApiRootEndpoint
@@ -26,6 +40,20 @@ namespace GogoKit
         }
 
         public Uri ViagogoOAuthTokenEndpoint { get; set; }
+
+        public ApiEnvironment ViagogoApiEnvironment
+        {
+            get
+            {
+                return _apiEnvironment;
+            }
+            set
+            {
+                _apiEnvironment = value;
+                ViagogoApiRootEndpoint = DefaultViagogoApiRootEndpoints[_apiEnvironment];
+                ViagogoOAuthTokenEndpoint = DefaultViagogoOAuthTokenEndpoints[_apiEnvironment];
+            }
+        }
 
         public bool CaptureSynchronizationContext
         {

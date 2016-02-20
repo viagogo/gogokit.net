@@ -37,7 +37,7 @@ namespace GogoKit
         public Uri ViagogoOAuthTokenEndpoint { get; set; }
 
         /// <summary>
-        /// The endpoint where you can obtain a user’s consent to make API calls
+        /// The endpoint where applications can obtain a user’s consent to make API calls
         /// on their behalf.
         /// </summary>
         /// <remarks>See http://developer.viagogo.net/#authorization-code-grant</remarks>

@@ -92,7 +92,7 @@ namespace GogoKit
             TokenStore = tokenStore;
             Hypermedia = new HalClient(halKitConfiguration, apiConnection);
             var linkFactory = new LinkFactory(Hypermedia);
-            OAuth2 = new OAuth2Client(oauthConnection, configuration);
+            OAuth2 = new OAuth2Client(oauthConnection, configuration, clientId);
             User = new UserClient(Hypermedia);
             Search = new SearchClient(Hypermedia);
             Addresses = new AddressesClient(User, Hypermedia, linkFactory);

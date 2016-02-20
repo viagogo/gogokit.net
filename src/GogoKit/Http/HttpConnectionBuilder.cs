@@ -110,7 +110,7 @@ namespace GogoKit.Http
                                             .HttpClientHandler(_httpClientHandler)
                                             .AdditionalHandlers(_additionalHandlers)
                                             .Build();
-                    var oauthClient = new OAuth2Client(oauthConnection, _configuration);
+                    var oauthClient = new OAuth2Client(oauthConnection, _configuration, _clientId);
                     authenticationHandler = new BearerTokenAuthenticationHandler(oauthClient, _tokenStore, _configuration);
                     break;
                 }

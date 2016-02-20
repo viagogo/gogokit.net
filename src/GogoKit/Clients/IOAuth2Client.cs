@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Models.Response;
+using System;
 
 namespace GogoKit.Clients
 {
@@ -10,6 +11,38 @@ namespace GogoKit.Clients
     /// <remarks>See http://developer.viagogo.net/#authentication</remarks>
     public interface IOAuth2Client
     {
+        /// <summary>
+        /// Gets the URL where applications can obtain a user’s consent to make API calls
+        /// on their behalf.
+        /// </summary>
+        /// <param name="redirectUri">Application return URL where the authorization code
+        /// is sent. This must match the URL registered for your application</param>
+        /// <param name="scopes">The scopes that specify the type of access that
+        /// is needed.</param>
+        /// <remarks>
+        /// If the user accepts the request, viagogo will redirect them back to your
+        /// application's <paramref name="redirectUrl"/> with a temporary code that
+        /// can be exchanged for an access token.
+        /// </remarks>
+        Uri GetAuthorizationUrl(Uri redirectUri, IEnumerable<string> scopes);
+
+        /// <summary>
+        /// Gets the URL where applications can obtain a user’s consent to make API calls
+        /// on their behalf.
+        /// </summary>
+        /// <param name="redirectUri">Application return URL where the authorization code
+        /// is sent. This must match the URL registered for your application</param>
+        /// <param name="scopes">The scopes that specify the type of access that
+        /// is needed.</param>
+        /// <param name="state">An opaque value used to maintain state between the
+        /// authorize request and the callback.</param>
+        /// <remarks>
+        /// If the user accepts the request, viagogo will redirect them back to your
+        /// application's <paramref name="redirectUrl"/> with a temporary code that
+        /// can be exchanged for an access token.
+        /// </remarks>
+        Uri GetAuthorizationUrl(Uri redirectUri, IEnumerable<string> scopes, string state);
+
         /// <summary>
         /// Requests an OAuth access token.
         /// </summary>

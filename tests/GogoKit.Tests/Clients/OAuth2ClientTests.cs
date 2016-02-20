@@ -15,12 +15,14 @@ namespace GogoKit.Tests.Clients
     public class OAuth2ClientTests
     {
         private static OAuth2Client CreateClient(
+            string clientId = "foo",
             IHttpConnection conn = null,
             IGogoKitConfiguration config = null)
         {
             return new OAuth2Client(
                 conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
-                config ?? new GogoKitConfiguration());
+                config ?? new GogoKitConfiguration(),
+                clientId);
         }
 
         private static IApiResponse<OAuth2Token> CreateResponse(
@@ -148,6 +150,27 @@ namespace GogoKit.Tests.Clients
             var actualToken = await client.GetAccessTokenAsync("grantType", null, null);
 
             Assert.AreEqual(expectedIssueDate, actualToken.IssueDate);
+        }
+
+        [Test]
+        public void GetAuthorizationUrl_ShouldReturnCorrectUrl()
+        {
+            var expectedAuthorizationUrl
+                = new Uri("https://account.vgg.com/authorize?client_id=abc123&response_type=code&" +
+                          "redirect_uri=https://myapplication/callback&" +
+                          "scope=S1 S2&state=state123");
+            var client = CreateClient(clientId: "abc123",
+                                      config: new GogoKitConfiguration
+                                      {
+                                          ViagogoAuthorizationEndpoint = new Uri("https://account.vgg.com/authorize")
+                                      });
+
+            var actualAuthorizationUrl = client.GetAuthorizationUrl(
+                                            new Uri("https://myapplication/callback"),
+                                            new[] { "S1", "S2" },
+                                            "state123");
+
+            Assert.AreEqual(expectedAuthorizationUrl, actualAuthorizationUrl);
         }
     }
 }

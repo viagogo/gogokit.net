@@ -1,3 +1,6 @@
+### New in 0.10.0 (Released 2016/02/20)
+* Added IOAuth2Client methods for the Authorization Code grant type
+
 ### New in 0.9.0 (Released 2016/02/13)
 * Added support for cancelling requests in the ISellerListingClient, IBatchClient and IUserClient
 

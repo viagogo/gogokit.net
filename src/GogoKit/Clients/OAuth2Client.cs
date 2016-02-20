@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Models.Response;
 using HalKit.Http;
+using HalKit.Services;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -13,14 +15,43 @@ namespace GogoKit.Clients
     {
         private readonly IHttpConnection _connection;
         private readonly IGogoKitConfiguration _configuration;
+        private readonly string _clientId;
+        private readonly ILinkResolver _linkResolver;
 
-        public OAuth2Client(IHttpConnection connection, IGogoKitConfiguration configuration)
+        public OAuth2Client(IHttpConnection connection,
+                            IGogoKitConfiguration configuration,
+                            string clientId)
         {
             Requires.ArgumentNotNull(connection, nameof(connection));
             Requires.ArgumentNotNull(configuration, nameof(configuration));
+            Requires.ArgumentNotNullOrEmpty(clientId, nameof(clientId));
 
             _connection = connection;
             _configuration = configuration;
+            _clientId = clientId;
+            _linkResolver = new LinkResolver();
+        }
+
+        public Uri GetAuthorizationUrl(Uri redirectUri, IEnumerable<string> scopes)
+        {
+            return GetAuthorizationUrl(redirectUri, scopes, null);
+        }
+
+        public Uri GetAuthorizationUrl(Uri redirectUri, IEnumerable<string> scopes, string state)
+        {
+            Requires.ArgumentNotNull(redirectUri, nameof(redirectUri));
+            Requires.ArgumentNotNull(scopes, nameof(scopes));
+
+            return _linkResolver.ResolveLink(
+                new Link { HRef = _configuration.ViagogoAuthorizationEndpoint.OriginalString },
+                new Dictionary<string, string>()
+                {
+                    ["client_id"] = _clientId,
+                    ["response_type"] = "code",
+                    ["redirect_uri"] = redirectUri.OriginalString,
+                    ["scope"] = string.Join(" ", scopes),
+                    ["state"] = state
+                });
         }
 
         public async Task<OAuth2Token> GetAccessTokenAsync(
@@ -43,7 +74,7 @@ namespace GogoKit.Clients
                                     new FormUrlEncodedContent(parameters),
                                     new Dictionary<string, IEnumerable<string>>
                                     {
-                                        {"Accept", new[] {"application/json"}}
+                                        ["Accept"] = new[] {"application/json"}
                                     },
                                     CancellationToken.None).ConfigureAwait(_configuration);
             var token = response.BodyAsObject;
@@ -53,6 +84,16 @@ namespace GogoKit.Clients
                                 : DateTime.UtcNow;
 
             return token;
+        }
+
+        public Task<OAuth2Token> GetAuthorizationCodeAccessTokenAsync(string code, IEnumerable<string> scopes)
+        {
+            Requires.ArgumentNotNullOrEmpty(code, nameof(code));
+
+            return GetAccessTokenAsync(
+                "authorization_code",
+                scopes,
+                new Dictionary<string, string> {["code"] = code });
         }
 
         public Task<OAuth2Token> GetClientAccessTokenAsync(IEnumerable<string> scopes)
@@ -71,7 +112,7 @@ namespace GogoKit.Clients
             return GetAccessTokenAsync(
                 "refresh_token",
                 scopes,
-                new Dictionary<string, string> {{ "refresh_token", token.RefreshToken }});
+                new Dictionary<string, string> {["refresh_token"] = token.RefreshToken});
         }
     }
 }

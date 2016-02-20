@@ -23,6 +23,16 @@ namespace GogoKit.Clients
                                               IDictionary<string, string> parameters);
 
         /// <summary>
+        /// Requests an access token that will provide access to user-specific
+        /// data (purchases, sales, listings, etc).
+        /// </summary>
+        /// <param name="code">The authorization code that was sent to your
+        /// application’s return URL.</param>
+        /// <param name="scopes">The scopes that specify the type of access that
+        /// is needed.</param>
+        Task<OAuth2Token> GetAuthorizationCodeAccessTokenAsync(string code, IEnumerable<string> scopes);
+
+        /// <summary>
         /// Requests an access token that will provide access to public, non-user-specific
         /// data (events, listings, etc).
         /// </summary>

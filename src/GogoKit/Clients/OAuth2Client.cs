@@ -43,7 +43,7 @@ namespace GogoKit.Clients
                                     new FormUrlEncodedContent(parameters),
                                     new Dictionary<string, IEnumerable<string>>
                                     {
-                                        {"Accept", new[] {"application/json"}}
+                                        ["Accept"] = new[] {"application/json"}
                                     },
                                     CancellationToken.None).ConfigureAwait(_configuration);
             var token = response.BodyAsObject;
@@ -53,6 +53,16 @@ namespace GogoKit.Clients
                                 : DateTime.UtcNow;
 
             return token;
+        }
+
+        public Task<OAuth2Token> GetAuthorizationCodeAccessTokenAsync(string code, IEnumerable<string> scopes)
+        {
+            Requires.ArgumentNotNullOrEmpty(code, nameof(code));
+
+            return GetAccessTokenAsync(
+                "authorization_code",
+                scopes,
+                new Dictionary<string, string> {["code"] = code });
         }
 
         public Task<OAuth2Token> GetClientAccessTokenAsync(IEnumerable<string> scopes)
@@ -71,7 +81,7 @@ namespace GogoKit.Clients
             return GetAccessTokenAsync(
                 "refresh_token",
                 scopes,
-                new Dictionary<string, string> {{ "refresh_token", token.RefreshToken }});
+                new Dictionary<string, string> {["refresh_token"] = token.RefreshToken});
         }
     }
 }

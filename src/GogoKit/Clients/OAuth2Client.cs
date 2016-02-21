@@ -86,14 +86,22 @@ namespace GogoKit.Clients
             return token;
         }
 
-        public Task<OAuth2Token> GetAuthorizationCodeAccessTokenAsync(string code, IEnumerable<string> scopes)
+        public Task<OAuth2Token> GetAuthorizationCodeAccessTokenAsync(
+            string code,
+            Uri redirectUri,
+            IEnumerable<string> scopes)
         {
             Requires.ArgumentNotNullOrEmpty(code, nameof(code));
+            Requires.ArgumentNotNull(redirectUri, nameof(redirectUri));
 
             return GetAccessTokenAsync(
                 "authorization_code",
                 scopes,
-                new Dictionary<string, string> {["code"] = code });
+                new Dictionary<string, string>
+                {
+                    ["code"] = code,
+                    ["redirect_uri"] = redirectUri.AbsoluteUri
+                });
         }
 
         public Task<OAuth2Token> GetClientAccessTokenAsync(IEnumerable<string> scopes)

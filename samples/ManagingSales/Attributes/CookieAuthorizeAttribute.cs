@@ -1,4 +1,7 @@
-﻿using GogoKit.Services;
+﻿using GogoKit.Models.Response;
+using GogoKit.Services;
+using ManagingSales.Services;
+using Newtonsoft.Json;
 using System;
 using System.Web;
 using System.Web.Mvc;
@@ -8,13 +11,16 @@ namespace ManagingSales.Attributes
 {
     public class CookieAuthorizeAttribute : AuthorizeAttribute
     {
-        public IOAuth2TokenStore OAuthTokenStore { get; set; }
-
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var token = OAuthTokenStore.GetTokenAsync().Result;
+            var tokenCookie = HttpContext.Current.Request.Cookies[CookieOAuth2TokenStore.CookieName];
+            OAuth2Token token = null;
+            if (tokenCookie != null)
+            {
+                token = JsonConvert.DeserializeObject<OAuth2Token>(tokenCookie.Value);
+            }
 
-            return token != null && token.IssueDate.AddSeconds(token.ExpiresIn) < DateTimeOffset.UtcNow;
+            return token != null && token.IssueDate.AddSeconds(token.ExpiresIn) > DateTimeOffset.UtcNow;
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

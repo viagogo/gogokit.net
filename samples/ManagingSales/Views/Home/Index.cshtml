@@ -1,4 +1,7 @@
-﻿@{
+﻿@using GogoKit.Models.Response;
+
+@model PagedResource<Sale>
+@{
     ViewBag.Title = "Manage Sales";
 }
 
@@ -14,13 +17,16 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">34566</th>
-            <td>2016/02/21</td>
-            <td>Madonna</td>
-            <td>2016/02/21</td>
-            <td>2</td>
-            <td>£3.65</td>
-        </tr>
+        @foreach (var sale in @Model.Items)
+        {
+            <tr>
+                <th scope="row">@sale.Id</th>
+                <td>@sale.CreatedAt.Value.ToString("g")</td>
+                <td>@sale.Event.Name</td>
+                <td>@sale.Event.StartDate.Value.ToString("g")</td>
+                <td>@sale.NumberOfTickets</td>
+                <td>@sale.Proceeds.Display</td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,5 +1,7 @@
 ﻿using GogoKit;
+using GogoKit.Models.Request;
 using ManagingSales.Attributes;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace ManagingSales.Controllers
@@ -15,9 +17,10 @@ namespace ManagingSales.Controllers
         }
 
         [Route("", Name = "Sales")]
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int? page = 1)
         {
-            return View();
+            var sales = await _viagogoClient.Sales.GetAsync(new SaleRequest { Page = page });
+            return View(sales);
         }
     }
 }

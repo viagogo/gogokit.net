@@ -36,7 +36,11 @@ namespace ManagingSales
             builder.Register(c => new ViagogoClient(ClientId,
                                                     ClientSecret,
                                                     new ProductHeaderValue("GogoKit-Samples"),
-                                                    new GogoKitConfiguration {ViagogoApiEnvironment = ApiEnvironment.Sandbox},
+                                                    new GogoKitConfiguration
+                                                    {
+                                                        ViagogoApiEnvironment = ApiEnvironment.Sandbox,
+                                                        CaptureSynchronizationContext = true
+                                                    },
                                                     c.Resolve<IOAuth2TokenStore>()))
                    .As<IViagogoClient>()
                    .InstancePerRequest();

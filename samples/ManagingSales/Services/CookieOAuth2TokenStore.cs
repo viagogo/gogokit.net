@@ -9,7 +9,7 @@ namespace ManagingSales.Services
 {
     public class CookieOAuth2TokenStore : IOAuth2TokenStore
     {
-        private const string CookieName = "_OAuthToken";
+        public const string CookieName = "__oauthtoken";
 
         public Task DeleteTokenAsync()
         {

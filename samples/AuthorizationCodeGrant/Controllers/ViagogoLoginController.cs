@@ -1,6 +1,5 @@
 ﻿using GogoKit;
 using System;
-using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -14,7 +13,7 @@ namespace AuthorizationCodeGrant.Controllers
 
         // This value must match the callback URL your application was registered
         // with. Note: Your callback url MUST be HTTPS
-        private static readonly Uri RedirectUri = new Uri("https://localhost:44300/oauth2/callback");
+        private static readonly Uri RedirectUri = new Uri("https://localhost:44300/callback");
 
         private readonly IViagogoClient _viagogoClient;
 
@@ -41,20 +40,13 @@ namespace AuthorizationCodeGrant.Controllers
             return Redirect(authorizationUrl.AbsoluteUri);
         }
 
-        [Route("oauth2/callback")]
+        [Route("callback")]
         public async Task<ActionResult> Callback(string code, string state)
         {
             // Optional: Use state to verify that this is a valid callbck request
             // that your application is expecting
 
-            var token = await _viagogoClient.OAuth2.GetAccessTokenAsync(
-                            "authorization_code",
-                            new[] { "read:user" },
-                            new Dictionary<string, string>
-                            {
-                                ["code"] = code,
-                                ["redirect_uri"] = RedirectUri.AbsoluteUri
-                            });
+            var token = await _viagogoClient.OAuth2.GetAuthorizationCodeAccessTokenAsync(code, RedirectUri, new[] { "read:user" });
 
             // Save the token for making API requests later. 
             await _viagogoClient.TokenStore.SetTokenAsync(token);

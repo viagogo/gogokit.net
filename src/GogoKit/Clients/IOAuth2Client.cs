@@ -30,8 +30,8 @@ namespace GogoKit.Clients
         /// Gets the URL where applications can obtain a user’s consent to make API calls
         /// on their behalf.
         /// </summary>
-        /// <param name="redirectUri">Application return URL where the authorization code
-        /// is sent. This must match the URL registered for your application</param>
+        /// <param name="redirectUri">Application redirect URL where the authorization
+        /// code is sent. This must match the URL registered for your application</param>
         /// <param name="scopes">The scopes that specify the type of access that
         /// is needed.</param>
         /// <param name="state">An opaque value used to maintain state between the
@@ -59,11 +59,16 @@ namespace GogoKit.Clients
         /// Requests an access token that will provide access to user-specific
         /// data (purchases, sales, listings, etc).
         /// </summary>
+        /// <param name="redirectUri">Application redirect URL where the authorization
+        /// code is sent. This must match the URL registered for your application</param>
         /// <param name="code">The authorization code that was sent to your
         /// application’s return URL.</param>
         /// <param name="scopes">The scopes that specify the type of access that
         /// is needed.</param>
-        Task<OAuth2Token> GetAuthorizationCodeAccessTokenAsync(string code, IEnumerable<string> scopes);
+        Task<OAuth2Token> GetAuthorizationCodeAccessTokenAsync(
+            string code,
+            Uri redirectUri,
+            IEnumerable<string> scopes);
 
         /// <summary>
         /// Requests an access token that will provide access to public, non-user-specific

@@ -1,3 +1,7 @@
+### New in 0.10.1 (Released 2016/02/20)
+* Added IOAuth2Client methods for the Authorization Code grant type
+* Pass `redirect_uri` parameter when getting tokens via auth code grant type
+
 ### New in 0.10.0 (Released 2016/02/20)
 * Added IOAuth2Client methods for the Authorization Code grant type
 

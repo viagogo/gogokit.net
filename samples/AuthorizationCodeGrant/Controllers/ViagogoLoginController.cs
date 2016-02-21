@@ -23,7 +23,7 @@ namespace AuthorizationCodeGrant.Controllers
             _viagogoClient = new ViagogoClient(
                                 ClientIdentifier,
                                 ClientSecret,
-                                new ProductHeaderValue("GogoKit-Samples", "1.0"));
+                                new ProductHeaderValue("GogoKit-Samples"));
         }
 
         [Route("")]

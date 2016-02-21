@@ -27,5 +27,22 @@ namespace GogoKit.Clients
         Task<Sale> RejectSaleAsync(int saleId, SaleRequest request);
 
         Task<Sale> RejectSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken);
+
+        Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] pdfFileBytes, ETicketUploadRequest request);
+
+        Task<ETicketUploads> UploadETicketsAsync(
+            Sale sale,
+            string fileName,
+            byte[] pdfFileBytes,
+            ETicketUploadRequest request,
+            CancellationToken cancellationToken);
+
+        Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds, SaleRequest request);
+
+        Task<Sale> SaveETicketsAsync(
+            int saleId,
+            IEnumerable<int> eticketIds,
+            SaleRequest request,
+            CancellationToken cancellationToken);
     }
 }

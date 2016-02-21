@@ -6,6 +6,10 @@ using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
+using System.Net.Http;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Linq;
 
 namespace GogoKit.Clients
 {
@@ -75,6 +79,55 @@ namespace GogoKit.Clients
         public Task<Sale> RejectSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken)
         {
             return PatchSaleAsync(saleId, new SaleUpdate { IsConfirmed = false }, request, cancellationToken);
+        }
+
+        public Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] pdfFileBytes, ETicketUploadRequest request)
+        {
+            return UploadETicketsAsync(sale, fileName, pdfFileBytes, request, CancellationToken.None);
+        }
+
+        public Task<ETicketUploads> UploadETicketsAsync(
+            Sale sale,
+            string fileName,
+            byte[] pdfFileBytes,
+            ETicketUploadRequest request,
+            CancellationToken cancellationToken)
+        {
+            Requires.ArgumentNotNull(sale, nameof(sale));
+            Requires.ArgumentNotNull(sale.UploadETicketsLink, nameof(sale.UploadETicketsLink));
+            Requires.ArgumentNotNullOrEmpty(fileName, nameof(fileName));
+            Requires.ArgumentNotNull(pdfFileBytes, nameof(pdfFileBytes));
+
+            var multipartContent = new MultipartFormDataContent($"---GogoKitBoundary{Guid.NewGuid()}");
+            var fileContent = new StreamContent(new MemoryStream(pdfFileBytes));
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            multipartContent.Add(fileContent, "file", fileName);
+
+            return _halClient.PostAsync<ETicketUploads>(
+                sale.UploadETicketsLink,
+                multipartContent,
+                request,
+                cancellationToken);
+        }
+
+        public Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds, SaleRequest request)
+        {
+            return SaveETicketsAsync(saleId, eticketIds, request);
+        }
+
+        public Task<Sale> SaveETicketsAsync(
+            int saleId,
+            IEnumerable<int> eticketIds,
+            SaleRequest request,
+            CancellationToken cancellationToken)
+        {
+            Requires.ArgumentNotNull(eticketIds, nameof(eticketIds));
+
+            return PatchSaleAsync(
+                saleId,
+                new SaleUpdate { ETicketIds = eticketIds.ToList() },
+                request,
+                cancellationToken);
         }
 
         private async Task<Sale> PatchSaleAsync(

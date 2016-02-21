@@ -54,6 +54,7 @@
     <Compile Include="Models\Request\CategoryRequest.cs" />
     <Compile Include="Models\Request\CountryRequest.cs" />
     <Compile Include="Models\Request\CurrencyRequest.cs" />
+    <Compile Include="Models\Request\ETicketUploadRequest.cs" />
     <Compile Include="Models\Request\EventRequest.cs" />
     <Compile Include="Models\Request\ListingConstraintsRequest.cs" />
     <Compile Include="Models\Request\ListingRequest.cs" />
@@ -80,6 +81,9 @@
     <Compile Include="Models\Response\EmbeddedCategory.cs" />
     <Compile Include="Models\Response\EmbeddedEvent.cs" />
     <Compile Include="Models\Response\EmbeddedVenue.cs" />
+    <Compile Include="Models\Response\ETicket.cs" />
+    <Compile Include="Models\Response\ETicketUpload.cs" />
+    <Compile Include="Models\Response\ETicketUploads.cs" />
     <Compile Include="Models\Response\ListingConstraints.cs" />
     <Compile Include="Models\Response\ListingNote.cs" />
     <Compile Include="Models\Response\Money.cs" />

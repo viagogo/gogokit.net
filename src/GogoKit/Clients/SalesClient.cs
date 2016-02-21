@@ -68,7 +68,7 @@ namespace GogoKit.Clients
 
         public Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken)
         {
-            return PatchSaleAsync(saleId, new SaleUpdate { IsConfirmed = true }, request, cancellationToken);
+            return UpdateAsync(saleId, new SaleUpdate { IsConfirmed = true }, request, cancellationToken);
         }
 
         public Task<Sale> RejectSaleAsync(int saleId, SaleRequest request)
@@ -78,7 +78,7 @@ namespace GogoKit.Clients
 
         public Task<Sale> RejectSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken)
         {
-            return PatchSaleAsync(saleId, new SaleUpdate { IsConfirmed = false }, request, cancellationToken);
+            return UpdateAsync(saleId, new SaleUpdate { IsConfirmed = false }, request, cancellationToken);
         }
 
         public Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] pdfFileBytes, ETicketUploadRequest request)
@@ -123,14 +123,14 @@ namespace GogoKit.Clients
         {
             Requires.ArgumentNotNull(eticketIds, nameof(eticketIds));
 
-            return PatchSaleAsync(
+            return UpdateAsync(
                 saleId,
                 new SaleUpdate { ETicketIds = eticketIds.ToList() },
                 request,
                 cancellationToken);
         }
 
-        private async Task<Sale> PatchSaleAsync(
+        private async Task<Sale> UpdateAsync(
             int saleId,
             SaleUpdate update,
             SaleRequest request,

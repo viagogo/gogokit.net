@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationCodeGrant", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefreshTokenGrant", "RefreshTokenGrant\RefreshTokenGrant.csproj", "{1D3DB5FC-8E6E-4BAA-B0C0-1EB4AEBBD129}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagingSales", "ManagingSales\ManagingSales.csproj", "{00CE598F-EDEC-456C-B391-EB709B2FC4D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1D3DB5FC-8E6E-4BAA-B0C0-1EB4AEBBD129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D3DB5FC-8E6E-4BAA-B0C0-1EB4AEBBD129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D3DB5FC-8E6E-4BAA-B0C0-1EB4AEBBD129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CE598F-EDEC-456C-B391-EB709B2FC4D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CE598F-EDEC-456C-B391-EB709B2FC4D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CE598F-EDEC-456C-B391-EB709B2FC4D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CE598F-EDEC-456C-B391-EB709B2FC4D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

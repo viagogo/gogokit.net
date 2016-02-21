@@ -1,8 +1,10 @@
 ﻿using GogoKit;
+using ManagingSales.Attributes;
 using System.Web.Mvc;
 
 namespace ManagingSales.Controllers
 {
+    [CookieAuthorize]
     public class HomeController : Controller
     {
         private IViagogoClient _viagogoClient;

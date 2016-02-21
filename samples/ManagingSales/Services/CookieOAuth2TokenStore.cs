@@ -23,7 +23,7 @@ namespace ManagingSales.Services
             var tokenCookie = HttpContext.Current.Request.Cookies[CookieName];
             if (tokenCookie == null)
             {
-                return null;
+                return Task.FromResult<OAuth2Token>(null);
             }
 
             var token = JsonConvert.DeserializeObject<OAuth2Token>(tokenCookie.Value);

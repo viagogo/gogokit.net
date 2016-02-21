@@ -31,6 +31,7 @@ namespace ManagingSales
             var builder = new ContainerBuilder();
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterFilterProvider();
 
             builder.Register(c => new ViagogoClient(ClientId,
                                                     ClientSecret,

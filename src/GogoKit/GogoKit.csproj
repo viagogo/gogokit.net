@@ -76,6 +76,7 @@
     <Compile Include="Models\Response\AddressSnapshot.cs" />
     <Compile Include="Models\Response\ApiError.cs" />
     <Compile Include="Models\Response\AuthorizationError.cs" />
+    <Compile Include="Models\Response\DeliveryMethod.cs" />
     <Compile Include="Models\Response\EmbeddedCategory.cs" />
     <Compile Include="Models\Response\EmbeddedEvent.cs" />
     <Compile Include="Models\Response\EmbeddedVenue.cs" />

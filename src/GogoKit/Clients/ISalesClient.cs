@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
+using System.Threading;
 
 namespace GogoKit.Clients
 {
@@ -16,5 +17,15 @@ namespace GogoKit.Clients
         Task<IReadOnlyList<Sale>> GetAllAsync();
 
         Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request);
+
+        Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request, CancellationToken cancellationToken);
+
+        Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request);
+
+        Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken);
+
+        Task<Sale> RejectSaleAsync(int saleId, SaleRequest request);
+
+        Task<Sale> RejectSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken);
     }
 }

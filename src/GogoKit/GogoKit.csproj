@@ -65,6 +65,7 @@
     <Compile Include="Models\Request\RequestParameters.cs" />
     <Compile Include="Models\Request\RootRequest.cs" />
     <Compile Include="Models\Request\SaleRequest.cs" />
+    <Compile Include="Models\Request\SaleUpdate.cs" />
     <Compile Include="Models\Request\SellerListingRequest.cs" />
     <Compile Include="Models\Request\SellerListingUpdate.cs" />
     <Compile Include="Models\Request\UserRequest.cs" />

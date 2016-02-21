@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
@@ -44,10 +46,45 @@ namespace GogoKit.Clients
             return GetAllAsync(new SaleRequest());
         }
 
-        public async Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request)
+        public Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request)
+        {
+            return GetAllAsync(request, CancellationToken.None);
+        }
+
+        public async Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request, CancellationToken cancellationToken)
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Sale>(user.SalesLink, request).ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Sale>(user.SalesLink, request, cancellationToken).ConfigureAwait(_halClient);
+        }
+
+        public Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request)
+        {
+            return ConfirmSaleAsync(saleId, request, CancellationToken.None);
+        }
+
+        public Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken)
+        {
+            return PatchSaleAsync(saleId, new SaleUpdate { IsConfirmed = true }, request, cancellationToken);
+        }
+
+        public Task<Sale> RejectSaleAsync(int saleId, SaleRequest request)
+        {
+            return RejectSaleAsync(saleId, request, CancellationToken.None);
+        }
+
+        public Task<Sale> RejectSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken)
+        {
+            return PatchSaleAsync(saleId, new SaleUpdate { IsConfirmed = false }, request, cancellationToken);
+        }
+
+        private async Task<Sale> PatchSaleAsync(
+            int saleId,
+            SaleUpdate update,
+            SaleRequest request,
+            CancellationToken cancellationToken)
+        {
+            var saleLink = await _linkFactory.CreateLinkAsync($"sales/{saleId}").ConfigureAwait(_halClient);
+            return await _halClient.PatchAsync<Sale>(saleLink, update, request, cancellationToken);
         }
     }
 }

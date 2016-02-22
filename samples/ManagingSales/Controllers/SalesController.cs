@@ -11,11 +11,11 @@ using System.Web.Mvc;
 namespace ManagingSales.Controllers
 {
     [CookieAuthorize]
-    public class HomeController : Controller
+    public class SalesController : Controller
     {
         private IViagogoClient _viagogoClient;
 
-        public HomeController(IViagogoClient viagogoClient)
+        public SalesController(IViagogoClient viagogoClient)
         {
             _viagogoClient = viagogoClient;
         }

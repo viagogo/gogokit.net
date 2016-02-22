@@ -48,8 +48,8 @@
                     ? new { @class = "btn btn-default", type = "button" } as object
                     : new { @class = "btn btn-default", type = "button", disabled = "disabled" } as object;
         }
-        @Html.ActionLink("<<", "Index", "Home", new { page = Model.PreviousPage }, htmlAttributesFactoryFunc(Model.PreviousPage))
+        @Html.ActionLink("<", "Index", "Sales", new { page = Model.PreviousPage }, htmlAttributesFactoryFunc(Model.PreviousPage))
         <span>@Model.CurrentPage of @Model.NumberOfPages</span>
-        @Html.ActionLink(">>", "Index", "Home", new { page = Model.NextPage }, htmlAttributesFactoryFunc(Model.NextPage))
+        @Html.ActionLink(">", "Index", "Sales", new { page = Model.NextPage }, htmlAttributesFactoryFunc(Model.NextPage))
     </div>
 </div>

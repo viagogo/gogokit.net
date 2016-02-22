@@ -43,6 +43,20 @@ var searchResults = await client.Search.GetSearchResultsAsync("FC Barcelona tick
 var genres = await client.Categories.GetAllGenresAsync();
 ```
 
+### Sandbox Environment
+
+```c#
+// You can use the GogoKitConfiguration to switch between the sandbox and
+// production environments. See http://developer.viagogo.net/#sandbox-environment
+var client = new ViagogoClient (SANDBOX_CLIENT_ID,
+                                SANDBOX_CLIENT_SECRET,
+                                new ProductHeaderValue("AwesomeApp", "1.0"),
+                                new GogoKitConfiguration
+                                {
+                                    ViagogoApiEnvironment = ApiEnvironment.Sandbox
+                                });
+```
+
 
 ## Supported Platforms
 

@@ -1,30 +1,28 @@
 using System;
 using System.Threading.Tasks;
-using HalKit;
 using HalKit.Models.Response;
 
 namespace GogoKit.Services
 {
     public class LinkFactory : ILinkFactory
     {
-        private readonly IHalClient _halClient;
+        private readonly IGogoKitConfiguration _configuration;
 
-        public LinkFactory(IHalClient halClient)
+        public LinkFactory(IGogoKitConfiguration configuration)
         {
-            Requires.ArgumentNotNull(halClient, nameof(halClient));
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
 
-            _halClient = halClient;
+            _configuration = configuration;
         }
 
         public async Task<Link> CreateLinkAsync(string relativeUriFormat, params object[] args)
         {
             Requires.ArgumentNotNull(relativeUriFormat, nameof(relativeUriFormat));
 
-            var root = await _halClient.GetRootAsync().ConfigureAwait(_halClient);
-            var baseUri = new Uri(root.SelfLink.HRef);
-            var relativeUri = new Uri(string.Format(relativeUriFormat, args), UriKind.Relative);
+            var relativeUri = string.Format(relativeUriFormat, args);
+            var href = new Uri(_configuration.ViagogoApiRootEndpoint, $"{_configuration.ViagogoApiRootEndpoint}/{relativeUri}");
 
-            return new Link { HRef = new Uri(baseUri, relativeUri).ToString() };
+            return new Link { HRef = href.ToString() };
         }
     }
 }

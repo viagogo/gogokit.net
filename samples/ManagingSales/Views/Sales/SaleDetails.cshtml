@@ -1,0 +1,41 @@
+﻿@model GogoKit.Models.Response.Sale
+@{
+    ViewBag.Title = "Sale " + Model.Id.Value;
+    var ticketsText = Model.NumberOfTickets > 1 ? "Tickets" : "Ticket";
+}
+
+<div>
+    <h2>Sale #@Model.Id</h2>
+    <h6>Order Placed: @Model.CreatedAt.Value.ToString("d")</h6>
+</div>
+
+<div>
+    <hr />
+    <h4>@Model.Event.Name</h4>
+    <h6>@Model.Event.StartDate.Value.ToString("F")</h6>
+    <h6>@Model.Venue.Name, @Model.Venue.City, @Model.Venue.Country.Name</h6>
+    <h6>@Model.NumberOfTickets.Value @ticketsText</h6>
+    <h6>Section: @Model.Seating.Section</h6>
+</div>
+<div>
+    <hr />
+    <h4>@Model.Status</h4>
+    <h5>@Model.StatusDescription</h5>
+</div>
+<div>
+    <hr />
+    @if (Model.ConfirmLink != null)
+    {
+        using (Html.BeginForm("ConfirmSale", "Sales", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(m => m.Id, new { @Name = "saleId" })
+            <button type="submit" class="btn btn-default">@Model.ConfirmLink.Title</button>
+        }
+    }
+    @if (Model.UploadETicketsLink != null)
+    {
+        @Html.ActionLink(Model.UploadETicketsLink.Title, "Index", "ETickets", new { saleId = Model.Id}, new { @class = "btn btn-default", type = "button"})
+    }
+</div>

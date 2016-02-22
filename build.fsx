@@ -39,10 +39,12 @@ Target "AssemblyInfo" (fun _ ->
         Attribute.ComVisible false ]
 )
 
+Target "RestorePackages" (fun _ ->
+    "./GogoKit.sln" |> RestoreMSSolutionPackages(fun p -> p)
+)
+
 Target "BuildApp" (fun _ ->
     let buildMode = getBuildParamOrDefault "buildMode" "Release"
-
-    RestorePackages()
 
     MSBuild buildDir "Build" ["Configuration", buildMode] ["./GogoKit.sln"]
     |> Log "AppBuild-Output: "
@@ -96,6 +98,7 @@ Target "CreatePackages" DoNothing
 
 "Clean"
     ==> "AssemblyInfo"
+    ==> "RestorePackages"
     ==> "BuildApp"
     ==> "UnitTests"
     ==> "CreatePackage"

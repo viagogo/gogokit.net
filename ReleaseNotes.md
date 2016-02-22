@@ -1,4 +1,7 @@
-### New in 0.10.1 (Released 2016/02/20)
+### New in 0.11.0 (Released 2016/02/21)
+* Added ISalesClient functionality for managing sales and e-tickets
+
+### New in 0.10.1 (Released 2016/02/21)
 * Added IOAuth2Client methods for the Authorization Code grant type
 * Pass `redirect_uri` parameter when getting tokens via auth code grant type
 

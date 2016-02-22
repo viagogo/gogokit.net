@@ -43,8 +43,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GogoKit, Version=0.10.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GogoKit.0.10.1\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\GogoKit.dll</HintPath>
+    <Reference Include="GogoKit, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GogoKit.0.11.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\GogoKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HalKit, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -151,7 +151,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>43914</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44300/</IISUrl>
+          <IISUrl>https://localhost:44306/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

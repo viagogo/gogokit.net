@@ -1,0 +1,51 @@
+﻿@using ManagingSales.Models;
+@model SalesViewModel
+@{
+    ViewBag.Title = "Manage Sales";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>Sale Date</th>
+            <th>Event Name</th>
+            <th>Event Date</th>
+            <th>No. of Tickets</th>
+            <th>Proceeds</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sale in @Model.Sales)
+        {
+            <tr>
+                <th scope="row">@sale.Id</th>
+                <td>@sale.CreatedAt.Value.ToString("d")</td>
+                <td>@sale.Event.Name</td>
+                <td>@sale.Event.StartDate.Value.ToString("g")</td>
+                <td>@sale.NumberOfTickets</td>
+                <td>@sale.Proceeds.Display</td>
+                <td>@sale.Status</td>
+                <td>
+                    @Html.ActionLink("Details", "Details",  "Sales", new {saleId = @sale.Id}, null)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        @{
+            Func<int?, object> htmlAttributesFactoryFunc
+                = (int? page) => page.HasValue
+                    ? new { @class = "btn btn-default", type = "button" } as object
+                    : new { @class = "btn btn-default", type = "button", disabled = "disabled" } as object;
+        }
+        @Html.ActionLink("<", "Index", "Sales", new { page = Model.PreviousPage }, htmlAttributesFactoryFunc(Model.PreviousPage))
+        <span>@Model.CurrentPage of @Model.NumberOfPages</span>
+        @Html.ActionLink(">", "Index", "Sales", new { page = Model.NextPage }, htmlAttributesFactoryFunc(Model.NextPage))
+    </div>
+</div>

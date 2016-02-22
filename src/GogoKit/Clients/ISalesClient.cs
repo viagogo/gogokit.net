@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
+using System.Threading;
 
 namespace GogoKit.Clients
 {
@@ -16,5 +17,40 @@ namespace GogoKit.Clients
         Task<IReadOnlyList<Sale>> GetAllAsync();
 
         Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request);
+
+        Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request, CancellationToken cancellationToken);
+
+        Task<Sale> ConfirmSaleAsync(int saleId);
+
+        Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request);
+
+        Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken);
+
+        Task<Sale> RejectSaleAsync(int saleId);
+
+        Task<Sale> RejectSaleAsync(int saleId, SaleRequest request);
+
+        Task<Sale> RejectSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken);
+
+        Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] pdfFileBytes);
+
+        Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] pdfFileBytes, ETicketUploadRequest request);
+
+        Task<ETicketUploads> UploadETicketsAsync(
+            Sale sale,
+            string fileName,
+            byte[] pdfFileBytes,
+            ETicketUploadRequest request,
+            CancellationToken cancellationToken);
+
+        Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds);
+
+        Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds, SaleRequest request);
+
+        Task<Sale> SaveETicketsAsync(
+            int saleId,
+            IEnumerable<int> eticketIds,
+            SaleRequest request,
+            CancellationToken cancellationToken);
     }
 }

@@ -21,7 +21,7 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "scope")]
         public string Scope { get; set; }
 
-        [IgnoreDataMember]
+        [DataMember(Name = "issued_at")]
         public DateTimeOffset IssueDate { get; set; }
 
         public override string ToString()

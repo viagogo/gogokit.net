@@ -21,7 +21,7 @@ namespace ManagingSales.Controllers
             _viagogoClient = viagogoClient;
         }
 
-        [Route("")]
+        [Route("", Name = "Sales")]
         public async Task<ActionResult> Index(int? page = 1)
         {
             var sales = await _viagogoClient.Sales.GetAsync(new SaleRequest { Page = page });

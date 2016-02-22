@@ -148,11 +148,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\CookieAuthorizeAttribute.cs" />
+    <Compile Include="Controllers\ETicketsController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ETicketUploadsViewModel.cs" />
     <Compile Include="Models\SaleViewModel.cs" />
     <Compile Include="Models\SalesViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -192,6 +194,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Sales\Index.cshtml" />
     <Content Include="Views\Sales\SaleDetails.cshtml" />
+    <Content Include="Views\ETickets\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Login\" />

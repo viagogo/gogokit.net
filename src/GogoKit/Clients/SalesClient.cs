@@ -61,6 +61,11 @@ namespace GogoKit.Clients
             return await _halClient.GetAllPagesAsync<Sale>(user.SalesLink, request, cancellationToken).ConfigureAwait(_halClient);
         }
 
+        public Task<Sale> ConfirmSaleAsync(int saleId)
+        {
+            return ConfirmSaleAsync(saleId, new SaleRequest());
+        }
+
         public Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request)
         {
             return ConfirmSaleAsync(saleId, request, CancellationToken.None);
@@ -71,6 +76,11 @@ namespace GogoKit.Clients
             return UpdateAsync(saleId, new SaleUpdate { IsConfirmed = true }, request, cancellationToken);
         }
 
+        public Task<Sale> RejectSaleAsync(int saleId)
+        {
+            return RejectSaleAsync(saleId, new SaleRequest());
+        }
+
         public Task<Sale> RejectSaleAsync(int saleId, SaleRequest request)
         {
             return RejectSaleAsync(saleId, request, CancellationToken.None);
@@ -79,6 +89,11 @@ namespace GogoKit.Clients
         public Task<Sale> RejectSaleAsync(int saleId, SaleRequest request, CancellationToken cancellationToken)
         {
             return UpdateAsync(saleId, new SaleUpdate { IsConfirmed = false }, request, cancellationToken);
+        }
+
+        public Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] pdfFileBytes)
+        {
+            return UploadETicketsAsync(sale, fileName, pdfFileBytes, new ETicketUploadRequest());
         }
 
         public Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] pdfFileBytes, ETicketUploadRequest request)
@@ -110,9 +125,15 @@ namespace GogoKit.Clients
                 cancellationToken);
         }
 
+
+        public Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds)
+        {
+            return SaveETicketsAsync(saleId, eticketIds, new SaleRequest());
+        }
+
         public Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds, SaleRequest request)
         {
-            return SaveETicketsAsync(saleId, eticketIds, request);
+            return SaveETicketsAsync(saleId, eticketIds, request, CancellationToken.None);
         }
 
         public Task<Sale> SaveETicketsAsync(

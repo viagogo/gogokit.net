@@ -81,7 +81,7 @@ namespace GogoKit
             var currentLink = link;
             var currentParameters = new Dictionary<string, string>(parameters ?? new Dictionary<string, string>());
             // Increase page-size to reduce the number of round-trips
-            var maxPageSize = "1000";
+            var maxPageSize = "10000";
             if (currentParameters.ContainsKey("page_size"))
             {
                 currentParameters["page_size"] = maxPageSize;

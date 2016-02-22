@@ -1,4 +1,5 @@
 ﻿using GogoKit;
+using GogoKit.Exceptions;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using ManagingSales.Attributes;
@@ -20,13 +21,13 @@ namespace ManagingSales.Controllers
             _viagogoClient = viagogoClient;
         }
 
-        [Route("", Name = "Sales")]
+        [Route("")]
         public async Task<ActionResult> Index(int? page = 1)
         {
             var sales = await _viagogoClient.Sales.GetAsync(new SaleRequest { Page = page });
             var salesViewModel = new SalesViewModel
                                  {
-                                    Sales = sales.Items.Select(CreateSaleViewModel).ToList(),
+                                    Sales = sales.Items,
                                     CurrentPage = sales.Page.Value,
                                     NextPage = sales.NextLink != null ? sales.Page.Value + 1 : (int?)null,
                                     PreviousPage = sales.PrevLink != null ? sales.Page.Value - 1 : (int?)null,
@@ -35,23 +36,35 @@ namespace ManagingSales.Controllers
             return View(salesViewModel);
         }
 
-        private SaleViewModel CreateSaleViewModel(Sale sale)
+        [Route("sales/{saleId}")]
+        public async Task<ActionResult> Details(int saleId)
         {
-            string title = null;
-            if (sale.ConfirmLink != null)
+            Sale sale;
+            try
             {
-                title = sale.ConfirmLink.Title;
+                sale = await _viagogoClient.Sales.GetAsync(saleId);
+                return View("SaleDetails", sale);
             }
-            if (sale.UploadETicketsLink != null)
+            catch (ResourceNotFoundException)
             {
-                title = sale.UploadETicketsLink.Title;
+                return HttpNotFound();
             }
+        }
 
-            return new SaleViewModel
+        [Route("sales/{saleId}/confirm")]
+        [HttpPost]
+        public async Task<ActionResult> ConfirmSale(int saleId)
+        {
+            Sale sale;
+            try
             {
-                Resource = sale,
-                ActionTitle = title
-            };
+                sale = await _viagogoClient.Sales.ConfirmSaleAsync(saleId, new SaleRequest());
+                return View("SaleDetails", sale);
+            }
+            catch (ResourceNotFoundException)
+            {
+                return HttpNotFound();
+            }
         }
     }
 }

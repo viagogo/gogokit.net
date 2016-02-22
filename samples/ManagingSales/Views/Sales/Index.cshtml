@@ -18,22 +18,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var saleViewModel in @Model.Sales)
+        @foreach (var sale in @Model.Sales)
         {
-            var sale = saleViewModel.Resource;
             <tr>
                 <th scope="row">@sale.Id</th>
-                <td>@sale.CreatedAt.Value.ToString("g")</td>
+                <td>@sale.CreatedAt.Value.ToString("d")</td>
                 <td>@sale.Event.Name</td>
                 <td>@sale.Event.StartDate.Value.ToString("g")</td>
                 <td>@sale.NumberOfTickets</td>
                 <td>@sale.Proceeds.Display</td>
                 <td>@sale.Status</td>
                 <td>
-                    @if (saleViewModel.ActionTitle != null)
-                    {
-                        @Html.ActionLink(saleViewModel.ActionTitle, "Sales", null, new { @class = "btn btn-primary", type = "button" })
-                    }
+                    @Html.ActionLink("Details", "Details",  "Sales", new {saleId = @sale.Id}, null)
                 </td>
             </tr>
         }

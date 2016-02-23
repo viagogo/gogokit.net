@@ -72,5 +72,13 @@ namespace GogoKit.Models.Response
         /// <remarks>See http://developer.viagogo.net/#viagogouser. </remarks>
         [Rel("viagogo:user")]
         public Link UserLink { get; set; }
+
+        /// <summary>
+        /// You can use a POST request on the href of this link to create a
+        /// <see cref="SellerListing"/> for an event.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#viagogocreatesellerlisting</remarks>
+        [Rel("viagogo:createsellerlisting")]
+        public Link CreateSellerListingLink { get; set; }
     }
 }

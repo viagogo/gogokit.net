@@ -1,3 +1,6 @@
+### New in 0.12.0 (Released 2016/02/23)
+* Added ISellerListingsClient method for creating requested event listings
+
 ### New in 0.11.0 (Released 2016/02/21)
 * Added ISalesClient functionality for managing sales and e-tickets
 

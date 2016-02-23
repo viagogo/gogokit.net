@@ -6,6 +6,7 @@ using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -103,15 +104,43 @@ namespace GogoKit.Clients
             return await _halClient.PostAsync<SellerListingPreview>(previewLink, listingUpdate).ConfigureAwait(_halClient);
         }
 
+        public Task<SellerListing> CreateAsync(NewRequestedEventSellerListing listing)
+        {
+            return CreateAsync(listing, new SellerListingRequest());
+        }
+
+        public Task<SellerListing> CreateAsync(NewRequestedEventSellerListing listing, SellerListingRequest request)
+        {
+            return CreateAsync(listing, new SellerListingRequest(), CancellationToken.None);
+        }
+
+        public async Task<SellerListing> CreateAsync(
+            NewRequestedEventSellerListing listing,
+            SellerListingRequest request,
+            CancellationToken cancellationToken)
+        {
+            var createListingLink = await _linkFactory.CreateLinkAsync("sellerListings").ConfigureAwait(_halClient);
+            return await _halClient.PostAsync<SellerListing>(createListingLink, listing, request, cancellationToken).ConfigureAwait(_halClient);
+        }
+
         public Task<SellerListing> CreateAsync(int eventId, NewSellerListing listing)
         {
             return CreateAsync(eventId, listing, new SellerListingRequest());
         }
 
-        public async Task<SellerListing> CreateAsync(int eventId, NewSellerListing listing, SellerListingRequest request)
+        public Task<SellerListing> CreateAsync(int eventId, NewSellerListing listing, SellerListingRequest request)
+        {
+            return CreateAsync(eventId, listing, request, CancellationToken.None);
+        }
+
+        public async Task<SellerListing> CreateAsync(
+            int eventId,
+            NewSellerListing listing,
+            SellerListingRequest request,
+            CancellationToken cancellationToken)
         {
             var createListingLink = await _linkFactory.CreateLinkAsync($"events/{eventId}/sellerlistings").ConfigureAwait(_halClient);
-            return await _halClient.PostAsync<SellerListing>(createListingLink, listing, request).ConfigureAwait(_halClient);
+            return await _halClient.PostAsync<SellerListing>(createListingLink, listing, request, cancellationToken).ConfigureAwait(_halClient);
         }
 
         public Task<SellerListing> UpdateAsync(int sellerListingId, SellerListingUpdate listingUpdate)

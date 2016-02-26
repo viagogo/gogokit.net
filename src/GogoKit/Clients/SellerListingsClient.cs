@@ -6,25 +6,19 @@ using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
-using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
     public class SellerListingsClient : ISellerListingsClient
     {
-        private readonly IUserClient _userClient;
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
 
-        public SellerListingsClient(IUserClient userClient,
-                                    IHalClient halClient,
-                                    ILinkFactory linkFactory)
+        public SellerListingsClient(IHalClient halClient, ILinkFactory linkFactory)
         {
-            Requires.ArgumentNotNull(userClient, nameof(userClient));
             Requires.ArgumentNotNull(halClient, nameof(halClient));
             Requires.ArgumentNotNull(linkFactory, nameof(linkFactory));
 
-            _userClient = userClient;
             _halClient = halClient;
             _linkFactory = linkFactory;
         }
@@ -47,8 +41,8 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<SellerListing>> GetAsync(SellerListingRequest request)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<SellerListing>>(user.SellerListingsLink, request).ConfigureAwait(_halClient);
+            var sellerListingsLink = await _linkFactory.CreateLinkAsync("sellerlistings").ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<SellerListing>>(sellerListingsLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<SellerListing>> GetAllAsync()
@@ -63,9 +57,9 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request, CancellationToken cancellationToken)
         {
-            var user = await _userClient.GetAsync(new UserRequest(), cancellationToken).ConfigureAwait(_halClient);
+            var sellerListingsLink = await _linkFactory.CreateLinkAsync("sellerlistings").ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<SellerListing>(
-                            user.SellerListingsLink,
+                            sellerListingsLink,
                             request,
                             cancellationToken).ConfigureAwait(_halClient);
         }

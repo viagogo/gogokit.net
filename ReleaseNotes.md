@@ -1,3 +1,6 @@
+### New in 0.12.1 (Released 2016/02/26)
+* Stop using IUserClient in SellerListingsClient to reduce scope requirements
+
 ### New in 0.12.0 (Released 2016/02/23)
 * Added ISellerListingsClient method for creating requested event listings
 

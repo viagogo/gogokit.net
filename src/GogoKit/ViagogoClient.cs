@@ -105,7 +105,7 @@ namespace GogoKit
             Events = new EventsClient(Hypermedia);
             Listings = new ListingsClient(Hypermedia);
             Venues = new VenuesClient(Hypermedia);
-            SellerListings = new SellerListingsClient(User, Hypermedia, linkFactory);
+            SellerListings = new SellerListingsClient(Hypermedia, linkFactory);
             Webhooks = new WebhooksClient(User, Hypermedia, linkFactory);
 
             var jsonSerializer = new DefaultJsonSerializer();

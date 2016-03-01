@@ -40,8 +40,10 @@
     <Compile Include="Clients\BatchClient.cs" />
     <Compile Include="Clients\IBatchClient.cs" />
     <Compile Include="Clients\ISellerListingsClient.cs" />
+    <Compile Include="Clients\IShipmentsClient.cs" />
     <Compile Include="Clients\IWebhooksClient.cs" />
     <Compile Include="Clients\SellerListingsClient.cs" />
+    <Compile Include="Clients\ShipmentsClient.cs" />
     <Compile Include="Clients\WebhooksClient.cs" />
     <Compile Include="Enumerations\ApiEnvironment.cs" />
     <Compile Include="Default.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Models\Request\SaleUpdate.cs" />
     <Compile Include="Models\Request\SellerListingRequest.cs" />
     <Compile Include="Models\Request\SellerListingUpdate.cs" />
+    <Compile Include="Models\Request\ShipmentRequest.cs" />
     <Compile Include="Models\Request\UserRequest.cs" />
     <Compile Include="Models\Request\VenueRequest.cs" />
     <Compile Include="Models\Request\WebhookRequest.cs" />

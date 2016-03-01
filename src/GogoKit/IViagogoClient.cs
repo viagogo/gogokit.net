@@ -15,6 +15,7 @@ namespace GogoKit
         IAddressesClient Addresses { get; }
         IPurchasesClient Purchases { get; }
         ISalesClient Sales { get; }
+        IShipmentsClient Shipments { get; }
         ICountriesClient Countries { get; }
         ICurrenciesClient Currencies { get; }
         IPaymentMethodsClient PaymentMethods { get; }

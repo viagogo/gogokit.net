@@ -52,8 +52,8 @@
       <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GogoKit, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GogoKit.0.11.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\GogoKit.dll</HintPath>
+    <Reference Include="GogoKit, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GogoKit.0.13.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\GogoKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HalKit, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">

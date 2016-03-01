@@ -44,5 +44,23 @@ namespace GogoKit.Clients
         /// <param name="cancellationToken">The cancellation token to cancel operation.</param>
         /// <returns>The newly created <see cref="Shipment"/></returns>
         Task<Shipment> CreateAsync(int saleId, ShipmentRequest request, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Get the pickup windows available for <see cref="Carrier"/> collection.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#addresscarrier</remarks>
+        Task<Carrier> GetPickupWindowsAsync(Address pickupAddress);
+
+        /// <summary>
+        /// Get the pickup windows available for <see cref="Carrier"/> collection.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#addresscarrier</remarks>
+        Task<Carrier> GetPickupWindowsAsync(Address pickupAddress, CarrierRequest request);
+
+        /// <summary>
+        /// Creates a new pickup for the ticket(s).
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/?shell#carriercreatepickup</remarks>
+        Task<Pickup> CreatePickupAsync(Carrier carrier, PickupWindow pickupWindow);
     }
 }

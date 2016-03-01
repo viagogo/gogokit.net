@@ -53,6 +53,7 @@
     <Compile Include="Http\LocalizationHandler.cs" />
     <Compile Include="Http\UserAgentHandler.cs" />
     <Compile Include="Models\Request\AddressRequest.cs" />
+    <Compile Include="Models\Request\CarrierRequest.cs" />
     <Compile Include="Models\Request\CategoryRequest.cs" />
     <Compile Include="Models\Request\CountryRequest.cs" />
     <Compile Include="Models\Request\CurrencyRequest.cs" />

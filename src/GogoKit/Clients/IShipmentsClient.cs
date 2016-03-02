@@ -1,5 +1,6 @@
 ﻿using GogoKit.Models.Request;
 using GogoKit.Models.Response;
+using HalKit.Models.Response;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +21,12 @@ namespace GogoKit.Clients
             int saleId,
             ShipmentRequest request,
             CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Downloads the courier shipping label.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#shipmentlabel</remarks>
+        Task<byte[]> GetShippingLabelAsync(Link shipmentLabelLink);
 
         /// <summary>
         /// Create a shipping label for the ticket(s) of a <see cref="Sale"/>.

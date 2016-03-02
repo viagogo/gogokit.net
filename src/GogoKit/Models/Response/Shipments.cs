@@ -12,6 +12,6 @@ namespace GogoKit.Models.Response
         /// </summary>
         /// <remarks>See http://developer.viagogo.net/#shipmentcreate</remarks>
         [Rel("shipment:create")]
-        Link CreateShipmenLink { get; set; }
+        public Link CreateShipmentLink { get; set; }
     }
 }

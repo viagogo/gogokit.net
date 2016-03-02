@@ -5,6 +5,8 @@ using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit;
 using GogoKit.Services;
+using HalKit.Models.Response;
+using System;
 
 namespace GogoKit.Clients
 {
@@ -90,6 +92,13 @@ namespace GogoKit.Clients
             Requires.ArgumentNotNull(pickupAddress.CarrierLink, nameof(pickupAddress.CarrierLink));
 
             return _halClient.GetAsync<Carrier>(pickupAddress.CarrierLink, request);
+        }
+
+        public Task<byte[]> GetShippingLabelAsync(Link shipmentLabelLink)
+        {
+            Requires.ArgumentNotNull(shipmentLabelLink, nameof(shipmentLabelLink));
+
+            return _halClient.HttpConnection.Client.GetByteArrayAsync(shipmentLabelLink.HRef);
         }
     }
 }

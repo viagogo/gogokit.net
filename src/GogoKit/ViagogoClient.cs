@@ -98,6 +98,7 @@ namespace GogoKit
             Addresses = new AddressesClient(User, Hypermedia, linkFactory);
             Purchases = new PurchasesClient(User, Hypermedia, linkFactory);
             Sales = new SalesClient(User, Hypermedia, linkFactory);
+            Shipments = new ShipmentsClient(Hypermedia, linkFactory);
             PaymentMethods = new PaymentMethodsClient(User, Hypermedia, linkFactory);
             Countries = new CountriesClient(Hypermedia, linkFactory);
             Currencies = new CurrenciesClient(Hypermedia, linkFactory);
@@ -132,6 +133,8 @@ namespace GogoKit
         public IPurchasesClient Purchases { get; }
 
         public ISalesClient Sales { get; }
+
+        public IShipmentsClient Shipments { get; }
 
         public ICountriesClient Countries { get; }
 

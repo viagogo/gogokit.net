@@ -13,8 +13,8 @@ namespace ManagingSales
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private const string ClientId = "CLIENT_ID";
-        private const string ClientSecret = "CLIENT_SECRET";
+        private const string ClientId = "atE6gCHFmBicKQSy3JLq";
+        private const string ClientSecret = "kECcQ3Sz68q40fobgDRrjZ7lBniVMIJNAwTGtxyuOUWmYevLsXdhHa5K291F";
 
         protected void Application_Start()
         {

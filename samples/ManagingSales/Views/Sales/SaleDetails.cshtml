@@ -7,6 +7,7 @@
 <div>
     <h2>Sale #@Model.Id</h2>
     <h6>Order Placed: @Model.CreatedAt.Value.ToString("d")</h6>
+    <h6>You'll receive: @Model.Proceeds.Display</h6>
 </div>
 
 <div>
@@ -16,6 +17,11 @@
     <h6>@Model.Venue.Name, @Model.Venue.City, @Model.Venue.Country.Name</h6>
     <h6>@Model.NumberOfTickets.Value @ticketsText</h6>
     <h6>Section: @Model.Seating.Section</h6>
+</div>
+<div>
+    <hr />
+    <h4>DeliveryMethod</h4>
+    <h6>@Model.DeliveryMethod.Name</h6>
 </div>
 <div>
     <hr />
@@ -36,6 +42,11 @@
     }
     @if (Model.UploadETicketsLink != null)
     {
-        @Html.ActionLink(Model.UploadETicketsLink.Title, "Index", "ETickets", new { saleId = Model.Id}, new { @class = "btn btn-default", type = "button"})
+        @Html.ActionLink(Model.UploadETicketsLink.Title, "Index", "ETickets", new { saleId = Model.Id }, new { @class = "btn btn-default", type = "button" })
+    }
+
+    @if (Model.ShipmentsLink != null)
+    {
+        @Html.ActionLink(Model.ShipmentsLink.Title, "Index", "Shipments", new { saleId = Model.Id }, new { @class = "btn btn-default", type = "button" })
     }
 </div>

@@ -1,3 +1,6 @@
+### New in 0.13.0 (Released 2016/03/01)
+* Added IShipmentsClient and functionality for creating shipments and pickups
+
 ### New in 0.12.1 (Released 2016/02/26)
 * Stop using IUserClient in SellerListingsClient to reduce scope requirements
 

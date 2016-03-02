@@ -42,5 +42,12 @@ namespace GogoKit.Models.Response
 
         [Rel("address:delete")]
         public Link DeleteLink { get; set; }
+
+        /// <summary>
+        /// The carrier resource that can collect tickets at this address.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#addresscarrier</remarks>
+        [Rel("address:carrier")]
+        public Link CarrierLink { get; set; }
     }
 }

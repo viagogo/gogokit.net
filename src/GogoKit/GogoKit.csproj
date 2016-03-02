@@ -40,8 +40,10 @@
     <Compile Include="Clients\BatchClient.cs" />
     <Compile Include="Clients\IBatchClient.cs" />
     <Compile Include="Clients\ISellerListingsClient.cs" />
+    <Compile Include="Clients\IShipmentsClient.cs" />
     <Compile Include="Clients\IWebhooksClient.cs" />
     <Compile Include="Clients\SellerListingsClient.cs" />
+    <Compile Include="Clients\ShipmentsClient.cs" />
     <Compile Include="Clients\WebhooksClient.cs" />
     <Compile Include="Enumerations\ApiEnvironment.cs" />
     <Compile Include="Default.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="Http\LocalizationHandler.cs" />
     <Compile Include="Http\UserAgentHandler.cs" />
     <Compile Include="Models\Request\AddressRequest.cs" />
+    <Compile Include="Models\Request\CarrierRequest.cs" />
     <Compile Include="Models\Request\CategoryRequest.cs" />
     <Compile Include="Models\Request\CountryRequest.cs" />
     <Compile Include="Models\Request\CurrencyRequest.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="Models\Request\SaleUpdate.cs" />
     <Compile Include="Models\Request\SellerListingRequest.cs" />
     <Compile Include="Models\Request\SellerListingUpdate.cs" />
+    <Compile Include="Models\Request\ShipmentRequest.cs" />
     <Compile Include="Models\Request\UserRequest.cs" />
     <Compile Include="Models\Request\VenueRequest.cs" />
     <Compile Include="Models\Request\WebhookRequest.cs" />
@@ -77,6 +81,7 @@
     <Compile Include="Models\Response\AddressSnapshot.cs" />
     <Compile Include="Models\Response\ApiError.cs" />
     <Compile Include="Models\Response\AuthorizationError.cs" />
+    <Compile Include="Models\Response\Carrier.cs" />
     <Compile Include="Models\Response\DeliveryMethod.cs" />
     <Compile Include="Models\Response\EmbeddedCategory.cs" />
     <Compile Include="Models\Response\EmbeddedEvent.cs" />
@@ -89,11 +94,15 @@
     <Compile Include="Models\Response\Money.cs" />
     <Compile Include="Models\Response\OAuth2Token.cs" />
     <Compile Include="Models\Response\PaymentMethods.cs" />
+    <Compile Include="Models\Response\Pickup.cs" />
+    <Compile Include="Models\Response\PickupWindow.cs" />
     <Compile Include="Models\Response\Root.cs" />
     <Compile Include="Models\Response\Row.cs" />
     <Compile Include="Models\Response\Seating.cs" />
     <Compile Include="Models\Response\Section.cs" />
     <Compile Include="Models\Response\SellerListing.cs" />
+    <Compile Include="Models\Response\Shipment.cs" />
+    <Compile Include="Models\Response\Shipments.cs" />
     <Compile Include="Models\Response\SplitType.cs" />
     <Compile Include="Models\Response\Webhook.cs" />
     <Compile Include="Models\Response\Webhooks.cs" />

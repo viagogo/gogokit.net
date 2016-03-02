@@ -1,4 +1,5 @@
 ﻿using GogoKit;
+using GogoKit.Enumerations;
 using System;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace AuthorizationCodeGrant.Controllers
             _viagogoClient = new ViagogoClient(
                                 ClientIdentifier,
                                 ClientSecret,
-                                new ProductHeaderValue("GogoKit-Samples"));
+                                new ProductHeaderValue("GogoKit-Samples"),
+                                new GogoKitConfiguration { ViagogoApiEnvironment = ApiEnvironment.Sandbox });
         }
 
         [Route("")]

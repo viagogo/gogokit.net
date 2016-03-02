@@ -52,8 +52,8 @@
       <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GogoKit, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GogoKit.0.11.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\GogoKit.dll</HintPath>
+    <Reference Include="GogoKit, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GogoKit.0.13.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\GogoKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HalKit, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -151,12 +151,14 @@
     <Compile Include="Controllers\ETicketsController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ShipmentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ETicketUploadsViewModel.cs" />
     <Compile Include="Models\SaleViewModel.cs" />
     <Compile Include="Models\SalesViewModel.cs" />
+    <Compile Include="Models\ShipmentsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CookieOAuth2TokenStore.cs" />
   </ItemGroup>
@@ -195,6 +197,7 @@
     <Content Include="Views\Sales\Index.cshtml" />
     <Content Include="Views\Sales\SaleDetails.cshtml" />
     <Content Include="Views\ETickets\Index.cshtml" />
+    <Content Include="Views\Shipments\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Login\" />

@@ -1,0 +1,57 @@
+﻿@model ManagingSales.Models.ShipmentsViewModel
+
+@{
+    ViewBag.Title = $"Ship Tickets - Sale {Model.Sale.Id}";
+}
+
+<h2>Sale #@Model.Sale.Id - @Model.Sale.Status</h2>
+
+@if (Model.Shipments.CreateShipmenLink != null)
+{
+    @Html.ActionLink("Create Shipment", "CreateShipment", "Shipments", new { saleId = Model.Sale.Id }, new { @class = "btn btn-default", type = "button" })
+}
+else
+{
+    foreach (var shipment in Model.Shipments.Items)
+    {
+        <div>
+            <h4>Shipment: @shipment.Id</h4>
+            <h6>Tracking Number: @shipment.TrackingNumber</h6>
+        </div>
+
+        if (shipment.DeliveryAddress != null)
+        {
+            <div>
+                <hr />
+                <h4>Delivery Address</h4>
+                <h6>@shipment.DeliveryAddress.AddressLine1</h6>
+                <h6>@shipment.DeliveryAddress.City</h6>
+                <h6>@shipment.DeliveryAddress.CountryName</h6>
+                <h6>@shipment.DeliveryAddress.PostalCode</h6>
+            </div>
+        }
+
+        <div>
+            <hr />
+            @using (Html.BeginForm("DownloadShippingLabel", "Shipments", FormMethod.Post, new { id = "downloadLabelForm" }))
+            {
+                @Html.HiddenFor(m => m.Shipments.Items[0].LabelLink.HRef, new { @Name = "labelHref" })
+                <button type="submit" class="btn btn-primary">Download Label</button>
+            }
+        </div>
+
+        <div>
+            <hr />
+            <h4>Pickup Address</h4>
+            @foreach (var pickupAddress in shipment.PickupAddresses)
+            {
+                <div class="panel">
+                    <h6>@pickupAddress.AddressLine1</h6>
+                    <h6>@pickupAddress.City</h6>
+                    <h6>@pickupAddress.Country.Name</h6>
+                    <h6>@pickupAddress.PostalCode</h6>
+                </div>
+            }
+        </div>
+    }
+}

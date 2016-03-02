@@ -6,7 +6,7 @@
 
 <h2>Sale #@Model.Sale.Id - @Model.Sale.Status</h2>
 
-@if (Model.Shipments.CreateShipmenLink != null)
+@if (Model.Shipments.CreateShipmentLink != null)
 {
     @Html.ActionLink("Create Shipment", "CreateShipment", "Shipments", new { saleId = Model.Sale.Id }, new { @class = "btn btn-default", type = "button" })
 }

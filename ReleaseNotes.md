@@ -1,3 +1,6 @@
+### New in 0.14.0 (Released 2016/03/03)
+* Add DateConfirmed and OnSaleDate properties to EmbeddedEvent
+
 ### New in 0.13.0 (Released 2016/03/01)
 * Added IShipmentsClient and functionality for creating shipments and pickups
 

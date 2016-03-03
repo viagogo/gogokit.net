@@ -18,5 +18,11 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "end_date")]
         public DateTimeOffset? EndDate { get; set; }
+
+        [DataMember(Name = "on_sale_date")]
+        public DateTimeOffset? OnSaleDate { get; set; }
+
+        [DataMember(Name = "date_confirmed")]
+        public bool? DateConfirmed { get; set; }
     }
 }

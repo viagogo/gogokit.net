@@ -1,23 +1,18 @@
 ﻿using HalKit.Json;
 using HalKit.Models.Response;
-using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace GogoKit.Models.Response
 {
-    [DataContract]
-    public class SellerListing : Resource
+    /// <summary>
+    /// A set of tickets for sale on the viagogo marketplace that belong to the
+    /// currently authenticated user.
+    /// </summary>
+    /// <remarks>See http://developer.viagogo.net/#sellerlisting</remarks>
+    [DataContract(Name = "seller_listing")]
+    public class SellerListing : EmbeddedSellerListing
     {
-        [DataMember(Name = "id")]
-        public int? Id { get; set; }
-
-        [DataMember(Name = "created_at")]
-        public DateTimeOffset? CreatedAt { get; set; }
-
-        [DataMember(Name = "number_of_tickets")]
-        public int? NumberOfTickets { get; set; }
-
         [DataMember(Name = "display_number_of_tickets")]
         public int? DisplayNumberOfTickets { get; set; }
 
@@ -27,14 +22,8 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "face_value")]
         public Money FaceValue { get; set; }
 
-        [DataMember(Name = "ticket_price")]
-        public Money TicketPrice { get; set; }
-
         [DataMember(Name = "ticket_proceeds")]
         public Money TicketProceeds { get; set; }
-
-        [DataMember(Name = "external_id")]
-        public string ExternalId { get; set; }
 
         [Embedded("event")]
         public EmbeddedEvent Event { get; set; }

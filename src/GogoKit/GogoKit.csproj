@@ -52,6 +52,9 @@
     <Compile Include="Http\ErrorHandler.cs" />
     <Compile Include="Http\LocalizationHandler.cs" />
     <Compile Include="Http\UserAgentHandler.cs" />
+    <Compile Include="Models\Payloads\Payload.cs" />
+    <Compile Include="Models\Payloads\PingPayload.cs" />
+    <Compile Include="Models\Payloads\SalesPayload.cs" />
     <Compile Include="Models\Request\AddressRequest.cs" />
     <Compile Include="Models\Request\CarrierRequest.cs" />
     <Compile Include="Models\Request\CategoryRequest.cs" />
@@ -85,7 +88,10 @@
     <Compile Include="Models\Response\DeliveryMethod.cs" />
     <Compile Include="Models\Response\EmbeddedCategory.cs" />
     <Compile Include="Models\Response\EmbeddedEvent.cs" />
+    <Compile Include="Models\Response\EmbeddedSale.cs" />
+    <Compile Include="Models\Response\EmbeddedSellerListing.cs" />
     <Compile Include="Models\Response\EmbeddedVenue.cs" />
+    <Compile Include="Models\Response\EmbeddedWebhook.cs" />
     <Compile Include="Models\Response\ETicket.cs" />
     <Compile Include="Models\Response\ETicketUpload.cs" />
     <Compile Include="Models\Response\ETicketUploads.cs" />

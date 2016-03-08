@@ -1,3 +1,7 @@
+### New in 0.15.0 (Released 2016/03/08)
+* Added IWebhooksClient method for pinging webhooks
+* Added models for webhook payloads
+
 ### New in 0.14.0 (Released 2016/03/03)
 * Add DateConfirmed and OnSaleDate properties to EmbeddedEvent
 

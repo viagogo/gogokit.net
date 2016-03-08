@@ -5,24 +5,14 @@ using HalKit.Json;
 
 namespace GogoKit.Models.Response
 {
+    /// <summary>
+    /// A sale on the viagogo marketplace that belongs to the currently
+    /// authenticated user.
+    /// </summary>
+    /// <remarks>See http://developer.viagogo.net/#sale</remarks>
     [DataContract(Name = "sale")]
-    public class Sale : Resource
+    public class Sale : EmbeddedSale
     {
-        [DataMember(Name = "id")]
-        public int? Id { get; set; }
-
-        [DataMember(Name = "created_at")]
-        public DateTimeOffset? CreatedAt { get; set; }
-
-        [DataMember(Name = "seating")]
-        public Seating Seating { get; set; }
-
-        [DataMember(Name = "proceeds")]
-        public Money Proceeds { get; set; }
-
-        [DataMember(Name = "number_of_tickets")]
-        public int? NumberOfTickets { get; set; }
-
         [DataMember(Name = "status")]
         public string Status { get; set; }
 

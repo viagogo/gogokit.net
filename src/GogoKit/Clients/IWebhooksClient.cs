@@ -29,5 +29,7 @@ namespace GogoKit.Clients
         Task<Webhook> UpdateAsync(int webhookId, WebhookUpdate webhookUpdate, WebhookRequest request);
 
         Task<IApiResponse> DeleteAsync(int webhookId);
+
+        Task<IApiResponse> PingAsync(int webhookId);
     }
 }

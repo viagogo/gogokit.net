@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GogoKit.Models.Request;
@@ -5,6 +6,9 @@ using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
+using System.Net.Http;
+using System.Threading;
+using HalKit.Services;
 
 namespace GogoKit.Clients
 {
@@ -13,6 +17,7 @@ namespace GogoKit.Clients
         private readonly IUserClient _userClient;
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
+        private readonly ILinkResolver _linkResolver;
 
         public WebhooksClient(IUserClient userClient,
             IHalClient halClient,
@@ -21,6 +26,7 @@ namespace GogoKit.Clients
             _userClient = userClient;
             _halClient = halClient;
             _linkFactory = linkFactory;
+            _linkResolver = new LinkResolver();
         }
 
         public Task<Webhook> GetAsync(int webhookId)
@@ -82,6 +88,19 @@ namespace GogoKit.Clients
         {
             var deleteLink = await _linkFactory.CreateLinkAsync($"webhooks/{webhookId}").ConfigureAwait(_halClient);
             return await _halClient.DeleteAsync(deleteLink).ConfigureAwait(_halClient);
+        }
+
+        public async Task<IApiResponse> PingAsync(int webhookId)
+        {
+            var pingLink = await _linkFactory.CreateLinkAsync($"webhooks/{webhookId}/ping").ConfigureAwait(_halClient);
+            var pingUrl = _linkResolver.ResolveLink(pingLink, new Dictionary<string, string>());
+            var response = await _halClient.HttpConnection.SendRequestAsync<string>(
+                                    pingUrl,
+                                    HttpMethod.Post,
+                                    null,
+                                    new Dictionary<string, IEnumerable<string>>(),
+                                    CancellationToken.None);
+            return response;
         }
     }
 }

@@ -1,3 +1,6 @@
+### New in 0.16.0 (Released 2016/03/17)
+* Added StateProvince property on EmbeddedVenue
+
 ### New in 0.15.0 (Released 2016/03/08)
 * Added IWebhooksClient method for pinging webhooks
 * Added models for webhook payloads

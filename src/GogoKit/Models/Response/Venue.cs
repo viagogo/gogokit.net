@@ -16,9 +16,6 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "address_2")]
         public string AddressLine2 { get; set; }
 
-        [DataMember(Name = "state_province")]
-        public string StateProvince { get; set; }
-
         [DataMember(Name = "postal_code")]
         public string PostalCode { get; set; }
 

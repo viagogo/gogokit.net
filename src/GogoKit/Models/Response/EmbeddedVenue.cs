@@ -16,6 +16,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "city")]
         public string City { get; set; }
 
+        [DataMember(Name = "state_province")]
+        public string StateProvince { get; set; }
+
         [DataMember(Name = "latitude")]
         public double? Latitude { get; set; }
 

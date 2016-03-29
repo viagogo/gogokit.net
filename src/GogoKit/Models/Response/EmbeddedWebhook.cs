@@ -13,6 +13,7 @@ namespace GogoKit.Models.Response
         /// <summary>
         /// The webhook identifier.
         /// </summary>
+        [DataMember(Name = "id")]
         public int? Id { get; set; }
     }
 }

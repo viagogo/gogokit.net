@@ -1,3 +1,6 @@
+### New in 0.16.1 (Released 2016/03/29)
+* Fixed issue where Webhook.Id property was not getting deserialized correctly
+
 ### New in 0.16.0 (Released 2016/03/17)
 * Added StateProvince property on EmbeddedVenue
 

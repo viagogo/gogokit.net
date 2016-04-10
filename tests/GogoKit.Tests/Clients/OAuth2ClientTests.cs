@@ -157,7 +157,7 @@ namespace GogoKit.Tests.Clients
         {
             var expectedAuthorizationUrl
                 = new Uri("https://account.vgg.com/authorize?client_id=abc123&response_type=code&" +
-                          "redirect_uri=https://myapplication/callback&" +
+                          "redirect_uri=https%3A%2F%2Fmyapplication%2Fcallback&" +
                           "scope=S1 S2&state=state123");
             var client = CreateClient(clientId: "abc123",
                                       config: new GogoKitConfiguration

@@ -1,4 +1,5 @@
-﻿using HalKit.Json;
+﻿using System;
+using HalKit.Json;
 using HalKit.Models.Response;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -24,6 +25,9 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "ticket_proceeds")]
         public Money TicketProceeds { get; set; }
+
+        [DataMember(Name = "in_hand_date")]
+        public DateTimeOffset? InHandDate { get; set; }
 
         [Embedded("event")]
         public EmbeddedEvent Event { get; set; }

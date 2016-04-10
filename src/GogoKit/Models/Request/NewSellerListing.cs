@@ -1,4 +1,5 @@
-﻿using GogoKit.Models.Response;
+﻿using System;
+using GogoKit.Models.Response;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -39,5 +40,8 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "external_id")]
         public string ExternalId { get; set; }
+
+        [DataMember(Name = "in_hand_date")]
+        public DateTimeOffset? InHandDate { get; set; }
     }
 }

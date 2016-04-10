@@ -1,3 +1,6 @@
+### New in 0.17.0 (Released 2016/04/10)
+* Added InHandDate property to SellerListing response and request models
+
 ### New in 0.16.1 (Released 2016/03/29)
 * Fixed issue where Webhook.Id property was not getting deserialized correctly
 

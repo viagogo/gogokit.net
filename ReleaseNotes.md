@@ -1,3 +1,6 @@
+### New in 0.18.0 (Released 2016/04/10)
+* Added TicketProceeds property to SellerListing request model
+
 ### New in 0.17.0 (Released 2016/04/10)
 * Added InHandDate property to SellerListing response and request models
 

@@ -23,6 +23,9 @@ namespace GogoKit.Models.Request
         [DataMember(Name = "ticket_price")]
         public Money TicketPrice { get; set; }
 
+        [DataMember(Name = "ticket_proceeds")]
+        public Money TicketProceeds { get; set; }
+
         [DataMember(Name = "ticket_type")]
         public string TicketType { get; set; }
 

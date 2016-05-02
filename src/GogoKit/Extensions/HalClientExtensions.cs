@@ -81,7 +81,7 @@ namespace GogoKit
                                                     link,
                                                     parameters,
                                                     headers,
-                                                    cancellationToken);
+                                                    cancellationToken).ConfigureAwait(client);
             return changedResources.NewOrUpdatedResources;
         }
 
@@ -181,7 +181,7 @@ namespace GogoKit
                 // will already be assembled with all the parameters needed
                 currentParameters = null;
                 currentLink = currentPage.NextLink;
-                if (currentLink == null || currentPage.Items?.Count < currentPage.PageSize)
+                if (currentLink == null || currentPage.Items?.Any() != true)
                 {
                     hasAnotherPage = false;
                 }

@@ -17,6 +17,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "page_size")]
         public int? PageSize { get; set; }
 
+        [Embedded("deleted_items")]
+        public IReadOnlyList<T> DeletedItems { get; set; }
+
         [Embedded("items")]
         public IReadOnlyList<T> Items { get; set; }
 

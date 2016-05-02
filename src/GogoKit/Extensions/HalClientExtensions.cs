@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GogoKit.Models.Response;
@@ -49,8 +51,8 @@ namespace GogoKit
             return GetAllPagesAsync<T>(
                 client,
                 link,
-                request.Parameters,
-                request.Headers,
+                request?.Parameters,
+                request?.Headers,
                 cancellationToken);
         }
 
@@ -75,6 +77,71 @@ namespace GogoKit
             IDictionary<string, IEnumerable<string>> headers,
             CancellationToken cancellationToken) where T : Resource
         {
+            var changedResources = await client.GetChangedResourcesInternalAsync<T>(
+                                                    link,
+                                                    parameters,
+                                                    headers,
+                                                    cancellationToken);
+            return changedResources.NewOrUpdatedResources;
+        }
+
+        /// <summary>
+        /// Gets the <typeparamref name="T"/> resources that have changed since
+        /// your application's last request.
+        /// </summary>
+        /// <param name="nextLink">The <see cref="Link"/> that was stored from
+        /// your last request.</param>
+        public static Task<ChangedResources<T>> GetChangedResourcesAsync<T>(
+            this IHalClient client,
+            Link nextLink,
+            IRequestParameters request,
+            CancellationToken cancellationToken) where T : Resource
+        {
+            return client.GetChangedResourcesAsync<T>(
+                nextLink,
+                request?.Parameters,
+                request?.Headers,
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the <typeparamref name="T"/> resources that have changed since
+        /// your application's last request.
+        /// </summary>
+        /// <param name="nextLink">The <see cref="Link"/> that was stored from
+        /// your last request.</param>
+        public static Task<ChangedResources<T>> GetChangedResourcesAsync<T>(
+            this IHalClient client,
+            Link nextLink,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers,
+            CancellationToken cancellationToken) where T : Resource
+        {
+            var parametersWithResourceVersionSort
+                = new Dictionary<string, string>(parameters ?? new Dictionary<string, string>());
+            if (parametersWithResourceVersionSort.ContainsKey("sort"))
+            {
+                parametersWithResourceVersionSort["sort"] = "resource_version";
+            }
+            else
+            {
+                parametersWithResourceVersionSort.Add("sort", "resource_version");
+            }
+
+            return client.GetChangedResourcesInternalAsync<T>(
+                nextLink,
+                parametersWithResourceVersionSort,
+                headers,
+                cancellationToken);
+        }
+
+        private static async Task<ChangedResources<T>> GetChangedResourcesInternalAsync<T>(
+            this IHalClient client,
+            Link link,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers,
+            CancellationToken cancellationToken) where T : Resource
+        {
             Requires.ArgumentNotNull(client, nameof(client));
             Requires.ArgumentNotNull(link, nameof(link));
 
@@ -92,6 +159,7 @@ namespace GogoKit
             }
 
             var items = new List<T>();
+            var deletedItems = new List<T>();
             var hasAnotherPage = true;
             while (hasAnotherPage)
             {
@@ -104,15 +172,22 @@ namespace GogoKit
                                             cancellationToken).ConfigureAwait(client.Configuration);
 
                 items.AddRange(currentPage.Items);
+                if (currentPage.DeletedItems != null)
+                {
+                    items.AddRange(currentPage.DeletedItems);
+                }
 
                 // Stop passing parameters on subsequent calls since the "next" links
                 // will already be assembled with all the parameters needed
                 currentParameters = null;
                 currentLink = currentPage.NextLink;
-                hasAnotherPage = currentLink != null;
+                if (currentLink == null || currentPage.Items?.Count < currentPage.PageSize)
+                {
+                    hasAnotherPage = false;
+                }
             }
 
-            return items;
+            return new ChangedResources<T>(items, deletedItems, currentLink);
         }
     }
 }

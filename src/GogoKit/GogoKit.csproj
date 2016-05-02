@@ -102,6 +102,7 @@
     <Compile Include="Models\Response\PaymentMethods.cs" />
     <Compile Include="Models\Response\Pickup.cs" />
     <Compile Include="Models\Response\PickupWindow.cs" />
+    <Compile Include="Models\Response\ResourceChanges.cs" />
     <Compile Include="Models\Response\Root.cs" />
     <Compile Include="Models\Response\Row.cs" />
     <Compile Include="Models\Response\Seating.cs" />

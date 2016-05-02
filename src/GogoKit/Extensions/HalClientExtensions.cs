@@ -160,8 +160,7 @@ namespace GogoKit
 
             var items = new List<T>();
             var deletedItems = new List<T>();
-            var hasAnotherPage = true;
-            while (hasAnotherPage)
+            while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -177,14 +176,16 @@ namespace GogoKit
                     items.AddRange(currentPage.DeletedItems);
                 }
 
+                if (currentPage.NextLink == null)
+                {
+                    // This is the last page
+                    break;
+                }
+
                 // Stop passing parameters on subsequent calls since the "next" links
                 // will already be assembled with all the parameters needed
                 currentParameters = null;
                 currentLink = currentPage.NextLink;
-                if (currentLink == null || currentPage.Items?.Any() != true)
-                {
-                    hasAnotherPage = false;
-                }
             }
 
             return new ChangedResources<T>(items, deletedItems, currentLink);

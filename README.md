@@ -1,7 +1,6 @@
 # GogoKit - viagogo API Client Library for .NET
 
 [![NuGet version](https://badge.fury.io/nu/gogokit.svg)][nuget]
-[![Downloads](https://img.shields.io/nuget/dt/gogokit.svg)][nuget]
 [![Build status](https://ci.appveyor.com/api/projects/status/ri2rbvoinudw27en/branch/master?svg=true)][appveyor]
 
 [appveyor]: https://ci.appveyor.com/project/viagogo/gogokit-net/branch/master

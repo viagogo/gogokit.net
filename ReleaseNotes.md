@@ -1,3 +1,7 @@
+### New in 0.19.0 (Released 2016/05/02)
+* Added ISellerListingClient methods for getting listing changes
+* Add extension method for getting resources that have changed since some previous request
+
 ### New in 0.18.0 (Released 2016/04/10)
 * Added TicketProceeds property to SellerListing request model
 

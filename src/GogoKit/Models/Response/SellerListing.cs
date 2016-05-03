@@ -117,6 +117,32 @@ namespace GogoKit.Models.Response
         public Link UpdateFaceValueLink { get; set; }
 
         /// <summary>
+        /// You can use a PATCH request on the href of this link to update the
+        /// seating information for a listing.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#sellerlistingupdateseating.</remarks>
+        [Rel("sellerlisting:updateseating")]
+        public Link UpdateSeatingLink { get; set; }
+
+        [Rel("sellerlisting:uploadeticket")]
+        public Link UploadETicketLink { get; set; }
+
+        [Rel("sellerlisting:eticketuploads")]
+        public Link ETicketUploadsLink { get; set; }
+
+        [Rel("sellerlisting:saveetickets")]
+        public Link SaveETicketsLink { get; set; }
+
+        [Rel("sellerlisting:etickets")]
+        public Link ETicketsLink { get; set; }
+
+        [Rel("sellerlisting:lmsoptin")]
+        public Link LastMinuteSalesOptInLink { get; set; }
+
+        [Rel("sellerlisting:lmsoptout")]
+        public Link LastMinuteSalesOptOutLink { get; set; }
+
+        /// <summary>
         /// You can use a PATCH request on the href of this link to make a
         /// listing available for purchase on the viagogo marketplace.
         /// </summary>

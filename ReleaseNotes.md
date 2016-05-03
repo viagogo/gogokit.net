@@ -1,3 +1,7 @@
+### New in 0.20.0 (Released 2016/05/03)
+* Added missing links on SellerListing
+* Added missing links of SearchResult
+
 ### New in 0.19.1 (Released 2016/05/02)
 * Fixed issue where we weren't figuring out the last page correctly when getting changed resources
 

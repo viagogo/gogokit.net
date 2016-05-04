@@ -1,3 +1,6 @@
+### New in 0.20.1 (Released 2016/05/04)
+* Fixed bug in logic for getting changed resources
+
 ### New in 0.20.0 (Released 2016/05/03)
 * Added missing links on SellerListing
 * Added missing links of SearchResult

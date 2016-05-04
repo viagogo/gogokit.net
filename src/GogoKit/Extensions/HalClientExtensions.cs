@@ -173,7 +173,7 @@ namespace GogoKit
                 items.AddRange(currentPage.Items);
                 if (currentPage.DeletedItems != null)
                 {
-                    items.AddRange(currentPage.DeletedItems);
+                    deletedItems.AddRange(currentPage.DeletedItems);
                 }
 
                 if (currentPage.NextLink == null)

@@ -32,6 +32,7 @@ namespace GogoKit.Http
                 {"invalid_password", r => new InvalidPasswordException(r)},
                 {"email_already_exists", r => new EmailAlreadyExistsException(r)},
                 {"invalid_purchase_action", r => new InvalidPurchaseActionException(r)},
+                {"invalid_seller_listing_action", r => new InvalidSellerListingActionException(r)},
                 {"purchase_not_allowed", r => new PurchaseNotAllowedException(r)},
                 {"listing_conflict", r => new ListingConflictException(r)},
                 {"purchase_still_processing", r => new PurchaseStillProcessingException(r)},

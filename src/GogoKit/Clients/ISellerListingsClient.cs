@@ -43,6 +43,10 @@ namespace GogoKit.Clients
 
         Task<ListingConstraints> GetConstraintsForEventAsync(int eventId, ListingConstraintsRequest request);
 
+        Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event);
+
+        Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event, ListingConstraintsRequest request);
+
         Task<SellerListingPreview> CreateSellerListingPreviewAsync(int eventId, NewSellerListing listing);
 
         Task<SellerListingPreview> CreateSellerListingUpdatePreviewAsync(int sellerListingId, SellerListingUpdate listingUpdate);

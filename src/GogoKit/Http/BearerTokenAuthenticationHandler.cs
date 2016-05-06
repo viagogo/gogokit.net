@@ -61,7 +61,6 @@ namespace GogoKit.Http
             }
 
             // We don't have a token or the token is expired - so refresh it
-            ApiException refreshTokenException = null;
             try
             {
                 if (token != null && token.RefreshToken != null)
@@ -74,21 +73,18 @@ namespace GogoKit.Http
                     // so grab another client credentials token
                     token = await _oauthClient.GetClientAccessTokenAsync(null).ConfigureAwait(_configuration);
                 }
+
+                await _tokenStore.SetTokenAsync(token).ConfigureAwait(_configuration);
+
+                return token;
             }
-            catch (ApiException ex)
+            catch (ApiException)
             {
-                refreshTokenException = ex;
+                // Odds are we failed to refresh the token because another
+                // thread refreshed already. Just return whatever token is
+                // currently in the token store
+                return await _tokenStore.GetTokenAsync().ConfigureAwait(_configuration);
             }
-
-            if (refreshTokenException != null)
-            {
-                await _tokenStore.DeleteTokenAsync().ConfigureAwait(_configuration);
-                throw refreshTokenException;
-            }
-
-            await _tokenStore.SetTokenAsync(token).ConfigureAwait(_configuration);
-
-            return token;
         }
     }
 }

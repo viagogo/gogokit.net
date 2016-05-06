@@ -49,6 +49,7 @@
     <Compile Include="Clients\WebhooksClient.cs" />
     <Compile Include="Enumerations\ApiEnvironment.cs" />
     <Compile Include="Default.cs" />
+    <Compile Include="Exceptions\InvalidSellerListingActionException.cs" />
     <Compile Include="Http\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\BearerTokenAuthenticationHandler.cs" />
     <Compile Include="Http\ErrorHandler.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Models\Request\EventRequest.cs" />
     <Compile Include="Models\Request\ListingConstraintsRequest.cs" />
     <Compile Include="Models\Request\ListingRequest.cs" />
+    <Compile Include="Models\Request\NewRequestedEvent.cs" />
     <Compile Include="Models\Request\NewRequestedEventSellerListing.cs" />
     <Compile Include="Models\Request\NewSellerListing.cs" />
     <Compile Include="Models\Request\NewWebhook.cs" />

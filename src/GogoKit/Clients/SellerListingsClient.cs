@@ -113,6 +113,17 @@ namespace GogoKit.Clients
             return await _halClient.GetAsync<ListingConstraints>(constraintsLink, request).ConfigureAwait(_halClient);
         }
 
+        public Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event)
+        {
+            return GetConstraintsForEventAsync(@event, new ListingConstraintsRequest());
+        }
+
+        public async Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event, ListingConstraintsRequest request)
+        {
+            var constraintsLink = await _linkFactory.CreateLinkAsync($"listingconstraints").ConfigureAwait(_halClient);
+            return await _halClient.PutAsync<ListingConstraints>(constraintsLink, @event, request).ConfigureAwait(_halClient);
+        }
+
         public async Task<SellerListingPreview> CreateSellerListingPreviewAsync(int eventId, NewSellerListing listing)
         {
             var previewLink = await _linkFactory.CreateLinkAsync($"events/{eventId}/sellerlistingpreview").ConfigureAwait(_halClient);

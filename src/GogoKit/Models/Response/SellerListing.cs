@@ -26,8 +26,14 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "ticket_proceeds")]
         public Money TicketProceeds { get; set; }
 
-        [DataMember(Name = "in_hand_date")]
-        public DateTimeOffset? InHandDate { get; set; }
+        [DataMember(Name = "undeliverable")]
+        public bool? IsUndeliverable { get; set; }
+
+        [DataMember(Name = "in_hand_at")]
+        public DateTimeOffset? InHandAt { get; set; }
+
+        [DataMember(Name = "updated_at")]
+        public DateTimeOffset? UpdatedAt { get; set; }
 
         [Embedded("event")]
         public EmbeddedEvent Event { get; set; }
@@ -141,6 +147,9 @@ namespace GogoKit.Models.Response
 
         [Rel("sellerlisting:lmsoptout")]
         public Link LastMinuteSalesOptOutLink { get; set; }
+
+        [Rel("sellerlisting:lmspickup")]
+        public Link LastMinuteSalesPickupLink { get; set; }
 
         /// <summary>
         /// You can use a PATCH request on the href of this link to make a

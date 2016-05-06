@@ -1,3 +1,8 @@
+### New in 0.21.0 (Released 2016/05/06)
+* Add new properties and links on SellerListing
+* Added ISellerListingClient overload for getting constraints for requested events
+* Modified BearerTokenAuthenticationHandler to not delete tokens if there is a race between requests refreshing a token
+
 ### New in 0.20.1 (Released 2016/05/04)
 * Fixed bug in logic for getting changed resources
 

@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class ListingConflictException : ApiErrorException
     {
-        public ListingConflictException(IApiResponse<ApiError> response)
-            : base(response)
+        public ListingConflictException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class InvalidPaymentMethodException : ApiErrorException
     {
-        public InvalidPaymentMethodException(IApiResponse<ApiError> response)
-            : base(response)
+        public InvalidPaymentMethodException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class PurchaseNotAllowedException : ApiErrorException
     {
-        public PurchaseNotAllowedException(IApiResponse<ApiError> response)
-            : base(response)
+        public PurchaseNotAllowedException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

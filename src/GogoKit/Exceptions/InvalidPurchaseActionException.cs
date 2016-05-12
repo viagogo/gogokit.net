@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class InvalidPurchaseActionException : ApiErrorException
     {
-        public InvalidPurchaseActionException(IApiResponse<ApiError> response)
-            : base(response)
+        public InvalidPurchaseActionException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

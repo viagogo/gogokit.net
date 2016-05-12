@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class InvalidDeleteException : ApiErrorException
     {
-        public InvalidDeleteException(IApiResponse<ApiError> response)
-            : base(response)
+        public InvalidDeleteException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

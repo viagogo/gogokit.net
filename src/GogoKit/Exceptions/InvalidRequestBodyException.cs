@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class InvalidRequestBodyException : ApiErrorException
     {
-        public InvalidRequestBodyException(IApiResponse<ApiError> response)
-            : base(response)
+        public InvalidRequestBodyException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

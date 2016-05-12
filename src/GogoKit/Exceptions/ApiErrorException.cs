@@ -5,11 +5,11 @@ namespace GogoKit.Exceptions
 {
     public class ApiErrorException : ApiException
     {
-        public ApiErrorException(IApiResponse<ApiError> response) : base(response)
+        public ApiErrorException(IApiResponse response, ApiError apiError) : base(response)
         {
             Requires.ArgumentNotNull(response, nameof(response));
 
-            Error = response.BodyAsObject;
+            Error = apiError;
         }
 
         public ApiError Error { get; }

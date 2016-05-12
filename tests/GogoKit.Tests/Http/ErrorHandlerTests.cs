@@ -10,6 +10,7 @@ using GogoKit.Http;
 using GogoKit.Models.Response;
 using GogoKit.Tests.Fakes;
 using HalKit.Http;
+using HalKit.Json;
 using Moq;
 using NUnit.Framework;
 
@@ -21,11 +22,13 @@ namespace GogoKit.Tests.Http
         private static ErrorHandler CreateErrorHandler(
             IApiResponseFactory respFact = null,
             IGogoKitConfiguration config = null,
+            IJsonSerializer jsonSerializer = null,
             HttpResponseMessage resp = null)
         {
             return new ErrorHandler(
                 respFact ?? new FakeApiResponseFactory(),
-                config ?? new GogoKitConfiguration())
+                config ?? new GogoKitConfiguration(),
+                jsonSerializer ?? new DefaultJsonSerializer())
             {
                 InnerHandler = new FakeDelegatingHandler(resp: resp)
             };
@@ -45,6 +48,12 @@ namespace GogoKit.Tests.Http
                 .Cast<HttpStatusCode>()
                 .Where(s => s != HttpStatusCode.Unauthorized && s > (HttpStatusCode)400)
                 .ToArray();
+
+        private static readonly HttpStatusCode[] NonAuthorizationNonNotFoundErrorCodes =
+            Enum.GetValues(typeof(HttpStatusCode))
+            .Cast<HttpStatusCode>()
+            .Where(s => s != HttpStatusCode.Unauthorized && s != HttpStatusCode.NotFound && s > (HttpStatusCode)400)
+            .ToArray();
 
         private static readonly object[] ApiErrorCodesAndExceptionTypes =
         {
@@ -175,7 +184,13 @@ namespace GogoKit.Tests.Http
             mockResponseFact.Setup(r => r.CreateApiResponseAsync<ApiError>(expectedResponse))
                             .Returns(Task.FromResult<IApiResponse<ApiError>>(new ApiResponse<ApiError>()))
                             .Verifiable();
-            var handler = CreateErrorHandler(respFact: mockResponseFact.Object, resp: expectedResponse);
+
+            var jsonSerializer = new Mock<IJsonSerializer>();
+            jsonSerializer
+                .Setup(s => s.Deserialize<ApiError>(It.IsAny<string>()))
+                .Returns(() => new ApiError());
+
+            var handler = CreateErrorHandler(respFact: mockResponseFact.Object, resp: expectedResponse, jsonSerializer: jsonSerializer.Object);
 
             try
             {
@@ -186,16 +201,23 @@ namespace GogoKit.Tests.Http
             }
 
             mockResponseFact.Verify();
+            jsonSerializer.Verify();
         }
 
-        [Test, TestCaseSource(nameof(NonAuthorizationErrorCodes))]
+        [Test, TestCaseSource(nameof(NonAuthorizationNonNotFoundErrorCodes))]
         public async void SendAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
+            var jsonSerializer = new Mock<IJsonSerializer>();
+            jsonSerializer
+                .Setup(s => s.Deserialize<ApiError>(It.IsAny<string>()))
+                .Returns(() => new ApiError());
+
             var expectedResponse = new ApiResponse<ApiError>();
             IApiResponse actualResponse = null;
             var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: expectedResponse),
-                                             resp: new HttpResponseMessage { StatusCode = statusCode });
+                                             resp: new HttpResponseMessage { StatusCode = statusCode },
+                                             jsonSerializer: jsonSerializer.Object);
 
             try
             {
@@ -209,14 +231,22 @@ namespace GogoKit.Tests.Http
             Assert.AreSame(expectedResponse, actualResponse);
         }
 
-        [Test, TestCaseSource(nameof(NonAuthorizationErrorCodes))]
+        [Test, TestCaseSource(nameof(NonAuthorizationNonNotFoundErrorCodes))]
         public async void SendAsync_ShouldThrowApiErrorExceptionWithErrorSetToTheResponseBodyReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
             var expectedError = new ApiError();
+
+            var jsonSerializer = new Mock<IJsonSerializer>();
+            jsonSerializer
+                .Setup(s => s.Deserialize<ApiError>(It.IsAny<string>()))
+                .Returns(() => expectedError);
+
+            
             ApiError actualError = null;
-            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: new ApiResponse<ApiError> { BodyAsObject = expectedError }),
-                                             resp: new HttpResponseMessage { StatusCode = statusCode });
+            var handler = CreateErrorHandler(respFact: new FakeApiResponseFactory(resp: new ApiResponse<ApiError> { BodyAsObject = null }),
+                                             resp: new HttpResponseMessage { StatusCode = statusCode },
+                                             jsonSerializer: jsonSerializer.Object);
 
             try
             {
@@ -254,11 +284,18 @@ namespace GogoKit.Tests.Http
             Type expectedExceptionType)
         {
             Exception actualException = null;
+
+            var jsonSerializer = new Mock<IJsonSerializer>();
+            jsonSerializer
+                .Setup(s => s.Deserialize<ApiError>(It.IsAny<string>()))
+                .Returns(() => new ApiError { Code = errorCode });
+
+
             var handler = CreateErrorHandler(
                             respFact: new FakeApiResponseFactory(
-                                resp: new ApiResponse<ApiError> { BodyAsObject = new ApiError { Code = errorCode } }),
-                            resp: new HttpResponseMessage { StatusCode = HttpStatusCode.ServiceUnavailable });
-
+                                resp: new ApiResponse<ApiError> { BodyAsObject = null }),
+                            resp: new HttpResponseMessage { StatusCode = HttpStatusCode.ServiceUnavailable },
+                            jsonSerializer: jsonSerializer.Object);
             try
             {
                 await new HttpMessageInvoker(handler).SendAsync(new HttpRequestMessage(), CancellationToken.None);

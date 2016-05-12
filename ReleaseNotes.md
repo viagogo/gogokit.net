@@ -1,3 +1,5 @@
+### New in 0.21.1 (Released 2016/05/12)
+
 ### New in 0.21.0 (Released 2016/05/06)
 * Add new properties and links on SellerListing
 * Added ISellerListingClient overload for getting constraints for requested events

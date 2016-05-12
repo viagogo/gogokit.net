@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class EmailAlreadyExistsException : ApiErrorException
     {
-        public EmailAlreadyExistsException(IApiResponse<ApiError> response)
-            : base(response)
+        public EmailAlreadyExistsException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

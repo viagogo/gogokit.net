@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class InvalidSellerListingActionException : ApiErrorException
     {
-        public InvalidSellerListingActionException(IApiResponse<ApiError> response)
-            : base(response)
+        public InvalidSellerListingActionException(IApiResponse response, ApiError error) : base(response, error)
         {
         }
     }

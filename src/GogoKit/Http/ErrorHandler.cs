@@ -78,10 +78,11 @@ namespace GogoKit.Http
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                return new ResourceNotFoundException(errorResponse, null);
+                return new ResourceNotFoundException(errorResponse);
             }
 
-            ApiError apiError = _jsonSerializer.Deserialize<ApiError>(errorResponse.Body);
+            // // We need to deserialize the Body here because the IApiResponseFactory won't deserialize error responses
+            var apiError = _jsonSerializer.Deserialize<ApiError>(errorResponse.Body);
 
             Func<IApiResponse, ApiError, ApiErrorException> exceptionFactoryFunc;
             if (apiError.Code != null &&

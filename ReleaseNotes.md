@@ -1,4 +1,5 @@
 ### New in 0.21.1 (Released 2016/05/12)
+* Fixed ErrorHandler to populate ApiError property in ApiErrorExceptions
 
 ### New in 0.21.0 (Released 2016/05/06)
 * Add new properties and links on SellerListing

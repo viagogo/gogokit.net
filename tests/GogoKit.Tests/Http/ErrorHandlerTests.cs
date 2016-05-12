@@ -64,6 +64,7 @@ namespace GogoKit.Tests.Http
             new object[] {"invalid_password", typeof(InvalidPasswordException)},
             new object[] {"email_already_exists", typeof(EmailAlreadyExistsException)},
             new object[] {"invalid_purchase_action", typeof(InvalidPurchaseActionException)},
+            new object[] {"invalid_seller_listing_action", typeof(InvalidSellerListingActionException)},
             new object[] {"purchase_not_allowed", typeof(PurchaseNotAllowedException)},
             new object[] {"listing_conflict", typeof(ListingConflictException)},
             new object[] {"purchase_still_processing", typeof(PurchaseStillProcessingException)},

@@ -19,6 +19,7 @@ namespace GogoKit.Models.Request
     public enum SellerListingSort
     {
         CreatedAt,
-        TicketPrice
+        TicketPrice,
+        ResourceVersion
     }
 }

@@ -26,8 +26,14 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "ticket_proceeds")]
         public Money TicketProceeds { get; set; }
 
-        [DataMember(Name = "in_hand_date")]
-        public DateTimeOffset? InHandDate { get; set; }
+        [DataMember(Name = "undeliverable")]
+        public bool? IsUndeliverable { get; set; }
+
+        [DataMember(Name = "in_hand_at")]
+        public DateTimeOffset? InHandAt { get; set; }
+
+        [DataMember(Name = "updated_at")]
+        public DateTimeOffset? UpdatedAt { get; set; }
 
         [Embedded("event")]
         public EmbeddedEvent Event { get; set; }
@@ -115,6 +121,35 @@ namespace GogoKit.Models.Response
         /// <remarks>See http://developer.viagogo.net/#sellerlistingupdatefacevalue.</remarks>
         [Rel("sellerlisting:updatefacevalue")]
         public Link UpdateFaceValueLink { get; set; }
+
+        /// <summary>
+        /// You can use a PATCH request on the href of this link to update the
+        /// seating information for a listing.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#sellerlistingupdateseating.</remarks>
+        [Rel("sellerlisting:updateseating")]
+        public Link UpdateSeatingLink { get; set; }
+
+        [Rel("sellerlisting:uploadeticket")]
+        public Link UploadETicketLink { get; set; }
+
+        [Rel("sellerlisting:eticketuploads")]
+        public Link ETicketUploadsLink { get; set; }
+
+        [Rel("sellerlisting:saveetickets")]
+        public Link SaveETicketsLink { get; set; }
+
+        [Rel("sellerlisting:etickets")]
+        public Link ETicketsLink { get; set; }
+
+        [Rel("sellerlisting:lmsoptin")]
+        public Link LastMinuteSalesOptInLink { get; set; }
+
+        [Rel("sellerlisting:lmsoptout")]
+        public Link LastMinuteSalesOptOutLink { get; set; }
+
+        [Rel("sellerlisting:lmspickup")]
+        public Link LastMinuteSalesPickupLink { get; set; }
 
         /// <summary>
         /// You can use a PATCH request on the href of this link to make a

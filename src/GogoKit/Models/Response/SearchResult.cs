@@ -16,6 +16,30 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "type_description")]
         public string TypeDescription { get; set; }
 
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Category"/>
+        /// resource that a search result represents.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#searchresultcategory.</remarks>
+        [Rel("searchresult:category")]
+        public Link CategoryLink { get; set; }
+
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Event"/>
+        /// resource that a search result represents.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#searchresultevent.</remarks>
+        [Rel("searchresult:event")]
+        public Link EventLink { get; set; }
+
+        /// <summary>
+        /// You can GET the href of this link to retrieve the <see cref="Venue"/>
+        /// resource that a search result represents.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#searchresultvenue.</remarks>
+        [Rel("searchresult:venue")]
+        public Link VenueLink { get; set; }
+
         [Embedded("category")]
         public Category Category { get; set; }
 

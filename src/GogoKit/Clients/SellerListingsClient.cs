@@ -6,6 +6,7 @@ using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -64,6 +65,32 @@ namespace GogoKit.Clients
                             cancellationToken).ConfigureAwait(_halClient);
         }
 
+        public async Task<ChangedResources<SellerListing>> GetAllChangesAsync()
+        {
+            var sellerListingsLink = await _linkFactory.CreateLinkAsync("sellerlistings").ConfigureAwait(_halClient);
+            return await GetAllChangesAsync(sellerListingsLink).ConfigureAwait(_halClient);
+        }
+
+        public Task<ChangedResources<SellerListing>> GetAllChangesAsync(Link nextLink)
+        {
+            return GetAllChangesAsync(nextLink, new SellerListingRequest());
+        }
+
+        public Task<ChangedResources<SellerListing>> GetAllChangesAsync(
+            Link nextLink,
+            SellerListingRequest request)
+        {
+            return GetAllChangesAsync(nextLink, request, CancellationToken.None);
+        }
+
+        public Task<ChangedResources<SellerListing>> GetAllChangesAsync(
+            Link nextLink,
+            SellerListingRequest request,
+            CancellationToken cancellationToken)
+        {
+            return _halClient.GetChangedResourcesAsync<SellerListing>(nextLink, request, cancellationToken);
+        }
+
         public Task<ListingConstraints> GetConstraintsAsync(int sellerListingId)
         {
             return GetConstraintsAsync(sellerListingId, new ListingConstraintsRequest());
@@ -84,6 +111,17 @@ namespace GogoKit.Clients
         {
             var constraintsLink = await _linkFactory.CreateLinkAsync($"events/{eventId}/listingconstraints").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<ListingConstraints>(constraintsLink, request).ConfigureAwait(_halClient);
+        }
+
+        public Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event)
+        {
+            return GetConstraintsForEventAsync(@event, new ListingConstraintsRequest());
+        }
+
+        public async Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event, ListingConstraintsRequest request)
+        {
+            var constraintsLink = await _linkFactory.CreateLinkAsync($"listingconstraints").ConfigureAwait(_halClient);
+            return await _halClient.PutAsync<ListingConstraints>(constraintsLink, @event, request).ConfigureAwait(_halClient);
         }
 
         public async Task<SellerListingPreview> CreateSellerListingPreviewAsync(int eventId, NewSellerListing listing)

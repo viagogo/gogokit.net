@@ -33,11 +33,12 @@ namespace GogoKit.Http
                 {"invalid_password",            (r,e) => new InvalidPasswordException(r,e)},
                 {"email_already_exists",        (r,e) => new EmailAlreadyExistsException(r,e)},
                 {"invalid_purchase_action",     (r,e) => new InvalidPurchaseActionException(r,e)},
+				{"invalid_seller_listing_action", (r,e) => new InvalidSellerListingActionException(r,e)},
                 {"purchase_not_allowed",        (r,e) => new PurchaseNotAllowedException(r,e)},
                 {"listing_conflict",            (r,e) => new ListingConflictException(r,e)},
                 {"purchase_still_processing",   (r,e) => new PurchaseStillProcessingException(r,e)},
                 {"invalid_delete",              (r,e) => new InvalidDeleteException(r,e)},
-                {"internal_server_error",       (r,e) => new InternalServerErrorException(r,e)},
+                {"internal_server_error",       (r,e) => new InternalServerErrorException(r,e)}
             };
 
         private readonly IApiResponseFactory _responseFactory;

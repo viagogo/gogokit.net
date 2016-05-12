@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HalKit.Http;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -23,6 +24,17 @@ namespace GogoKit.Clients
 
         Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request, CancellationToken cancellationToken);
 
+        Task<ChangedResources<SellerListing>> GetAllChangesAsync();
+
+        Task<ChangedResources<SellerListing>> GetAllChangesAsync(Link nextLink);
+
+        Task<ChangedResources<SellerListing>> GetAllChangesAsync(Link nextLink, SellerListingRequest request);
+
+        Task<ChangedResources<SellerListing>> GetAllChangesAsync(
+            Link nextLink,
+            SellerListingRequest request,
+            CancellationToken cancellationToken);
+
         Task<ListingConstraints> GetConstraintsAsync(int sellerListingId);
 
         Task<ListingConstraints> GetConstraintsAsync(int sellerListingId, ListingConstraintsRequest request);
@@ -30,6 +42,10 @@ namespace GogoKit.Clients
         Task<ListingConstraints> GetConstraintsForEventAsync(int eventId);
 
         Task<ListingConstraints> GetConstraintsForEventAsync(int eventId, ListingConstraintsRequest request);
+
+        Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event);
+
+        Task<ListingConstraints> GetConstraintsForEventAsync(NewRequestedEvent @event, ListingConstraintsRequest request);
 
         Task<SellerListingPreview> CreateSellerListingPreviewAsync(int eventId, NewSellerListing listing);
 

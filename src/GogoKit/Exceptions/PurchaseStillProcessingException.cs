@@ -5,8 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class PurchaseStillProcessingException : ApiErrorException
     {
-        public PurchaseStillProcessingException(IApiResponse<ApiError> response)
-            : base(response)
+        public PurchaseStillProcessingException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

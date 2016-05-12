@@ -26,11 +26,11 @@ namespace GogoKit.Tests.Exceptions
         [Test, TestCaseSource(nameof(ApiErrorExceptionTypes))]
         public void ApiErrorExceptions_ShouldHaveAPrettyErrorMessage(Type apiErrorExceptionType)
         {
-            var apiResponse = new ApiResponse<ApiError> {Body = "{\"message\":\"pretty message\"}"};
+            var apiResponse = new ApiResponse<ApiError> { Body = "{\"message\":\"pretty message\"}" };
             var expectedMessage = $"An error occurred with this API request: {apiResponse.Body}";
-            var ctor = apiErrorExceptionType.GetConstructor(new[] {typeof(IApiResponse<ApiError>)});
+            var ctor = apiErrorExceptionType.GetConstructor(new[] { typeof(IApiResponse), typeof(ApiError) });
 
-            var actualException = ctor.Invoke(new object[] {apiResponse}) as ApiErrorException;
+            var actualException = ctor.Invoke(new object[] { apiResponse, new ApiError() }) as ApiErrorException;
 
             Assert.AreEqual(expectedMessage, actualException.Message);
         }

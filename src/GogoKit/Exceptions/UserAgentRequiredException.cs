@@ -5,7 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class UserAgentRequiredException : ApiErrorException
     {
-        public UserAgentRequiredException(IApiResponse<ApiError> response) : base(response)
+        public UserAgentRequiredException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

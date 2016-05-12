@@ -5,7 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class SslConnectionRequiredException : ApiErrorException
     {
-        public SslConnectionRequiredException(IApiResponse<ApiError> response) : base(response)
+        public SslConnectionRequiredException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

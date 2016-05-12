@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using GogoKit.Exceptions;
 using GogoKit.Models.Response;
 using HalKit.Http;
+using HalKit.Json;
 
 namespace GogoKit.Http
 {
@@ -21,34 +22,36 @@ namespace GogoKit.Http
         private static readonly Regex AuthorizationErrorDescriptionRegex
             = new Regex(",error_description=\"(?<value>.+)\"", RegexOptions.None);
 
-        private static readonly IDictionary<string, Func<IApiResponse<ApiError>, ApiErrorException>> ExceptionFactoryMap =
-            new Dictionary<string, Func<IApiResponse<ApiError>, ApiErrorException>>
+        private static readonly IDictionary<string, Func<IApiResponse, ApiError, ApiErrorException>> ExceptionFactoryMap =
+            new Dictionary<string, Func<IApiResponse, ApiError, ApiErrorException>>
             {
-                {"https_required", r => new SslConnectionRequiredException(r)},
-                {"insufficient_scope", r => new InsufficientScopeException(r)},
-                {"user_agent_required", r => new UserAgentRequiredException(r)},
-                {"invalid_request_body", r => new InvalidRequestBodyException(r)},
-                {"validation_failed", r => new ValidationFailedException(r)},
-                {"invalid_password", r => new InvalidPasswordException(r)},
-                {"email_already_exists", r => new EmailAlreadyExistsException(r)},
-                {"invalid_purchase_action", r => new InvalidPurchaseActionException(r)},
-                {"purchase_not_allowed", r => new PurchaseNotAllowedException(r)},
-                {"listing_conflict", r => new ListingConflictException(r)},
-                {"purchase_still_processing", r => new PurchaseStillProcessingException(r)},
-                {"invalid_delete", r => new InvalidDeleteException(r)},
-                {"internal_server_error", r => new InternalServerErrorException(r)},
+                {"https_required",              (r,e) => new SslConnectionRequiredException(r,e)},
+                {"insufficient_scope",          (r,e) => new InsufficientScopeException(r,e)},
+                {"user_agent_required",         (r,e) => new UserAgentRequiredException(r,e)},
+                {"invalid_request_body",        (r,e) => new InvalidRequestBodyException(r,e)},
+                {"validation_failed",           (r,e) => new ValidationFailedException(r,e)},
+                {"invalid_password",            (r,e) => new InvalidPasswordException(r,e)},
+                {"email_already_exists",        (r,e) => new EmailAlreadyExistsException(r,e)},
+                {"invalid_purchase_action",     (r,e) => new InvalidPurchaseActionException(r,e)},
+                {"purchase_not_allowed",        (r,e) => new PurchaseNotAllowedException(r,e)},
+                {"listing_conflict",            (r,e) => new ListingConflictException(r,e)},
+                {"purchase_still_processing",   (r,e) => new PurchaseStillProcessingException(r,e)},
+                {"invalid_delete",              (r,e) => new InvalidDeleteException(r,e)},
+                {"internal_server_error",       (r,e) => new InternalServerErrorException(r,e)},
             };
 
         private readonly IApiResponseFactory _responseFactory;
         private readonly IGogoKitConfiguration _configuration;
+        private readonly IJsonSerializer _jsonSerializer;
 
-        public ErrorHandler(IApiResponseFactory responseFactory, IGogoKitConfiguration configuration)
+        public ErrorHandler(IApiResponseFactory responseFactory, IGogoKitConfiguration configuration, IJsonSerializer jsonSerializer)
         {
             Requires.ArgumentNotNull(responseFactory, nameof(responseFactory));
             Requires.ArgumentNotNull(configuration, nameof(configuration));
 
             _responseFactory = responseFactory;
             _configuration = configuration;
+            _jsonSerializer = jsonSerializer;
         }
 
         protected async override Task<HttpResponseMessage> SendAsync(
@@ -71,20 +74,22 @@ namespace GogoKit.Http
         private async Task<ApiException> GetApiErrorException(HttpResponseMessage response)
         {
             var errorResponse = await _responseFactory.CreateApiResponseAsync<ApiError>(response).ConfigureAwait(_configuration);
+
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                return new ResourceNotFoundException(errorResponse);
+                return new ResourceNotFoundException(errorResponse, null);
             }
 
-            Func<IApiResponse<ApiError>, ApiErrorException> exceptionFactoryFunc;
-            if (errorResponse.BodyAsObject != null &&
-                errorResponse.BodyAsObject.Code != null &&
-                ExceptionFactoryMap.TryGetValue(errorResponse.BodyAsObject.Code, out exceptionFactoryFunc))
+            ApiError apiError = _jsonSerializer.Deserialize<ApiError>(errorResponse.Body);
+
+            Func<IApiResponse, ApiError, ApiErrorException> exceptionFactoryFunc;
+            if (apiError.Code != null &&
+                ExceptionFactoryMap.TryGetValue(apiError.Code, out exceptionFactoryFunc))
             {
-                return exceptionFactoryFunc(errorResponse);
+                return exceptionFactoryFunc(errorResponse, apiError);
             }
 
-            return new ApiErrorException(errorResponse);
+            return new ApiErrorException(errorResponse, apiError);
         }
 
         private async Task<ApiAuthorizationException> GetApiAuthorizationException(HttpResponseMessage response)

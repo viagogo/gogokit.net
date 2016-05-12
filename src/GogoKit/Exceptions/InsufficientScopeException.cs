@@ -5,7 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class InsufficientScopeException : ApiErrorException
     {
-        public InsufficientScopeException(IApiResponse<ApiError> response) : base(response)
+        public InsufficientScopeException(IApiResponse response, ApiError apiError) : base(response, apiError)
         {
         }
     }

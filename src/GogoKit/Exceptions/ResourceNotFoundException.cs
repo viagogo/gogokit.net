@@ -5,7 +5,7 @@ namespace GogoKit.Exceptions
 {
     public class ResourceNotFoundException : ApiErrorException
     {
-        public ResourceNotFoundException(IApiResponse<ApiError> response) : base(response)
+        public ResourceNotFoundException(IApiResponse<ApiError> response, ApiError apiError) : base(response, apiError)
         {
         }
 

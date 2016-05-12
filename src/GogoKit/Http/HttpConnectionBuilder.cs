@@ -130,7 +130,7 @@ namespace GogoKit.Http
             // IMPORTANT: The order of these handlers is significant!
             var handlers = new List<DelegatingHandler>
                            {
-                               new ErrorHandler(responseFactory, _configuration),
+                               new ErrorHandler(responseFactory, _configuration, serializer),
                                new UserAgentHandler(_product),
                                authenticationHandler,
                                new LocalizationHandler(_localizationProvider)

@@ -81,7 +81,7 @@ namespace GogoKit.Http
                 return new ResourceNotFoundException(errorResponse);
             }
 
-            // // We need to deserialize the Body here because the IApiResponseFactory won't deserialize error responses
+            // We need to deserialize the Body here because the IApiResponseFactory won't deserialize error responses
             var apiError = _jsonSerializer.Deserialize<ApiError>(errorResponse.Body);
 
             Func<IApiResponse, ApiError, ApiErrorException> exceptionFactoryFunc;

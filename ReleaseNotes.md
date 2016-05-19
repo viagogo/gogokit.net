@@ -1,3 +1,6 @@
+### New in 0.22.0 (Released 2016/05/19)
+* Added DisplaySeating property on SellerListing response
+
 ### New in 0.21.1 (Released 2016/05/12)
 * Fixed ErrorHandler to populate ApiError property in ApiErrorExceptions
 

@@ -20,6 +20,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "seating")]
         public Seating Seating { get; set; }
 
+        [DataMember(Name = "display_seating")]
+        public Seating DisplaySeating { get; set; }
+
         [DataMember(Name = "face_value")]
         public Money FaceValue { get; set; }
 

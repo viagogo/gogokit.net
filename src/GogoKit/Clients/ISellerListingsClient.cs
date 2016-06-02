@@ -49,6 +49,12 @@ namespace GogoKit.Clients
 
         Task<SellerListingPreview> CreateSellerListingPreviewAsync(int eventId, NewSellerListing listing);
 
+        Task<SellerListingPreview> CreateSellerListingPreviewAsync(NewRequestedEventSellerListing listing);
+
+        Task<SellerListingPreview> CreateSellerListingPreviewAsync(NewRequestedEventSellerListing listing, SellerListingRequest request);
+
+        Task<SellerListingPreview> CreateSellerListingPreviewAsync(NewRequestedEventSellerListing listing, SellerListingRequest request, CancellationToken cancellationToken);
+
         Task<SellerListingPreview> CreateSellerListingUpdatePreviewAsync(int sellerListingId, SellerListingUpdate listingUpdate);
 
         Task<SellerListing> CreateAsync(NewRequestedEventSellerListing listing);

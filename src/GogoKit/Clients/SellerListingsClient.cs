@@ -130,6 +130,28 @@ namespace GogoKit.Clients
             return await _halClient.PostAsync<SellerListingPreview>(previewLink, listing).ConfigureAwait(_halClient);
         }
 
+        public Task<SellerListingPreview> CreateSellerListingPreviewAsync(
+            NewRequestedEventSellerListing listing)
+        {
+            return CreateSellerListingPreviewAsync(listing, new SellerListingRequest());
+        }
+
+        public Task<SellerListingPreview> CreateSellerListingPreviewAsync(
+            NewRequestedEventSellerListing listing,
+            SellerListingRequest request)
+        {
+            return CreateSellerListingPreviewAsync(listing, request, CancellationToken.None);
+        }
+
+        public async Task<SellerListingPreview> CreateSellerListingPreviewAsync(
+            NewRequestedEventSellerListing listing,
+            SellerListingRequest request,
+            CancellationToken cancellationToken)
+        {
+            var previewLink = await _linkFactory.CreateLinkAsync("sellerlistingpreview").ConfigureAwait(_halClient);
+            return await _halClient.PostAsync<SellerListingPreview>(previewLink, listing).ConfigureAwait(_halClient);
+        }
+
         public async Task<SellerListingPreview> CreateSellerListingUpdatePreviewAsync(int sellerListingId, SellerListingUpdate listingUpdate)
         {
             var previewLink = await _linkFactory.CreateLinkAsync($"sellerlistings/{sellerListingId}/updatepreview").ConfigureAwait(_halClient);

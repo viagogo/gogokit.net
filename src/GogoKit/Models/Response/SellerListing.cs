@@ -181,6 +181,9 @@ namespace GogoKit.Models.Response
     [DataContract]
     public class SellerListingPreview : SellerListing
     {
+        [Embedded("constraints")]
+        public ListingConstraints Constraints { get; set; }
+
         /// <summary>
         /// You can use a POST request on the href of this link to create a
         /// <see cref="SellerListing"/> for this event.

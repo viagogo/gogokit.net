@@ -1,3 +1,6 @@
+### New in 0.23.0 (Released 2016/06/02)
+* Added ISellerListingClient method for getting SellerListingPurchasePreviews for requested events
+
 ### New in 0.22.0 (Released 2016/05/19)
 * Added DisplaySeating property on SellerListing response
 

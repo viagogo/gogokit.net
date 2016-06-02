@@ -104,7 +104,7 @@ namespace GogoKit.Clients
 
         public Task<ListingConstraints> GetConstraintsForEventAsync(int eventId)
         {
-            return GetConstraintsAsync(eventId, new ListingConstraintsRequest());
+            return GetConstraintsForEventAsync(eventId, new ListingConstraintsRequest());
         }
 
         public async Task<ListingConstraints> GetConstraintsForEventAsync(int eventId, ListingConstraintsRequest request)

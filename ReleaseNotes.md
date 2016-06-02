@@ -1,3 +1,6 @@
+### New in 0.23.1 (Released 2016/06/02)
+Fixed bug in SellerListingClient.GetConstraintsForEventAsync
+
 ### New in 0.23.0 (Released 2016/06/02)
 * Added ISellerListingClient method for getting SellerListingPurchasePreviews for requested events
 

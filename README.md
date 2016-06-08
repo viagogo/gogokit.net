@@ -31,7 +31,7 @@ var client = new ViagogoClient(CLIENT_ID,
                                new ProductHeaderValue("AwesomeApp", "1.0"));
 
 // Get an access token. See http://developer.viagogo.net/#getting-access-tokens
-var token = await client.OAuth2.GetClientAccessTokenAsync();
+var token = await client.OAuth2.GetClientAccessTokenAsync(/*List of scopes*/ new string[] {});
 await client.TokenStore.SetTokenAsync(token);
 
 // Get a list of events, categories, venues and metro areas that match the given

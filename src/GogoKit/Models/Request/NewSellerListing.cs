@@ -34,7 +34,10 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "listing_note_ids")]
         public IList<int> ListingNoteIds { get; set; }
-
+        
+        [DataMember(Name = "notes")]
+        public string Notes { get; set; }
+        
         [DataMember(Name = "ticket_location_address_id")]
         public int? TicketLocationAddressId { get; set; }
 

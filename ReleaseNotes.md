@@ -1,3 +1,6 @@
+### New in 0.24.0 (Released 2016/06/14)
+* Added Notes property on NewSellerListing request
+
 ### New in 0.23.1 (Released 2016/06/02)
 Fixed bug in SellerListingClient.GetConstraintsForEventAsync
 

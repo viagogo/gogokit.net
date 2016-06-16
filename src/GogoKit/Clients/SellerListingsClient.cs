@@ -7,6 +7,7 @@ using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
 using HalKit.Models.Response;
+using System.Linq;
 
 namespace GogoKit.Clients
 {
@@ -59,10 +60,12 @@ namespace GogoKit.Clients
         public async Task<IReadOnlyList<SellerListing>> GetAllAsync(SellerListingRequest request, CancellationToken cancellationToken)
         {
             var sellerListingsLink = await _linkFactory.CreateLinkAsync("sellerlistings").ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<SellerListing>(
+            var listings = await _halClient.GetAllPagesAsync<SellerListing>(
                             sellerListingsLink,
                             request,
                             cancellationToken).ConfigureAwait(_halClient);
+
+            return listings.GroupBy(l => l.Id).Select(l => l.OrderByDescending(o => o.UpdatedAt).First()).ToList();
         }
 
         public async Task<ChangedResources<SellerListing>> GetAllChangesAsync()
@@ -83,12 +86,17 @@ namespace GogoKit.Clients
             return GetAllChangesAsync(nextLink, request, CancellationToken.None);
         }
 
-        public Task<ChangedResources<SellerListing>> GetAllChangesAsync(
+        public async Task<ChangedResources<SellerListing>> GetAllChangesAsync(
             Link nextLink,
             SellerListingRequest request,
             CancellationToken cancellationToken)
         {
-            return _halClient.GetChangedResourcesAsync<SellerListing>(nextLink, request, cancellationToken);
+            var changedResources = await _halClient.GetChangedResourcesAsync<SellerListing>(nextLink, request, cancellationToken);
+
+            return new ChangedResources<SellerListing>(
+                changedResources.NewOrUpdatedResources.GroupBy(l => l.Id).Select(l => l.OrderByDescending(o => o.UpdatedAt).First()).ToList(), 
+                changedResources.DeletedResources.GroupBy(l => l.Id).Select(l => l.First()).ToList(), 
+                null);
         }
 
         public Task<ListingConstraints> GetConstraintsAsync(int sellerListingId)

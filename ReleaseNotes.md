@@ -1,3 +1,6 @@
+### New in 0.24.1 (Released 2016/06/16)
+* Filter duplicates on get all seller listings
+
 ### New in 0.24.0 (Released 2016/06/14)
 * Added Notes property on NewSellerListing request
 

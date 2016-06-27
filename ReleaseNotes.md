@@ -1,3 +1,6 @@
+### New in 0.25.0 (Released (2016/06/27)
+* Add IsInstantDelivery property to seller listings
+
 ### New in 0.24.1 (Released 2016/06/16)
 * Filter duplicates on get all seller listings
 

@@ -49,5 +49,8 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "in_hand_date")]
         public DateTimeOffset? InHandDate { get; set; }
+
+        [DataMember(Name = "instant_delivery")]
+        public bool? IsInstantDelivery { get; set; }
     }
 }

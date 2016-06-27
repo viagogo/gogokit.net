@@ -32,6 +32,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "undeliverable")]
         public bool? IsUndeliverable { get; set; }
 
+        [DataMember(Name = "instant_delivery")]
+        public bool? IsInstantDelivery { get; set; }
+
         [DataMember(Name = "in_hand_at")]
         public DateTimeOffset? InHandAt { get; set; }
 
@@ -132,6 +135,12 @@ namespace GogoKit.Models.Response
         /// <remarks>See http://developer.viagogo.net/#sellerlistingupdateseating.</remarks>
         [Rel("sellerlisting:updateseating")]
         public Link UpdateSeatingLink { get; set; }
+
+        [Rel("sellerlisting:updateinhandat")]
+        public Link UpdateInHandAt { get; set; }
+
+        [Rel("sellerlisting:updateinstantdelivery")]
+        public Link UpdateInstantDelivery { get; set; }
 
         [Rel("sellerlisting:uploadeticket")]
         public Link UploadETicketLink { get; set; }

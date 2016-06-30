@@ -1,3 +1,6 @@
+### New in 0.25.1 (Released (2016/06/30)
+* Rename InHandDate to InHandAt to match response field name
+
 ### New in 0.25.0 (Released (2016/06/27)
 * Add IsInstantDelivery property to seller listings
 

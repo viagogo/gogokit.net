@@ -14,7 +14,7 @@ namespace GogoKit.Models.Response
         public Money MinTicketPrice { get; set; }
 
         [DataMember(Name = "number_of_tickets")]
-        public int NumberOfTickets { get; set; }
+        public int? NumberOfTickets { get; set; }
 
         [DataMember(Name = "notes_html")]
         public string Notes { get; set; }

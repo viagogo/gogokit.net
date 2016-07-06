@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute("GogoKit")]
 [assembly: AssemblyCompanyAttribute("viagogo")]
 [assembly: AssemblyCopyrightAttribute("Copyright viagogo 2016")]
-[assembly: AssemblyVersionAttribute("0.25.0")]
-[assembly: AssemblyFileVersionAttribute("0.25.0")]
-[assembly: AssemblyInformationalVersionAttribute("0.25.0")]
+[assembly: AssemblyVersionAttribute("0.26.0")]
+[assembly: AssemblyFileVersionAttribute("0.26.0")]
+[assembly: AssemblyInformationalVersionAttribute("0.26.0")]
 [assembly: ComVisibleAttribute(false)]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "0.25.0";
+        internal const string Version = "0.26.0";
     }
 }

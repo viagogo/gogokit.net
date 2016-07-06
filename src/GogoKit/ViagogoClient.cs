@@ -47,7 +47,8 @@ namespace GogoKit
                    tokenStore,
                    new ConfigurationLocalizationProvider(configuration),
                    new HttpClientHandler(),
-                   new DelegatingHandler[] {})
+                   new DelegatingHandler[] {},
+                   new DefaultJsonSerializer())
         {
         }
 
@@ -59,7 +60,8 @@ namespace GogoKit
            IOAuth2TokenStore tokenStore,
            ILocalizationProvider localizationProvider,
            HttpClientHandler httpClientHandler,
-           IList<DelegatingHandler> customHandlers)
+           IList<DelegatingHandler> customHandlers,
+           IJsonSerializer serializer)
         {
             Requires.ArgumentNotNull(clientId, nameof(clientId));
             Requires.ArgumentNotNull(clientSecret, nameof(clientSecret));
@@ -69,15 +71,16 @@ namespace GogoKit
             Requires.ArgumentNotNull(localizationProvider, nameof(localizationProvider));
             Requires.ArgumentNotNull(httpClientHandler, nameof(httpClientHandler));
             Requires.ArgumentNotNull(customHandlers, nameof(customHandlers));
+            Requires.ArgumentNotNull(serializer, nameof(serializer));
 
-            var apiConnection = HttpConnectionBuilder.ApiConnection(clientId, clientSecret, product)
+            var apiConnection = HttpConnectionBuilder.ApiConnection(clientId, clientSecret, product, serializer)
                                                      .Configuration(configuration)
                                                      .TokenStore(tokenStore)
                                                      .LocalizationProvider(localizationProvider)
                                                      .HttpClientHandler(httpClientHandler)
                                                      .AdditionalHandlers(customHandlers)
                                                      .Build();
-            var oauthConnection = HttpConnectionBuilder.OAuthConnection(clientId, clientSecret, product)
+            var oauthConnection = HttpConnectionBuilder.OAuthConnection(clientId, clientSecret, product, serializer)
                                                        .Configuration(configuration)
                                                        .LocalizationProvider(localizationProvider)
                                                        .HttpClientHandler(httpClientHandler)

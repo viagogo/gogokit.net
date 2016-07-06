@@ -1,3 +1,6 @@
+### New in 0.26.0 (Released (2016/07/06)
+* Allow HalKit.Json.IJsonSerializer injection into ViagogoClient
+
 ### New in 0.25.1 (Released (2016/06/30)
 * Rename InHandDate to InHandAt to match response field name
 

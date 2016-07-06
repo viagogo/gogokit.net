@@ -20,30 +20,34 @@ namespace GogoKit.Http
         private ILocalizationProvider _localizationProvider;
         private HttpClientHandler _httpClientHandler;
         private IList<DelegatingHandler> _additionalHandlers;
+        private readonly IJsonSerializer _serializer;
 
-        public static HttpConnectionBuilder ApiConnection(string clientId, string clientSecret, ProductHeaderValue product)
+        public static HttpConnectionBuilder ApiConnection(string clientId, string clientSecret, ProductHeaderValue product, IJsonSerializer serializer)
         {
-            return new HttpConnectionBuilder(clientId, clientSecret, product, ConnectionType.Api);
+            return new HttpConnectionBuilder(clientId, clientSecret, product, ConnectionType.Api, serializer);
         }
 
-        public static HttpConnectionBuilder OAuthConnection(string clientId, string clientSecret, ProductHeaderValue product)
+        public static HttpConnectionBuilder OAuthConnection(string clientId, string clientSecret, ProductHeaderValue product, IJsonSerializer serializer)
         {
-            return new HttpConnectionBuilder(clientId, clientSecret, product, ConnectionType.OAuth);
+            return new HttpConnectionBuilder(clientId, clientSecret, product, ConnectionType.OAuth, serializer);
         }
 
         private HttpConnectionBuilder(string clientId,
                                       string clientSecret,
                                       ProductHeaderValue product,
-                                      ConnectionType connectionType)
+                                      ConnectionType connectionType,
+                                      IJsonSerializer serializer)
         {
             Requires.ArgumentNotNull(clientId, nameof(clientId));
             Requires.ArgumentNotNull(clientSecret, nameof(clientSecret));
+            Requires.ArgumentNotNull(product, nameof(product));
             Requires.ArgumentNotNull(product, nameof(product));
 
             _clientId = clientId;
             _clientSecret = clientSecret;
             _product = product;
             _connectionType = connectionType;
+            _serializer = serializer;
 
             _configuration = new GogoKitConfiguration();
             _tokenStore = new InMemoryOAuth2TokenStore();
@@ -98,39 +102,39 @@ namespace GogoKit.Http
             switch (_connectionType)
             {
                 case ConnectionType.OAuth:
-                {
-                    authenticationHandler = new BasicAuthenticationHandler(_clientId, _clientSecret);
-                    break;
-                }
+                    {
+                        authenticationHandler = new BasicAuthenticationHandler(_clientId, _clientSecret);
+                        break;
+                    }
                 case ConnectionType.Api:
-                {
-                    var oauthConnection = OAuthConnection(_clientId, _clientSecret, _product)
-                                            .Configuration(_configuration)
-                                            .LocalizationProvider(_localizationProvider)
-                                            .HttpClientHandler(_httpClientHandler)
-                                            .AdditionalHandlers(_additionalHandlers)
-                                            .Build();
-                    var oauthClient = new OAuth2Client(oauthConnection, _configuration, _clientId);
-                    authenticationHandler = new BearerTokenAuthenticationHandler(oauthClient, _tokenStore, _configuration);
-                    break;
-                }
+                    {
+                        var oauthConnection = OAuthConnection(_clientId, _clientSecret, _product, _serializer)
+                                                .Configuration(_configuration)
+                                                .LocalizationProvider(_localizationProvider)
+                                                .HttpClientHandler(_httpClientHandler)
+                                                .AdditionalHandlers(_additionalHandlers)
+                                                .Build();
+                        var oauthClient = new OAuth2Client(oauthConnection, _configuration, _clientId);
+                        authenticationHandler = new BearerTokenAuthenticationHandler(oauthClient, _tokenStore, _configuration);
+                        break;
+                    }
                 default:
-                {
-                    throw new ArgumentOutOfRangeException("_connectionType");
-                }
+                    {
+                        throw new ArgumentOutOfRangeException("_connectionType");
+                    }
             }
 
             var halKitConfiguration = new HalKitConfiguration(_configuration.ViagogoApiRootEndpoint)
-                                      {
-                                          CaptureSynchronizationContext = _configuration.CaptureSynchronizationContext
-                                      };
-            var serializer = new DefaultJsonSerializer();
-            var responseFactory = new HalKit.Http.ApiResponseFactory(serializer, halKitConfiguration);
+            {
+                CaptureSynchronizationContext = _configuration.CaptureSynchronizationContext
+            };
+
+            var responseFactory = new HalKit.Http.ApiResponseFactory(_serializer, halKitConfiguration);
 
             // IMPORTANT: The order of these handlers is significant!
             var handlers = new List<DelegatingHandler>
                            {
-                               new ErrorHandler(responseFactory, _configuration, serializer),
+                               new ErrorHandler(responseFactory, _configuration, _serializer),
                                new UserAgentHandler(_product),
                                authenticationHandler,
                                new LocalizationHandler(_localizationProvider)
@@ -141,7 +145,7 @@ namespace GogoKit.Http
                 handlers,
                 halKitConfiguration,
                 new HalKit.Http.HttpClientFactory(_httpClientHandler),
-                serializer,
+                _serializer,
                 responseFactory);
         }
 

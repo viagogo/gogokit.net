@@ -65,7 +65,12 @@ namespace GogoKit.Http
             {
                 if (token != null && token.RefreshToken != null)
                 {
-                    token = await _oauthClient.RefreshAccessTokenAsync(token).ConfigureAwait(_configuration);
+                    // Use the tokenStore to cache the result of refreshing
+                    // this token - helps race conditions when trying to
+                    // refresh
+                    token = await _tokenStore.GetCachedTokenAsync(
+                                    token.RefreshToken,
+                                    () => _oauthClient.RefreshAccessTokenAsync(token)).ConfigureAwait(_configuration);
                 }
                 else
                 {

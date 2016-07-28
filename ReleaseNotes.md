@@ -1,3 +1,6 @@
+### New in 0.27.0 (Released (2016/07/06)
+* Minimise refresh token race conditions by caching the result of refreshing a token
+
 ### New in 0.26.0 (Released (2016/07/06)
 * Allow HalKit.Json.IJsonSerializer injection into ViagogoClient
 

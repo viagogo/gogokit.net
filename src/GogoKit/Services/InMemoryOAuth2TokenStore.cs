@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GogoKit.Models.Response;
 
 namespace GogoKit.Services
@@ -15,6 +16,11 @@ namespace GogoKit.Services
         public Task<OAuth2Token> GetTokenAsync()
         {
             return Task.FromResult(_token);
+        }
+
+        public Task<OAuth2Token> GetCachedTokenAsync(string cacheKey, Func<Task<OAuth2Token>> getTokenAsyncFunc)
+        {
+            return getTokenAsyncFunc != null ? getTokenAsyncFunc() : Task.FromResult<OAuth2Token>(null);
         }
 
         public Task SetTokenAsync(OAuth2Token token)

@@ -17,16 +17,16 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
-            : this(new GogoKitConfiguration(clientId, clientSecret), product, new InMemoryOAuth2TokenStore())
+            : this(product, new GogoKitConfiguration(clientId, clientSecret), new InMemoryOAuth2TokenStore())
         {
         }
 
         public ViagogoClient(
-            IGogoKitConfiguration configuration,
             ProductHeaderValue product,
+            IGogoKitConfiguration configuration,
             IOAuth2TokenStore tokenStore)
-            : this(configuration,
-                   product,
+            : this(product,
+                   configuration,
                    tokenStore,
                    new ConfigurationLocalizationProvider(configuration),
                    new DefaultJsonSerializer(),
@@ -36,37 +36,50 @@ namespace GogoKit
         }
 
         public ViagogoClient(
-           IGogoKitConfiguration configuration,
            ProductHeaderValue product,
+           IGogoKitConfiguration configuration,
            IOAuth2TokenStore tokenStore,
            ILocalizationProvider localizationProvider,
            IJsonSerializer serializer,
            HttpClientHandler httpClientHandler,
            IList<DelegatingHandler> customHandlers)
+            : this(product,
+                   configuration,
+                   tokenStore,
+                   serializer,
+                   HttpConnectionBuilder.OAuthConnection(configuration, product, serializer)
+                                        .LocalizationProvider(localizationProvider)
+                                        .HttpClientHandler(httpClientHandler)
+                                        .AdditionalHandlers(customHandlers)
+                                        .Build(),
+                   HttpConnectionBuilder.ApiConnection(configuration, product, serializer)
+                                        .TokenStore(tokenStore)
+                                        .LocalizationProvider(localizationProvider)
+                                        .HttpClientHandler(httpClientHandler)
+                                        .AdditionalHandlers(customHandlers)
+                                        .Build())
         {
-            Requires.ArgumentNotNull(configuration, nameof(configuration));
-            Requires.ArgumentNotNull(product, nameof(product));
-            Requires.ArgumentNotNull(tokenStore, nameof(tokenStore));
-            Requires.ArgumentNotNull(localizationProvider, nameof(localizationProvider));
-            Requires.ArgumentNotNull(httpClientHandler, nameof(httpClientHandler));
-            Requires.ArgumentNotNull(customHandlers, nameof(customHandlers));
-            Requires.ArgumentNotNull(serializer, nameof(serializer));
+        }
 
-            var apiConnection = HttpConnectionBuilder.ApiConnection(configuration, product, serializer)
-                                                     .TokenStore(tokenStore)
-                                                     .LocalizationProvider(localizationProvider)
-                                                     .HttpClientHandler(httpClientHandler)
-                                                     .AdditionalHandlers(customHandlers)
-                                                     .Build();
-            var oauthConnection = HttpConnectionBuilder.OAuthConnection(configuration, product, serializer)
-                                                       .LocalizationProvider(localizationProvider)
-                                                       .HttpClientHandler(httpClientHandler)
-                                                       .AdditionalHandlers(customHandlers)
-                                                       .Build();
+        public ViagogoClient(
+            ProductHeaderValue product,
+            IGogoKitConfiguration configuration,
+            IOAuth2TokenStore tokenStore,
+            IJsonSerializer serializer,
+            IHttpConnection oauthConnection,
+            IHttpConnection apiConnection)
+        {
+            Requires.ArgumentNotNull(product, nameof(product));
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
+            Requires.ArgumentNotNull(tokenStore, nameof(tokenStore));
+            Requires.ArgumentNotNull(serializer, nameof(serializer));
+            Requires.ArgumentNotNull(oauthConnection, nameof(oauthConnection));
+            Requires.ArgumentNotNull(apiConnection, nameof(apiConnection));
+
             var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoApiRootEndpoint)
-                                      {
-                                          CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
-                                      };
+            {
+                CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
+            };
 
             Configuration = configuration;
             TokenStore = tokenStore;
@@ -88,11 +101,10 @@ namespace GogoKit
             Venues = new VenuesClient(Hypermedia);
             SellerListings = new SellerListingsClient(Hypermedia, linkFactory);
             Webhooks = new WebhooksClient(User, Hypermedia, linkFactory);
-
-            var jsonSerializer = new DefaultJsonSerializer();
+            
             BatchClient = new BatchClient(apiConnection,
-                                          new ApiResponseFactory(jsonSerializer, halKitConfiguration),
-                                          jsonSerializer,
+                                          new ApiResponseFactory(serializer, halKitConfiguration),
+                                          serializer,
                                           new LinkResolver());
         }
 

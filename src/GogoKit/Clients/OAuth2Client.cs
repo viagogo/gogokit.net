@@ -15,20 +15,15 @@ namespace GogoKit.Clients
     {
         private readonly IHttpConnection _connection;
         private readonly IGogoKitConfiguration _configuration;
-        private readonly string _clientId;
         private readonly ILinkResolver _linkResolver;
 
-        public OAuth2Client(IHttpConnection connection,
-                            IGogoKitConfiguration configuration,
-                            string clientId)
+        public OAuth2Client(IHttpConnection connection, IGogoKitConfiguration configuration)
         {
             Requires.ArgumentNotNull(connection, nameof(connection));
             Requires.ArgumentNotNull(configuration, nameof(configuration));
-            Requires.ArgumentNotNullOrEmpty(clientId, nameof(clientId));
 
             _connection = connection;
             _configuration = configuration;
-            _clientId = clientId;
             _linkResolver = new LinkResolver();
         }
 
@@ -46,7 +41,7 @@ namespace GogoKit.Clients
                 new Link { HRef = _configuration.ViagogoAuthorizationEndpoint.OriginalString },
                 new Dictionary<string, string>()
                 {
-                    ["client_id"] = _clientId,
+                    ["client_id"] = _configuration.ClientId,
                     ["response_type"] = "code",
                     ["redirect_uri"] = redirectUri.OriginalString,
                     ["scope"] = string.Join(" ", scopes),

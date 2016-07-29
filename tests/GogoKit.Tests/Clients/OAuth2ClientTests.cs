@@ -15,14 +15,12 @@ namespace GogoKit.Tests.Clients
     public class OAuth2ClientTests
     {
         private static OAuth2Client CreateClient(
-            string clientId = "foo",
             IHttpConnection conn = null,
             IGogoKitConfiguration config = null)
         {
             return new OAuth2Client(
                 conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
-                config ?? new GogoKitConfiguration("c", "s"),
-                clientId);
+                config ?? new GogoKitConfiguration("c", "s"));
         }
 
         private static IApiResponse<OAuth2Token> CreateResponse(
@@ -159,8 +157,7 @@ namespace GogoKit.Tests.Clients
                 = new Uri("https://account.vgg.com/authorize?client_id=abc123&response_type=code&" +
                           "redirect_uri=https%3A%2F%2Fmyapplication%2Fcallback&" +
                           "scope=S1 S2&state=state123");
-            var client = CreateClient(clientId: "abc123",
-                                      config: new GogoKitConfiguration("c", "s")
+            var client = CreateClient(config: new GogoKitConfiguration("abc123", "s")
                                       {
                                           ViagogoAuthorizationEndpoint = new Uri("https://account.vgg.com/authorize")
                                       });

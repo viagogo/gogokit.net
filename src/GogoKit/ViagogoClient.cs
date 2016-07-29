@@ -17,71 +17,48 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
-            : this(clientId, clientSecret, product, new GogoKitConfiguration(clientId, clientSecret))
+            : this(new GogoKitConfiguration(clientId, clientSecret), product, new InMemoryOAuth2TokenStore())
         {
         }
 
         public ViagogoClient(
-            string clientId,
-            string clientSecret,
-            ProductHeaderValue product,
-            IGogoKitConfiguration configuration)
-            : this(clientId,
-                   clientSecret,
-                   product,
-                   configuration,
-                   new InMemoryOAuth2TokenStore())
-        {
-        }
-
-        public ViagogoClient(
-            string clientId,
-            string clientSecret,
-            ProductHeaderValue product,
             IGogoKitConfiguration configuration,
+            ProductHeaderValue product,
             IOAuth2TokenStore tokenStore)
-            : this(clientId,
-                   clientSecret,
+            : this(configuration,
                    product,
-                   configuration,
                    tokenStore,
                    new ConfigurationLocalizationProvider(configuration),
+                   new DefaultJsonSerializer(),
                    new HttpClientHandler(),
-                   new DelegatingHandler[] {},
-                   new DefaultJsonSerializer())
+                   new DelegatingHandler[] {})
         {
         }
 
         public ViagogoClient(
-           string clientId,
-           string clientSecret,
-           ProductHeaderValue product,
            IGogoKitConfiguration configuration,
+           ProductHeaderValue product,
            IOAuth2TokenStore tokenStore,
            ILocalizationProvider localizationProvider,
+           IJsonSerializer serializer,
            HttpClientHandler httpClientHandler,
-           IList<DelegatingHandler> customHandlers,
-           IJsonSerializer serializer)
+           IList<DelegatingHandler> customHandlers)
         {
-            Requires.ArgumentNotNull(clientId, nameof(clientId));
-            Requires.ArgumentNotNull(clientSecret, nameof(clientSecret));
-            Requires.ArgumentNotNull(product, nameof(product));
             Requires.ArgumentNotNull(configuration, nameof(configuration));
+            Requires.ArgumentNotNull(product, nameof(product));
             Requires.ArgumentNotNull(tokenStore, nameof(tokenStore));
             Requires.ArgumentNotNull(localizationProvider, nameof(localizationProvider));
             Requires.ArgumentNotNull(httpClientHandler, nameof(httpClientHandler));
             Requires.ArgumentNotNull(customHandlers, nameof(customHandlers));
             Requires.ArgumentNotNull(serializer, nameof(serializer));
 
-            var apiConnection = HttpConnectionBuilder.ApiConnection(clientId, clientSecret, product, serializer)
-                                                     .Configuration(configuration)
+            var apiConnection = HttpConnectionBuilder.ApiConnection(configuration, product, serializer)
                                                      .TokenStore(tokenStore)
                                                      .LocalizationProvider(localizationProvider)
                                                      .HttpClientHandler(httpClientHandler)
                                                      .AdditionalHandlers(customHandlers)
                                                      .Build();
-            var oauthConnection = HttpConnectionBuilder.OAuthConnection(clientId, clientSecret, product, serializer)
-                                                       .Configuration(configuration)
+            var oauthConnection = HttpConnectionBuilder.OAuthConnection(configuration, product, serializer)
                                                        .LocalizationProvider(localizationProvider)
                                                        .HttpClientHandler(httpClientHandler)
                                                        .AdditionalHandlers(customHandlers)
@@ -95,7 +72,7 @@ namespace GogoKit
             TokenStore = tokenStore;
             Hypermedia = new HalClient(halKitConfiguration, apiConnection);
             var linkFactory = new LinkFactory(configuration);
-            OAuth2 = new OAuth2Client(oauthConnection, configuration, clientId);
+            OAuth2 = new OAuth2Client(oauthConnection, configuration);
             User = new UserClient(Hypermedia);
             Search = new SearchClient(Hypermedia);
             Addresses = new AddressesClient(User, Hypermedia, linkFactory);

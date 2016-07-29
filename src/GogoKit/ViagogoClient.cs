@@ -14,9 +14,9 @@ namespace GogoKit
     public class ViagogoClient : IViagogoClient
     {
         public ViagogoClient(
+            ProductHeaderValue product,
             string clientId,
-            string clientSecret,
-            ProductHeaderValue product)
+            string clientSecret)
             : this(product, new GogoKitConfiguration(clientId, clientSecret), new InMemoryOAuth2TokenStore())
         {
         }

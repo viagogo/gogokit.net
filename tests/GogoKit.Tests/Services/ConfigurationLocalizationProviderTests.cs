@@ -9,7 +9,7 @@ namespace GogoKit.Tests.Services
         [Test]
         public void LanguageCode_WhenExistsInConfiguration_ShouldRetrieveIt()
         {
-            var configuration = new GogoKitConfiguration {LanguageCode = "en-GB"};
+            var configuration = new GogoKitConfiguration("c", "s") { LanguageCode = "en-GB"};
             var configurationLocalizationProvider = new ConfigurationLocalizationProvider(configuration);
 
             var actualLanguageCode = configurationLocalizationProvider.LanguageCode;
@@ -20,7 +20,7 @@ namespace GogoKit.Tests.Services
         [Test]
         public void CountryCode_WhenExistsInConfiguration_ShouldRetrieveIt()
         {
-            var configuration = new GogoKitConfiguration {CountryCode = "UK"};
+            var configuration = new GogoKitConfiguration("c", "s") { CountryCode = "UK"};
             var configurationLocalizationProvider = new ConfigurationLocalizationProvider(configuration);
 
             var actualCountryCode = configurationLocalizationProvider.CountryCode;
@@ -31,7 +31,7 @@ namespace GogoKit.Tests.Services
         [Test]
         public void CurrencyCode_WhenExistsInConfiguration_ShouldRetrieveIt()
         {
-            var configuration = new GogoKitConfiguration {CurrencyCode = "GBP"};
+            var configuration = new GogoKitConfiguration("c", "s") { CurrencyCode = "GBP"};
             var configurationLocalizationProvider = new ConfigurationLocalizationProvider(configuration);
 
             var actualCurrencyCode = configurationLocalizationProvider.CurrencyCode;

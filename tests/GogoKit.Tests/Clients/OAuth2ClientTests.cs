@@ -21,7 +21,7 @@ namespace GogoKit.Tests.Clients
         {
             return new OAuth2Client(
                 conn ?? new Mock<IHttpConnection>(MockBehavior.Loose).Object,
-                config ?? new GogoKitConfiguration(),
+                config ?? new GogoKitConfiguration("c", "s"),
                 clientId);
         }
 
@@ -48,7 +48,7 @@ namespace GogoKit.Tests.Clients
                                     It.IsAny<CancellationToken>()))
                     .Returns(Task.FromResult(CreateResponse()))
                     .Verifiable();
-            var client = CreateClient(conn: mockConn.Object, config: new GogoKitConfiguration {ViagogoOAuthTokenEndpoint = expectedUri});
+            var client = CreateClient(conn: mockConn.Object, config: new GogoKitConfiguration("c", "s") {ViagogoOAuthTokenEndpoint = expectedUri});
 
             await client.GetAccessTokenAsync("grantType", null, null);
 
@@ -160,7 +160,7 @@ namespace GogoKit.Tests.Clients
                           "redirect_uri=https%3A%2F%2Fmyapplication%2Fcallback&" +
                           "scope=S1 S2&state=state123");
             var client = CreateClient(clientId: "abc123",
-                                      config: new GogoKitConfiguration
+                                      config: new GogoKitConfiguration("c", "s")
                                       {
                                           ViagogoAuthorizationEndpoint = new Uri("https://account.vgg.com/authorize")
                                       });

@@ -17,7 +17,7 @@ namespace GogoKit
             string clientId,
             string clientSecret,
             ProductHeaderValue product)
-            : this(clientId, clientSecret, product, new GogoKitConfiguration())
+            : this(clientId, clientSecret, product, new GogoKitConfiguration(clientId, clientSecret))
         {
         }
 

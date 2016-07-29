@@ -49,7 +49,7 @@ namespace GogoKit.Http
             _connectionType = connectionType;
             _serializer = serializer;
 
-            _configuration = new GogoKitConfiguration();
+            _configuration = new GogoKitConfiguration(clientId, clientSecret);
             _tokenStore = new InMemoryOAuth2TokenStore();
             _localizationProvider = new ConfigurationLocalizationProvider(_configuration);
             _httpClientHandler = new HttpClientHandler();

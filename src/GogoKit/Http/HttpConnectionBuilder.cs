@@ -11,57 +11,43 @@ namespace GogoKit.Http
 {
     public class HttpConnectionBuilder
     {
-        private readonly string _clientId;
-        private readonly string _clientSecret;
         private readonly ProductHeaderValue _product;
         private readonly ConnectionType _connectionType;
-        private IGogoKitConfiguration _configuration;
+        private readonly IGogoKitConfiguration _configuration;
         private IOAuth2TokenStore _tokenStore;
         private ILocalizationProvider _localizationProvider;
         private HttpClientHandler _httpClientHandler;
         private IList<DelegatingHandler> _additionalHandlers;
         private readonly IJsonSerializer _serializer;
 
-        public static HttpConnectionBuilder ApiConnection(string clientId, string clientSecret, ProductHeaderValue product, IJsonSerializer serializer)
+        public static HttpConnectionBuilder ApiConnection(IGogoKitConfiguration configuration, ProductHeaderValue product, IJsonSerializer serializer)
         {
-            return new HttpConnectionBuilder(clientId, clientSecret, product, ConnectionType.Api, serializer);
+            return new HttpConnectionBuilder(configuration, product, ConnectionType.Api, serializer);
         }
 
-        public static HttpConnectionBuilder OAuthConnection(string clientId, string clientSecret, ProductHeaderValue product, IJsonSerializer serializer)
+        public static HttpConnectionBuilder OAuthConnection(IGogoKitConfiguration configuration, ProductHeaderValue product, IJsonSerializer serializer)
         {
-            return new HttpConnectionBuilder(clientId, clientSecret, product, ConnectionType.OAuth, serializer);
+            return new HttpConnectionBuilder(configuration, product, ConnectionType.OAuth, serializer);
         }
 
-        private HttpConnectionBuilder(string clientId,
-                                      string clientSecret,
+        private HttpConnectionBuilder(IGogoKitConfiguration configuration,
                                       ProductHeaderValue product,
                                       ConnectionType connectionType,
                                       IJsonSerializer serializer)
         {
-            Requires.ArgumentNotNull(clientId, nameof(clientId));
-            Requires.ArgumentNotNull(clientSecret, nameof(clientSecret));
+            Requires.ArgumentNotNull(configuration, nameof(configuration));
             Requires.ArgumentNotNull(product, nameof(product));
             Requires.ArgumentNotNull(product, nameof(product));
 
-            _clientId = clientId;
-            _clientSecret = clientSecret;
+            _configuration = configuration;
             _product = product;
             _connectionType = connectionType;
             _serializer = serializer;
 
-            _configuration = new GogoKitConfiguration();
             _tokenStore = new InMemoryOAuth2TokenStore();
             _localizationProvider = new ConfigurationLocalizationProvider(_configuration);
             _httpClientHandler = new HttpClientHandler();
             _additionalHandlers = new DelegatingHandler[] { };
-        }
-
-        public HttpConnectionBuilder Configuration(IGogoKitConfiguration configuration)
-        {
-            Requires.ArgumentNotNull(configuration, nameof(configuration));
-
-            _configuration = configuration;
-            return this;
         }
 
         public HttpConnectionBuilder TokenStore(IOAuth2TokenStore tokenStore)
@@ -103,18 +89,17 @@ namespace GogoKit.Http
             {
                 case ConnectionType.OAuth:
                     {
-                        authenticationHandler = new BasicAuthenticationHandler(_clientId, _clientSecret);
+                        authenticationHandler = new BasicAuthenticationHandler(_configuration.ClientId, _configuration.ClientSecret);
                         break;
                     }
                 case ConnectionType.Api:
                     {
-                        var oauthConnection = OAuthConnection(_clientId, _clientSecret, _product, _serializer)
-                                                .Configuration(_configuration)
+                        var oauthConnection = OAuthConnection(_configuration, _product, _serializer)
                                                 .LocalizationProvider(_localizationProvider)
                                                 .HttpClientHandler(_httpClientHandler)
                                                 .AdditionalHandlers(_additionalHandlers)
                                                 .Build();
-                        var oauthClient = new OAuth2Client(oauthConnection, _configuration, _clientId);
+                        var oauthClient = new OAuth2Client(oauthConnection, _configuration);
                         authenticationHandler = new BearerTokenAuthenticationHandler(oauthClient, _tokenStore, _configuration);
                         break;
                     }

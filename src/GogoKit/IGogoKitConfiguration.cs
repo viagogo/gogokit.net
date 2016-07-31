@@ -7,6 +7,16 @@ namespace GogoKit
     public interface IGogoKitConfiguration
     {
         /// <summary>
+        /// Unique client identifier obtained through the application registration process.
+        /// </summary>
+        string ClientId { get; set; }
+
+        /// <summary>
+        /// Unique secret obtained through the application registration process.
+        /// </summary>
+        string ClientSecret { get; set; }
+
+        /// <summary>
         /// The root endpoint of the API to get the root resource that links to
         /// all other API resources.
         /// </summary>

@@ -1,3 +1,6 @@
+### New in 0.27.0 (Released (2017/04/26)
+* Upgrade hal kit
+
 ### New in 0.26.0 (Released (2016/07/06)
 * Allow HalKit.Json.IJsonSerializer injection into ViagogoClient
 

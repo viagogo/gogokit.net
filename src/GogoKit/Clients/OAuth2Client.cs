@@ -74,8 +74,8 @@ namespace GogoKit.Clients
                                     CancellationToken.None).ConfigureAwait(_configuration);
             var token = response.BodyAsObject;
 
-            token.IssueDate = response.Headers.ContainsKey("Date")
-                                ? DateTimeOffset.Parse(response.Headers["Date"])
+            token.IssueDate = response.Headers.ContainsKey("Date") && response.Headers["Date"].Any()
+                                ? DateTimeOffset.Parse(response.Headers["Date"].First())
                                 : DateTime.UtcNow;
 
             return token;

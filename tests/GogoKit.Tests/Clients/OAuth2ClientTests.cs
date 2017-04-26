@@ -28,7 +28,7 @@ namespace GogoKit.Tests.Clients
             string dateHeader = "Wed, 26 Nov 2014 23:29:58 GMT")
         {
             var response = new ApiResponse<OAuth2Token> {BodyAsObject = token ?? new OAuth2Token()};
-            response.Headers.Add("Date", dateHeader);
+            response.Headers.Add("Date", new [] { dateHeader });
 
             return response;
         }

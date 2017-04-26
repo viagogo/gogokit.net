@@ -10,14 +10,29 @@ namespace GogoKit
         private readonly HalKitConfiguration _halKitConfiguration;
         private ApiEnvironment _apiEnvironment;
 
-        public GogoKitConfiguration()
+        public GogoKitConfiguration(string clientId, string clientSecret)
         {
+            Requires.ArgumentNotNullOrEmpty(clientId, nameof(clientId));
+            Requires.ArgumentNotNullOrEmpty(clientSecret, nameof(clientSecret));
+
+            ClientId = clientId;
+            ClientSecret = clientSecret;
             _halKitConfiguration = new HalKitConfiguration(Default.ViagogoApiRootEndpoints[ApiEnvironment.Production])
                                    {
                                        CaptureSynchronizationContext = false
                                    };
             ViagogoApiEnvironment = ApiEnvironment.Production;
         }
+
+        /// <summary>
+        /// Unique client identifier obtained through the application registration process.
+        /// </summary>
+        public string ClientId { get; set; }
+
+        /// <summary>
+        /// Unique secret obtained through the application registration process.
+        /// </summary>
+        public string ClientSecret { get; set; }
 
         /// <summary>
         /// The root endpoint of the API to get the root resource that links to

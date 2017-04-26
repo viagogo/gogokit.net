@@ -27,7 +27,7 @@ namespace GogoKit.Tests.Http
         {
             return new ErrorHandler(
                 respFact ?? new FakeApiResponseFactory(),
-                config ?? new GogoKitConfiguration(),
+                config ?? new GogoKitConfiguration("c", "s"),
                 jsonSerializer ?? new DefaultJsonSerializer())
             {
                 InnerHandler = new FakeDelegatingHandler(resp: resp)

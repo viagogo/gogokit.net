@@ -1,5 +1,9 @@
-### New in 0.27.0 (Released (2017/04/26)
+### New in 0.28.0 (Released (2017/04/26)
 * Upgrade hal kit
+* Fix OAuth2Client
+
+### New in 0.27.0 (Released (2016/07/29)
+* Added new ViagogoClient constructor that allows customisation of the entire stack
 
 ### New in 0.26.0 (Released (2016/07/06)
 * Allow HalKit.Json.IJsonSerializer injection into ViagogoClient

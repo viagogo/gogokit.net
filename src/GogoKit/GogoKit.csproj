@@ -115,6 +115,7 @@
     <Compile Include="Models\Response\Shipment.cs" />
     <Compile Include="Models\Response\Shipments.cs" />
     <Compile Include="Models\Response\SplitType.cs" />
+    <Compile Include="Models\Response\StateInformation.cs" />
     <Compile Include="Models\Response\Webhook.cs" />
     <Compile Include="Models\Response\Webhooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

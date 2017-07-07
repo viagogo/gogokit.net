@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using HalKit.Models.Response;
 using HalKit.Json;
@@ -65,5 +66,26 @@ namespace GogoKit.Models.Response
 
         [Embedded("delivery_method")]
         public DeliveryMethod DeliveryMethod { get; set; }
+
+        [Embedded("status_information")]
+        public StateInformation StatusInformation { get; set; }
+
+        [Embedded("buyer_information")]
+        public IReadOnlyDictionary<string, string> BuyerInformation { get; set; }
+
+        [Rel("sale:ticketholders")]
+        public Link GetSaleTicketHolderDetailsLink { get; set; }
+
+        [Rel("sale:listing")]
+        public Link GetSaleListing { get; set; }
+
+        [Rel("sale:webpage")]
+        public Link WebPageLink { get; set; }
+
+        [Rel("sale:contactuswebpage")]
+        public Link ContactUsWebPageLink { get; set; }
+
+        [Rel("sale:changepapertickettoeticket")]
+        public Link ChangePaperTicketToETicketLink { get; set; }
     }
 }

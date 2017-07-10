@@ -1,3 +1,6 @@
+### New in 0.29.0 (Released (2017/07/10)
+* Add sellerlisting link to sales resource
+
 ### New in 0.28.0 (Released (2017/04/26)
 * Upgrade hal kit
 * Fix OAuth2Client

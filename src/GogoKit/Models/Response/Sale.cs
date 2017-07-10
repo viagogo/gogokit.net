@@ -65,5 +65,8 @@ namespace GogoKit.Models.Response
 
         [Embedded("delivery_method")]
         public DeliveryMethod DeliveryMethod { get; set; }
+
+        [Rel("sale:listing")]
+        public Link GetSaleListing { get; set; }
     }
 }

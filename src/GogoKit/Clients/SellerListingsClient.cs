@@ -36,6 +36,17 @@ namespace GogoKit.Clients
             return await _halClient.GetAsync<SellerListing>(listingLink, request).ConfigureAwait(_halClient);
         }
 
+        public Task<SellerListing> GetAsync(string externalListingId)
+        {
+            return GetAsync(externalListingId, new SellerListingRequest());
+        }
+
+        public async Task<SellerListing> GetAsync(string externalListingId, SellerListingRequest request)
+        {
+            var listingLink = await _linkFactory.CreateLinkAsync($"externalsellerlistings/{externalListingId}").ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<SellerListing>(listingLink, request).ConfigureAwait(_halClient);
+        }
+
         public Task<PagedResource<SellerListing>> GetAsync()
         {
             return GetAsync(new SellerListingRequest());
@@ -216,9 +227,27 @@ namespace GogoKit.Clients
             return await _halClient.PatchAsync<SellerListing>(updateLink, listingUpdate, request).ConfigureAwait(_halClient);
         }
 
+        public async Task<SellerListing> UpdateAsync(string externalListingId, SellerListingUpdate listingUpdate)
+        {
+            var updateLink = await _linkFactory.CreateLinkAsync($"externalsellerlistings/{externalListingId}").ConfigureAwait(_halClient);
+            return await _halClient.PatchAsync<SellerListing>(updateLink, listingUpdate, new SellerListingRequest()).ConfigureAwait(_halClient);
+        }
+
+        public async Task<SellerListing> UpdateAsync(string externalListingId, SellerListingUpdate listingUpdate, SellerListingRequest request)
+        {
+            var updateLink = await _linkFactory.CreateLinkAsync($"externalsellerlistings/{externalListingId}").ConfigureAwait(_halClient);
+            return await _halClient.PatchAsync<SellerListing>(updateLink, listingUpdate, request).ConfigureAwait(_halClient);
+        }
+
         public async Task<IApiResponse> DeleteAsync(int sellerListingId)
         {
             var deleteLink = await _linkFactory.CreateLinkAsync($"sellerlistings/{sellerListingId}").ConfigureAwait(_halClient);
+            return await _halClient.DeleteAsync(deleteLink);
+        }
+
+        public async Task<IApiResponse> DeleteAsync(string externalListingId)
+        {
+            var deleteLink = await _linkFactory.CreateLinkAsync($"externalsellerlistings/{externalListingId}").ConfigureAwait(_halClient);
             return await _halClient.DeleteAsync(deleteLink);
         }
     }

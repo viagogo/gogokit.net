@@ -1,3 +1,7 @@
+### New in 0.31.0 (Released (2017/10/31)
+* Add ticket holder detail resource and a way to get it using the sale client
+* Add InvalidSaleActionException
+
 ### New in 0.30.0 (Released (2017/08/22)
 * Updated SellerListing Client to Get, Delete and Update by ExternalListingId
 

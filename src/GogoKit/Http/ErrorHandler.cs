@@ -25,20 +25,21 @@ namespace GogoKit.Http
         private static readonly IDictionary<string, Func<IApiResponse, ApiError, ApiErrorException>> ExceptionFactoryMap =
             new Dictionary<string, Func<IApiResponse, ApiError, ApiErrorException>>
             {
-                {"https_required",              (r,e) => new SslConnectionRequiredException(r,e)},
-                {"insufficient_scope",          (r,e) => new InsufficientScopeException(r,e)},
-                {"user_agent_required",         (r,e) => new UserAgentRequiredException(r,e)},
-                {"invalid_request_body",        (r,e) => new InvalidRequestBodyException(r,e)},
-                {"validation_failed",           (r,e) => new ValidationFailedException(r,e)},
-                {"invalid_password",            (r,e) => new InvalidPasswordException(r,e)},
-                {"email_already_exists",        (r,e) => new EmailAlreadyExistsException(r,e)},
-                {"invalid_purchase_action",     (r,e) => new InvalidPurchaseActionException(r,e)},
-				{"invalid_seller_listing_action", (r,e) => new InvalidSellerListingActionException(r,e)},
-                {"purchase_not_allowed",        (r,e) => new PurchaseNotAllowedException(r,e)},
-                {"listing_conflict",            (r,e) => new ListingConflictException(r,e)},
-                {"purchase_still_processing",   (r,e) => new PurchaseStillProcessingException(r,e)},
-                {"invalid_delete",              (r,e) => new InvalidDeleteException(r,e)},
-                {"internal_server_error",       (r,e) => new InternalServerErrorException(r,e)}
+                {"https_required",                  (r,e) => new SslConnectionRequiredException(r,e)},
+                {"insufficient_scope",              (r,e) => new InsufficientScopeException(r,e)},
+                {"user_agent_required",             (r,e) => new UserAgentRequiredException(r,e)},
+                {"invalid_request_body",            (r,e) => new InvalidRequestBodyException(r,e)},
+                {"validation_failed",               (r,e) => new ValidationFailedException(r,e)},
+                {"invalid_password",                (r,e) => new InvalidPasswordException(r,e)},
+                {"email_already_exists",            (r,e) => new EmailAlreadyExistsException(r,e)},
+                {"invalid_purchase_action",         (r,e) => new InvalidPurchaseActionException(r,e)},
+				{"invalid_seller_listing_action",   (r,e) => new InvalidSellerListingActionException(r,e)},
+                {"purchase_not_allowed",            (r,e) => new PurchaseNotAllowedException(r,e)},
+                {"listing_conflict",                (r,e) => new ListingConflictException(r,e)},
+                {"purchase_still_processing",       (r,e) => new PurchaseStillProcessingException(r,e)},
+                {"invalid_delete",                  (r,e) => new InvalidDeleteException(r,e)},
+                {"internal_server_error",           (r,e) => new InternalServerErrorException(r,e)},
+                {"invalid_sale_action",             (r,e) => new InvalidSaleActionException(r,e)}
             };
 
         private readonly IApiResponseFactory _responseFactory;
@@ -55,7 +56,7 @@ namespace GogoKit.Http
             _jsonSerializer = jsonSerializer;
         }
 
-        protected async override Task<HttpResponseMessage> SendAsync(
+        protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {

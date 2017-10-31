@@ -61,6 +61,12 @@ namespace GogoKit.Clients
             return await _halClient.GetAllPagesAsync<Sale>(user.SalesLink, request, cancellationToken).ConfigureAwait(_halClient);
         }
 
+        public async Task<IReadOnlyList<TicketHolderResource>> GetTicketHolderDetailsAsync(int saleId, CancellationToken cancellationToken)
+        {
+            var ticketHolderDetailsLink = await _linkFactory.CreateLinkAsync($"sales/{saleId}/ticketholders").ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<TicketHolderResource>(ticketHolderDetailsLink, null, cancellationToken);
+        }
+
         public Task<Sale> ConfirmSaleAsync(int saleId)
         {
             return ConfirmSaleAsync(saleId, new SaleRequest());
@@ -124,7 +130,6 @@ namespace GogoKit.Clients
                 request,
                 cancellationToken);
         }
-
 
         public Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds)
         {

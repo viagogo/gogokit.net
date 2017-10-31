@@ -28,10 +28,8 @@ namespace GogoKit.Models.Response
         [Rel("sale:autotrackshipment")]
         public Link AutotrackShipmentLink { get; set; }
 
-
         [Rel("sale:confirm")]
         public Link ConfirmLink { get; set; }
-
 
         [Rel("sale:etickets")]
         public Link ETicketsLink { get; set; }
@@ -53,6 +51,9 @@ namespace GogoKit.Models.Response
 
         [Rel("sale:uploadetickets")]
         public Link UploadETicketsLink { get; set; }
+
+        [Rel("sale:ticketholders")]
+        public Link TicketHolderDetailsLink { get; set; }
 
         [Embedded("event")]
         public Event Event { get; set; }

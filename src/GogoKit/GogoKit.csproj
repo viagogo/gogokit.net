@@ -49,6 +49,7 @@
     <Compile Include="Clients\WebhooksClient.cs" />
     <Compile Include="Enumerations\ApiEnvironment.cs" />
     <Compile Include="Default.cs" />
+    <Compile Include="Exceptions\InvalidSaleActionException.cs" />
     <Compile Include="Exceptions\InvalidSellerListingActionException.cs" />
     <Compile Include="Http\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\BearerTokenAuthenticationHandler.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Models\Response\Shipment.cs" />
     <Compile Include="Models\Response\Shipments.cs" />
     <Compile Include="Models\Response\SplitType.cs" />
+    <Compile Include="Models\Response\TicketHolder.cs" />
     <Compile Include="Models\Response\Webhook.cs" />
     <Compile Include="Models\Response\Webhooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

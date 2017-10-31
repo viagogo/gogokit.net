@@ -71,6 +71,7 @@ namespace GogoKit.Tests.Http
             new object[] {"invalid_delete", typeof(InvalidDeleteException)},
             new object[] {"https_required", typeof(SslConnectionRequiredException)},
             new object[] {"internal_server_error", typeof(InternalServerErrorException)},
+            new object[] {"invalid_sale_action", typeof(InvalidSaleActionException)},
         };
 
         [Test, TestCaseSource(nameof(ApiSuccessCodes))]

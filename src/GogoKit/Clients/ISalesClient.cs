@@ -20,6 +20,8 @@ namespace GogoKit.Clients
 
         Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request, CancellationToken cancellationToken);
 
+        Task<IReadOnlyList<TicketHolderResource>> GetTicketHolderDetailsAsync(int saleId, CancellationToken cancellationToken);
+
         Task<Sale> ConfirmSaleAsync(int saleId);
 
         Task<Sale> ConfirmSaleAsync(int saleId, SaleRequest request);

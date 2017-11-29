@@ -115,7 +115,6 @@ namespace GogoKit.Clients
             CancellationToken cancellationToken)
         {
             Requires.ArgumentNotNull(sale, nameof(sale));
-            Requires.ArgumentNotNull(sale.UploadETicketsLink, nameof(sale.UploadETicketsLink));
             Requires.ArgumentNotNullOrEmpty(fileName, nameof(fileName));
             Requires.ArgumentNotNull(pdfFileBytes, nameof(pdfFileBytes));
 
@@ -123,9 +122,11 @@ namespace GogoKit.Clients
             var fileContent = new StreamContent(new MemoryStream(pdfFileBytes));
             fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             multipartContent.Add(fileContent, "file", fileName);
-
+            
+            var uploadETicketsLink = await _linkFactory.CreateLinkAsync($"sales/{saleId}/eticketuploads").ConfigureAwait(_halClient);
+            
             return _halClient.PostAsync<ETicketUploads>(
-                sale.UploadETicketsLink,
+                uploadETicketsLink,
                 multipartContent,
                 request,
                 cancellationToken);

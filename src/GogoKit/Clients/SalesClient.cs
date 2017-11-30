@@ -123,7 +123,7 @@ namespace GogoKit.Clients
             fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             multipartContent.Add(fileContent, "file", fileName);
             
-            var uploadETicketsLink = await _linkFactory.CreateLinkAsync($"sales/{saleId}/eticketuploads").ConfigureAwait(_halClient);
+            var uploadETicketsLink = await _linkFactory.CreateLinkAsync($"sales/{sale.Id}/eticketuploads").ConfigureAwait(_halClient);
             
             return await _halClient.PostAsync<ETicketUploads>(
                 uploadETicketsLink,

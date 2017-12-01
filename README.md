@@ -26,9 +26,9 @@ Install-Package GogoKit
 ```c#
 // All methods require OAuth2 authentication. To get OAuth2 credentials for your
 // application, see http://developer.viagogo.net/#authentication.
-var client = new ViagogoClient(CLIENT_ID,
-                               CLIENT_SECRET,
-                               new ProductHeaderValue("AwesomeApp", "1.0"));
+var client = new ViagogoClient(new ProductHeaderValue("AwesomeApp", "1.0"),
+                               CLIENT_ID,
+                               CLIENT_SECRET);
 
 // Get an access token. See http://developer.viagogo.net/#getting-access-tokens
 var token = await client.OAuth2.GetClientAccessTokenAsync(/*List of scopes*/ new string[] {});
@@ -47,10 +47,8 @@ var genres = await client.Categories.GetAllGenresAsync();
 ```c#
 // You can use the GogoKitConfiguration to switch between the sandbox and
 // production environments. See http://developer.viagogo.net/#sandbox-environment
-var client = new ViagogoClient (SANDBOX_CLIENT_ID,
-                                SANDBOX_CLIENT_SECRET,
-                                new ProductHeaderValue("AwesomeApp", "1.0"),
-                                new GogoKitConfiguration
+var client = new ViagogoClient (new ProductHeaderValue("AwesomeApp", "1.0"),
+                                new GogoKitConfiguration(SANDBOX_CLIENT_ID, SANDBOX_CLIENT_SECRET)
                                 {
                                     ViagogoApiEnvironment = ApiEnvironment.Sandbox
                                 });

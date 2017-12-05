@@ -141,7 +141,7 @@ namespace GogoKit.Clients
             return UploadETicketsAsync(sale, fileName, pdfFileBytes, request, CancellationToken.None);
         }
 
-        public Task<ETicketUploads> UploadETicketsAsync(
+        public async Task<ETicketUploads> UploadETicketsAsync(
             Sale sale,
             string fileName,
             byte[] pdfFileBytes,
@@ -149,7 +149,6 @@ namespace GogoKit.Clients
             CancellationToken cancellationToken)
         {
             Requires.ArgumentNotNull(sale, nameof(sale));
-            Requires.ArgumentNotNull(sale.UploadETicketsLink, nameof(sale.UploadETicketsLink));
             Requires.ArgumentNotNullOrEmpty(fileName, nameof(fileName));
             Requires.ArgumentNotNull(pdfFileBytes, nameof(pdfFileBytes));
 
@@ -157,12 +156,14 @@ namespace GogoKit.Clients
             var fileContent = new StreamContent(new MemoryStream(pdfFileBytes));
             fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             multipartContent.Add(fileContent, "file", fileName);
-
-            return _halClient.PostAsync<ETicketUploads>(
-                sale.UploadETicketsLink,
+            
+            var uploadETicketsLink = await _linkFactory.CreateLinkAsync($"sales/{sale.Id}/eticketuploads").ConfigureAwait(_halClient);
+            
+            return await _halClient.PostAsync<ETicketUploads>(
+                uploadETicketsLink,
                 multipartContent,
                 request,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(_halClient);
         }
 
         public Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds)

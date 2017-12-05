@@ -1,3 +1,6 @@
+### New in 0.32.0 (Released (2017/11/29)
+* Create upload eticket link manually
+
 ### New in 0.31.0 (Released (2017/10/31)
 * Add ticket holder detail resource and a way to get it using the sale client
 * Add InvalidSaleActionException

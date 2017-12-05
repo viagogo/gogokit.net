@@ -10,7 +10,7 @@ namespace GogoKit.Models.Response
     /// </summary>
     /// <remarks>See http://developer.viagogo.net/#carrier</remarks>
     [DataContract(Name = "carrier")]
-    public class Carrier
+    public class Carrier : Resource
     {
         /// <summary>
         /// The carrier identifier.

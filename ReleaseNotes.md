@@ -1,3 +1,6 @@
+### New in 0.33.0 (Released (2017/12/05)
+* Add missing methods to SaleClient
+
 ### New in 0.32.0 (Released (2017/11/29)
 * Create upload eticket link manually
 

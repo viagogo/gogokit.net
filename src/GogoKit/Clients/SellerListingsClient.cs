@@ -87,7 +87,15 @@ namespace GogoKit.Clients
 
         public Task<ChangedResources<SellerListing>> GetAllChangesAsync(Link nextLink)
         {
-            return GetAllChangesAsync(nextLink, new SellerListingRequest());
+            return GetAllChangesAsync(
+                nextLink,
+                new SellerListingRequest
+                {
+                    Sort = new[]
+                    {
+                        new Sort<SellerListingSort>(SellerListingSort.ResourceVersion, SortDirection.Ascending)
+                    }
+                });
         }
 
         public Task<ChangedResources<SellerListing>> GetAllChangesAsync(

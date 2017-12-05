@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Linq;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -59,6 +60,39 @@ namespace GogoKit.Clients
         {
             var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
             return await _halClient.GetAllPagesAsync<Sale>(user.SalesLink, request, cancellationToken).ConfigureAwait(_halClient);
+        }
+
+        public async Task<ChangedResources<Sale>> GetAllChangesAsync()
+        {
+            var salesLink = await _linkFactory.CreateLinkAsync("sales").ConfigureAwait(_halClient);
+            return await GetAllChangesAsync(salesLink).ConfigureAwait(_halClient);
+        }
+
+        public Task<ChangedResources<Sale>> GetAllChangesAsync(Link nextLink)
+        {
+            return GetAllChangesAsync(
+                nextLink,
+                new SaleRequest {Sort = new[] {new Sort<string>("resource_version", SortDirection.Ascending)}});
+        }
+
+        public Task<ChangedResources<Sale>> GetAllChangesAsync(
+            Link nextLink,
+            SaleRequest request)
+        {
+            return GetAllChangesAsync(nextLink, request, CancellationToken.None);
+        }
+
+        public async Task<ChangedResources<Sale>> GetAllChangesAsync(
+            Link nextLink,
+            SaleRequest request,
+            CancellationToken cancellationToken)
+        {
+            var changedResources = await _halClient.GetChangedResourcesAsync<Sale>(nextLink, request, cancellationToken);
+
+            return new ChangedResources<Sale>(
+                changedResources.NewOrUpdatedResources.GroupBy(l => l.Id).Select(l => l.OrderByDescending(o => o.UpdatedAt ?? o.CreatedAt).First()).ToList(),
+                changedResources.DeletedResources.GroupBy(l => l.Id).Select(l => l.First()).ToList(),
+                null);
         }
 
         public async Task<IReadOnlyList<TicketHolderResource>> GetTicketHolderDetailsAsync(int saleId, CancellationToken cancellationToken)

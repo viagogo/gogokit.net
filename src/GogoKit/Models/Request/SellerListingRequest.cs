@@ -8,7 +8,8 @@ namespace GogoKit.Models.Request
             new Dictionary<SellerListingSort, string>
             {
                 {SellerListingSort.CreatedAt, "created_at" },
-                {SellerListingSort.TicketPrice, "ticket_price" }
+                {SellerListingSort.TicketPrice, "ticket_price" },
+                {SellerListingSort.ResourceVersion, "resource_version" }
             };
     }
 

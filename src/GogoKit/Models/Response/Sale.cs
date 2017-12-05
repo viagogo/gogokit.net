@@ -24,6 +24,9 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "ship_by")]
         public DateTimeOffset? ShipBy { get; set; }
+        
+        [DataMember(Name = "updated_at")]
+        public DateTimeOffset? UpdatedAt { get; set; }
 
         [Rel("sale:autotrackshipment")]
         public Link AutotrackShipmentLink { get; set; }

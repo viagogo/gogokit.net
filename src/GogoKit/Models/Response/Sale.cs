@@ -58,6 +58,15 @@ namespace GogoKit.Models.Response
         [Rel("sale:ticketholders")]
         public Link TicketHolderDetailsLink { get; set; }
 
+        [Rel("sale:uploadeticketurls")]
+        public Link UploadSaleETicketUrlsLink { get; set; }
+
+        [Rel("sale:savetransferreceipts")]
+        public Link SaveTransferReceiptsLink { get; set; }
+
+        [Rel("sale:uploadtransferreceipts")]
+        public Link UploadTransferReceiptLink { get; set; }
+
         [Embedded("event")]
         public Event Event { get; set; }
 

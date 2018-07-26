@@ -45,6 +45,57 @@ namespace GogoKit.Clients
             ETicketUploadRequest request,
             CancellationToken cancellationToken);
 
+        Task<ETicketUploads> UploadETicketsAsync(
+            Sale sale, 
+            string fileName, 
+            byte[] fileBytes, 
+            string contentType);
+
+        Task<ETicketUploads> UploadETicketsAsync(
+            Sale sale, 
+            string fileName,
+            byte[] fileBytes, 
+            string contentType,
+            ETicketUploadRequest request);
+
+        Task<ETicketUploads> UploadETicketsAsync(
+            Sale sale,
+            string fileName,
+            byte[] fileBytes,
+            string contentType,
+            ETicketUploadRequest request,
+            CancellationToken cancellationToken);
+
+        Task<Sale> UploadETicketUrlsAsync(
+            int saleId,
+            IEnumerable<string> eticketUrls);
+
+        Task<Sale> UploadETicketUrlsAsync(
+            int saleId,
+            IEnumerable<string> eticketUrls,
+            SaleRequest request);
+
+        Task<Sale> UploadETicketUrlsAsync(
+            int saleId,
+            IEnumerable<string> eticketUrls,
+            SaleRequest request,
+            CancellationToken cancellationToken);
+
+        Task<Sale> UploadTransferConfirmationNumberAsync(
+            int saleId,
+            string transferConfirmationNumber);
+
+        Task<Sale> UploadTransferConfirmationNumberAsync(
+            int saleId,
+            string transferConfirmationNumber,
+            SaleRequest request);
+
+        Task<Sale> UploadTransferConfirmationNumberAsync(
+            int saleId,
+            string transferConfirmationNumber,
+            SaleRequest request,
+            CancellationToken cancellationToken);
+
         Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds);
 
         Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds, SaleRequest request);
@@ -54,5 +105,6 @@ namespace GogoKit.Clients
             IEnumerable<int> eticketIds,
             SaleRequest request,
             CancellationToken cancellationToken);
+
     }
 }

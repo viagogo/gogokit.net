@@ -1,3 +1,6 @@
+### New in 0.34.0 (Released (2018/07/25)
+* Add Upload ETicket Urls and Upload Transfer Confirmation Number to SaleClient
+
 ### New in 0.33.0 (Released (2017/12/05)
 * Add missing methods to SaleClient
 

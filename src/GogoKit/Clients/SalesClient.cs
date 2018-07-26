@@ -141,24 +141,46 @@ namespace GogoKit.Clients
             return UploadETicketsAsync(sale, fileName, pdfFileBytes, request, CancellationToken.None);
         }
 
-        public async Task<ETicketUploads> UploadETicketsAsync(
+        public Task<ETicketUploads> UploadETicketsAsync(
             Sale sale,
             string fileName,
             byte[] pdfFileBytes,
             ETicketUploadRequest request,
             CancellationToken cancellationToken)
         {
+            return UploadETicketsAsync(sale, fileName, pdfFileBytes, "application/pdf", request, cancellationToken);
+        }
+
+        public Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] fileBytes, string contentType)
+        {
+            return UploadETicketsAsync(sale, fileName, fileBytes, contentType, new ETicketUploadRequest());
+        }
+
+        public Task<ETicketUploads> UploadETicketsAsync(Sale sale, string fileName, byte[] fileBytes, string contentType, ETicketUploadRequest request)
+        {
+            return UploadETicketsAsync(sale, fileName, fileBytes, contentType, request, CancellationToken.None);
+        }
+        
+        public async Task<ETicketUploads> UploadETicketsAsync(
+            Sale sale,
+            string fileName,
+            byte[] fileBytes,
+            string contentType,
+            ETicketUploadRequest request,
+            CancellationToken cancellationToken)
+        {
             Requires.ArgumentNotNull(sale, nameof(sale));
             Requires.ArgumentNotNullOrEmpty(fileName, nameof(fileName));
-            Requires.ArgumentNotNull(pdfFileBytes, nameof(pdfFileBytes));
+            Requires.ArgumentNotNull(fileBytes, nameof(fileBytes));
+            Requires.ArgumentNotNull(contentType, nameof(contentType));
 
             var multipartContent = new MultipartFormDataContent($"---GogoKitBoundary{Guid.NewGuid()}");
-            var fileContent = new StreamContent(new MemoryStream(pdfFileBytes));
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            var fileContent = new StreamContent(new MemoryStream(fileBytes));
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
             multipartContent.Add(fileContent, "file", fileName);
-            
+
             var uploadETicketsLink = await _linkFactory.CreateLinkAsync($"sales/{sale.Id}/eticketuploads").ConfigureAwait(_halClient);
-            
+
             return await _halClient.PostAsync<ETicketUploads>(
                 uploadETicketsLink,
                 multipartContent,
@@ -187,6 +209,76 @@ namespace GogoKit.Clients
             return UpdateAsync(
                 saleId,
                 new SaleUpdate { ETicketIds = eticketIds.ToList() },
+                request,
+                cancellationToken);
+        }
+
+        public Task<Sale> UploadETicketUrlsAsync(
+            int saleId,
+            IEnumerable<string> eticketUrls)
+        {
+            return UploadETicketUrlsAsync(saleId, eticketUrls, new SaleRequest());
+        }
+
+        public Task<Sale> UploadETicketUrlsAsync(
+            int saleId,
+            IEnumerable<string> eticketUrls,
+            SaleRequest request)
+        {
+            return UploadETicketUrlsAsync(saleId, eticketUrls, request, CancellationToken.None);
+        }
+
+        public Task<Sale> UploadETicketUrlsAsync(
+            int saleId,
+            IEnumerable<string> eticketUrls,
+            SaleRequest request,
+            CancellationToken cancellationToken)
+        {
+            Requires.ArgumentNotNull(eticketUrls, nameof(eticketUrls));
+
+            return UpdateAsync(
+                saleId,
+                new SaleUpdate
+                {
+                    ETicketUrls = eticketUrls.Select((url, idx) => new ETicketUrl
+                    {
+                        Index = idx,
+                        Url = url
+                    }).ToArray()
+                },
+                request,
+                cancellationToken);
+        }
+
+        public Task<Sale> UploadTransferConfirmationNumberAsync(
+            int saleId,
+            string transferConfirmationNumber)
+        {
+            return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, new SaleRequest());
+        }
+
+        public Task<Sale> UploadTransferConfirmationNumberAsync(
+            int saleId,
+            string transferConfirmationNumber,
+            SaleRequest request)
+        {
+            return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, request, CancellationToken.None);
+        }
+
+        public Task<Sale> UploadTransferConfirmationNumberAsync(
+            int saleId,
+            string transferConfirmationNumber,
+            SaleRequest request,
+            CancellationToken cancellationToken)
+        {
+            Requires.ArgumentNotNull(transferConfirmationNumber, nameof(transferConfirmationNumber));
+
+            return UpdateAsync(
+                saleId,
+                new SaleUpdate
+                {
+                    TransferConfirmationNumber = transferConfirmationNumber
+                },
                 request,
                 cancellationToken);
         }

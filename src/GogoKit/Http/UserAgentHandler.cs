@@ -24,7 +24,7 @@ namespace GogoKit.Http
             return new List<ProductInfoHeaderValue>
             {
                 new ProductInfoHeaderValue(product),
-                new ProductInfoHeaderValue($"({CultureInfo.CurrentCulture.Name}; {"GogoKit"} {AssemblyVersionInformation.Version})")
+                //new ProductInfoHeaderValue($"({CultureInfo.CurrentCulture.Name}; GogoKit {AssemblyVersionInformation.Version})")
             };
         }
 

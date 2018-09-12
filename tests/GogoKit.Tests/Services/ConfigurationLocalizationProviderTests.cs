@@ -1,12 +1,11 @@
 ﻿using GogoKit.Services;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Services
 {
-    [TestFixture]
     public class ConfigurationLocalizationProviderTests
     {
-        [Test]
+        [Fact]
         public void LanguageCode_WhenExistsInConfiguration_ShouldRetrieveIt()
         {
             var configuration = new GogoKitConfiguration("c", "s") { LanguageCode = "en-GB"};
@@ -14,10 +13,10 @@ namespace GogoKit.Tests.Services
 
             var actualLanguageCode = configurationLocalizationProvider.LanguageCode;
 
-            Assert.AreEqual(configuration.LanguageCode, actualLanguageCode);
+            Assert.Equal(configuration.LanguageCode, actualLanguageCode);
         }
 
-        [Test]
+        [Fact]
         public void CountryCode_WhenExistsInConfiguration_ShouldRetrieveIt()
         {
             var configuration = new GogoKitConfiguration("c", "s") { CountryCode = "UK"};
@@ -25,10 +24,10 @@ namespace GogoKit.Tests.Services
 
             var actualCountryCode = configurationLocalizationProvider.CountryCode;
 
-            Assert.AreEqual(configuration.CountryCode, actualCountryCode);
+            Assert.Equal(configuration.CountryCode, actualCountryCode);
         }
 
-        [Test]
+        [Fact]
         public void CurrencyCode_WhenExistsInConfiguration_ShouldRetrieveIt()
         {
             var configuration = new GogoKitConfiguration("c", "s") { CurrencyCode = "GBP"};
@@ -36,7 +35,7 @@ namespace GogoKit.Tests.Services
 
             var actualCurrencyCode = configurationLocalizationProvider.CurrencyCode;
 
-            Assert.AreEqual(configuration.CurrencyCode, actualCurrencyCode);
+            Assert.Equal(configuration.CurrencyCode, actualCurrencyCode);
         }
     }
 }

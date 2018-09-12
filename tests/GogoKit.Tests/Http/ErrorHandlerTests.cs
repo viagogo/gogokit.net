@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,11 +13,11 @@ using GogoKit.Tests.Fakes;
 using HalKit.Http;
 using HalKit.Json;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Http
 {
-    [TestFixture]
+    
     public class ErrorHandlerTests
     {
         private static ErrorHandler CreateErrorHandler(
@@ -34,28 +35,30 @@ namespace GogoKit.Tests.Http
             };
         }
 
-        private static readonly HttpStatusCode[] ApiSuccessCodes =
+        public static readonly List<object[]> ApiSuccessCodes = new List<object[]>
         {
-            HttpStatusCode.OK,
-            HttpStatusCode.Created,
-            HttpStatusCode.Accepted,
-            HttpStatusCode.NoContent,
-            HttpStatusCode.NotModified
+            new object[] {HttpStatusCode.OK},
+            new object[] {HttpStatusCode.Created},
+            new object[] {HttpStatusCode.Accepted},
+            new object[] {HttpStatusCode.NoContent},
+            new object[] {HttpStatusCode.NotModified}
         };
 
-        private static readonly HttpStatusCode[] NonAuthorizationErrorCodes =
+        public static readonly List<object[]> NonAuthorizationErrorCodes =
             Enum.GetValues(typeof(HttpStatusCode))
                 .Cast<HttpStatusCode>()
                 .Where(s => s != HttpStatusCode.Unauthorized && s > (HttpStatusCode)400)
-                .ToArray();
+                .Select(s => new object[] { s })
+                .ToList();
 
-        private static readonly HttpStatusCode[] NonAuthorizationNonNotFoundErrorCodes =
+        public static readonly List<object[]> NonAuthorizationNonNotFoundErrorCodes = 
             Enum.GetValues(typeof(HttpStatusCode))
             .Cast<HttpStatusCode>()
             .Where(s => s != HttpStatusCode.Unauthorized && s != HttpStatusCode.NotFound && s > (HttpStatusCode)400)
-            .ToArray();
+            .Select(s => new object[] {s})
+            .ToList();
 
-        private static readonly object[] ApiErrorCodesAndExceptionTypes =
+        public static readonly List<object[]> ApiErrorCodesAndExceptionTypes = new List<object[]>
         {
             new object[] {"insufficient_scope", typeof(InsufficientScopeException)},
             new object[] {"user_agent_required", typeof(UserAgentRequiredException)},
@@ -74,7 +77,7 @@ namespace GogoKit.Tests.Http
             new object[] {"invalid_sale_action", typeof(InvalidSaleActionException)},
         };
 
-        [Test, TestCaseSource(nameof(ApiSuccessCodes))]
+        [Theory, MemberData(nameof(ApiSuccessCodes))]
         public async void SendAsync_ShouldReturnTheResponseReturnedByTheInnerHandler_WhenResponseStatusCodeIsSuccessCodeOrNotModified(
             HttpStatusCode statusCode)
         {
@@ -85,10 +88,10 @@ namespace GogoKit.Tests.Http
                                     new HttpRequestMessage(),
                                     CancellationToken.None);
 
-            Assert.AreSame(expectedResponse, actualResponse);
+            Assert.Same(expectedResponse, actualResponse);
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldProcessTheResponseAsAnAuthorizationError_WhenResponseStatusCodeIsUnauthorized()
         {
             var expectedResponse = new HttpResponseMessage { StatusCode = HttpStatusCode.Unauthorized };
@@ -109,7 +112,7 @@ namespace GogoKit.Tests.Http
             mockResponseFact.Verify();
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIsUnauthorized()
         {
             var expectedResponse = new ApiResponse<AuthorizationError>();
@@ -126,10 +129,10 @@ namespace GogoKit.Tests.Http
                 actualResponse = ex.Response;
             }
 
-            Assert.AreSame(expectedResponse, actualResponse);
+            Assert.Same(expectedResponse, actualResponse);
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldThrowExceptionWithAuthorizationErrorReturnedByTheResponseFactory_WhenResponseStatusCodeIsUnauthorized_AndResponseHasAuthozationErrorBody()
         {
             var expectedAuthError = new AuthorizationError();
@@ -146,10 +149,10 @@ namespace GogoKit.Tests.Http
                 actualAuthError = ex.AuthorizationError;
             }
 
-            Assert.AreSame(expectedAuthError, actualAuthError);
+            Assert.Same(expectedAuthError, actualAuthError);
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldThrowExceptionWithAuthorizationErrorCreatedFromAuthenticateHeader_WhenResponseStatusCodeIsUnauthorized_AndResponseHasNoAuthozationErrorBody()
         {
             var expectedError = "some error";
@@ -172,11 +175,11 @@ namespace GogoKit.Tests.Http
                 actualErrorDescription = ex.AuthorizationError.ErrorDescription;
             }
 
-            Assert.AreEqual(expectedError, actualError);
-            Assert.AreEqual(expectedErrorDescription, actualErrorDescription);
+            Assert.Equal(expectedError, actualError);
+            Assert.Equal(expectedErrorDescription, actualErrorDescription);
         }
 
-        [Test, TestCaseSource(nameof(NonAuthorizationErrorCodes))]
+        [Theory, MemberData(nameof(NonAuthorizationErrorCodes))]
         public async void SendAsync_ShouldProcessTheResponseAsAnApiError_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
@@ -205,7 +208,7 @@ namespace GogoKit.Tests.Http
             jsonSerializer.Verify();
         }
 
-        [Test, TestCaseSource(nameof(NonAuthorizationNonNotFoundErrorCodes))]
+        [Theory, MemberData(nameof(NonAuthorizationNonNotFoundErrorCodes))]
         public async void SendAsync_ShouldThrowApiExceptionWithResponseReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
@@ -229,10 +232,10 @@ namespace GogoKit.Tests.Http
                 actualResponse = ex.Response;
             }
 
-            Assert.AreSame(expectedResponse, actualResponse);
+            Assert.Same(expectedResponse, actualResponse);
         }
 
-        [Test, TestCaseSource(nameof(NonAuthorizationNonNotFoundErrorCodes))]
+        [Theory, MemberData(nameof(NonAuthorizationNonNotFoundErrorCodes))]
         public async void SendAsync_ShouldThrowApiErrorExceptionWithErrorSetToTheResponseBodyReturnedByTheResponseFactory_WhenResponseStatusCodeIs(
             HttpStatusCode statusCode)
         {
@@ -258,10 +261,10 @@ namespace GogoKit.Tests.Http
                 actualError = ex.Error;
             }
 
-            Assert.AreSame(expectedError, actualError);
+            Assert.Same(expectedError, actualError);
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldThrowResourceNotFoundException_WhenResponseStatusCodeIs404()
         {
             Exception actualException = null;
@@ -276,10 +279,10 @@ namespace GogoKit.Tests.Http
                 actualException = ex;
             }
 
-            Assert.IsInstanceOf<ResourceNotFoundException>(actualException);
+            Assert.IsType<ResourceNotFoundException>(actualException);
         }
 
-        [Test, TestCaseSource(nameof(ApiErrorCodesAndExceptionTypes))]
+        [Theory, MemberData(nameof(ApiErrorCodesAndExceptionTypes))]
         public async void SendAsync_ShouldThrowExceptionAssociatedWithTheApiErrorCode_WhenResponseStatusCodeIsError(
             string errorCode,
             Type expectedExceptionType)
@@ -306,7 +309,7 @@ namespace GogoKit.Tests.Http
                 actualException = ex;
             }
 
-            Assert.IsInstanceOf(expectedExceptionType, actualException);
+            Assert.IsType(expectedExceptionType, actualException);
         }
     }
 }

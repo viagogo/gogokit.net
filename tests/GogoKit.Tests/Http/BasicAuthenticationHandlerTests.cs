@@ -2,11 +2,11 @@
 using System.Threading;
 using GogoKit.Http;
 using GogoKit.Tests.Fakes;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Http
 {
-    [TestFixture]
+    
     public class BasicAuthenticationHandlerTests
     {
         private static BasicAuthenticationHandler CreateHandler(
@@ -20,7 +20,7 @@ namespace GogoKit.Tests.Http
             };
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldSetTheRequestAuthorizationHeaderToTheBasicAuthorizationHeaderValueForTheGivenClientIdAndClientSecret()
         {
             var expectedAuthHeader = "Basic RDkyd21tS3VBd0gyQ0hqUU9OeFFBcjgrakM0PTpVaWM5Tjc4VU5nVlJxb0x6WjJUQU0ybnpmczg9";
@@ -29,10 +29,10 @@ namespace GogoKit.Tests.Http
 
             await new HttpMessageInvoker(handler).SendAsync(request, CancellationToken.None);
 
-            Assert.AreEqual(expectedAuthHeader, request.Headers.Authorization.ToString());
+            Assert.Equal(expectedAuthHeader, request.Headers.Authorization.ToString());
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldReturnResponseMessageReturnedByInnerHandler()
         {
             var expectedResponse = new HttpResponseMessage();
@@ -42,7 +42,7 @@ namespace GogoKit.Tests.Http
                                     new HttpRequestMessage(),
                                     CancellationToken.None);
 
-            Assert.AreSame(expectedResponse, actualResponse);
+            Assert.Same(expectedResponse, actualResponse);
         }
     }
 }

@@ -9,6 +9,7 @@
     <Copyright>Copyright viagogo 2018</Copyright>
     <Authors>viagogo</Authors>
     <PackageLicenseUrl>https://raw.githubusercontent.com/viagogo/gogokit.net/master/LICENSE.txt</PackageLicenseUrl>
+    <Description>GogoKit is a lightweight, async viagogo API client library for .NET.</Description>
 
   </PropertyGroup>
 

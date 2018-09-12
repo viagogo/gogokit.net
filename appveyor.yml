@@ -1,4 +1,4 @@
-os: Visual Studio 2015
+os: Visual Studio 2017
 
 version: 1.0.{build}.{branch}
 
@@ -6,14 +6,20 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+  # Install repo specific stuff here
+before_build:
+  - cmd: dotnet --version
+
+  - cmd: dotnet restore ./src/Gogokit/Gogokit.csproj --verbosity m
 
 build_script:
-  - cmd: build.cmd CreatePackage
+  - cmd: dotnet build --configuration release ./src/Gogokit/Gogokit.csproj
 
-test: off
+test_script:    
+  - cmd: dotnet test ./tests/Gogokit.Tests/Gogokit.Tests.csproj
 
 deploy:
+
   - provider: NuGet
     api_key:
       secure: op0ZZ3Hco6aF361F2tmCFCHe9lmLkB5P6CjYOwvSmL11DFjDsyqCEEH4LK7mDbLV
@@ -27,5 +33,5 @@ nuget:
   disable_publish_on_pr: true
 
 artifacts:
-  - path: artifacts\packages\*.nupkg
+  - path: '.\src\Gogokit\bin\release\*.nupkg'
     name: Packages

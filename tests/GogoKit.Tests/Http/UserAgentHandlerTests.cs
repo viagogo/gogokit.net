@@ -4,11 +4,11 @@ using System.Net.Http.Headers;
 using System.Threading;
 using GogoKit.Http;
 using GogoKit.Tests.Fakes;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Http
 {
-    [TestFixture]
+    
     public class UserAgentHandlerTests
     {
         private static UserAgentHandler CreateHandler(
@@ -22,7 +22,7 @@ namespace GogoKit.Tests.Http
             };
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldSetHttpRequestMessageUserAgentHeaderToValueContainingTheGivenProductHeaderValue()
         {
             var expectedUserAgentProduct = ProductHeaderValue.Parse("MyTestApp/0.9.9");
@@ -31,10 +31,10 @@ namespace GogoKit.Tests.Http
 
             await new HttpMessageInvoker(handler).SendAsync(request, CancellationToken.None);
 
-            Assert.AreEqual(expectedUserAgentProduct, request.Headers.UserAgent.First().Product);
+            Assert.Equal(expectedUserAgentProduct, request.Headers.UserAgent.First().Product);
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldReturnResponseMessageReturnedByInnerHandler()
         {
             var expectedResponse = new HttpResponseMessage();
@@ -44,7 +44,7 @@ namespace GogoKit.Tests.Http
                                     new HttpRequestMessage(),
                                     CancellationToken.None);
 
-            Assert.AreSame(expectedResponse, actualResponse);
+            Assert.Same(expectedResponse, actualResponse);
         }
     }
 }

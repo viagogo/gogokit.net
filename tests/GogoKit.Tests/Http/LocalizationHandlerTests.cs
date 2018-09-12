@@ -7,14 +7,14 @@ using System.Threading;
 using GogoKit.Http;
 using GogoKit.Services;
 using GogoKit.Tests.Fakes;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Http
 {
-    [TestFixture]
+    
     public class LocalizationHandlerTests
     {
-        [Test]
+        [Fact]
         public async void SendAsync_WhenConfigurationHasLanguage_ShouldSendLanguageHeader()
         {
             const string expectedLanguageHeaderValue = "en-gb;q=0.8";
@@ -25,11 +25,11 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             var expectedLanguage = StringWithQualityHeaderValue.Parse(expectedLanguageHeaderValue);
-            Assert.AreEqual(expectedLanguage.Value, request.Headers.AcceptLanguage.Single().Value);
-            Assert.AreEqual(expectedLanguage.Quality, request.Headers.AcceptLanguage.Single().Quality);
+            Assert.Equal(expectedLanguage.Value, request.Headers.AcceptLanguage.Single().Value);
+            Assert.Equal(expectedLanguage.Quality, request.Headers.AcceptLanguage.Single().Quality);
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_WhenConfigurationHasNoLanguage_ShouldNotSendLanguageHeader()
         {
             var request = new HttpRequestMessage();
@@ -37,10 +37,10 @@ namespace GogoKit.Tests.Http
 
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
-            CollectionAssert.IsEmpty(request.Headers.AcceptLanguage);
+            Assert.Empty(request.Headers.AcceptLanguage);
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_WhenConfigurationHasCountry_ShouldSendCountryHeader()
         {
             const string expectedCountryHeaderValue = "UK";
@@ -51,11 +51,11 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> countryValues;
-            Assert.IsTrue(request.Headers.TryGetValues("VGG-Country", out countryValues));
-            Assert.AreEqual(expectedCountryHeaderValue, countryValues.Single());
+            Assert.True(request.Headers.TryGetValues("VGG-Country", out countryValues));
+            Assert.Equal(expectedCountryHeaderValue, countryValues.Single());
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_WhenConfigurationHasNoCountry_ShouldNotSendCountryHeader()
         {
             var request = new HttpRequestMessage();
@@ -64,10 +64,10 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> countryValues;
-            Assert.IsFalse(request.Headers.TryGetValues("VGG-Country", out countryValues));
+            Assert.False(request.Headers.TryGetValues("VGG-Country", out countryValues));
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_WhenConfigurationHasCurrency_ShouldSendCurrencyHeader()
         {
             const string expectedCurrencyHeaderValue = "EUR";
@@ -78,11 +78,11 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> currencyValues;
-            Assert.IsTrue(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
-            Assert.AreEqual(expectedCurrencyHeaderValue, currencyValues.Single());
+            Assert.True(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
+            Assert.Equal(expectedCurrencyHeaderValue, currencyValues.Single());
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_WhenConfigurationHasNoCurrency_ShouldNotSendCurrencyHeader()
         {
             var request = new HttpRequestMessage();
@@ -91,10 +91,10 @@ namespace GogoKit.Tests.Http
             await new HttpMessageInvoker(localizationHandler).SendAsync(request, CancellationToken.None);
 
             IEnumerable<string> currencyValues;
-            Assert.IsFalse(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
+            Assert.False(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_WhenLocalizationOptionsNotProvided_ShouldNotAddLocalizationHeaders()
         {
             var request = new HttpRequestMessage();
@@ -105,7 +105,7 @@ namespace GogoKit.Tests.Http
             AssertThatNoLocalizationHandlersAreAdded(request);
         }
 
-        [Test]
+        [Fact]
         public void SendAsync_WhenLocalizationProviderNotProvided_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>(() => new LocalizationHandler(null));
@@ -116,9 +116,9 @@ namespace GogoKit.Tests.Http
             IEnumerable<string> countryValues;
             IEnumerable<string> currencyValues;
 
-            CollectionAssert.IsEmpty(request.Headers.AcceptLanguage);
-            Assert.IsFalse(request.Headers.TryGetValues("VGG-Country", out countryValues));
-            Assert.IsFalse(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
+            Assert.Empty(request.Headers.AcceptLanguage);
+            Assert.False(request.Headers.TryGetValues("VGG-Country", out countryValues));
+            Assert.False(request.Headers.TryGetValues("Accept-Currency", out currencyValues));
         }
 
         private static LocalizationHandler CreateLocalizationHandler(ILocalizationProvider localizationProvider = null)

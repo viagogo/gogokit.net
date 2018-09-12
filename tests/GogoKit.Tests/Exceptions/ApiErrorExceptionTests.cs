@@ -4,26 +4,28 @@ using System.Linq;
 using GogoKit.Exceptions;
 using GogoKit.Models.Response;
 using HalKit.Http;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Exceptions
 {
-    [TestFixture]
     public class ApiErrorExceptionTests
     {
-        public static IEnumerable<Type> ApiErrorExceptionTypes
+        public static IEnumerable<object[]> ApiErrorExceptionTypes
         {
             get
             {
-                return typeof(ApiErrorException)
+                return
+                    typeof(ApiErrorException)
                         .Assembly
                         .GetTypes()
-                        .Where(t => typeof(ApiErrorException).IsAssignableFrom(t) && t != typeof(ResourceNotFoundException))
-                        .OrderBy(t => t.Name);
+                        .Where(t => typeof(ApiErrorException).IsAssignableFrom(t) &&
+                                    t != typeof(ResourceNotFoundException))
+                        .OrderBy(t => t.Name)
+                        .Select(c => new object[] {c});
             }
         }
 
-        [Test, TestCaseSource(nameof(ApiErrorExceptionTypes))]
+        [Theory, MemberData(nameof(ApiErrorExceptionTypes))]
         public void ApiErrorExceptions_ShouldHaveAPrettyErrorMessage(Type apiErrorExceptionType)
         {
             var apiResponse = new ApiResponse<ApiError> { Body = "{\"message\":\"pretty message\"}" };
@@ -32,7 +34,7 @@ namespace GogoKit.Tests.Exceptions
 
             var actualException = ctor.Invoke(new object[] { apiResponse, new ApiError() }) as ApiErrorException;
 
-            Assert.AreEqual(expectedMessage, actualException.Message);
+            Assert.Equal(expectedMessage, actualException.Message);
         }
     }
 }

@@ -8,7 +8,7 @@ using GogoKit.Clients;
 using GogoKit.Models.Response;
 using HalKit.Http;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Clients
 {
@@ -33,7 +33,7 @@ namespace GogoKit.Tests.Clients
             return response;
         }
 
-        [Test]
+        [Fact]
         public async void GetAccessTokenAsync_ShouldPassConfigurationTokenUrlToTheConnection()
         {
             var expectedUri = new Uri("https://vggBase.io/secure/oauth2/token", UriKind.Absolute);
@@ -53,7 +53,7 @@ namespace GogoKit.Tests.Clients
             mockConn.Verify();
         }
 
-        [Test]
+        [Fact]
         public async void GetAccessTokenAsync_ShouldPassPostMethodToTheConnection()
         {
             var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
@@ -72,7 +72,7 @@ namespace GogoKit.Tests.Clients
             mockConn.Verify();
         }
 
-        [Test]
+        [Fact]
         public async void GetAccessTokenAsync_ShouldPassApplicationJsonAcceptHeaderToTheConnection()
         {
             IDictionary<string, IEnumerable<string>> actualHeaders = null;
@@ -90,10 +90,10 @@ namespace GogoKit.Tests.Clients
 
             await client.GetAccessTokenAsync("grantType", null, null);
 
-            Assert.AreEqual("application/json", actualHeaders["Accept"].Single());
+            Assert.Equal("application/json", actualHeaders["Accept"].Single());
         }
 
-        [Test]
+        [Fact]
         public async void GetAccessTokenAsync_ShouldPassFormUrlEncodedContentToTheConnection()
         {
             var mockConn = new Mock<IHttpConnection>(MockBehavior.Loose);
@@ -112,7 +112,7 @@ namespace GogoKit.Tests.Clients
             mockConn.Verify();
         }
 
-        [Test]
+        [Fact]
         public async void GetAccessTokenAsync_ShouldReturnTheBodyOfTheResponseReturnedByTheConnection()
         {
             var expectedToken = new OAuth2Token();
@@ -128,10 +128,10 @@ namespace GogoKit.Tests.Clients
 
             var actualToken = await client.GetAccessTokenAsync("grantType", null, null);
 
-            Assert.AreSame(expectedToken, actualToken);
+            Assert.Same(expectedToken, actualToken);
         }
 
-        [Test]
+        [Fact]
         public async void GetAccessTokenAsync_ShouldReturnTokenWithIssueDateSetToTheDateHeaderOfTheResponse()
         {
             var expectedIssueDate = new DateTimeOffset(2014, 11, 27, 0, 27, 16, TimeSpan.FromHours(0));
@@ -147,10 +147,10 @@ namespace GogoKit.Tests.Clients
 
             var actualToken = await client.GetAccessTokenAsync("grantType", null, null);
 
-            Assert.AreEqual(expectedIssueDate, actualToken.IssueDate);
+            Assert.Equal(expectedIssueDate, actualToken.IssueDate);
         }
 
-        [Test]
+        [Fact]
         public void GetAuthorizationUrl_ShouldReturnCorrectUrl()
         {
             var expectedAuthorizationUrl
@@ -167,7 +167,7 @@ namespace GogoKit.Tests.Clients
                                             new[] { "S1", "S2" },
                                             "state123");
 
-            Assert.AreEqual(expectedAuthorizationUrl, actualAuthorizationUrl);
+            Assert.Equal(expectedAuthorizationUrl, actualAuthorizationUrl);
         }
     }
 }

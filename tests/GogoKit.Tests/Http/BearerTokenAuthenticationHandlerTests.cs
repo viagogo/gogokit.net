@@ -8,11 +8,10 @@ using GogoKit.Models.Response;
 using GogoKit.Services;
 using GogoKit.Tests.Fakes;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace GogoKit.Tests.Http
 {
-    [TestFixture]
     public class BearerTokenAuthenticationHandlerTests
     {
         private static BearerTokenAuthenticationHandler CreateHandler(
@@ -40,7 +39,7 @@ namespace GogoKit.Tests.Http
             };
         }
 
-        [Test]
+        [Fact]
         public async void SendAsync_ShouldReturnResponseMessageReturnedByInnerHandler()
         {
             var expectedResponse = new HttpResponseMessage();
@@ -50,7 +49,7 @@ namespace GogoKit.Tests.Http
                                     new HttpRequestMessage(),
                                     CancellationToken.None);
 
-            Assert.AreSame(expectedResponse, actualResponse);
+            Assert.Same(expectedResponse, actualResponse);
         }
     }
 }

@@ -28,6 +28,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "updated_at")]
         public DateTimeOffset? UpdatedAt { get; set; }
 
+        [DataMember(Name = "external_listing_id")]
+        public string ExternalListingId { get; set; }
+
         [Rel("sale:autotrackshipment")]
         public Link AutotrackShipmentLink { get; set; }
 

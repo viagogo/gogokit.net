@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using System.Threading;
+using HalKit.Models.Response;
 
 namespace GogoKit.Clients
 {
@@ -19,6 +20,14 @@ namespace GogoKit.Clients
         Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request);
 
         Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request, CancellationToken cancellationToken);
+
+        Task<ChangedResources<Sale>> GetAllChangesAsync();
+
+        Task<ChangedResources<Sale>> GetAllChangesAsync(Link nextLink);
+
+        Task<ChangedResources<Sale>> GetAllChangesAsync(Link nextLink, SaleRequest request);
+
+        Task<ChangedResources<Sale>> GetAllChangesAsync(Link nextLink, SaleRequest request, CancellationToken cancellationToken);
 
         Task<IReadOnlyList<TicketHolderResource>> GetTicketHolderDetailsAsync(int saleId, CancellationToken cancellationToken);
 

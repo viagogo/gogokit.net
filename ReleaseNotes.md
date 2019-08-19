@@ -1,3 +1,16 @@
+### New in 1.2.0 (Released (2019/08/19)
+* Add get changes link to sales client
+* Fix get sale endpoint
+
+### New in 1.1.1 (Released (2019/08/15)
+* Fix get changes next link
+
+### New in 1.1.0 (Released (2018/10/10)
+* Add external listing id to sale resource
+
+### New in 1.0.0 (Released (2018/09/12)
+* Upgrade to netstandard
+
 ### New in 0.34.0 (Released (2018/07/25)
 * Add Upload ETicket Urls and Upload Transfer Confirmation Number to SaleClient
 

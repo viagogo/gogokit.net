@@ -100,7 +100,7 @@ namespace GogoKit
             Listings = new ListingsClient(Hypermedia);
             Venues = new VenuesClient(Hypermedia);
             SellerListings = new SellerListingsClient(Hypermedia, linkFactory);
-            Webhooks = new WebhooksClient(User, Hypermedia, linkFactory);
+            Webhooks = new WebhooksClient(Hypermedia, linkFactory);
             
             BatchClient = new BatchClient(apiConnection,
                                           new ApiResponseFactory(serializer, halKitConfiguration),

@@ -14,16 +14,14 @@ namespace GogoKit.Clients
 {
     public class WebhooksClient : IWebhooksClient
     {
-        private readonly IUserClient _userClient;
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
         private readonly ILinkResolver _linkResolver;
 
-        public WebhooksClient(IUserClient userClient,
+        public WebhooksClient(
             IHalClient halClient,
             ILinkFactory linkFactory)
         {
-            _userClient = userClient;
             _halClient = halClient;
             _linkFactory = linkFactory;
             _linkResolver = new LinkResolver();
@@ -47,8 +45,8 @@ namespace GogoKit.Clients
 
         public async Task<Webhooks> GetAsync(WebhookRequest request)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<Webhooks>(user.WebhooksLink, request).ConfigureAwait(_halClient);
+            var webhookLink = await _linkFactory.CreateLinkAsync($"webhooks").ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<Webhooks>(webhookLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Webhook>> GetAllAsync()
@@ -58,8 +56,8 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Webhook>> GetAllAsync(WebhookRequest request)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Webhook>(user.WebhooksLink, request).ConfigureAwait(_halClient);
+            var webhookLink = await _linkFactory.CreateLinkAsync($"webhooks").ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Webhook>(webhookLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<Webhook> CreateAsync(NewWebhook webhook)

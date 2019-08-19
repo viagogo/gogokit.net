@@ -16,15 +16,12 @@ namespace GogoKit.Clients
 {
     public class SalesClient : ISalesClient
     {
-        private readonly IUserClient _userClient;
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;
 
-        public SalesClient(IUserClient userClient,
-                           IHalClient halClient,
+        public SalesClient(IHalClient halClient,
                            ILinkFactory linkFactory)
         {
-            _userClient = userClient;
             _halClient = halClient;
             _linkFactory = linkFactory;
         }
@@ -42,8 +39,8 @@ namespace GogoKit.Clients
 
         public async Task<PagedResource<Sale>> GetAsync(SaleRequest request)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAsync<PagedResource<Sale>>(user.SalesLink, request).ConfigureAwait(_halClient);
+            var salesLink = await _linkFactory.CreateLinkAsync($"sales").ConfigureAwait(_halClient);
+            return await _halClient.GetAsync<PagedResource<Sale>>(salesLink, request).ConfigureAwait(_halClient);
         }
 
         public Task<IReadOnlyList<Sale>> GetAllAsync()
@@ -58,8 +55,8 @@ namespace GogoKit.Clients
 
         public async Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request, CancellationToken cancellationToken)
         {
-            var user = await _userClient.GetAsync().ConfigureAwait(_halClient);
-            return await _halClient.GetAllPagesAsync<Sale>(user.SalesLink, request, cancellationToken).ConfigureAwait(_halClient);
+            var salesLink = await _linkFactory.CreateLinkAsync($"sales").ConfigureAwait(_halClient);
+            return await _halClient.GetAllPagesAsync<Sale>(salesLink, request, cancellationToken).ConfigureAwait(_halClient);
         }
 
         public async Task<ChangedResources<Sale>> GetAllChangesAsync()

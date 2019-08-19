@@ -90,7 +90,7 @@ namespace GogoKit
             Search = new SearchClient(Hypermedia);
             Addresses = new AddressesClient(User, Hypermedia, linkFactory);
             Purchases = new PurchasesClient(User, Hypermedia, linkFactory);
-            Sales = new SalesClient(User, Hypermedia, linkFactory);
+            Sales = new SalesClient(Hypermedia, linkFactory);
             Shipments = new ShipmentsClient(Hypermedia, linkFactory);
             PaymentMethods = new PaymentMethodsClient(User, Hypermedia, linkFactory);
             Countries = new CountriesClient(Hypermedia, linkFactory);

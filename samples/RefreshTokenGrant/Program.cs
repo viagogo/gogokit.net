@@ -23,10 +23,8 @@ namespace RefreshTokenGrant
             // stores tokens for users in a database or in user cookies, etc
             var oauth2TokenStore = CreateOAuth2TokenStore(RefreshToken).Result;
 
-            var viagogoClient = new ViagogoClient(ClientId,
-                                                  ClientSecret,
-                                                  new ProductHeaderValue("GogoKit-Samples"),
-                                                  new GogoKitConfiguration(),
+            var viagogoClient = new ViagogoClient(new ProductHeaderValue("GogoKit-Samples"),
+                                                  new GogoKitConfiguration(ClientId, ClientSecret),
                                                   oauth2TokenStore);
 
             Console.WriteLine("Getting current OAuth2 token");

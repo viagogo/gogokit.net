@@ -33,10 +33,9 @@ namespace ManagingSales
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterFilterProvider();
 
-            builder.Register(c => new ViagogoClient(ClientId,
-                                                    ClientSecret,
+            builder.Register(c => new ViagogoClient(
                                                     new ProductHeaderValue("GogoKit-Samples"),
-                                                    new GogoKitConfiguration
+                                                    new GogoKitConfiguration(ClientId, ClientSecret)
                                                     {
                                                         ViagogoApiEnvironment = ApiEnvironment.Sandbox,
                                                         CaptureSynchronizationContext = true

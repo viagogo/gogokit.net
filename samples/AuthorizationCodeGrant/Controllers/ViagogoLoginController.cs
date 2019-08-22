@@ -4,6 +4,7 @@ using System;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using GogoKit.Services;
 
 namespace AuthorizationCodeGrant.Controllers
 {
@@ -21,10 +22,9 @@ namespace AuthorizationCodeGrant.Controllers
         public ViagogoLoginController()
         {
             _viagogoClient = new ViagogoClient(
-                                ClientIdentifier,
-                                ClientSecret,
                                 new ProductHeaderValue("GogoKit-Samples"),
-                                new GogoKitConfiguration { ViagogoApiEnvironment = ApiEnvironment.Sandbox });
+                                new GogoKitConfiguration(ClientIdentifier, ClientSecret) { ViagogoApiEnvironment = ApiEnvironment.Sandbox },
+                                new InMemoryOAuth2TokenStore());
         }
 
         [Route("")]

@@ -1,3 +1,6 @@
+### New in 1.2.1 (Released (2019/08/19)
+* Add change ticket type to sales client
+
 ### New in 1.2.0 (Released (2019/08/19)
 * Add get changes link to sales client
 * Fix get sale endpoint

@@ -289,5 +289,38 @@ namespace GogoKit.Clients
             var saleLink = await _linkFactory.CreateLinkAsync($"sales/{saleId}").ConfigureAwait(_halClient);
             return await _halClient.PatchAsync<Sale>(saleLink, update, request, cancellationToken);
         }
+
+        public Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            string eTicketType)
+        {
+            return ChangeTicketTypeAsync(saleId, eTicketType, new SaleRequest());
+        }
+
+        public Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            string eTicketType,
+            SaleRequest request)
+        {
+            return ChangeTicketTypeAsync(saleId, eTicketType, request, CancellationToken.None);
+        }
+
+        public Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            string eTicketType,
+            SaleRequest request,
+            CancellationToken cancellationToken)
+        {
+            Requires.ArgumentNotNull(eTicketType, nameof(eTicketType));
+
+            return UpdateAsync(
+                saleId,
+                new SaleUpdate
+                {
+                    ETicketType = eTicketType
+                },
+                request,
+                cancellationToken);
+        }
     }
 }

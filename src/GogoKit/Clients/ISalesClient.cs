@@ -105,6 +105,21 @@ namespace GogoKit.Clients
             SaleRequest request,
             CancellationToken cancellationToken);
 
+        Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            string eTicketType);
+
+        Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            string eTicketType,
+            SaleRequest request);
+
+        Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            string eTicketType,
+            SaleRequest request,
+            CancellationToken cancellationToken);
+
         Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds);
 
         Task<Sale> SaveETicketsAsync(int saleId, IEnumerable<int> eticketIds, SaleRequest request);

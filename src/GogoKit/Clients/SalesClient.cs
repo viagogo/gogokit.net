@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Linq;
+using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using HalKit.Models.Response;
 
 namespace GogoKit.Clients
@@ -288,6 +289,37 @@ namespace GogoKit.Clients
         {
             var saleLink = await _linkFactory.CreateLinkAsync($"sales/{saleId}").ConfigureAwait(_halClient);
             return await _halClient.PatchAsync<Sale>(saleLink, update, request, cancellationToken);
+        }
+
+        public Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            ApiTicketType ticketType)
+        {
+            return ChangeTicketTypeAsync(saleId, ticketType, new SaleRequest());
+        }
+
+        public Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            ApiTicketType ticketType,
+            SaleRequest request)
+        {
+            return ChangeTicketTypeAsync(saleId, ticketType, request, CancellationToken.None);
+        }
+
+        public Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            ApiTicketType ticketType,
+            SaleRequest request,
+            CancellationToken cancellationToken)
+        {
+            return UpdateAsync(
+                saleId,
+                new SaleUpdate
+                {
+                    ETicketType = ticketType.ToString()
+                },
+                request,
+                cancellationToken);
         }
     }
 }

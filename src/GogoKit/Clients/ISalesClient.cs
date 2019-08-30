@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using System.Threading;
+using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using HalKit.Models.Response;
 
 namespace GogoKit.Clients
@@ -102,6 +103,21 @@ namespace GogoKit.Clients
         Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
+            SaleRequest request,
+            CancellationToken cancellationToken);
+
+        Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            ApiTicketType ticketType);
+
+        Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            ApiTicketType ticketType,
+            SaleRequest request);
+
+        Task<Sale> ChangeTicketTypeAsync(
+            int saleId,
+            ApiTicketType ticketType,
             SaleRequest request,
             CancellationToken cancellationToken);
 

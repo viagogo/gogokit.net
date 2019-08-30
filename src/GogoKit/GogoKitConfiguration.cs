@@ -10,6 +10,15 @@ namespace GogoKit
         private readonly HalKitConfiguration _halKitConfiguration;
         private ApiEnvironment _apiEnvironment;
 
+        public GogoKitConfiguration()
+        {
+            _halKitConfiguration = new HalKitConfiguration(Default.ViagogoApiRootEndpoints[ApiEnvironment.Production])
+            {
+                CaptureSynchronizationContext = false
+            };
+            ViagogoApiEnvironment = ApiEnvironment.Production;
+        }
+
         public GogoKitConfiguration(string clientId, string clientSecret)
         {
             Requires.ArgumentNotNullOrEmpty(clientId, nameof(clientId));

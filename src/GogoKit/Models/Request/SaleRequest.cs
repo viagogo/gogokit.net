@@ -10,6 +10,21 @@ namespace GogoKit.Models.Request
                 {SaleSort.CreatedAt, "created_at"},
                 {SaleSort.ResourceVersion, "resource_version"}
             };
+
+
+        public string StatusFilter
+        {
+            get
+            {
+                if (!Parameters.TryGetValue("sale_statuses", out var valueText))
+                {
+                    return null;
+                }
+
+                return valueText;
+            }
+            set => SetParameter("sale_statuses", value);
+        }
     }
 
     public enum SaleEmbed
@@ -21,4 +36,5 @@ namespace GogoKit.Models.Request
         CreatedAt,
         ResourceVersion
     }
+
 }

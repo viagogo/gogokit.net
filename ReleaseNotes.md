@@ -1,3 +1,6 @@
+### New in 1.4.0 (Released (2020/03/26)
+* Add Get sales by status
+
 ### New in 1.3.1 (Released (2019/08/19)
 * Bug fix for Getting Changed Sales
 

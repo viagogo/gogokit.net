@@ -36,5 +36,4 @@ namespace GogoKit.Models.Request
         CreatedAt,
         ResourceVersion
     }
-
 }

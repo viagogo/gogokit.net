@@ -25,18 +25,6 @@ deploy:
       secure: $(NUGET_API_KEY)
     artifact: /.*\.nupkg/
     on:
-      branch: master
-      appveyor_repo_tag: true
-
-  - provider: GitHub
-    release: $(APPVEYOR_REPO_TAG_NAME)
-    auth_token:
-      secure: KkZc/MtbfhwnJ7sfv74IFidwvYQmKLlmrO9yp4ydi30A+0XAP9c5frqd6f6PEZ7J
-    artifact: /.*\.nupkg/
-    draft: false
-    prerelease: false
-    on:
-      branch: master
       appveyor_repo_tag: true
       
 nuget:

@@ -24,6 +24,8 @@ deploy:
     api_key:
       secure: $(NUGET_API_KEY)
     artifact: /.*\.nupkg/
+    draft: false
+    prerelease: false
     on:
       appveyor_repo_tag: true
       

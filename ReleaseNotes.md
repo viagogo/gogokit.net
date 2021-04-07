@@ -1,4 +1,4 @@
-### New in 1.4.0 (Released (2021/04/07)
+### New in 1.4.1 (Released (2021/04/07)
 * Bug fix sorting by descending
 
 ### New in 1.4.0 (Released (2020/03/26)

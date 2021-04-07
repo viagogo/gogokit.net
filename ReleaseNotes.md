@@ -1,3 +1,6 @@
+### New in 1.4.0 (Released (2021/04/07)
+* Bug fix sorting by descending
+
 ### New in 1.4.0 (Released (2020/03/26)
 * Add Get sales by status
 

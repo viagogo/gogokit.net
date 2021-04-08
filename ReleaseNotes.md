@@ -1,3 +1,6 @@
+### New in 1.4.2 (Released (2021/04/08)
+* Upgrade to HalKit v1.0.2
+
 ### New in 1.4.1 (Released (2021/04/07)
 * Bug fix sorting by descending
 

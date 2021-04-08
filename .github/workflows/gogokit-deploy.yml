@@ -1,0 +1,30 @@
+name: GogoKit - Deploy
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Create the package
+      run: dotnet build --configuration Release src/GogoKit/GogoKit.csproj --no-restore
+    - name: Publish the package
+      uses: brandedoutcast/publish-nuget@v2.5.5
+      with:
+        PROJECT_FILE_PATH: src/GogoKit/GogoKit.csproj
+        VERSION_FILE_PATH: Version.props
+        VERSION_REGEX: ^\s*<VersionPrefix>(.*)<\/VersionPrefix>\s*$
+        TAG_COMMIT: true
+        TAG_FORMAT: v*
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+        NUGET_SOURCE: https://api.nuget.org
+        INCLUDE_SYMBOLS: true

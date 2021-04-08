@@ -1,10 +1,10 @@
 # GogoKit - viagogo API Client Library for .NET
 
 [![NuGet version](https://badge.fury.io/nu/gogokit.svg)][nuget]
-[![Build status](https://ci.appveyor.com/api/projects/status/ri2rbvoinudw27en/branch/master?svg=true)][appveyor]
+[![GogoKit.NET - CI](https://github.com/viagogo/gogokit.net/actions/workflows/gogokit-ci.yml/badge.svg)][github-ci-action]
 
-[appveyor]: https://ci.appveyor.com/project/viagogo/gogokit-net/branch/master
 [nuget]: http://www.nuget.org/packages/GogoKit
+[github-ci-action]: https://github.com/viagogo/gogokit.net/actions/workflows/gogokit-ci.yml
 
 GogoKit is a lightweight, async viagogo API client library for .NET. Our [developer site][apidocs]
 documents all of the viagogo APIs.

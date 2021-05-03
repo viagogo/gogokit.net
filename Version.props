@@ -4,6 +4,7 @@
     <PackageReleaseNotes>
       ### New in 2.0.0
       * Updated `Listing.Id` and `SellerListing.Id` to be `long`
+      * Include GogoKit version information in `User-Agent` header
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

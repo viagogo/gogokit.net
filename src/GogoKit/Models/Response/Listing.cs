@@ -11,7 +11,7 @@ namespace GogoKit.Models.Response
     public class Listing : Resource
     {
         [DataMember(Name = "id")]
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         [DataMember(Name = "number_of_tickets")]
         public int? NumberOfTickets { get; set; }

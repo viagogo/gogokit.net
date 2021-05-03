@@ -16,7 +16,7 @@ namespace GogoKit.Models.Response
         /// The listing identifier.
         /// </summary>
         [DataMember(Name = "id")]
-        public int? Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// An identifier that has been assigned to the listing in an external

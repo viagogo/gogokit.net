@@ -10,9 +10,9 @@ namespace GogoKit.Clients
 {
     public interface ISellerListingsClient
     {
-        Task<SellerListing> GetAsync(int sellerListingId);
+        Task<SellerListing> GetAsync(long sellerListingId);
 
-        Task<SellerListing> GetAsync(int sellerListingId, SellerListingRequest request);
+        Task<SellerListing> GetAsync(long sellerListingId, SellerListingRequest request);
 
         Task<SellerListing> GetAsync(string externalListingId);
 
@@ -41,9 +41,9 @@ namespace GogoKit.Clients
             SellerListingRequest request,
             CancellationToken cancellationToken);
 
-        Task<ListingConstraints> GetConstraintsAsync(int sellerListingId);
+        Task<ListingConstraints> GetConstraintsAsync(long sellerListingId);
 
-        Task<ListingConstraints> GetConstraintsAsync(int sellerListingId, ListingConstraintsRequest request);
+        Task<ListingConstraints> GetConstraintsAsync(long sellerListingId, ListingConstraintsRequest request);
 
         Task<ListingConstraints> GetConstraintsForEventAsync(int eventId);
 
@@ -69,7 +69,7 @@ namespace GogoKit.Clients
             CancellationToken cancellationToken);
 
         Task<SellerListingPreview> CreateSellerListingUpdatePreviewAsync(
-            int sellerListingId,
+            long sellerListingId,
             SellerListingUpdate listingUpdate);
 
         Task<SellerListing> CreateAsync(NewRequestedEventSellerListing listing);
@@ -91,10 +91,10 @@ namespace GogoKit.Clients
             SellerListingRequest request,
             CancellationToken cancellationToken);
 
-        Task<SellerListing> UpdateAsync(int sellerListingId, SellerListingUpdate listingUpdate);
+        Task<SellerListing> UpdateAsync(long sellerListingId, SellerListingUpdate listingUpdate);
 
         Task<SellerListing> UpdateAsync(
-            int sellerListingId,
+            long sellerListingId,
             SellerListingUpdate listingUpdate,
             SellerListingRequest request);
 
@@ -105,7 +105,7 @@ namespace GogoKit.Clients
             SellerListingUpdate listingUpdate,
             SellerListingRequest request);
 
-        Task<IApiResponse> DeleteAsync(int sellerListingId);
+        Task<IApiResponse> DeleteAsync(long sellerListingId);
 
         Task<IApiResponse> DeleteAsync(string externalListingId);
     }

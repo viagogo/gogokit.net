@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +12,11 @@ namespace GogoKit.Http
 {
     public class UserAgentHandler : DelegatingHandler
     {
+        private static readonly ProductInfoHeaderValue GogoKitVersionHeaderValue =
+            new ProductInfoHeaderValue(
+                "GogoKit",
+                FileVersionInfo.GetVersionInfo(typeof(UserAgentHandler).Assembly.Location).ProductVersion);
+
         private readonly IReadOnlyList<ProductInfoHeaderValue> _userAgentHeaderValues;
 
         public UserAgentHandler(ProductHeaderValue product)
@@ -24,7 +31,7 @@ namespace GogoKit.Http
             return new List<ProductInfoHeaderValue>
             {
                 new ProductInfoHeaderValue(product),
-                //new ProductInfoHeaderValue($"({CultureInfo.CurrentCulture.Name}; GogoKit {AssemblyVersionInformation.Version})")
+                GogoKitVersionHeaderValue
             };
         }
 

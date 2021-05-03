@@ -7,9 +7,9 @@ namespace GogoKit.Clients
 {
     public interface IListingsClient
     {
-        Task<Listing> GetAsync(int listingId);
+        Task<Listing> GetAsync(long listingId);
 
-        Task<Listing> GetAsync(int listingId, ListingRequest request);
+        Task<Listing> GetAsync(long listingId, ListingRequest request);
 
         Task<PagedResource<Listing>> GetByEventAsync(int eventId, ListingRequest request);
 

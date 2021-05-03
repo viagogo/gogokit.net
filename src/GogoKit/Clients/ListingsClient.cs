@@ -16,12 +16,12 @@ namespace GogoKit.Clients
             _halClient = halClient;
         }
 
-        public Task<Listing> GetAsync(int listingId)
+        public Task<Listing> GetAsync(long listingId)
         {
             return GetAsync(listingId, new ListingRequest());
         }
 
-        public async Task<Listing> GetAsync(int listingId, ListingRequest request)
+        public async Task<Listing> GetAsync(long listingId, ListingRequest request)
         {
             Requires.ArgumentNotNull(request, nameof(request));
 

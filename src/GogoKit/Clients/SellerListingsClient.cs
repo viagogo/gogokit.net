@@ -25,12 +25,12 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public Task<SellerListing> GetAsync(int sellerListingId)
+        public Task<SellerListing> GetAsync(long sellerListingId)
         {
             return GetAsync(sellerListingId, new SellerListingRequest());
         }
 
-        public async Task<SellerListing> GetAsync(int sellerListingId, SellerListingRequest request)
+        public async Task<SellerListing> GetAsync(long sellerListingId, SellerListingRequest request)
         {
             var listingLink = await _linkFactory.CreateLinkAsync($"sellerlistings/{sellerListingId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<SellerListing>(listingLink, request).ConfigureAwait(_halClient);
@@ -118,12 +118,14 @@ namespace GogoKit.Clients
                 changedResources.NextLink);
         }
 
-        public Task<ListingConstraints> GetConstraintsAsync(int sellerListingId)
+        public Task<ListingConstraints> GetConstraintsAsync(long sellerListingId)
         {
             return GetConstraintsAsync(sellerListingId, new ListingConstraintsRequest());
         }
 
-        public async Task<ListingConstraints> GetConstraintsAsync(int sellerListingId, ListingConstraintsRequest request)
+        public async Task<ListingConstraints> GetConstraintsAsync(
+            long sellerListingId,
+            ListingConstraintsRequest request)
         {
             var constraintsLink = await _linkFactory.CreateLinkAsync($"sellerlistings/{sellerListingId}/constraints").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<ListingConstraints>(constraintsLink, request).ConfigureAwait(_halClient);
@@ -179,7 +181,9 @@ namespace GogoKit.Clients
             return await _halClient.PostAsync<SellerListingPreview>(previewLink, listing).ConfigureAwait(_halClient);
         }
 
-        public async Task<SellerListingPreview> CreateSellerListingUpdatePreviewAsync(int sellerListingId, SellerListingUpdate listingUpdate)
+        public async Task<SellerListingPreview> CreateSellerListingUpdatePreviewAsync(
+            long sellerListingId,
+            SellerListingUpdate listingUpdate)
         {
             var previewLink = await _linkFactory.CreateLinkAsync($"sellerlistings/{sellerListingId}/updatepreview").ConfigureAwait(_halClient);
             return await _halClient.PostAsync<SellerListingPreview>(previewLink, listingUpdate).ConfigureAwait(_halClient);
@@ -224,12 +228,15 @@ namespace GogoKit.Clients
             return await _halClient.PostAsync<SellerListing>(createListingLink, listing, request, cancellationToken).ConfigureAwait(_halClient);
         }
 
-        public Task<SellerListing> UpdateAsync(int sellerListingId, SellerListingUpdate listingUpdate)
+        public Task<SellerListing> UpdateAsync(long sellerListingId, SellerListingUpdate listingUpdate)
         {
             return UpdateAsync(sellerListingId, listingUpdate, new SellerListingRequest());
         }
 
-        public async Task<SellerListing> UpdateAsync(int sellerListingId, SellerListingUpdate listingUpdate, SellerListingRequest request)
+        public async Task<SellerListing> UpdateAsync(
+            long sellerListingId,
+            SellerListingUpdate listingUpdate,
+            SellerListingRequest request)
         {
             var updateLink = await _linkFactory.CreateLinkAsync($"sellerlistings/{sellerListingId}").ConfigureAwait(_halClient);
             return await _halClient.PatchAsync<SellerListing>(updateLink, listingUpdate, request).ConfigureAwait(_halClient);
@@ -247,7 +254,7 @@ namespace GogoKit.Clients
             return await _halClient.PatchAsync<SellerListing>(updateLink, listingUpdate, request).ConfigureAwait(_halClient);
         }
 
-        public async Task<IApiResponse> DeleteAsync(int sellerListingId)
+        public async Task<IApiResponse> DeleteAsync(long sellerListingId)
         {
             var deleteLink = await _linkFactory.CreateLinkAsync($"sellerlistings/{sellerListingId}").ConfigureAwait(_halClient);
             return await _halClient.DeleteAsync(deleteLink);

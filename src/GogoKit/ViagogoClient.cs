@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -146,6 +147,7 @@ namespace GogoKit
 
         public IWebhooksClient Webhooks { get; }
 
+        [Obsolete("This functionality will be removed in v3.0.0")]
         public IBatchClient BatchClient { get; }
     }
 }

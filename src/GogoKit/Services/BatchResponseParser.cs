@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 
+[Obsolete("This functionality will be removed in v3.0.0")]
 public static class BatchResponseParser
 {
     public static IEnumerable<HttpResponseMessage> Parse(string content)

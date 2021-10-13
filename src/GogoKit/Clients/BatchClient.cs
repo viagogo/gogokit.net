@@ -16,6 +16,7 @@ using HalKit.Services;
 
 namespace GogoKit.Clients
 {
+    [Obsolete("This functionality will be removed in v3.0.0")]
     public class BatchClient : IBatchClient
     {
         private readonly IHttpConnection _httpConnection;

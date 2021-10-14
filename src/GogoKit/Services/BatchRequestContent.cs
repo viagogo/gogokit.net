@@ -15,6 +15,7 @@ namespace GogoLib
     /// <summary>
     /// Derived <see cref="T:System.Net.Http.HttpContent"/> class which can encapsulate an <see cref="P:System.Net.Http.HttpMessageContent.HttpResponseMessage"/> or an <see cref="P:System.Net.Http.HttpMessageContent.HttpRequestMessage"/> as an entity with media type "application/http".
     /// </summary>
+    [Obsolete("This functionality will be removed in v3.0.0")]
     public class BatchRequestContent : HttpContent
     {
         private const string DefaultMediaType = "application/http";

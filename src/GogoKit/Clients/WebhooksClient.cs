@@ -79,7 +79,7 @@ namespace GogoKit.Clients
         public async Task<Webhook> UpdateAsync(int webhookId, WebhookUpdate webhookUpdate, WebhookRequest request)
         {
             var updateLink = await _linkFactory.CreateLinkAsync($"webhooks/{webhookId}").ConfigureAwait(_halClient);
-            return await _halClient.PostAsync<Webhook>(updateLink, webhookUpdate, request).ConfigureAwait(_halClient);
+            return await _halClient.PatchAsync<Webhook>(updateLink, webhookUpdate, request).ConfigureAwait(_halClient);
         }
 
         public async Task<IApiResponse> DeleteAsync(int webhookId)

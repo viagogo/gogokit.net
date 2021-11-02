@@ -1,9 +1,9 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>2.0.1</VersionPrefix>
+    <VersionPrefix>2.0.2</VersionPrefix>
     <PackageReleaseNotes>
-      ### New in 2.0.1
-      * The BatchClient is now obsolete and should not be used anymore
+      ### New in 2.0.2
+      * Fix webhook client to use patch httpmethod for updates
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

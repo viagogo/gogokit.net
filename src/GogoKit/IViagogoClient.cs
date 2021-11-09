@@ -26,7 +26,5 @@ namespace GogoKit
         ISellerListingsClient SellerListings { get; }
         IVenuesClient Venues { get; }
         IWebhooksClient Webhooks { get; }
-        [Obsolete("This functionality will be removed in v3.0.0")]
-        IBatchClient BatchClient { get; }
     }
 }

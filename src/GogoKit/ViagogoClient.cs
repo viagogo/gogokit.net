@@ -102,11 +102,6 @@ namespace GogoKit
             Venues = new VenuesClient(Hypermedia);
             SellerListings = new SellerListingsClient(Hypermedia, linkFactory);
             Webhooks = new WebhooksClient(Hypermedia, linkFactory);
-            
-            BatchClient = new BatchClient(apiConnection,
-                                          new ApiResponseFactory(serializer, halKitConfiguration),
-                                          serializer,
-                                          new LinkResolver());
         }
 
         public IGogoKitConfiguration Configuration { get; }
@@ -146,8 +141,5 @@ namespace GogoKit
         public IVenuesClient Venues { get; }
 
         public IWebhooksClient Webhooks { get; }
-
-        [Obsolete("This functionality will be removed in v3.0.0")]
-        public IBatchClient BatchClient { get; }
     }
 }

@@ -196,3 +196,7 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 .DS_Store
+
+# Rider generated files
+
+.idea/

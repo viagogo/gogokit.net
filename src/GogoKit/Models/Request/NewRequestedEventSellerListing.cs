@@ -17,5 +17,8 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "country")]
         public Country Country { get; set; }
+        
+        [DataMember(Name = "external_event_information")]
+        public SellerListingExternalEventInformation[] ExternalEventInformation { get; set; }
     }
 }

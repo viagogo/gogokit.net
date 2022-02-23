@@ -25,6 +25,20 @@ namespace GogoKit.Models.Request
             }
             set => SetParameter("sale_statuses", value);
         }
+
+        public string ExternalListingIdFilter
+        {
+            get
+            {
+                if (!Parameters.TryGetValue("external_listing_id", out var valueText))
+                {
+                    return null;
+                }
+
+                return valueText;
+            }
+            set => SetParameter("external_listing_id", value);
+        }
     }
 
     public enum SaleEmbed

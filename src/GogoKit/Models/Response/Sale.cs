@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using GogoKit.Models.Request;
 using HalKit.Models.Response;
 using HalKit.Json;
 
@@ -30,6 +32,9 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "external_listing_id")]
         public string ExternalListingId { get; set; }
+
+        [DataMember(Name = "barcodes")]
+        public BarcodeUpload[] Barcodes { get; set; }
 
         [Rel("sale:autotrackshipment")]
         public Link AutotrackShipmentLink { get; set; }

@@ -3,6 +3,7 @@ using HalKit.Json;
 using HalKit.Models.Response;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using GogoKit.Models.Request;
 
 namespace GogoKit.Models.Response
 {
@@ -40,6 +41,9 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "updated_at")]
         public DateTimeOffset? UpdatedAt { get; set; }
+
+        [DataMember(Name = "barcodes")]
+        public BarcodeUpload[] Barcodes { get; set; }
 
         [Embedded("event")]
         public EmbeddedEvent Event { get; set; }

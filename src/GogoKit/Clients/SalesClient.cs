@@ -60,6 +60,11 @@ namespace GogoKit.Clients
             return await _halClient.GetAllPagesAsync<Sale>(salesLink, request, cancellationToken).ConfigureAwait(_halClient);
         }
 
+        public Task<IReadOnlyList<Sale>> GetAllByExternalListingIdAsync(string externalListingId)
+        {
+            return GetAllAsync(new SaleRequest { ExternalListingIdFilter = externalListingId });
+        }
+
         public async Task<ChangedResources<Sale>> GetAllChangesAsync()
         {
             var salesLink = await _linkFactory.CreateLinkAsync("sales").ConfigureAwait(_halClient);

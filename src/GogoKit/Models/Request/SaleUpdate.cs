@@ -24,6 +24,9 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "eticket_type")]
         public string ETicketType { get; set; }
+
+        [DataMember(Name = "barcodes")]
+        public BarcodeUpload[] Barcodes { get; set; }
     }
 
     [DataContract(Name = "eticket_url")]

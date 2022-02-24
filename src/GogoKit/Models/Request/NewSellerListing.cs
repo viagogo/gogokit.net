@@ -52,5 +52,8 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "instant_delivery")]
         public bool? IsInstantDelivery { get; set; }
+
+        [DataMember(Name = "barcodes")]
+        public BarcodeUpload[] Barcodes { get; set; }
     }
 }

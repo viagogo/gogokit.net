@@ -17,6 +17,7 @@ namespace GogoKit.Clients
         Task<PagedResource<Sale>> GetAsync(SaleRequest request);
 
         Task<IReadOnlyList<Sale>> GetAllAsync();
+        Task<IReadOnlyList<Sale>> GetAllByExternalListingIdAsync(string externalListingId);
 
         Task<IReadOnlyList<Sale>> GetAllAsync(SaleRequest request);
 

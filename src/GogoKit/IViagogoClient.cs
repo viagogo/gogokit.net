@@ -20,11 +20,8 @@ namespace GogoKit
         ICountriesClient Countries { get; }
         ICurrenciesClient Currencies { get; }
         IPaymentMethodsClient PaymentMethods { get; }
-        ICategoriesClient Categories { get; }
-        IEventsClient Events { get; }
         IListingsClient Listings { get; }
         ISellerListingsClient SellerListings { get; }
-        IVenuesClient Venues { get; }
         IWebhooksClient Webhooks { get; }
     }
 }

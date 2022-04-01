@@ -76,10 +76,10 @@ namespace GogoKit.Models.Response
         public Link UploadTransferReceiptLink { get; set; }
 
         [Embedded("event")]
-        public Event Event { get; set; }
+        public EmbeddedEvent Event { get; set; }
 
         [Embedded("venue")]
-        public Venue Venue { get; set; }
+        public EmbeddedVenue Venue { get; set; }
 
         [Embedded("ticket_type")]
         public TicketType TicketType { get; set; }

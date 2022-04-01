@@ -96,12 +96,10 @@ namespace GogoKit
             PaymentMethods = new PaymentMethodsClient(User, Hypermedia, linkFactory);
             Countries = new CountriesClient(Hypermedia, linkFactory);
             Currencies = new CurrenciesClient(Hypermedia, linkFactory);
-            Categories = new CategoriesClient(Hypermedia, linkFactory);
-            Events = new EventsClient(Hypermedia);
             Listings = new ListingsClient(Hypermedia);
-            Venues = new VenuesClient(Hypermedia);
             SellerListings = new SellerListingsClient(Hypermedia, linkFactory);
             Webhooks = new WebhooksClient(Hypermedia, linkFactory);
+            Catalog = new ViagogoCatalogClient(product, configuration, tokenStore);
         }
 
         public IGogoKitConfiguration Configuration { get; }
@@ -129,17 +127,9 @@ namespace GogoKit
         public ICurrenciesClient Currencies { get; }
 
         public IPaymentMethodsClient PaymentMethods { get; }
-
-        public ICategoriesClient Categories { get; }
-
-        public IEventsClient Events { get; }
-
         public IListingsClient Listings { get; }
-
         public ISellerListingsClient SellerListings { get; }
-
-        public IVenuesClient Venues { get; }
-
         public IWebhooksClient Webhooks { get; }
+        public IViagogoCatalogClient Catalog { get; set; }
     }
 }

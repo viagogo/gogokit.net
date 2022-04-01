@@ -1,88 +1,82 @@
-﻿using System;
-using System.Runtime.Serialization;
-using HalKit.Json;
+﻿using HalKit.Json;
 using HalKit.Models.Response;
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text;
 
 namespace GogoKit.Models.Response
 {
     /// <summary>
     /// An event on the viagogo platform.
     /// </summary>
-    public class Event : EmbeddedEvent
+    [DataContract]
+    public class Event : Resource
     {
+        /// <summary>
+        /// The event identifier.
+        /// </summary>
+        [DataMember(Name = "id")]
+        public int Id { get; set; }
+
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// The date when the event starts.
+        /// </summary>
+        [DataMember(Name = "start_date")]
+        public DateTimeOffset StartDate { get; set; }
+
+        /// <summary>
+        /// The date when the event ends.
+        /// </summary>
+        [DataMember(Name = "end_date")]
+        public DateTimeOffset? EndDate { get; set; }
+
+        /// <summary>
+        /// The date when tickets for the event will go onsale.
+        /// </summary>
+        [DataMember(Name = "on_sale_date")]
+        public DateTimeOffset? OnSaleDate { get; set; }
+
+        /// <summary>
+        /// True if the event start and end date have been confirmed; Otherwise, false.
+        /// </summary>
+        [DataMember(Name = "date_confirmed")]
+        public bool DateConfirmed { get; set; }
+
+        /// <summary>
+        /// The minimum ticket price of the event.
+        /// </summary>
         [DataMember(Name = "min_ticket_price")]
         public Money MinTicketPrice { get; set; }
 
-        [DataMember(Name = "number_of_tickets")]
-        public int? NumberOfTickets { get; set; }
-
-        [DataMember(Name = "notes_html")]
-        public string Notes { get; set; }
-
-        [DataMember(Name = "restrictions_html")]
-        public string Restrictions { get; set; }
-
-        [Embedded("venue")]
-        public EmbeddedVenue Venue { get; set; }
-
-        [Embedded("category")]
-        public EmbeddedCategory Category { get; set; }
-
         /// <summary>
-        /// You can GET the href of this link to retrieve the <see cref="Category"/>
-        /// resource that contains an <see cref="Event"/>.
+        /// Url on the website for the event
         /// </summary>
-        /// <remarks>See http://developer.viagogo.net/#eventcategory.</remarks>
-        [Rel("event:category")]
-        public Link CategoryLink { get; set; }
-
-        /// <summary>
-        /// You can GET the href of this link to retrieve the <see cref="Listing"/>
-        /// resources in an event.
-        /// </summary>
-        /// <remarks>See http://developer.viagogo.net/#eventlistings.</remarks>
-        [Rel("event:listings")]
-        public Link ListingsLink { get; set; }
-
-        /// <summary>
-        /// You can GET the href of this link to retrieve the local viagogo website webpage
-        /// for an event.
-        /// </summary>
-        /// <remarks>See http://developer.viagogo.net/#eventlocalwebpage.</remarks>
-        [Rel("event:localwebpage")]
-        public Link LocalWebPageLink { get; set; }
-
-        /// <summary>
-        /// You can GET the href of this link to retrieve the viagogo website
-        /// webpage for an event.
-        /// </summary>
-        /// <remarks>See http://developer.viagogo.net/#eventwebpage.</remarks>
         [Rel("event:webpage")]
         public Link WebPageLink { get; set; }
 
         /// <summary>
-        /// You can GET the href of this link to retrieve the
-        /// <see cref="ListingConstraints"/> resource for creating listings for
-        /// this event.
+        /// The venue where the event is taking place.
         /// </summary>
-        /// <remarks>See http://developer.viagogo.net/#eventlistingconstraints.</remarks>
-        [Rel("event:listingconstraints")]
-        public Link ListingConstraintsLink { get; set; }
+        [Embedded("venue")]
+        public EmbeddedVenue Venue { get; set; }
 
         /// <summary>
-        /// You can use a POST request on the href of this link to create a
-        /// preview of a <see cref="SellerListing"/> for this event.
+        /// The categories for this event.
         /// </summary>
-        /// <remarks>See http://developer.viagogo.net/#eventsellerlistingpreview.</remarks>
-        [Rel("event:sellerlistingpreview")]
-        public Link CreateSellerListingPreviewLink { get; set; }
+        [Embedded("categories")]
+        public IReadOnlyList<EmbeddedCategory> Categories { get; set; }
 
         /// <summary>
-        /// You can use a POST request on the href of this link to create a
-        /// <see cref="SellerListing"/> for this event.
+        /// The genre for this event.
         /// </summary>
-        /// <remarks>See http://developer.viagogo.net/#eventcreatesellerlisting.</remarks>
-        [Rel("event:createsellerlisting")]
-        public Link CreateSellerListingLink { get; set; }
+        [Embedded("genre")]
+        public EmbeddedCategory Genre { get; set; }
     }
 }

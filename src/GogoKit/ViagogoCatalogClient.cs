@@ -82,12 +82,13 @@ namespace GogoKit
                 CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
             };
 
+            var linkFactory = new LinkFactory(configuration);
+
             Configuration = configuration;
             TokenStore = tokenStore;
             Hypermedia = new HalClient(halKitConfiguration, apiConnection);
-            var linkFactory = new LinkFactory(configuration);
             OAuth2 = new OAuth2Client(oauthConnection, configuration);
-            EventClient = new CatalogEventClient(Hypermedia, linkFactory);
+            EventsClient = new EventClient(Hypermedia, linkFactory);
         }
 
         public IGogoKitConfiguration Configuration { get; }
@@ -98,6 +99,6 @@ namespace GogoKit
 
         public IOAuth2Client OAuth2 { get; }
 
-        public ICatalogEventsClient EventClient { get; }
+        public IEventsClient EventsClient { get; }
     }
 }

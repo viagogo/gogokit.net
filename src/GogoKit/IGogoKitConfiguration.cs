@@ -24,6 +24,13 @@ namespace GogoKit
         Uri ViagogoApiRootEndpoint { get; set; }
 
         /// <summary>
+        /// The root endpoint of the catalog API to get the root resource that links to
+        /// all other catalog API resources.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#explorable-api</remarks>
+        Uri ViagogoCatalogApiRootEndpoint { get; set; }
+
+        /// <summary>
         /// The endpoint where OAuth2 access tokens are granted.
         /// </summary>
         /// <remarks>See http://developer.viagogo.net/#getting-access-tokens</remarks>

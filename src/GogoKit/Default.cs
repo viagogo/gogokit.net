@@ -13,6 +13,13 @@ namespace GogoKit
                 [ApiEnvironment.Sandbox] = new Uri("https://sandbox.api.viagogo.net/v2")
             };
 
+        public static readonly IDictionary<ApiEnvironment, Uri> ViagogoCatalogApiRootEndpoints =
+            new Dictionary<ApiEnvironment, Uri>()
+            {
+                [ApiEnvironment.Production] = new Uri("https://api.viagogo.net/catalog"),
+                [ApiEnvironment.Sandbox] = new Uri("https://sandbox.api.viagogo.net/catalog")
+            };
+
         public static readonly IDictionary<ApiEnvironment, Uri> ViagogoOAuthTokenEndpoints =
             new Dictionary<ApiEnvironment, Uri>()
             {

@@ -1,11 +1,13 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>3.2.0</VersionPrefix>
+    <VersionPrefix>3.3.0</VersionPrefix>
     <PackageReleaseNotes>
-      ### New in 3.2.0
-      * Add sales external id filter and barcode
-      ### New in 3.1.0
-      * Add seller listing external event info
-    </PackageReleaseNotes>
+		### New in 3.3.0
+		* Add event catalog client
+		### New in 3.2.0
+		* Add sales external id filter and barcode
+		### New in 3.1.0
+		* Add seller listing external event info
+	</PackageReleaseNotes>
   </PropertyGroup>
 </Project>

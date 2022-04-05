@@ -4,15 +4,13 @@ using GogoKit.Services;
 using HalKit;
 using HalKit.Models.Response;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace GogoKit.Clients
 {
-    public class EventClient : IEventsClient
+    internal class EventClient : IEventsClient
     {
         private readonly IHalClient _halClient;
         private readonly ILinkFactory _linkFactory;

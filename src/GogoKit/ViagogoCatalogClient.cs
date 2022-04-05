@@ -12,7 +12,7 @@ using HalKit.Services;
 
 namespace GogoKit
 {
-    public class ViagogoCatalogClient : IViagogoCatalogClient
+    internal class ViagogoCatalogClient : IViagogoCatalogClient
     {
         public ViagogoCatalogClient(
             ProductHeaderValue product,
@@ -77,7 +77,7 @@ namespace GogoKit
             Requires.ArgumentNotNull(oauthConnection, nameof(oauthConnection));
             Requires.ArgumentNotNull(apiConnection, nameof(apiConnection));
 
-            var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoApiRootEndpoint)
+            var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoCatalogApiRootEndpoint)
             {
                 CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
             };

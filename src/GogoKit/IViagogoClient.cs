@@ -12,7 +12,6 @@ namespace GogoKit
         IOAuth2TokenStore TokenStore { get; }
         IOAuth2Client OAuth2 { get; }
         IUserClient User { get; }
-        ISearchClient Search { get; }
         IAddressesClient Addresses { get; }
         IPurchasesClient Purchases { get; }
         ISalesClient Sales { get; }
@@ -23,5 +22,6 @@ namespace GogoKit
         IListingsClient Listings { get; }
         ISellerListingsClient SellerListings { get; }
         IWebhooksClient Webhooks { get; }
+        IViagogoCatalogClient Catalog { get; }
     }
 }

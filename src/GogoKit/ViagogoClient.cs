@@ -88,7 +88,6 @@ namespace GogoKit
             var linkFactory = new LinkFactory(configuration);
             OAuth2 = new OAuth2Client(oauthConnection, configuration);
             User = new UserClient(Hypermedia);
-            Search = new SearchClient(Hypermedia);
             Addresses = new AddressesClient(User, Hypermedia, linkFactory);
             Purchases = new PurchasesClient(User, Hypermedia, linkFactory);
             Sales = new SalesClient(Hypermedia, linkFactory);
@@ -112,8 +111,6 @@ namespace GogoKit
 
         public IUserClient User { get; }
 
-        public ISearchClient Search { get; }
-
         public IAddressesClient Addresses { get; }
 
         public IPurchasesClient Purchases { get; }
@@ -130,6 +127,6 @@ namespace GogoKit
         public IListingsClient Listings { get; }
         public ISellerListingsClient SellerListings { get; }
         public IWebhooksClient Webhooks { get; }
-        public IViagogoCatalogClient Catalog { get; set; }
+        public IViagogoCatalogClient Catalog { get; }
     }
 }

@@ -8,6 +8,7 @@ namespace GogoKit
     public class GogoKitConfiguration : IGogoKitConfiguration
     {
         private readonly HalKitConfiguration _halKitConfiguration;
+        private readonly HalKitConfiguration _catalogHalKitConfiguration;
         private ApiEnvironment _apiEnvironment;
 
         public GogoKitConfiguration()
@@ -16,6 +17,12 @@ namespace GogoKit
             {
                 CaptureSynchronizationContext = false
             };
+
+            _catalogHalKitConfiguration = new HalKitConfiguration(Default.ViagogoCatalogApiRootEndpoints[ApiEnvironment.Production])
+            {
+                CaptureSynchronizationContext = false
+            };
+
             ViagogoApiEnvironment = ApiEnvironment.Production;
         }
 
@@ -30,6 +37,12 @@ namespace GogoKit
                                    {
                                        CaptureSynchronizationContext = false
                                    };
+
+            _catalogHalKitConfiguration = new HalKitConfiguration(Default.ViagogoCatalogApiRootEndpoints[ApiEnvironment.Production])
+            {
+                CaptureSynchronizationContext = false
+            };
+
             ViagogoApiEnvironment = ApiEnvironment.Production;
         }
 
@@ -52,6 +65,17 @@ namespace GogoKit
         {
             get { return _halKitConfiguration.RootEndpoint; }
             set { _halKitConfiguration.RootEndpoint = value; }
+        }
+
+        /// <summary>
+        /// The root endpoint of the catalog API to get the root resource that links to
+        /// all other catalog API resources.
+        /// </summary>
+        /// <remarks>See http://developer.viagogo.net/#explorable-api</remarks>
+        public Uri ViagogoCatalogApiRootEndpoint
+        {
+            get { return _catalogHalKitConfiguration.RootEndpoint; }
+            set { _catalogHalKitConfiguration.RootEndpoint = value; }
         }
 
         /// <summary>
@@ -83,6 +107,7 @@ namespace GogoKit
             {
                 _apiEnvironment = value;
                 ViagogoApiRootEndpoint = Default.ViagogoApiRootEndpoints[_apiEnvironment];
+                ViagogoCatalogApiRootEndpoint = Default.ViagogoApiRootEndpoints[_apiEnvironment];
                 ViagogoOAuthTokenEndpoint = Default.ViagogoOAuthTokenEndpoints[_apiEnvironment];
                 ViagogoAuthorizationEndpoint = Default.ViagogoAuthorizationEndpoints[_apiEnvironment];
             }

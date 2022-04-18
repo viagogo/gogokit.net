@@ -12,9 +12,9 @@ using HalKit.Services;
 
 namespace GogoKit
 {
-    public class ViagogoClient : IViagogoClient
+    internal class ViagogoCatalogClient : IViagogoCatalogClient
     {
-        public ViagogoClient(
+        public ViagogoCatalogClient(
             ProductHeaderValue product,
             string clientId,
             string clientSecret)
@@ -22,7 +22,7 @@ namespace GogoKit
         {
         }
 
-        public ViagogoClient(
+        public ViagogoCatalogClient(
             ProductHeaderValue product,
             IGogoKitConfiguration configuration,
             IOAuth2TokenStore tokenStore)
@@ -32,11 +32,11 @@ namespace GogoKit
                    new ConfigurationLocalizationProvider(configuration),
                    new DefaultJsonSerializer(),
                    new HttpClientHandler(),
-                   new DelegatingHandler[] {})
+                   new DelegatingHandler[] { })
         {
         }
 
-        public ViagogoClient(
+        public ViagogoCatalogClient(
            ProductHeaderValue product,
            IGogoKitConfiguration configuration,
            IOAuth2TokenStore tokenStore,
@@ -62,7 +62,7 @@ namespace GogoKit
         {
         }
 
-        public ViagogoClient(
+        public ViagogoCatalogClient(
             ProductHeaderValue product,
             IGogoKitConfiguration configuration,
             IOAuth2TokenStore tokenStore,
@@ -77,28 +77,18 @@ namespace GogoKit
             Requires.ArgumentNotNull(oauthConnection, nameof(oauthConnection));
             Requires.ArgumentNotNull(apiConnection, nameof(apiConnection));
 
-            var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoApiRootEndpoint)
+            var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoCatalogApiRootEndpoint)
             {
                 CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
             };
 
+            var linkFactory = new LinkFactory(configuration);
+
             Configuration = configuration;
             TokenStore = tokenStore;
             Hypermedia = new HalClient(halKitConfiguration, apiConnection);
-            var linkFactory = new LinkFactory(configuration);
             OAuth2 = new OAuth2Client(oauthConnection, configuration);
-            User = new UserClient(Hypermedia);
-            Addresses = new AddressesClient(User, Hypermedia, linkFactory);
-            Purchases = new PurchasesClient(User, Hypermedia, linkFactory);
-            Sales = new SalesClient(Hypermedia, linkFactory);
-            Shipments = new ShipmentsClient(Hypermedia, linkFactory);
-            PaymentMethods = new PaymentMethodsClient(User, Hypermedia, linkFactory);
-            Countries = new CountriesClient(Hypermedia, linkFactory);
-            Currencies = new CurrenciesClient(Hypermedia, linkFactory);
-            Listings = new ListingsClient(Hypermedia);
-            SellerListings = new SellerListingsClient(Hypermedia, linkFactory);
-            Webhooks = new WebhooksClient(Hypermedia, linkFactory);
-            Catalog = new ViagogoCatalogClient(product, configuration, tokenStore);
+            EventsClient = new EventClient(Hypermedia, linkFactory);
         }
 
         public IGogoKitConfiguration Configuration { get; }
@@ -109,24 +99,6 @@ namespace GogoKit
 
         public IOAuth2Client OAuth2 { get; }
 
-        public IUserClient User { get; }
-
-        public IAddressesClient Addresses { get; }
-
-        public IPurchasesClient Purchases { get; }
-
-        public ISalesClient Sales { get; }
-
-        public IShipmentsClient Shipments { get; }
-
-        public ICountriesClient Countries { get; }
-
-        public ICurrenciesClient Currencies { get; }
-
-        public IPaymentMethodsClient PaymentMethods { get; }
-        public IListingsClient Listings { get; }
-        public ISellerListingsClient SellerListings { get; }
-        public IWebhooksClient Webhooks { get; }
-        public IViagogoCatalogClient Catalog { get; }
+        public IEventsClient EventsClient { get; }
     }
 }

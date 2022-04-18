@@ -36,6 +36,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "barcodes")]
         public BarcodeUpload[] Barcodes { get; set; }
 
+        [DataMember(Name = "is_legacy_stubhub_order")]
+        public bool IsLegacyStubhubOrder { get; set; }
+
         [Rel("sale:autotrackshipment")]
         public Link AutotrackShipmentLink { get; set; }
 

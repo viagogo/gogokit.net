@@ -43,7 +43,7 @@ namespace GogoKit.Models.Response
         public DateTimeOffset? UpdatedAt { get; set; }
 
         [DataMember(Name = "barcodes")]
-        public BarcodeUpload[] Barcodes { get; set; }
+        public SellerListingBarcodeUpload[] Barcodes { get; set; }
 
         [Embedded("event")]
         public EmbeddedEvent Event { get; set; }

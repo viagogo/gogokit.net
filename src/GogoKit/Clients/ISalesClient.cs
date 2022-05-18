@@ -131,6 +131,20 @@ namespace GogoKit.Clients
             IEnumerable<int> eticketIds,
             SaleRequest request,
             CancellationToken cancellationToken);
+        
+        Task<Sale> UploadBarcodesAsync(
+            int saleId,
+            BarcodeUpload[] barcodes);
 
+        Task<Sale> UploadBarcodesAsync(
+            int saleId,
+            BarcodeUpload[] barcodes,
+            SaleRequest request);
+
+        Task<Sale> UploadBarcodesAsync(
+            int saleId,
+            BarcodeUpload[] barcodes,
+            SaleRequest request,
+            CancellationToken cancellationToken);
     }
 }

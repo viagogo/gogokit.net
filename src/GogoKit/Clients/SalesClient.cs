@@ -221,6 +221,27 @@ namespace GogoKit.Clients
                 request,
                 cancellationToken);
         }
+        
+        public Task<Sale> UploadBarcodesAsync(int saleId, BarcodeUpload[] barcodes)
+        {
+            return UploadBarcodesAsync(saleId, barcodes, new SaleRequest());
+        }
+
+        public Task<Sale> UploadBarcodesAsync(int saleId, BarcodeUpload[] barcodes, SaleRequest request)
+        {
+            return UploadBarcodesAsync(saleId, barcodes, request, CancellationToken.None);
+        }
+
+        public Task<Sale> UploadBarcodesAsync(int saleId, BarcodeUpload[] barcodes, SaleRequest request, CancellationToken cancellationToken)
+        {
+            Requires.ArgumentNotNull(barcodes, nameof(barcodes));
+
+            return UpdateAsync(
+                saleId,
+                new SaleUpdate { Barcodes = barcodes },
+                request,
+                cancellationToken);
+        }
 
         public Task<Sale> UploadETicketUrlsAsync(
             int saleId,

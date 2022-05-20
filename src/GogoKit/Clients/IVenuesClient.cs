@@ -7,7 +7,7 @@ namespace GogoKit.Clients
 {
     public interface IVenuesClient
     {
-        Task<Venue> GetVenueAsync(int eventId, CancellationToken cancellationToken);
+        Task<Venue> GetVenueAsync(int venueId, CancellationToken cancellationToken);
         Task<ChangedResources<Venue>> GetAllVenuesAsync(CancellationToken cancellationToken);
         Task<ChangedResources<Venue>> GetAllVenuesAsync(Link link, CancellationToken cancellationToken);
     }

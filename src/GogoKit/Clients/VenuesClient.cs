@@ -23,9 +23,9 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public async Task<Venue> GetVenueAsync(int VenueId, CancellationToken cancellationToken)
+        public async Task<Venue> GetVenueAsync(int venueId, CancellationToken cancellationToken)
         {
-            var venueLink = await _linkFactory.CreateLinkAsync($"venues/{VenueId}").ConfigureAwait(_halClient);
+            var venueLink = await _linkFactory.CreateLinkAsync($"venues/{venueId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Venue>(venueLink).ConfigureAwait(_halClient);
         }
 

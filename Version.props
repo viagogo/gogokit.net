@@ -1,17 +1,9 @@
 ﻿<Project>
-	<PropertyGroup>
-		<VersionPrefix>4.0.0-beta-4</VersionPrefix>
-		<PackageReleaseNotes>
-			### New in 4.0.0-beta-3
-			* Add event catalog client
-			### New in 3.4.0
-			* Add upload barcode methods
-			### New in 3.3.0
-			* Add is legacy order property to the sale resource and update listing barcode model
-			### New in 3.2.0
-			* Add sales external id filter and barcode
-			### New in 3.1.0
-			* Add seller listing external event info
-		</PackageReleaseNotes>
-	</PropertyGroup>
+  <PropertyGroup>
+    <VersionPrefix>4.0.0-beta-5</VersionPrefix>
+    <PackageReleaseNotes>
+      ### New in 4.0.0-beta-5
+      * Add venue catalog client
+    </PackageReleaseNotes>
+  </PropertyGroup>
 </Project>

@@ -9,6 +9,6 @@ namespace GogoKit.Clients
     {
         Task<Venue> GetVenueAsync(int venueId, CancellationToken cancellationToken);
         Task<ChangedResources<Venue>> GetAllVenuesAsync(CancellationToken cancellationToken);
-        Task<ChangedResources<Venue>> GetAllVenuesAsync(Link link, CancellationToken cancellationToken);
+        Task<ChangedResources<Venue>> GetAllVenuesAsync(Link nextLink, CancellationToken cancellationToken);
     }
 }

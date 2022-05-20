@@ -18,6 +18,9 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "state_province")]
         public string StateProvince { get; set; }
+        
+        [DataMember(Name = "postal_code")]
+        public string PostalCode { get; set; }
 
         [DataMember(Name = "latitude")]
         public double? Latitude { get; set; }

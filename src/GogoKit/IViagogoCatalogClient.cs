@@ -10,6 +10,7 @@ namespace GogoKit
         IHalClient Hypermedia { get; }
         IOAuth2TokenStore TokenStore { get; }
         IOAuth2Client OAuth2 { get; }
-        IEventsClient EventsClient { get; }
+        IEventsClient Events { get; }
+        IVenuesClient Venues { get; }
     }
 }

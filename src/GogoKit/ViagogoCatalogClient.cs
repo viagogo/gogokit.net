@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -8,7 +7,6 @@ using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
 using HalKit.Json;
-using HalKit.Services;
 
 namespace GogoKit
 {
@@ -88,7 +86,8 @@ namespace GogoKit
             TokenStore = tokenStore;
             Hypermedia = new HalClient(halKitConfiguration, apiConnection);
             OAuth2 = new OAuth2Client(oauthConnection, configuration);
-            EventsClient = new EventClient(Hypermedia, linkFactory);
+            Events = new EventClient(Hypermedia, linkFactory);
+            Venues = new VenuesClient(Hypermedia, linkFactory);
         }
 
         public IGogoKitConfiguration Configuration { get; }
@@ -99,6 +98,7 @@ namespace GogoKit
 
         public IOAuth2Client OAuth2 { get; }
 
-        public IEventsClient EventsClient { get; }
+        public IEventsClient Events { get; }
+        public IVenuesClient Venues { get; }
     }
 }

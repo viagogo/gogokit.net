@@ -9,6 +9,7 @@
     <Authors>viagogo</Authors>
     <License>https://raw.githubusercontent.com/viagogo/gogokit.net/master/LICENSE.txt</License>
     <Description>GogoKit is a lightweight, async viagogo API client library for .NET.</Description>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

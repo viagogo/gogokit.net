@@ -1,9 +1,10 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>4.0.0-beta-5</VersionPrefix>
+    <VersionPrefix>4.0.0-beta-6</VersionPrefix>
     <PackageReleaseNotes>
-      ### New in 4.0.0-beta-5
-      * Add venue catalog client
+      ### New in 4.0.0-beta-6
+      * Add `ExternalMappings to Event, EmbeddedCategory and Venue
+      * Add Type to Event
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

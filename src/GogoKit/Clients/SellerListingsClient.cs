@@ -115,7 +115,8 @@ namespace GogoKit.Clients
             return new ChangedResources<SellerListing>(
                 changedResources.NewOrUpdatedResources.GroupBy(l => l.Id).Select(l => l.OrderByDescending(o => o.UpdatedAt).First()).ToList(), 
                 changedResources.DeletedResources.GroupBy(l => l.Id).Select(l => l.First()).ToList(),
-                changedResources.NextLink);
+                changedResources.NextLink,
+                changedResources.FailureException);
         }
 
         public Task<ListingConstraints> GetConstraintsAsync(long sellerListingId)

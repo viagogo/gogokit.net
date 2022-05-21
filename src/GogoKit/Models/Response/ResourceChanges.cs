@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HalKit.Models.Response;
 
 namespace GogoKit.Models.Response
@@ -10,9 +11,11 @@ namespace GogoKit.Models.Response
     /// <remarks>See http://developer.viagogo.net/#getting-resource-changes-since-your-last-request</remarks>
     public class ChangedResources<T> where T : Resource
     {
-        public ChangedResources(IReadOnlyList<T> newOrUpdatedResources,
-                                IReadOnlyList<T> deletedResources,
-                                Link nextLink)
+        internal ChangedResources(
+            IReadOnlyList<T> newOrUpdatedResources,
+            IReadOnlyList<T> deletedResources,
+            Link nextLink,
+            Exception failureException)
         {
             Requires.ArgumentNotNull(newOrUpdatedResources, nameof(newOrUpdatedResources));
             Requires.ArgumentNotNull(deletedResources, nameof(deletedResources));
@@ -20,6 +23,7 @@ namespace GogoKit.Models.Response
             NewOrUpdatedResources = newOrUpdatedResources;
             DeletedResources = deletedResources;
             NextLink = nextLink;
+            FailureException = failureException;
         }
 
         /// <summary>
@@ -37,5 +41,16 @@ namespace GogoKit.Models.Response
         /// <typeparamref name="T"/> resource changes.
         /// </summary>
         public Link NextLink { get; }
+
+        /// <summary>
+        /// True if all changes were retrieved (since the previous request made by your application);
+        /// Otherwise, false.
+        /// </summary>
+        public bool AreAllChangesSuccessfullyRetrieved => FailureException == null;
+
+        /// <summary>
+        /// The <see cref="Exception"/> that occurred while retrieving these changes.
+        /// </summary>
+        public Exception FailureException { get; }
     }
 }

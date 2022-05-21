@@ -158,37 +158,47 @@ namespace GogoKit
                 currentParameters.Add("page_size", maxPageSize);
             }
 
+            Exception failureException = null;
             var items = new List<T>();
             var deletedItems = new List<T>();
             while (true)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var currentPage = await client.GetAsync<PagedResource<T>>(
-                                            currentLink,
-                                            currentParameters,
-                                            headers,
-                                            cancellationToken).ConfigureAwait(client.Configuration);
-
-                items.AddRange(currentPage.Items);
-                if (currentPage.DeletedItems != null)
+                try
                 {
-                    deletedItems.AddRange(currentPage.DeletedItems);
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var currentPage = await client.GetAsync<PagedResource<T>>(
+                        currentLink,
+                        currentParameters,
+                        headers,
+                        cancellationToken).ConfigureAwait(client.Configuration);
+
+                    items.AddRange(currentPage.Items);
+                    if (currentPage.DeletedItems != null)
+                    {
+                        deletedItems.AddRange(currentPage.DeletedItems);
+                    }
+
+                    if (currentPage.NextLink == null ||
+                        currentPage.Items.Count == 0 && currentPage.DeletedItems?.Any() != true)
+                    {
+                        // This is the last page
+                        break;
+                    }
+
+                    // Stop passing parameters on subsequent calls since the "next" links
+                    // will already be assembled with all the parameters needed
+                    currentParameters = null;
+                    currentLink = currentPage.NextLink;
                 }
-
-                if (currentPage.NextLink == null)
+                catch (Exception ex)
                 {
-                    // This is the last page
+                    failureException = ex;
                     break;
                 }
-
-                // Stop passing parameters on subsequent calls since the "next" links
-                // will already be assembled with all the parameters needed
-                currentParameters = null;
-                currentLink = currentPage.NextLink;
             }
 
-            return new ChangedResources<T>(items, deletedItems, currentLink);
+            return new ChangedResources<T>(items, deletedItems, currentLink, failureException);
         }
     }
 }

@@ -6,13 +6,13 @@ namespace GogoKit.Services
 {
     public class LinkFactory : ILinkFactory
     {
-        private readonly IGogoKitConfiguration _configuration;
+        private readonly Uri _viagogoApiRootEndpoint;
 
-        public LinkFactory(IGogoKitConfiguration configuration)
+        public LinkFactory(Uri viagogoApiRootEndpoint)
         {
-            Requires.ArgumentNotNull(configuration, nameof(configuration));
+            Requires.ArgumentNotNull(viagogoApiRootEndpoint, nameof(viagogoApiRootEndpoint));
 
-            _configuration = configuration;
+            _viagogoApiRootEndpoint = viagogoApiRootEndpoint;
         }
 
         public async Task<Link> CreateLinkAsync(string relativeUriFormat, params object[] args)
@@ -20,7 +20,7 @@ namespace GogoKit.Services
             Requires.ArgumentNotNull(relativeUriFormat, nameof(relativeUriFormat));
 
             var relativeUri = string.Format(relativeUriFormat, args);
-            var href = new Uri(_configuration.ViagogoApiRootEndpoint, $"{_configuration.ViagogoApiRootEndpoint}/{relativeUri}");
+            var href = new Uri(_viagogoApiRootEndpoint, $"{_viagogoApiRootEndpoint}/{relativeUri}");
 
             return new Link { HRef = href.ToString() };
         }

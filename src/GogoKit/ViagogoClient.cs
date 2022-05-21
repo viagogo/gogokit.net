@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -8,7 +7,6 @@ using GogoKit.Services;
 using HalKit;
 using HalKit.Http;
 using HalKit.Json;
-using HalKit.Services;
 
 namespace GogoKit
 {
@@ -44,10 +42,8 @@ namespace GogoKit
            IJsonSerializer serializer,
            HttpClientHandler httpClientHandler,
            IList<DelegatingHandler> customHandlers)
-            : this(product,
-                   configuration,
+            : this(configuration,
                    tokenStore,
-                   serializer,
                    HttpConnectionBuilder.OAuthConnection(configuration, product, serializer)
                                         .LocalizationProvider(localizationProvider)
                                         .HttpClientHandler(httpClientHandler)
@@ -58,34 +54,33 @@ namespace GogoKit
                                         .LocalizationProvider(localizationProvider)
                                         .HttpClientHandler(httpClientHandler)
                                         .AdditionalHandlers(customHandlers)
-                                        .Build())
+                                        .Build(),
+                   HttpConnectionBuilder.CatalogApiConnection(configuration, product, serializer)
+                       .TokenStore(tokenStore)
+                       .LocalizationProvider(localizationProvider)
+                       .HttpClientHandler(httpClientHandler)
+                       .AdditionalHandlers(customHandlers)
+                       .Build())
         {
         }
 
         public ViagogoClient(
-            ProductHeaderValue product,
             IGogoKitConfiguration configuration,
             IOAuth2TokenStore tokenStore,
-            IJsonSerializer serializer,
             IHttpConnection oauthConnection,
-            IHttpConnection apiConnection)
+            IHttpConnection apiConnection,
+            IHttpConnection catalogApiConnection)
         {
-            Requires.ArgumentNotNull(product, nameof(product));
             Requires.ArgumentNotNull(configuration, nameof(configuration));
             Requires.ArgumentNotNull(tokenStore, nameof(tokenStore));
-            Requires.ArgumentNotNull(serializer, nameof(serializer));
             Requires.ArgumentNotNull(oauthConnection, nameof(oauthConnection));
             Requires.ArgumentNotNull(apiConnection, nameof(apiConnection));
-
-            var halKitConfiguration = new HalKitConfiguration(configuration.ViagogoApiRootEndpoint)
-            {
-                CaptureSynchronizationContext = configuration.CaptureSynchronizationContext
-            };
+            Requires.ArgumentNotNull(catalogApiConnection, nameof(catalogApiConnection));
 
             Configuration = configuration;
             TokenStore = tokenStore;
-            Hypermedia = new HalClient(halKitConfiguration, apiConnection);
-            var linkFactory = new LinkFactory(configuration);
+            Hypermedia = new HalClient(apiConnection.Configuration, apiConnection);
+            var linkFactory = new LinkFactory(configuration.ViagogoApiRootEndpoint);
             OAuth2 = new OAuth2Client(oauthConnection, configuration);
             User = new UserClient(Hypermedia);
             Addresses = new AddressesClient(User, Hypermedia, linkFactory);
@@ -98,7 +93,7 @@ namespace GogoKit
             Listings = new ListingsClient(Hypermedia);
             SellerListings = new SellerListingsClient(Hypermedia, linkFactory);
             Webhooks = new WebhooksClient(Hypermedia, linkFactory);
-            Catalog = new ViagogoCatalogClient(product, configuration, tokenStore);
+            Catalog = new ViagogoCatalogClient(catalogApiConnection);
         }
 
         public IGogoKitConfiguration Configuration { get; }

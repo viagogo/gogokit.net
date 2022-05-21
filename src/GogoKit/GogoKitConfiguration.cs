@@ -107,7 +107,7 @@ namespace GogoKit
             {
                 _apiEnvironment = value;
                 ViagogoApiRootEndpoint = Default.ViagogoApiRootEndpoints[_apiEnvironment];
-                ViagogoCatalogApiRootEndpoint = Default.ViagogoApiRootEndpoints[_apiEnvironment];
+                ViagogoCatalogApiRootEndpoint = Default.ViagogoCatalogApiRootEndpoints[_apiEnvironment];
                 ViagogoOAuthTokenEndpoint = Default.ViagogoOAuthTokenEndpoints[_apiEnvironment];
                 ViagogoAuthorizationEndpoint = Default.ViagogoAuthorizationEndpoints[_apiEnvironment];
             }

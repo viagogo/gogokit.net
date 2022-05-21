@@ -25,6 +25,11 @@ namespace GogoKit.Http
             return new HttpConnectionBuilder(configuration, product, ConnectionType.Api, serializer);
         }
 
+        public static HttpConnectionBuilder CatalogApiConnection(IGogoKitConfiguration configuration, ProductHeaderValue product, IJsonSerializer serializer)
+        {
+            return new HttpConnectionBuilder(configuration, product, ConnectionType.CatalogApi, serializer);
+        }
+
         public static HttpConnectionBuilder OAuthConnection(IGogoKitConfiguration configuration, ProductHeaderValue product, IJsonSerializer serializer)
         {
             return new HttpConnectionBuilder(configuration, product, ConnectionType.OAuth, serializer);
@@ -93,6 +98,7 @@ namespace GogoKit.Http
                         break;
                     }
                 case ConnectionType.Api:
+                case ConnectionType.CatalogApi:
                     {
                         var oauthConnection = OAuthConnection(_configuration, _product, _serializer)
                                                 .LocalizationProvider(_localizationProvider)
@@ -109,7 +115,10 @@ namespace GogoKit.Http
                     }
             }
 
-            var halKitConfiguration = new HalKitConfiguration(_configuration.ViagogoApiRootEndpoint)
+            var rootEndpoint = _connectionType == ConnectionType.CatalogApi
+                ? _configuration.ViagogoCatalogApiRootEndpoint
+                : _configuration.ViagogoApiRootEndpoint;
+            var halKitConfiguration = new HalKitConfiguration(rootEndpoint)
             {
                 CaptureSynchronizationContext = _configuration.CaptureSynchronizationContext
             };
@@ -137,7 +146,8 @@ namespace GogoKit.Http
         private enum ConnectionType
         {
             OAuth,
-            Api
+            Api,
+            CatalogApi
         }
     }
 }

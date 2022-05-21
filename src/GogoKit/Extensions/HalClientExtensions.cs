@@ -179,7 +179,8 @@ namespace GogoKit
                         deletedItems.AddRange(currentPage.DeletedItems);
                     }
 
-                    if (currentPage.NextLink == null)
+                    if (currentPage.NextLink == null ||
+                        currentPage.Items.Count == 0 && currentPage.DeletedItems?.Any() != true)
                     {
                         // This is the last page
                         break;

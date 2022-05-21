@@ -50,7 +50,8 @@ namespace GogoKit.Clients
             return new ChangedResources<Event>(
                 changedResources.NewOrUpdatedResources.GroupBy(l => l.Id).Select(l => l.Last()).ToList(),
                 changedResources.DeletedResources.GroupBy(l => l.Id).Select(l => l.First()).ToList(),
-                changedResources.NextLink);
+                changedResources.NextLink,
+                changedResources.FailureException);
         }
     }
 }

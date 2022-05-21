@@ -101,7 +101,8 @@ namespace GogoKit.Clients
             return new ChangedResources<Sale>(
                 changedResources.NewOrUpdatedResources.GroupBy(l => l.Id).Select(l => l.OrderByDescending(o => o.UpdatedAt ?? o.CreatedAt).First()).ToList(),
                 changedResources.DeletedResources.GroupBy(l => l.Id).Select(l => l.First()).ToList(),
-                changedResources.NextLink);
+                changedResources.NextLink,
+                changedResources.FailureException);
         }
 
         public async Task<IReadOnlyList<TicketHolderResource>> GetTicketHolderDetailsAsync(int saleId, CancellationToken cancellationToken)

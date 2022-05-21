@@ -194,6 +194,7 @@ namespace GogoKit
                 catch (Exception ex)
                 {
                     failureException = ex;
+                    break;
                 }
             }
 

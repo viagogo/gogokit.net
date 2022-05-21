@@ -46,7 +46,7 @@ namespace GogoKit.Models.Response
         /// True if all changes were retrieved (since the previous request made by your application);
         /// Otherwise, false.
         /// </summary>
-        public bool AreAllChangesSuccessfullyRetrieved => FailureException != null;
+        public bool AreAllChangesSuccessfullyRetrieved => FailureException == null;
 
         /// <summary>
         /// The <see cref="Exception"/> that occurred while retrieving these changes.

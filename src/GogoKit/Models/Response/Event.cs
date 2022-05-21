@@ -1,9 +1,8 @@
 ﻿using HalKit.Json;
 using HalKit.Models.Response;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
+using GogoKit.Enumerations;
 
 namespace GogoKit.Models.Response
 {
@@ -50,6 +49,12 @@ namespace GogoKit.Models.Response
         public bool DateConfirmed { get; set; }
 
         /// <summary>
+        /// The <see cref="EventType"/> of the event.
+        /// </summary>
+        [DataMember(Name = "type")]
+        public EventType Type { get; set; }
+
+        /// <summary>
         /// The minimum ticket price of the event.
         /// </summary>
         [DataMember(Name = "min_ticket_price")]
@@ -62,21 +67,27 @@ namespace GogoKit.Models.Response
         public Link WebPageLink { get; set; }
 
         /// <summary>
+        /// The categories for this event.
+        /// </summary>
+        [Embedded("categories")]
+        public EmbeddedCategory[] Categories { get; set; }
+
+        /// <summary>
         /// The venue where the event is taking place.
         /// </summary>
         [Embedded("venue")]
         public EmbeddedVenue Venue { get; set; }
 
         /// <summary>
-        /// The categories for this event.
-        /// </summary>
-        [Embedded("categories")]
-        public IReadOnlyList<EmbeddedCategory> Categories { get; set; }
-
-        /// <summary>
         /// The genre for this event.
         /// </summary>
         [Embedded("genre")]
         public EmbeddedCategory Genre { get; set; }
+
+        /// <summary>
+        /// The external mappings for this event
+        /// </summary>
+        [Embedded("external_mappings")]
+        public EmbeddedExternalMappingResource[] ExternalMappings { get; set; }
     }
 }

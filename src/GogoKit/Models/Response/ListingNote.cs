@@ -11,5 +11,8 @@ namespace GogoKit.Models.Response
 
         [DataMember(Name = "note")]
         public string Note { get; set; }
+        
+        [DataMember(Name ="type")]
+        public string Type { get; set; } 
     }
 }

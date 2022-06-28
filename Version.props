@@ -1,10 +1,9 @@
-﻿<Project>
+<Project>
   <PropertyGroup>
-    <VersionPrefix>4.0.0-beta-7</VersionPrefix>
+    <VersionPrefix>4.0.0-beta-8</VersionPrefix>
     <PackageReleaseNotes>
-      ### New in 4.0.0-beta-7
-      * Fix stopping conditions for HalClientExtensions.GetChangedResourcesAsync
-      * Return partial results when API calls fail while doing HalClientExtensions.GetChangedResourcesAsync
+      ### New in 4.0.0-beta-8
+      * Added a new property: Type to ListingNoteResource
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

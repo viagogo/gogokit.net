@@ -3,7 +3,7 @@ using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
 using HalKit.Models.Response;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,20 +24,41 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public async Task<Event> GetEventAsync(int eventId, CancellationToken cancellationToken)
+        public async Task<Event> GetAsync(int eventId, CancellationToken cancellationToken)
         {
             var eventLink = await _linkFactory.CreateLinkAsync($"events/{eventId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Event>(eventLink).ConfigureAwait(_halClient);
         }
 
-        public async Task<ChangedResources<Event>> GetAllEventsAsync(CancellationToken cancellationToken)
+        public async Task<PagedResource<Event>> GetByEventIdsAsync(IReadOnlyList<int> eventIds, EventRequest request, CancellationToken cancellationToken)
+        {
+            var eventsLink = await _linkFactory.CreateLinkAsync("events").ConfigureAwait(_halClient);
+            return await _halClient.PutAsync<PagedResource<Event>>(
+                eventsLink,
+                new {event_ids = eventIds},
+                request,
+                cancellationToken);
+        }
+
+        public async Task<IReadOnlyList<Event>> GetAllByEventIdsAsync(IReadOnlyList<int> eventIds, EventRequest request, CancellationToken cancellationToken)
+        {
+            var eventsLink = await _linkFactory.CreateLinkAsync("events").ConfigureAwait(_halClient);
+            return await _halClient.PutAllPagesAsync<Event>(
+                eventsLink,
+                new { event_ids = eventIds },
+                request.Parameters,
+                request.Headers,
+                cancellationToken);
+        }
+
+        public async Task<ChangedResources<Event>> GetAllAsync(CancellationToken cancellationToken)
         {
             var eventsLink = await _linkFactory.CreateLinkAsync("events").ConfigureAwait(_halClient);
 
-            return await GetAllEventsAsync(eventsLink, cancellationToken).ConfigureAwait(_halClient);
+            return await GetAllAsync(eventsLink, cancellationToken).ConfigureAwait(_halClient);
         }
 
-        public async Task<ChangedResources<Event>> GetAllEventsAsync(Link nextLink, CancellationToken cancellationToken)
+        public async Task<ChangedResources<Event>> GetAllAsync(Link nextLink, CancellationToken cancellationToken)
         {
             var changedResources = await _halClient.GetChangedResourcesAsync<Event>(nextLink, new CatalogEventRequest
             {

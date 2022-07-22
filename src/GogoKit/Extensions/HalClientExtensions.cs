@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GogoKit.Exceptions;
 using GogoKit.Models.Response;
 using HalKit;
 using HalKit.Models.Request;
@@ -85,6 +86,24 @@ namespace GogoKit
             return changedResources.NewOrUpdatedResources;
         }
 
+        public static async Task<IReadOnlyList<T>> PutAllPagesAsync<T>(
+            this IHalClient client,
+            Link link,
+            object body,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers,
+            CancellationToken cancellationToken) where T : Resource
+        {
+            var changedResources = await client.GetChangedResourcesInternalAsync<T>(
+                link,
+                body,
+                parameters,
+                headers,
+                client.PutAsync<PagedResource<T>>,
+                cancellationToken).ConfigureAwait(client);
+            return changedResources.NewOrUpdatedResources;
+        }
+
         /// <summary>
         /// Gets the <typeparamref name="T"/> resources that have changed since
         /// your application's last request.
@@ -135,11 +154,29 @@ namespace GogoKit
                 cancellationToken);
         }
 
-        private static async Task<ChangedResources<T>> GetChangedResourcesInternalAsync<T>(
+        private static Task<ChangedResources<T>> GetChangedResourcesInternalAsync<T>(
             this IHalClient client,
             Link link,
             IDictionary<string, string> parameters,
             IDictionary<string, IEnumerable<string>> headers,
+            CancellationToken cancellationToken) where T : Resource
+        {
+            return client.GetChangedResourcesInternalAsync<T>(
+                link,
+                null,
+                parameters,
+                headers,
+                (l, b, p, h, ct) => client.GetAsync<PagedResource<T>>(l, p, h, ct),
+                cancellationToken);
+        }
+
+        private static async Task<ChangedResources<T>> GetChangedResourcesInternalAsync<T>(
+            this IHalClient client,
+            Link link,
+            object body,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers,
+            SendPagedRequestFunc<T> sendPagedRequestFunc,
             CancellationToken cancellationToken) where T : Resource
         {
             Requires.ArgumentNotNull(client, nameof(client));
@@ -167,8 +204,9 @@ namespace GogoKit
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    var currentPage = await client.GetAsync<PagedResource<T>>(
+                    var currentPage = await sendPagedRequestFunc(
                         currentLink,
+                        body,
                         currentParameters,
                         headers,
                         cancellationToken).ConfigureAwait(client.Configuration);
@@ -200,5 +238,12 @@ namespace GogoKit
 
             return new ChangedResources<T>(items, deletedItems, currentLink, failureException);
         }
+
+        private delegate Task<PagedResource<T>> SendPagedRequestFunc<T>(
+            Link link,
+            object body,
+            IDictionary<string, string> parameters,
+            IDictionary<string, IEnumerable<string>> headers,
+            CancellationToken cancellationToken) where T : Resource;
     }
 }

@@ -23,20 +23,20 @@ namespace GogoKit.Clients
             _linkFactory = linkFactory;
         }
 
-        public async Task<Venue> GetVenueAsync(int venueId, CancellationToken cancellationToken)
+        public async Task<Venue> GetAsync(int venueId, CancellationToken cancellationToken)
         {
             var venueLink = await _linkFactory.CreateLinkAsync($"venues/{venueId}").ConfigureAwait(_halClient);
             return await _halClient.GetAsync<Venue>(venueLink).ConfigureAwait(_halClient);
         }
 
-        public async Task<ChangedResources<Venue>> GetAllVenuesAsync(CancellationToken cancellationToken)
+        public async Task<ChangedResources<Venue>> GetAllAsync(CancellationToken cancellationToken)
         {
             var venuesLink = await _linkFactory.CreateLinkAsync("venues").ConfigureAwait(_halClient);
 
-            return await GetAllVenuesAsync(venuesLink, cancellationToken).ConfigureAwait(_halClient);
+            return await GetAllAsync(venuesLink, cancellationToken).ConfigureAwait(_halClient);
         }
 
-        public async Task<ChangedResources<Venue>> GetAllVenuesAsync(Link nextLink, CancellationToken cancellationToken)
+        public async Task<ChangedResources<Venue>> GetAllAsync(Link nextLink, CancellationToken cancellationToken)
         {
             var changedResources = await _halClient.GetChangedResourcesAsync<Venue>(nextLink, new CatalogVenueRequest
             {

@@ -24,13 +24,10 @@ namespace GogoKit.Models.Response
     public class MappingStatus
     {
         [DataMember(Name = "status")]
-        public MappingStatusEnum Status { get; set; }
-
-        [DataMember(Name = "description")]
-        public string Description { get; set; }
+        public ApiMappingState Status { get; set; }
     }
 
-    public enum MappingStatusEnum
+    public enum ApiMappingState
     {
         Unknown = 0,
         Mapped = 1,

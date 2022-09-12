@@ -30,6 +30,24 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "ticket_proceeds")]
         public Money TicketProceeds { get; set; }
 
+        /// <summary>
+        /// The purchase price paid by the seller for each ticket in the listing.
+        /// </summary>
+        [DataMember(Name = "purchase_price_per_ticket")]
+        public Money PurchasePricePerTicket { get; set; }
+
+        /// <summary>
+        /// The total purchase price paid by the seller.
+        /// </summary>
+        [DataMember(Name = "total_purchase_price")]
+        public Money TotalPurchasePrice { get; set; }
+
+        /// <summary>
+        /// True if the seller already paid sales tax for the ticket(s); otherwise, false.
+        /// </summary>
+        [DataMember(Name = "sales_tax_paid")]
+        public bool? SalesTaxPaid { get; set; }
+
         [DataMember(Name = "undeliverable")]
         public bool? IsUndeliverable { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using HalKit.Models.Response;
 using HalKit.Json;
+using System.Collections.Generic;
 
 namespace GogoKit.Models.Response
 {
@@ -27,5 +28,11 @@ namespace GogoKit.Models.Response
         /// </summary>
         [Embedded("external_mappings")]
         public EmbeddedExternalMappingResource[] ExternalMappings { get; set; }
+
+        /// <summary>
+        /// The categories that have been merged into this category.
+        /// </summary>
+        [Embedded("merged_categories")]
+        public IReadOnlyList<MergedEntity> MergedCategories { get; set; }
     }
 }

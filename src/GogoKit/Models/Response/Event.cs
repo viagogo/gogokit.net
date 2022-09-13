@@ -3,6 +3,7 @@ using HalKit.Models.Response;
 using System;
 using System.Runtime.Serialization;
 using GogoKit.Enumerations;
+using System.Collections.Generic;
 
 namespace GogoKit.Models.Response
 {
@@ -89,5 +90,11 @@ namespace GogoKit.Models.Response
         /// </summary>
         [Embedded("external_mappings")]
         public EmbeddedExternalMappingResource[] ExternalMappings { get; set; }
+
+        /// <summary>
+        /// The events that have been merged into this event.
+        /// </summary>
+        [Embedded("merged_events")]
+        public IReadOnlyList<MergedEntity> MergedEvents { get; set; }
     }
 }

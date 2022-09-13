@@ -2,8 +2,8 @@
   <PropertyGroup>
     <VersionPrefix>4.0.0-rc-01</VersionPrefix>
     <PackageReleaseNotes>
-      ### New in 4.0.0-rc-01
-      * Added new ViagogoClient constructor
-  </PackageReleaseNotes>
+      ### New in 4.0.0-beta-11
+      * Update field names of the seating status fields.
+    </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

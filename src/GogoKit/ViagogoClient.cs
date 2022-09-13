@@ -27,10 +27,23 @@ namespace GogoKit
             : this(product,
                    configuration,
                    tokenStore,
-                   new ConfigurationLocalizationProvider(configuration),
-                   new DefaultJsonSerializer(),
-                   new HttpClientHandler(),
-                   new DelegatingHandler[] {})
+                   new ConfigurationLocalizationProvider(configuration))
+        {
+        }
+
+        public ViagogoClient(
+            ProductHeaderValue product,
+            IGogoKitConfiguration configuration,
+            IOAuth2TokenStore tokenStore,
+            ILocalizationProvider localizationProvider)
+            : this(
+                product,
+                configuration,
+                tokenStore,
+                localizationProvider,
+                new DefaultJsonSerializer(),
+                new HttpClientHandler(),
+                new DelegatingHandler[] { })
         {
         }
 

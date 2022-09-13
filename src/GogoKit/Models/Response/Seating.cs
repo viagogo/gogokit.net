@@ -17,22 +17,13 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "seat_to")]
         public string SeatTo { get; set; }
 
-        [DataMember(Name = "mapping_status")]
-        public MappingStatus MappingStatus { get; set; }
+        [DataMember(Name = "state")]
+        public SeatingState State { get; set; }
     }
 
-    public class MappingStatus
+    public class SeatingState
     {
-        [DataMember(Name = "status")]
-        public ApiMappingState Status { get; set; }
-    }
-
-    public enum ApiMappingState
-    {
-        Unknown = 0,
-        Mapped = 1,
-        Unmapped = 2,
-        Ignored = 3,
-        Rejected = 4
+        [DataMember(Name = "visible_in_venue_map")]
+        public bool VisibleInVenueMap { get; set; }
     }
 }

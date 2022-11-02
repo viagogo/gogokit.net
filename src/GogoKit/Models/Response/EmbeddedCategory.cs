@@ -34,5 +34,11 @@ namespace GogoKit.Models.Response
         /// </summary>
         [Embedded("merged_categories")]
         public IReadOnlyList<MergedEntity> MergedCategories { get; set; }
+
+        /// <summary>
+        /// The image asset of the category.
+        /// </summary>
+        [Embedded("image_assets")]
+        public IReadOnlyList<ImageAsset> ImageAssets { get; set; }
     }
 }

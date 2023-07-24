@@ -18,13 +18,4 @@ jobs:
     - name: Create the package
       run: dotnet build --configuration Release src/GogoKit/GogoKit.csproj --no-restore
     - name: Publish the package
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        PROJECT_FILE_PATH: src/GogoKit/GogoKit.csproj
-        VERSION_FILE_PATH: Version.props
-        VERSION_REGEX: ^\s*<VersionPrefix>(.*)<\/VersionPrefix>\s*$
-        TAG_COMMIT: true
-        TAG_FORMAT: v*
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-        NUGET_SOURCE: https://api.nuget.org
-        INCLUDE_SYMBOLS: true
+      run: dotnet nuget push "bin/Release/*.nupkg" --source "https://api.nuget.org"

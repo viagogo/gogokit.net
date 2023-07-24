@@ -197,7 +197,7 @@ namespace GogoKit.Clients
 
         public Task<SellerListing> CreateAsync(NewRequestedEventSellerListing listing, SellerListingRequest request)
         {
-            return CreateAsync(listing, new SellerListingRequest(), CancellationToken.None);
+            return CreateAsync(listing, request, CancellationToken.None);
         }
 
         public async Task<SellerListing> CreateAsync(

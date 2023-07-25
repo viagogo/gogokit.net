@@ -18,4 +18,4 @@ jobs:
     - name: Create the package
       run: dotnet build --configuration Release src/GogoKit/GogoKit.csproj --no-restore
     - name: Publish the package
-      run: dotnet nuget push bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source "https://api.nuget.org"
+      run: dotnet nuget push bin/Release/*.nupkg --source "https://api.nuget.org" --api-key ${{ secrets.NUGET_API_KEY }}

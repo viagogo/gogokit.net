@@ -1,5 +1,5 @@
-﻿using System;
-using GogoKit.Models.Response;
+﻿using GogoKit.Models.Response;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -19,7 +19,7 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "face_value")]
         public Money FaceValue { get; set; }
-        
+
         [DataMember(Name = "ticket_price")]
         public Money TicketPrice { get; set; }
 
@@ -34,10 +34,10 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "listing_note_ids")]
         public IList<int> ListingNoteIds { get; set; }
-        
+
         [DataMember(Name = "notes")]
         public string Notes { get; set; }
-        
+
         [DataMember(Name = "ticket_location_address_id")]
         public int? TicketLocationAddressId { get; set; }
 
@@ -55,5 +55,11 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "barcodes")]
         public BarcodeUpload[] Barcodes { get; set; }
+
+        /// <summary>
+        /// Used when relisting tickets previously purchased in the marketplace.
+        /// </summary>
+        [DataMember(Name = "relist_transaction_id")]
+        public int? RelistTransactionId { get; set; }
     }
 }

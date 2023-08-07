@@ -1,7 +1,9 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>4.0.0-rc-2</VersionPrefix>
+    <VersionPrefix>4.0.0-rc-3</VersionPrefix>
     <PackageReleaseNotes>
+		### New in 4.0.0-rc-3
+		* Add RelistTransaction to SellerListing Post and Get Apis
 		### New in 4.0.0-rc-2
 		* Fix create listing request.
 	</PackageReleaseNotes>

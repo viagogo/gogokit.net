@@ -1,9 +1,9 @@
-﻿using System;
+﻿using GogoKit.Models.Request;
 using HalKit.Json;
 using HalKit.Models.Response;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using GogoKit.Models.Request;
 
 namespace GogoKit.Models.Response
 {
@@ -77,6 +77,13 @@ namespace GogoKit.Models.Response
 
         [Embedded("listing_notes")]
         public IList<ListingNote> ListingNotes { get; set; }
+
+        /// <summary>
+        /// The model for the transaction that this listing was created from
+        /// </summary>
+        [DataMember(Name = "relist_transaction")]
+        [Embedded("relist_transaction")]
+        public RelistTransaction RelistTransaction { get; set; }
 
         /// <summary>
         /// You can GET the href of this link to retrieve the <see cref="ListingConstraints"/>

@@ -1,6 +1,6 @@
-﻿using System.Runtime.Serialization;
-using HalKit.Json;
+﻿using HalKit.Json;
 using HalKit.Models.Response;
+using System.Runtime.Serialization;
 
 namespace GogoKit.Models.Response
 {

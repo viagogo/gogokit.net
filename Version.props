@@ -2,18 +2,18 @@
   <PropertyGroup>
     <VersionPrefix>3.4.2</VersionPrefix>
     <PackageReleaseNotes>
-	    ### New in 3.4.2
-	    * Add RelistTransaction to SellerListing Post and Get Apis
-		### New in 3.4.1
-		* Fix post seller listing request
-		### New in 3.4.0
-		* Add updload barcode methods
-		### New in 3.3.0
-		* Add legacy order bit and update sale and listing models
-		### New in 3.2.0
-		* Add sales external id filter and barcode
-		### New in 3.1.0
-		* Add seller listing external event info
+        ### New in 3.4.2
+        * Add RelistTransaction to SellerListing Post and Get Apis
+        ### New in 3.4.1
+        * Fix post seller listing request
+        ### New in 3.4.0
+        * Add updload barcode methods
+        ### New in 3.3.0
+        * Add legacy order bit and update sale and listing models
+        ### New in 3.2.0
+        * Add sales external id filter and barcode
+        ### New in 3.1.0
+* Add seller listing external event info
 	</PackageReleaseNotes>
   </PropertyGroup>
 </Project>

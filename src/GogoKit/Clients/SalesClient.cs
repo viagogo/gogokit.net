@@ -1,4 +1,5 @@
-﻿using GogoKit.Enumerations.Viagogo.Api.Enumerations;
+﻿using GogoKit.Enumerations;
+using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using GogoKit.Services;
@@ -263,7 +264,7 @@ namespace GogoKit.Clients
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            string mobileProvider)
+            MobileProvider mobileProvider)
         {
             return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, mobileProvider, new SaleRequest());
         }
@@ -271,7 +272,7 @@ namespace GogoKit.Clients
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            string mobileProvider,
+            MobileProvider mobileProvider,
             SaleRequest request)
         {
             return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, mobileProvider, request, CancellationToken.None);
@@ -280,7 +281,7 @@ namespace GogoKit.Clients
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            string mobileProvider,
+            MobileProvider mobileProvider,
             SaleRequest request,
             CancellationToken cancellationToken)
         {
@@ -291,7 +292,7 @@ namespace GogoKit.Clients
                 new SaleUpdate
                 {
                     TransferConfirmationNumber = transferConfirmationNumber,
-                    MobileProvider = mobileProvider,
+                    MobileProvider = mobileProvider
                 },
                 request,
                 cancellationToken);

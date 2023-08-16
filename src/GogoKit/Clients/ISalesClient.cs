@@ -1,4 +1,5 @@
-﻿using GogoKit.Enumerations.Viagogo.Api.Enumerations;
+﻿using GogoKit.Enumerations;
+using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using HalKit.Models.Response;
@@ -93,18 +94,18 @@ namespace GogoKit.Clients
             CancellationToken cancellationToken);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(int saleId,
-            string transferConfirmationNumber, string mobileProvider);
+            string transferConfirmationNumber, MobileProvider mobileProvider);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            string mobileProvider,
+            MobileProvider mobileProvider,
             SaleRequest request);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            string mobileProvider,
+            MobileProvider mobileProvider,
             SaleRequest request,
             CancellationToken cancellationToken);
 

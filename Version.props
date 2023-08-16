@@ -1,7 +1,9 @@
 <Project>
     <PropertyGroup>
-        <VersionPrefix>4.0.0-rc-3</VersionPrefix>
+        <VersionPrefix>4.0.0-rc-4</VersionPrefix>
         <PackageReleaseNotes>
+            ### New in 4.0.0-rc-4
+            * Adding mobile provider to UploadTransferConfirmationNumberAsync
             ### New in 4.0.0-rc-3
             * Add RelistTransaction to SellerListing Post and Get Apis
             ### New in 4.0.0-rc-2

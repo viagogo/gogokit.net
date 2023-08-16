@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
 using GogoKit.Services;
 using HalKit;
-using System.Net.Http;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Linq;
-using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using HalKit.Models.Response;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GogoKit.Clients
 {
@@ -169,7 +169,7 @@ namespace GogoKit.Clients
         {
             return UploadETicketsAsync(sale, fileName, fileBytes, contentType, request, CancellationToken.None);
         }
-        
+
         public async Task<ETicketUploads> UploadETicketsAsync(
             Sale sale,
             string fileName,
@@ -221,7 +221,7 @@ namespace GogoKit.Clients
                 request,
                 cancellationToken);
         }
-        
+
         public Task<Sale> UploadBarcodesAsync(int saleId, BarcodeUpload[] barcodes)
         {
             return UploadBarcodesAsync(saleId, barcodes, new SaleRequest());
@@ -280,24 +280,28 @@ namespace GogoKit.Clients
                 cancellationToken);
         }
 
-        public Task<Sale> UploadTransferConfirmationNumberAsync(
-            int saleId,
-            string transferConfirmationNumber)
+        public Task<Sale> UploadTransferConfirmationNumberAsync(int saleId,
+            string transferConfirmationNumber, string mobileProvider)
         {
-            return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, new SaleRequest());
+            return UploadTransferConfirmationNumberAsync(saleId,
+                transferConfirmationNumber,
+                mobileProvider,
+                new SaleRequest());
         }
 
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
+            string mobileProvider,
             SaleRequest request)
         {
-            return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, request, CancellationToken.None);
+            return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, mobileProvider, request, CancellationToken.None);
         }
 
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
+            string mobileProvider,
             SaleRequest request,
             CancellationToken cancellationToken)
         {
@@ -307,7 +311,8 @@ namespace GogoKit.Clients
                 saleId,
                 new SaleUpdate
                 {
-                    TransferConfirmationNumber = transferConfirmationNumber
+                    TransferConfirmationNumber = transferConfirmationNumber,
+                    MobileProvider = mobileProvider,
                 },
                 request,
                 cancellationToken);

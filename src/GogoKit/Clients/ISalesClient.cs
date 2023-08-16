@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using GogoKit.Models.Request;
 using GogoKit.Models.Response;
-using System.Threading;
-using GogoKit.Enumerations.Viagogo.Api.Enumerations;
 using HalKit.Models.Response;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GogoKit.Clients
 {
@@ -57,15 +57,15 @@ namespace GogoKit.Clients
             CancellationToken cancellationToken);
 
         Task<ETicketUploads> UploadETicketsAsync(
-            Sale sale, 
-            string fileName, 
-            byte[] fileBytes, 
+            Sale sale,
+            string fileName,
+            byte[] fileBytes,
             string contentType);
 
         Task<ETicketUploads> UploadETicketsAsync(
-            Sale sale, 
+            Sale sale,
             string fileName,
-            byte[] fileBytes, 
+            byte[] fileBytes,
             string contentType,
             ETicketUploadRequest request);
 
@@ -92,18 +92,19 @@ namespace GogoKit.Clients
             SaleRequest request,
             CancellationToken cancellationToken);
 
-        Task<Sale> UploadTransferConfirmationNumberAsync(
-            int saleId,
-            string transferConfirmationNumber);
+        Task<Sale> UploadTransferConfirmationNumberAsync(int saleId,
+            string transferConfirmationNumber, string mobileProvider);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
+            string mobileProvider,
             SaleRequest request);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
+            string mobileProvider,
             SaleRequest request,
             CancellationToken cancellationToken);
 
@@ -131,7 +132,7 @@ namespace GogoKit.Clients
             IEnumerable<int> eticketIds,
             SaleRequest request,
             CancellationToken cancellationToken);
-        
+
         Task<Sale> UploadBarcodesAsync(
             int saleId,
             BarcodeUpload[] barcodes);

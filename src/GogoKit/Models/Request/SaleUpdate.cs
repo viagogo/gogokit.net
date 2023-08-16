@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using GogoKit.Enumerations;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -27,6 +27,9 @@ namespace GogoKit.Models.Request
 
         [DataMember(Name = "barcodes")]
         public BarcodeUpload[] Barcodes { get; set; }
+
+        [DataMember(Name = "mobile_provider")]
+        public MobileProvider MobileProvider { get; set; }
     }
 
     [DataContract(Name = "eticket_url")]

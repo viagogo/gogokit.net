@@ -1,7 +1,9 @@
 ﻿<Project>
     <PropertyGroup>
-        <VersionPrefix>3.5.0</VersionPrefix>
+        <VersionPrefix>3.6.0</VersionPrefix>
         <PackageReleaseNotes>
+            ### New in 3.6.0
+            * Adding is_concierge_ticket to SellerListing GET and POST APIs
             ### New in 3.5.0
             * Adding mobile provider to UploadTransferConfirmationNumberAsync
             ### New in 3.4.2

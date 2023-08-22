@@ -78,6 +78,9 @@ namespace GogoKit.Models.Response
         [Embedded("listing_notes")]
         public IList<ListingNote> ListingNotes { get; set; }
 
+        [DataMember(Name = "is_ticket_concierge")]
+        public bool IsTicketConcierge { get; set; }
+
         /// <summary>
         /// The model for the transaction that this listing was created from
         /// </summary>

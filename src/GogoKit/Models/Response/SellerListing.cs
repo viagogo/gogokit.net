@@ -81,6 +81,9 @@ namespace GogoKit.Models.Response
         [DataMember(Name = "is_ticket_concierge")]
         public bool IsTicketConcierge { get; set; }
 
+        [DataMember(Name = "is_auto_po")]
+        public virtual bool IsAutoPo { get; set; }
+
         /// <summary>
         /// The model for the transaction that this listing was created from
         /// </summary>

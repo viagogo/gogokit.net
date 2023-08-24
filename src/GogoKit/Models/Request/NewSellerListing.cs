@@ -56,6 +56,10 @@ namespace GogoKit.Models.Request
         [DataMember(Name = "is_ticket_concierge")]
         public virtual bool IsTicketConcierge { get; set; }
 
+
+        [DataMember(Name = "is_auto_po")]
+        public virtual bool IsAutoPo { get; set; }
+
         [DataMember(Name = "barcodes")]
         public BarcodeUpload[] Barcodes { get; set; }
 

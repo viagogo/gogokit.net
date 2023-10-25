@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GogoKit.Exceptions;
+using GogoKit.Models.Response;
+using HalKit.Http;
+using HalKit.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,10 +11,6 @@ using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using GogoKit.Exceptions;
-using GogoKit.Models.Response;
-using HalKit.Http;
-using HalKit.Json;
 
 namespace GogoKit.Http
 {
@@ -33,7 +33,7 @@ namespace GogoKit.Http
                 {"invalid_password",                (r,e) => new InvalidPasswordException(r,e)},
                 {"email_already_exists",            (r,e) => new EmailAlreadyExistsException(r,e)},
                 {"invalid_purchase_action",         (r,e) => new InvalidPurchaseActionException(r,e)},
-				{"invalid_seller_listing_action",   (r,e) => new InvalidSellerListingActionException(r,e)},
+                {"invalid_seller_listing_action",   (r,e) => new InvalidSellerListingActionException(r,e)},
                 {"purchase_not_allowed",            (r,e) => new PurchaseNotAllowedException(r,e)},
                 {"listing_conflict",                (r,e) => new ListingConflictException(r,e)},
                 {"purchase_still_processing",       (r,e) => new PurchaseStillProcessingException(r,e)},

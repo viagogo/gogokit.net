@@ -264,7 +264,7 @@ namespace GogoKit.Clients
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            MobileProvider mobileProvider)
+            string mobileProvider)
         {
             return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, mobileProvider, new SaleRequest());
         }
@@ -272,7 +272,7 @@ namespace GogoKit.Clients
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            MobileProvider mobileProvider,
+            string mobileProvider,
             SaleRequest request)
         {
             return UploadTransferConfirmationNumberAsync(saleId, transferConfirmationNumber, mobileProvider, request, CancellationToken.None);
@@ -281,7 +281,7 @@ namespace GogoKit.Clients
         public Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            MobileProvider mobileProvider,
+            string mobileProvider,
             SaleRequest request,
             CancellationToken cancellationToken)
         {

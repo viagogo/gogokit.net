@@ -94,18 +94,18 @@ namespace GogoKit.Clients
             CancellationToken cancellationToken);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(int saleId,
-            string transferConfirmationNumber, MobileProvider mobileProvider);
+            string transferConfirmationNumber, string mobileProvider);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            MobileProvider mobileProvider,
+            string mobileProvider,
             SaleRequest request);
 
         Task<Sale> UploadTransferConfirmationNumberAsync(
             int saleId,
             string transferConfirmationNumber,
-            MobileProvider mobileProvider,
+            string mobileProvider,
             SaleRequest request,
             CancellationToken cancellationToken);
 

@@ -1,49 +1,39 @@
-﻿using System.Runtime.Serialization;
+﻿using GogoKit.Models.Response;
+using System.Runtime.Serialization;
 
 namespace GogoKit.Enumerations
 {
     [DataContract]
-    public enum MobileProvider
+    public static class MobileProvider
     {
-        [EnumMember]
-        StubHub = 1,
-        [EnumMember]
-        TicketMaster = 2,
-        [EnumMember]
-        TicketmasterCa = 3,
-        [EnumMember]
-        AXS = 4,
-        [EnumMember]
-        Eventbrite = 5,
-        [EnumMember]
-        Livenation = 6,
-        [EnumMember]
-        Broadway = 7,
-        [EnumMember]
-        Telecharge = 8,
-        [EnumMember]
-        Ticketon = 9,
-        [EnumMember]
-        Seetickets = 10,
-        [EnumMember]
-        Etix = 11,
-        [EnumMember]
-        Tixr = 12,
-        [EnumMember]
-        Festicket = 13,
-        [EnumMember]
-        Insomniac = 14,
-        [EnumMember]
-        DiceImport = 15,
-        [EnumMember]
-        MGMResorts = 16,
-        [EnumMember]
-        Tickeri = 17,
-        [EnumMember]
-        SmithCenterImport = 18,
-        [EnumMember]
-        Stubwire = 19,
-        [EnumMember]
-        Computicket = 20,
+        public static string StubHub = "stubhub";
+        public static string Viagogo = "viagogo";
+        public static string Ticketmaster = "Ticketmaster";
+        public static string Axs = "AXS";
+        public static string SeatGeek = "SeatGeek";
+        public static string TicketmasterAccountManager = "Ticketmaster Account Manager";
+        public static string MlbBallpark = "MLB Ballpark";
+        public static string Mpv = "MPV";
+        public static string Paciolan = "Paciolan";
+        public static string TicketsDotCom = "Tickets.com";
+        public static string TicketsDotComRDP = "Tickets.com RDP";
+        public static string Vivenu = "Vivenu";
+        public static string TicketmasterCa = "Ticketmaster CA";
+        public static string Eventbrite = "Eventbrite";
+        public static string Livenation = "Livenation";
+        public static string Broadway = "Broadway";
+        public static string Telecharge = "Telecharge";
+        public static string Ticketon = "Ticketon";
+        public static string Seetickets = "Seetickets";
+        public static string Etix = "Etix";
+        public static string Tixr = "Tixr";
+        public static string Festicket = "Festicket";
+        public static string Insomniac = "Insomniac";
+        public static string DiceImport = "DiceImport";
+        public static string MgmResorts = "MGMResorts";
+        public static string Tickeri = "Tickeri";
+        public static string SmithCenterImport = "SmithCenterImport";
+        public static string Stubwire = "Stubwire";
+        public static string Computicket = "Computicket";
     }
 }

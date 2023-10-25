@@ -1,7 +1,9 @@
 <Project>
     <PropertyGroup>
-        <VersionPrefix>4.0.0</VersionPrefix>
+        <VersionPrefix>4.1.0</VersionPrefix>
         <PackageReleaseNotes>
+            ### New in 4.1.0
+            * Mobile Provider Update
             ### New in 4.0.0
             * Official Release for 4.0.0-rc-6
             ### New in 4.0.0-rc-6

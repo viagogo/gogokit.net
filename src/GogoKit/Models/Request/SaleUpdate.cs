@@ -29,7 +29,7 @@ namespace GogoKit.Models.Request
         public BarcodeUpload[] Barcodes { get; set; }
 
         [DataMember(Name = "mobile_provider")]
-        public MobileProvider MobileProvider { get; set; }
+        public string MobileProvider { get; set; }
     }
 
     [DataContract(Name = "eticket_url")]
